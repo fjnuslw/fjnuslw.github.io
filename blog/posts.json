@@ -1,0 +1,11 @@
+[
+  {
+    "id": "hello-world",
+    "title": "你好，世界！我的第一篇博客",
+    "date": "2026-06-24",
+    "readTime": "3 min",
+    "excerpt": "这是我个人网站的第一篇文章。在这里，我会分享我在 LLM 和 Agent 方向的学习笔记、技术思考和实习经历。欢迎来到我的小世界！",
+    "tags": ["随笔", "起点"],
+    "url": "blog/hello-world.html"
+  }
+]

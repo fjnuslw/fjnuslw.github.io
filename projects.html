@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="fjnuslw 的项目展示 — LLM、Agent、RAG 相关项目与在线 Demo">
+  <title>项目 — fjnuslw</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bg-ambient"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>
+        <span class="logo-text">fjnuslw</span>
+        <span class="logo-bracket"> /&gt;</span>
+      </a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">首页</a></li>
+        <li><a href="blog.html" class="nav-link">博客</a></li>
+        <li><a href="projects.html" class="nav-link active">项目</a></li>
+        <li><a href="resume.html" class="nav-link">简历</a></li>
+        <li><a href="about.html" class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>🧪 项目 & Demo</h1>
+      <p>从想法到实现，展示每一个技术作品</p>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>项目列表</h2>
+        <p>以下项目正在规划或开发中，完成后会上线可交互的 Demo</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Project 1 -->
+        <div class="card card-project reveal reveal-delay-1">
+          <div class="card-icon">🤖</div>
+          <div>
+            <span class="badge badge-coming">即将上线</span>
+          </div>
+          <h3>智能问答 Agent</h3>
+          <p>基于 RAG 的智能问答系统，支持多轮对话与知识库管理。用户可以上传文档，系统会自动建立知识索引，回答相关问题时引用原文出处。</p>
+          <div class="tags-group">
+            <span class="tag tag-purple">LangChain</span>
+            <span class="tag tag-cyan">RAG</span>
+            <span class="tag tag-pink">Agent</span>
+            <span class="tag tag-amber">向量数据库</span>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+            <span class="btn btn-ghost" style="cursor: default; opacity: 0.5;">🔗 Demo 开发中</span>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="card card-project reveal reveal-delay-2">
+          <div class="card-icon">📊</div>
+          <div>
+            <span class="badge badge-coming">规划中</span>
+          </div>
+          <h3>数据分析助手</h3>
+          <p>自然语言驱动的数据分析工具。用户用中文描述分析需求，AI 自动生成 SQL 查询、执行数据分析并生成可视化图表和分析报告。</p>
+          <div class="tags-group">
+            <span class="tag tag-amber">Text2SQL</span>
+            <span class="tag tag-emerald">数据可视化</span>
+            <span class="tag tag-purple">LLM</span>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+            <span class="btn btn-ghost" style="cursor: default; opacity: 0.5;">🔗 Demo 开发中</span>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="card card-project reveal reveal-delay-3">
+          <div class="card-icon">🔧</div>
+          <div>
+            <span class="badge badge-coming">规划中</span>
+          </div>
+          <h3>AI 工具集锦</h3>
+          <p>实用 AI 小工具合集，包括 Prompt 优化器、文本摘要、智能翻译、代码解读等。每个工具独立可用，展示 LLM 在不同场景的应用能力。</p>
+          <div class="tags-group">
+            <span class="tag tag-cyan">API</span>
+            <span class="tag tag-pink">Prompt</span>
+            <span class="tag tag-amber">工具链</span>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+            <span class="btn btn-ghost" style="cursor: default; opacity: 0.5;">🔗 Demo 开发中</span>
+          </div>
+        </div>
+
+        <!-- More Projects Placeholder -->
+        <div class="card card-project reveal reveal-delay-4" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 280px;">
+          <div style="text-align: center; color: var(--text-muted);">
+            <div style="font-size: 3rem; margin-bottom: var(--space-4); opacity: 0.4;">✨</div>
+            <h3 style="color: var(--text-secondary); font-size: var(--text-lg);">更多项目</h3>
+            <p style="font-size: var(--text-sm); margin-top: var(--space-2);">正在学习和探索中，新项目会持续更新...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Showcase Section -->
+  <section class="section" style="background: var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>🎮 在线 Demo</h2>
+        <p>直接在浏览器中体验项目，无需安装任何环境</p>
+      </div>
+
+      <div class="demo-embed reveal">
+        <div class="demo-placeholder">
+          <div class="placeholder-icon">🚀</div>
+          <h3>Demo 即将上线</h3>
+          <p>项目完成后，你可以在这里直接体验交互式 Demo。支持嵌入 Gradio、Streamlit 或自定义前端应用。</p>
+          <a href="demos/README.md" class="btn btn-secondary" style="margin-top: var(--space-4);">查看集成指南 →</a>
+        </div>
+      </div>
+
+      <!-- How to add demos - instruction card -->
+      <div class="card reveal" style="margin-top: var(--space-8);">
+        <h3 style="color: var(--text-bright); margin-bottom: var(--space-4);">💡 如何添加 Demo？</h3>
+        <p style="color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.8;">
+          <strong>方式一：嵌入 HuggingFace Spaces</strong> — 将 Gradio/Streamlit 应用部署到 HuggingFace，然后用 iframe 嵌入此页面。<br>
+          <strong>方式二：嵌入外部链接</strong> — 任何可公开访问的 Web 应用都可以通过 iframe 嵌入。<br>
+          <strong>方式三：独立页面</strong> — 在 <code style="font-family: var(--font-mono); padding: 2px 6px; background: rgba(139,92,246,0.1); border-radius: 4px;">demos/</code> 文件夹中创建独立的 HTML 页面。<br>
+          详细说明请查看 <a href="demos/README.md">Demo 集成指南</a>。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <span class="logo-bracket">&lt;</span>
+            <span class="logo-text">fjnuslw</span>
+            <span class="logo-bracket"> /&gt;</span>
+          </a>
+          <p>探索 LLM & Agent 的无限可能</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="blog.html">博客</a>
+          <a href="about.html">关于</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 fjnuslw. Built with ❤️ and AI.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="js/main.js"></script>
+</body>
+</html>
