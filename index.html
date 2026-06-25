@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚的个人网站 — 软件工程硕士，专注 LLM 应用开发、RAG 系统与 AI Agent 工程化。">
+  <meta name="description" content="宋林蔚的个人网站 — 软件工程硕士，专注大模型应用开发、RAG 与 AI Agent 工程化。">
   <meta name="keywords" content="宋林蔚, fjnuslw, LLM, Agent, RAG, 大模型应用, AI">
-  <title>宋林蔚 — LLM & Agent 应用开发</title>
+  <title>宋林蔚</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-menu">
-        <li><a href="index.html"    class="nav-link">首页</a></li>
+        <li><a href="index.html"    class="nav-link active">首页</a></li>
         <li><a href="blog.html"     class="nav-link">博客</a></li>
         <li><a href="projects.html" class="nav-link">项目</a></li>
         <li><a href="resume.html"   class="nav-link">简历</a></li>
@@ -31,48 +31,86 @@
   <section class="hero">
     <div class="container">
       <h1 class="hero-name">宋林蔚</h1>
-      <p class="hero-tagline">软件工程硕士在读 · 福建师范大学</p>
+      <p class="hero-tagline">M.S. Software Engineering · Fujian Normal University</p>
       <p class="hero-desc">
-        专注 <strong>大模型应用</strong>、<strong>RAG 系统</strong>与 <strong>AI Agent</strong> 工程化开发。
-        具备企业级 RAG 项目实战经验（福建新意科技，8 个月），
-        蓝桥杯智能体开发赛道<strong>国赛一等奖 · 全国第五</strong>，
-        EMNLP 2026 一作论文在投。
+        热衷于把大语言模型真正用起来——不只是调 API，而是把
+        <strong>RAG</strong>、<strong>Agent</strong>、工具调用这些技术拼成能解决实际问题的系统。
+        在福建新意科技做了 8 个月这件事，现在继续探索，同时在写一篇关于
+        <strong>LLM 多跳信息检索</strong>的论文投 EMNLP 2026。
       </p>
       <div class="hero-links">
-        <a href="resume.html"              class="btn btn-primary">查看简历</a>
-        <a href="projects.html"            class="btn btn-secondary">项目展示</a>
+        <a href="resume.html"                class="btn btn-primary">简历</a>
+        <a href="projects.html"              class="btn btn-secondary">项目</a>
         <a href="https://github.com/fjnuslw" target="_blank" class="btn btn-secondary">GitHub</a>
-        <a href="mailto:1147214246@qq.com" class="btn btn-secondary">联系我</a>
+        <a href="mailto:1147214246@qq.com"   class="btn btn-secondary">邮件</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Currently -->
+  <section class="section">
+    <div class="container">
+      <p class="section-title reveal">Currently</p>
+      <div class="currently-grid reveal">
+        <div class="currently-item">
+          <span class="currently-label">在读</span>
+          <span class="currently-value">福建师范大学 · 软件工程硕士</span>
+        </div>
+        <div class="currently-item">
+          <span class="currently-label">研究</span>
+          <span class="currently-value">
+            LLM 多跳信息检索 ·
+            <a href="https://2026.emnlp.org/" target="_blank">EMNLP 2026</a> 一作在投
+          </span>
+        </div>
+        <div class="currently-item">
+          <span class="currently-label">开发</span>
+          <span class="currently-value">
+            RAG 知识库问答 Agent ·
+            <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank">SilentDeck</a>
+          </span>
+        </div>
+        <div class="currently-item">
+          <span class="currently-label">状态</span>
+          <span class="currently-value" style="color: #16a34a; font-weight: 500;">
+            寻找大模型应用方向实习 · 欢迎联系
+          </span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- 精选项目 -->
   <section class="section">
-    <div class="container">
+    <div class="container-wide">
       <p class="section-title reveal">精选项目</p>
       <div class="grid-3">
 
         <div class="card card-project reveal reveal-delay-1">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
+            <h3>SilentDeck</h3>
             <span class="badge badge-live">已上线</span>
           </div>
-          <h3>SilentDeck</h3>
-          <p>开源 Agent Skill，将静音演示视频自动转为带 AI 讲解和字幕的 MP4，基于 VLM + LLM + TTS 全自动化流程。</p>
-          <div class="tags-group">
+          <p>开源 Agent Skill。将静音演示视频自动转为带 AI 讲解与字幕的 MP4——关键帧抽取 → VLM 分析 → LLM 讲稿 → TTS 合成 → FFmpeg 封装，全流程 agent-first 设计。</p>
+          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
             <span class="tag">Agent</span>
             <span class="tag">VLM</span>
+            <span class="tag">TTS</span>
             <span class="tag">开源</span>
           </div>
+          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank"
+             style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem; display:block; font-family:var(--font-mono);">
+            github.com/fjnuslw/silentdeck-codex-skill ↗
+          </a>
         </div>
 
         <div class="card card-project reveal reveal-delay-2">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
+            <h3>智能问答 Agent</h3>
             <span class="badge badge-coming">开发中</span>
           </div>
-          <h3>智能问答 Agent</h3>
-          <p>基于 RAG 的多轮问答系统，支持知识库管理、Embedding 检索与 Rerank 优化，附可交互 Demo。</p>
-          <div class="tags-group">
+          <p>基于 RAG 的多轮对话系统，支持文档上传与知识库管理，Embedding 检索 + Rerank 优化，附在线可交互 Demo。</p>
+          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
             <span class="tag">LangChain</span>
             <span class="tag">RAG</span>
             <span class="tag">Qdrant</span>
@@ -80,12 +118,12 @@
         </div>
 
         <div class="card card-project reveal reveal-delay-3">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
+            <h3>数据分析助手</h3>
             <span class="badge badge-wip">规划中</span>
           </div>
-          <h3>数据分析助手</h3>
-          <p>自然语言驱动的数据分析工具，AI 自动生成 SQL 查询、执行分析并输出可视化报告。</p>
-          <div class="tags-group">
+          <p>自然语言驱动的数据查询工具，AI 自动生成 SQL、执行分析并输出图表报告，目标接入私有数据库。</p>
+          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
             <span class="tag">Text2SQL</span>
             <span class="tag">LLM</span>
             <span class="tag">可视化</span>
@@ -93,20 +131,20 @@
         </div>
 
       </div>
-      <p style="margin-top:1.5rem" class="reveal">
+      <p style="margin-top:1.25rem" class="reveal">
         <a href="projects.html" class="btn-link">查看全部项目 →</a>
       </p>
     </div>
   </section>
 
-  <!-- 最新博客 -->
+  <!-- 最新文章 -->
   <section class="section">
     <div class="container">
       <p class="section-title reveal">最新文章</p>
       <div class="grid-2" id="latest-posts">
-        <!-- 由 JS 动态加载 -->
+        <!-- JS 动态加载 -->
       </div>
-      <p style="margin-top:1.5rem" class="reveal">
+      <p style="margin-top:1.25rem" class="reveal">
         <a href="blog.html" class="btn-link">阅读更多 →</a>
       </p>
     </div>
@@ -122,7 +160,7 @@
         <span class="tech-item">LangGraph</span>
         <span class="tech-item">Dify</span>
         <span class="tech-item">RAG</span>
-        <span class="tech-item">Agent</span>
+        <span class="tech-item">AI Agent</span>
         <span class="tech-item">Prompt Engineering</span>
         <span class="tech-item">Qdrant</span>
         <span class="tech-item">Redis</span>
@@ -130,7 +168,7 @@
         <span class="tech-item">Xinference</span>
         <span class="tech-item">MCP</span>
         <span class="tech-item">OpenAI API</span>
-        <span class="tech-item">Anthropic API</span>
+        <span class="tech-item">SiliconFlow</span>
       </div>
     </div>
   </section>
@@ -139,7 +177,9 @@
   <footer class="footer">
     <div class="container-wide">
       <div class="footer-content">
-        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <p class="footer-left">
+          宋林蔚 · 福建师范大学 · 2026
+        </p>
         <nav class="footer-links">
           <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
           <a href="mailto:1147214246@qq.com">邮件</a>
