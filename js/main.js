@@ -1,210 +1,133 @@
 /* ============================================================
-   FJNUSLW Personal Website — Main JavaScript
+   个人网站 — 主要交互逻辑（极简版）
+   移除：打字机效果
+   保留：导航、滚动动画、返回顶部、博客加载
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initScrollReveal();
-  initTypewriter();
   initBackToTop();
   initActiveNavLink();
 });
 
-/* ===== Navbar ===== */
+/* ===== 导航栏 ===== */
 function initNavbar() {
-  const navbar = document.querySelector('.navbar');
   const toggle = document.querySelector('.nav-toggle');
-  const menu = document.querySelector('.nav-menu');
+  const menu   = document.querySelector('.nav-menu');
 
-  // Scroll effect
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-    });
-  }
+  if (!toggle || !menu) return;
 
-  // Mobile toggle
-  if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('active');
-      menu.classList.toggle('active');
-      document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-    });
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('active');
+    menu.classList.toggle('active');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+  });
 
-    // Close menu when clicking a link
-    menu.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        toggle.classList.remove('active');
-        menu.classList.remove('active');
-        document.body.style.overflow = '';
-      });
+  menu.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle.classList.remove('active');
+      menu.classList.remove('active');
+      document.body.style.overflow = '';
     });
+  });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (menu.classList.contains('active') && !menu.contains(e.target) && !toggle.contains(e.target)) {
-        toggle.classList.remove('active');
-        menu.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
-  }
+  document.addEventListener('click', e => {
+    if (menu.classList.contains('active') && !menu.contains(e.target) && !toggle.contains(e.target)) {
+      toggle.classList.remove('active');
+      menu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
 }
 
-/* ===== Scroll Reveal Animation ===== */
+/* ===== 滚动渐显 ===== */
 function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal');
-  if (reveals.length === 0) return;
+  if (!reveals.length) return;
 
-  const observer = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+        obs.unobserve(entry.target);
       }
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
-  });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-  reveals.forEach(el => observer.observe(el));
+  reveals.forEach(el => obs.observe(el));
 }
 
-/* ===== Typewriter Effect ===== */
-function initTypewriter() {
-  const el = document.querySelector('.hero-typed');
-  if (!el) return;
-
-  const texts = [
-    'LLM 应用开发',
-    'RAG 系统搭建',
-    'Agent 架构设计',
-    'AI 工具探索者',
-    'Prompt Engineering'
-  ];
-
-  let textIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let delay = 100;
-
-  function type() {
-    const current = texts[textIndex];
-
-    if (isDeleting) {
-      el.textContent = current.substring(0, charIndex - 1);
-      charIndex--;
-      delay = 50;
-    } else {
-      el.textContent = current.substring(0, charIndex + 1);
-      charIndex++;
-      delay = 120;
-    }
-
-    if (!isDeleting && charIndex === current.length) {
-      delay = 2000; // Pause at end
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      textIndex = (textIndex + 1) % texts.length;
-      delay = 500; // Pause before next word
-    }
-
-    setTimeout(type, delay);
-  }
-
-  type();
-}
-
-/* ===== Back to Top Button ===== */
+/* ===== 返回顶部 ===== */
 function initBackToTop() {
   const btn = document.querySelector('.back-to-top');
   if (!btn) return;
-
   window.addEventListener('scroll', () => {
     btn.classList.toggle('visible', window.scrollY > 400);
   });
-
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-/* ===== Active Nav Link ===== */
+/* ===== 高亮当前页导航 ===== */
 function initActiveNavLink() {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  navLinks.forEach(link => {
+  const page  = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-link').forEach(link => {
     const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
+    link.classList.toggle('active', href === page || (page === '' && href === 'index.html'));
   });
 }
 
-/* ===== Blog Posts Loader ===== */
+/* ===== 博客文章加载（blog.html + index.html 调用） ===== */
 async function loadBlogPosts(containerId, limit) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
+  // 判断当前页是否在 blog/ 子目录
+  const isSubdir = window.location.pathname.includes('/blog/');
+  const jsonPath = isSubdir ? '../blog/posts.json' : 'blog/posts.json';
+
   try {
-    const response = await fetch('blog/posts.json');
-    if (!response.ok) throw new Error('Failed to load posts');
-    const posts = await response.json();
+    const res   = await fetch(jsonPath);
+    if (!res.ok) throw new Error('fetch failed');
+    const posts = await res.json();
+    const list  = limit ? posts.slice(0, limit) : posts;
 
-    const displayPosts = limit ? posts.slice(0, limit) : posts;
-
-    if (displayPosts.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📝</div>
-          <h3>暂无文章</h3>
-          <p>第一篇文章正在酝酿中，敬请期待...</p>
-        </div>
-      `;
+    if (!list.length) {
+      container.innerHTML = emptyState('暂无文章', '第一篇文章正在酝酿中，敬请期待…');
       return;
     }
 
-    container.innerHTML = displayPosts.map((post, i) => `
-      <a href="${post.url}" class="card card-blog reveal reveal-delay-${i % 4 + 1}">
-        <div class="card-meta">
-          <span>${post.date}</span>
-          <span>·</span>
-          <span>${post.readTime || '5 min'}</span>
-        </div>
+    container.innerHTML = list.map((post, i) => `
+      <a href="${post.url}" class="card card-blog reveal reveal-delay-${(i % 4) + 1}">
+        <div class="post-date">${post.date} · ${post.readTime || '5 min read'}</div>
         <h3>${post.title}</h3>
         <p class="card-excerpt">${post.excerpt}</p>
-        <div class="tags-group" style="margin-top: var(--space-3)">
-          ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+        <div class="tags-group" style="margin-top:0.75rem">
+          ${post.tags.map(t => `<span class="tag">${t}</span>`).join('')}
         </div>
       </a>
     `).join('');
 
-    // Re-init scroll reveal for new elements
     initScrollReveal();
-  } catch (err) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📝</div>
-        <h3>暂无文章</h3>
-        <p>第一篇文章正在酝酿中，敬请期待...</p>
-      </div>
-    `;
+  } catch {
+    container.innerHTML = emptyState('暂无文章', '第一篇文章正在酝酿中，敬请期待…');
   }
 }
 
-/* ===== Blog Filter ===== */
+function emptyState(title, desc) {
+  return `<div class="empty-state col-span-2">
+    <h3>${title}</h3>
+    <p>${desc}</p>
+  </div>`;
+}
+
+/* ===== 博客标签过滤 ===== */
 function initBlogFilter() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // Future: implement tag filtering
+      // 预留：按 data-tag 过滤
     });
   });
 }

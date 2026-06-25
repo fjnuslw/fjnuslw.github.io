@@ -3,124 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<!-- 文章描述 -->">
-  <title><!-- 文章标题 --> — fjnuslw</title>
+  <meta name="description" content="文章标题 — 宋林蔚">
+  <title>文章标题 — 宋林蔚</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <div class="bg-ambient"></div>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="../index.html" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>
-        <span class="logo-text">fjnuslw</span>
-        <span class="logo-bracket"> /&gt;</span>
-      </a>
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
       <button class="nav-toggle" aria-label="切换菜单">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-menu">
-        <li><a href="../index.html" class="nav-link">首页</a></li>
-        <li><a href="../blog.html" class="nav-link active">博客</a></li>
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
         <li><a href="../projects.html" class="nav-link">项目</a></li>
-        <li><a href="../resume.html" class="nav-link">简历</a></li>
-        <li><a href="../about.html" class="nav-link">关于</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- Post Header -->
+  <!-- ↓ 修改这里：文章头部 -->
   <div class="post-header">
     <div class="container">
-      <div class="tags-group" style="justify-content: center; margin-bottom: var(--space-4);">
-        <!-- 添加标签，例如: -->
-        <span class="tag tag-purple">LLM</span>
-        <span class="tag tag-cyan">学习笔记</span>
+      <!-- 标签（可选，可以多个） -->
+      <div class="tags-group" style="margin-bottom: 0.75rem">
+        <span class="tag">标签一</span>
+        <span class="tag">标签二</span>
       </div>
-      <h1><!-- 在这里写文章标题 --></h1>
+      <!-- 文章标题 -->
+      <h1>在这里写文章标题</h1>
+      <!-- 元信息：日期 · 阅读时间 · 作者 -->
       <div class="post-meta">
-        <span>📅 <!-- 日期 YYYY-MM-DD --></span>
-        <span class="divider"></span>
-        <span>⏱ <!-- X min --></span>
-        <span class="divider"></span>
-        <span>fjnuslw</span>
+        <span>2026-01-01</span>
+        <span>·</span>
+        <span>5 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
       </div>
     </div>
   </div>
+  <!-- ↑ 修改到这里 -->
 
-  <!-- Post Content -->
+  <!-- ↓ 文章正文区域（在这里写内容） -->
   <article class="post-content">
 
-    <!--
-      ============================================
-      📝 在这里写你的文章内容
-      ============================================
-      
-      可用的 HTML 元素:
-      
-      标题:     <h2>二级标题</h2>  <h3>三级标题</h3>
-      段落:     <p>段落文字</p>
-      加粗:     <strong>加粗文字</strong>
-      行内代码: <code>代码文字</code>
-      链接:     <a href="URL">链接文字</a>
-      
-      无序列表:
-      <ul>
-        <li>列表项 1</li>
-        <li>列表项 2</li>
-      </ul>
-      
-      有序列表:
-      <ol>
-        <li>步骤 1</li>
-        <li>步骤 2</li>
-      </ol>
-      
-      代码块:
-      <pre><code>
-      你的代码
-      </code></pre>
-      
-      引用:
-      <blockquote>引用文字</blockquote>
-      
-      图片:
-      <img src="图片路径" alt="图片描述">
-      
-      ============================================
-    -->
+    <!-- 正文段落：直接写在 <p></p> 里 -->
+    <p>这里是文章的开头段落，简要介绍本文要讲的内容。</p>
 
-    <h2>开始你的文章</h2>
-    <p>在这里写你的内容...</p>
+    <!-- 二级标题 -->
+    <h2>第一个章节</h2>
+    <p>这里是正文内容，可以随意写文字。</p>
 
-    <!-- 导航 -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-12); padding-top: var(--space-8); border-top: 1px solid var(--border-subtle);">
+    <!-- 无序列表 -->
+    <ul>
+      <li>列表项一</li>
+      <li>列表项二</li>
+      <li>列表项三</li>
+    </ul>
+
+    <!-- 有序列表 -->
+    <ol>
+      <li>第一步</li>
+      <li>第二步</li>
+      <li>第三步</li>
+    </ol>
+
+    <!-- 三级标题 -->
+    <h3>子章节</h3>
+    <p>更细节的内容。</p>
+
+    <!-- 行内代码 -->
+    <p>使用 <code>langchain</code> 这个库来实现 RAG 系统。</p>
+
+    <!-- 代码块 -->
+    <pre><code># Python 示例
+from langchain.vectorstores import Qdrant
+vectorstore = Qdrant.from_documents(docs, embeddings)</code></pre>
+
+    <!-- 引用块 -->
+    <blockquote>
+      这里是一段引用，适合放名言或重要观点。
+    </blockquote>
+
+    <!-- 结尾 + 返回按钮（保持这段不变） -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
       <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
     </div>
-  </article>
 
-  <!-- Footer -->
+  </article>
+  <!-- ↑ 正文区域结束 -->
+
   <footer class="footer">
-    <div class="container">
+    <div class="container-wide">
       <div class="footer-content">
-        <div class="footer-brand">
-          <a href="../index.html" class="nav-logo">
-            <span class="logo-bracket">&lt;</span>
-            <span class="logo-text">fjnuslw</span>
-            <span class="logo-bracket"> /&gt;</span>
-          </a>
-          <p>探索 LLM & Agent 的无限可能</p>
-        </div>
-        <div class="footer-links">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
           <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
           <a href="../blog.html">博客</a>
-          <a href="../about.html">关于</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 fjnuslw. Built with ❤️ and AI.</p>
+          <a href="../resume.html">简历</a>
+        </nav>
       </div>
     </div>
   </footer>

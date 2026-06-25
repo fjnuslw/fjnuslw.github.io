@@ -3,88 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="fjnuslw 的博客 — LLM、Agent、RAG 技术分享与学习心得">
-  <title>博客 — fjnuslw</title>
+  <meta name="description" content="宋林蔚的博客 — LLM、Agent、RAG 技术分享与学习心得">
+  <title>博客 — 宋林蔚</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="bg-ambient"></div>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>
-        <span class="logo-text">fjnuslw</span>
-        <span class="logo-bracket"> /&gt;</span>
-      </a>
+      <a href="index.html" class="nav-logo">宋林蔚</a>
       <button class="nav-toggle" aria-label="切换菜单">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-menu">
-        <li><a href="index.html" class="nav-link">首页</a></li>
-        <li><a href="blog.html" class="nav-link active">博客</a></li>
+        <li><a href="index.html"    class="nav-link">首页</a></li>
+        <li><a href="blog.html"     class="nav-link">博客</a></li>
         <li><a href="projects.html" class="nav-link">项目</a></li>
-        <li><a href="resume.html" class="nav-link">简历</a></li>
-        <li><a href="about.html" class="nav-link">关于</a></li>
+        <li><a href="resume.html"   class="nav-link">简历</a></li>
+        <li><a href="about.html"    class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- Page Header -->
   <div class="page-header">
     <div class="container">
-      <h1>📝 博客</h1>
-      <p>学习笔记、技术分享、实习心得，记录每一步成长</p>
+      <h1>博客</h1>
+      <p>学习笔记、技术分享、实习心得</p>
     </div>
   </div>
 
-  <!-- Blog Content -->
-  <section class="section">
-    <div class="container">
-      <!-- Filter Tags -->
-      <div class="blog-filter reveal">
-        <button class="filter-btn active" data-tag="all">全部</button>
-        <button class="filter-btn" data-tag="LLM">LLM</button>
-        <button class="filter-btn" data-tag="Agent">Agent</button>
-        <button class="filter-btn" data-tag="RAG">RAG</button>
-        <button class="filter-btn" data-tag="实习">实习</button>
-        <button class="filter-btn" data-tag="思考">思考</button>
-      </div>
+  <div class="container">
 
-      <!-- Blog Posts Grid -->
-      <div class="grid-2" id="blog-posts">
-        <!-- Loaded dynamically by JS -->
-      </div>
+    <div class="blog-filter">
+      <button class="filter-btn active" data-tag="all">全部</button>
+      <button class="filter-btn" data-tag="LLM">LLM</button>
+      <button class="filter-btn" data-tag="Agent">Agent</button>
+      <button class="filter-btn" data-tag="RAG">RAG</button>
+      <button class="filter-btn" data-tag="实习">实习</button>
+      <button class="filter-btn" data-tag="思考">思考</button>
     </div>
-  </section>
 
-  <!-- Footer -->
+    <div class="grid-2" id="blog-posts"></div>
+
+  </div>
+
   <footer class="footer">
-    <div class="container">
+    <div class="container-wide">
       <div class="footer-content">
-        <div class="footer-brand">
-          <a href="index.html" class="nav-logo">
-            <span class="logo-bracket">&lt;</span>
-            <span class="logo-text">fjnuslw</span>
-            <span class="logo-bracket"> /&gt;</span>
-          </a>
-          <p>探索 LLM & Agent 的无限可能</p>
-        </div>
-        <div class="footer-links">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
           <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
           <a href="blog.html">博客</a>
-          <a href="about.html">关于</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 fjnuslw. Built with ❤️ and AI.</p>
+          <a href="resume.html">简历</a>
+        </nav>
       </div>
     </div>
   </footer>
 
   <button class="back-to-top" aria-label="返回顶部">↑</button>
-
   <script src="js/main.js"></script>
   <script>
     loadBlogPosts('blog-posts');

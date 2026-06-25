@@ -3,182 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚（fjnuslw）的个人网站 — 福建师范大学软件工程硕士，专注 LLM & Agent 应用开发。博客、项目、Demo 一站展示。">
-  <meta name="keywords" content="宋林蔚, fjnuslw, LLM, Agent, RAG, 大模型应用, AI, 个人网站">
+  <meta name="description" content="宋林蔚的个人网站 — 软件工程硕士，专注 LLM 应用开发、RAG 系统与 AI Agent 工程化。">
+  <meta name="keywords" content="宋林蔚, fjnuslw, LLM, Agent, RAG, 大模型应用, AI">
   <title>宋林蔚 — LLM & Agent 应用开发</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Background Ambient -->
-  <div class="bg-ambient"></div>
 
-  <!-- Navbar -->
+  <!-- 导航 -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-bracket">&lt;</span>
-        <span class="logo-text">fjnuslw</span>
-        <span class="logo-bracket"> /&gt;</span>
-      </a>
+      <a href="index.html" class="nav-logo">宋林蔚</a>
       <button class="nav-toggle" aria-label="切换菜单">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-menu">
-        <li><a href="index.html" class="nav-link active">首页</a></li>
-        <li><a href="blog.html" class="nav-link">博客</a></li>
+        <li><a href="index.html"    class="nav-link">首页</a></li>
+        <li><a href="blog.html"     class="nav-link">博客</a></li>
         <li><a href="projects.html" class="nav-link">项目</a></li>
-        <li><a href="resume.html" class="nav-link">简历</a></li>
-        <li><a href="about.html" class="nav-link">关于</a></li>
+        <li><a href="resume.html"   class="nav-link">简历</a></li>
+        <li><a href="about.html"    class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        福建师范大学 · 软件工程硕士在读
-      </div>
-      <h1>
-        Hi，我是 <span class="gradient-text">宋林蔚</span> 👋
-      </h1>
-      <p class="hero-subtitle">
-        专注于 <span class="hero-typed">LLM 应用开发</span> 的大模型工程师<br>
-        蓝桥杯智能体开发国赛一等奖 · EMNLP 2026 一作在投
+    <div class="container">
+      <h1 class="hero-name">宋林蔚</h1>
+      <p class="hero-tagline">软件工程硕士在读 · 福建师范大学</p>
+      <p class="hero-desc">
+        专注 <strong>大模型应用</strong>、<strong>RAG 系统</strong>与 <strong>AI Agent</strong> 工程化开发。
+        具备企业级 RAG 项目实战经验（福建新意科技，8 个月），
+        蓝桥杯智能体开发赛道<strong>国赛一等奖 · 全国第五</strong>，
+        EMNLP 2026 一作论文在投。
       </p>
-      <div class="hero-actions">
-        <a href="resume.html" class="btn btn-primary">📋 查看简历</a>
-        <a href="projects.html" class="btn btn-secondary">🧪 项目展示</a>
-        <a href="https://github.com/fjnuslw" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+      <div class="hero-links">
+        <a href="resume.html"              class="btn btn-primary">查看简历</a>
+        <a href="projects.html"            class="btn btn-secondary">项目展示</a>
+        <a href="https://github.com/fjnuslw" target="_blank" class="btn btn-secondary">GitHub</a>
+        <a href="mailto:1147214246@qq.com" class="btn btn-secondary">联系我</a>
       </div>
     </div>
   </section>
 
-  <!-- Featured Projects -->
+  <!-- 精选项目 -->
   <section class="section">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>🧪 精选项目</h2>
-        <p>从想法到落地，记录每一次技术探索</p>
-      </div>
+      <p class="section-title reveal">精选项目</p>
       <div class="grid-3">
-        <!-- Project Card 1 -->
+
         <div class="card card-project reveal reveal-delay-1">
-          <div class="card-icon">🤖</div>
-          <div>
-            <span class="badge badge-coming">即将上线</span>
-          </div>
-          <h3>智能问答 Agent</h3>
-          <p>基于 RAG 的智能问答系统，支持多轮对话与知识库管理，能够精准检索并生成高质量回答。</p>
-          <div class="tags-group">
-            <span class="tag tag-purple">LangChain</span>
-            <span class="tag tag-cyan">RAG</span>
-            <span class="tag tag-pink">Agent</span>
-          </div>
-        </div>
-        <!-- Project Card 2 -->
-        <div class="card card-project reveal reveal-delay-2">
-          <div class="card-icon">📊</div>
-          <div>
-            <span class="badge badge-coming">规划中</span>
-          </div>
-          <h3>数据分析助手</h3>
-          <p>自然语言驱动的数据分析工具，让 AI 自动生成 SQL 查询、可视化图表和分析报告。</p>
-          <div class="tags-group">
-            <span class="tag tag-amber">Text2SQL</span>
-            <span class="tag tag-emerald">可视化</span>
-            <span class="tag tag-purple">LLM</span>
-          </div>
-        </div>
-        <!-- Project Card 3 -->
-        <div class="card card-project reveal reveal-delay-3">
-          <div class="card-icon">🎬</div>
-          <div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
             <span class="badge badge-live">已上线</span>
           </div>
           <h3>SilentDeck</h3>
-          <p>开源 Agent Skill，将静音演示视频自动转为带 AI 讲解和字幕的 narrated MP4，结合 VLM + LLM + TTS 实现全自动化。</p>
+          <p>开源 Agent Skill，将静音演示视频自动转为带 AI 讲解和字幕的 MP4，基于 VLM + LLM + TTS 全自动化流程。</p>
           <div class="tags-group">
-            <span class="tag tag-cyan">Agent</span>
-            <span class="tag tag-pink">VLM</span>
-            <span class="tag tag-amber">开源</span>
+            <span class="tag">Agent</span>
+            <span class="tag">VLM</span>
+            <span class="tag">开源</span>
           </div>
         </div>
+
+        <div class="card card-project reveal reveal-delay-2">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+            <span class="badge badge-coming">开发中</span>
+          </div>
+          <h3>智能问答 Agent</h3>
+          <p>基于 RAG 的多轮问答系统，支持知识库管理、Embedding 检索与 Rerank 优化，附可交互 Demo。</p>
+          <div class="tags-group">
+            <span class="tag">LangChain</span>
+            <span class="tag">RAG</span>
+            <span class="tag">Qdrant</span>
+          </div>
+        </div>
+
+        <div class="card card-project reveal reveal-delay-3">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+            <span class="badge badge-wip">规划中</span>
+          </div>
+          <h3>数据分析助手</h3>
+          <p>自然语言驱动的数据分析工具，AI 自动生成 SQL 查询、执行分析并输出可视化报告。</p>
+          <div class="tags-group">
+            <span class="tag">Text2SQL</span>
+            <span class="tag">LLM</span>
+            <span class="tag">可视化</span>
+          </div>
+        </div>
+
       </div>
-      <div style="text-align: center; margin-top: var(--space-10);" class="reveal">
-        <a href="projects.html" class="btn btn-secondary">查看全部项目 →</a>
-      </div>
+      <p style="margin-top:1.5rem" class="reveal">
+        <a href="projects.html" class="btn-link">查看全部项目 →</a>
+      </p>
     </div>
   </section>
 
-  <!-- Latest Blog Posts -->
-  <section class="section" style="background: var(--bg-secondary);">
-    <div class="container">
-      <div class="section-header reveal">
-        <h2>📝 最新文章</h2>
-        <p>分享学习笔记、技术思考和实习心得</p>
-      </div>
-      <div class="grid-2" id="latest-posts">
-        <!-- Blog posts will be loaded by JS -->
-      </div>
-      <div style="text-align: center; margin-top: var(--space-10);" class="reveal">
-        <a href="blog.html" class="btn btn-secondary">阅读更多 →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tech Stack -->
+  <!-- 最新博客 -->
   <section class="section">
     <div class="container">
-      <div class="section-header reveal">
-        <h2>🛠 技术栈 & 关注领域</h2>
-        <p>持续学习中，不断拓展能力边界</p>
+      <p class="section-title reveal">最新文章</p>
+      <div class="grid-2" id="latest-posts">
+        <!-- 由 JS 动态加载 -->
       </div>
-      <div class="tech-grid reveal">
-        <div class="tech-item"><span class="tech-icon">🐍</span> Python</div>
-        <div class="tech-item"><span class="tech-icon">🤖</span> LLM</div>
-        <div class="tech-item"><span class="tech-icon">🔗</span> LangChain</div>
-        <div class="tech-item"><span class="tech-icon">📚</span> RAG</div>
-        <div class="tech-item"><span class="tech-icon">🧠</span> Agent</div>
-        <div class="tech-item"><span class="tech-icon">💬</span> Prompt</div>
-        <div class="tech-item"><span class="tech-icon">🗄️</span> 向量数据库</div>
-        <div class="tech-item"><span class="tech-icon">⚡</span> API 开发</div>
+      <p style="margin-top:1.5rem" class="reveal">
+        <a href="blog.html" class="btn-link">阅读更多 →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 技术栈 -->
+  <section class="section">
+    <div class="container">
+      <p class="section-title reveal">技术栈</p>
+      <div class="tech-list reveal">
+        <span class="tech-item">Python</span>
+        <span class="tech-item">LangChain</span>
+        <span class="tech-item">LangGraph</span>
+        <span class="tech-item">Dify</span>
+        <span class="tech-item">RAG</span>
+        <span class="tech-item">Agent</span>
+        <span class="tech-item">Prompt Engineering</span>
+        <span class="tech-item">Qdrant</span>
+        <span class="tech-item">Redis</span>
+        <span class="tech-item">vLLM</span>
+        <span class="tech-item">Xinference</span>
+        <span class="tech-item">MCP</span>
+        <span class="tech-item">OpenAI API</span>
+        <span class="tech-item">Anthropic API</span>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
+    <div class="container-wide">
       <div class="footer-content">
-        <div class="footer-brand">
-          <a href="index.html" class="nav-logo">
-            <span class="logo-bracket">&lt;</span>
-            <span class="logo-text">fjnuslw</span>
-            <span class="logo-bracket"> /&gt;</span>
-          </a>
-          <p>探索 LLM & Agent 的无限可能</p>
-        </div>
-        <div class="footer-links">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
           <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
           <a href="blog.html">博客</a>
-          <a href="about.html">关于</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 fjnuslw. Built with ❤️ and AI.</p>
+          <a href="resume.html">简历</a>
+        </nav>
       </div>
     </div>
   </footer>
 
-  <!-- Back to Top -->
   <button class="back-to-top" aria-label="返回顶部">↑</button>
 
   <script src="js/main.js"></script>
-  <script>
-    // Load latest blog posts on homepage
-    loadBlogPosts('latest-posts', 4);
-  </script>
+  <script>loadBlogPosts('latest-posts', 4);</script>
 </body>
 </html>
