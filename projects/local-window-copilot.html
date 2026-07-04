@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Local Window Copilot — Windows 本地陪伴式桌面伙伴，FastAPI + SQLite + llama.cpp + MiniCPM-V VLM">
+  <title>Local Window Copilot — 宋林蔚</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* 项目详情页专属样式 */
+    .project-hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .project-hero img.hero-mascot {
+      width: 200px;
+      height: 200px;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      margin-bottom: 1.5rem;
+    }
+    .project-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .project-badges .pb {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--bg-subtle, #f5f5f5);
+      color: var(--text-secondary, #666);
+      border: 1px solid var(--border, #e5e5e5);
+    }
+    .pb.platform { background: #e8f1fd; color: #1a73e8; border-color: #d0e3fc; }
+    .pb.lang { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+    .pb.framework { background: #e0f2f1; color: #00695c; border-color: #b2dfdb; }
+    .pb.model { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+    .pb.status { background: #fff8e1; color: #f57f17; border-color: #fff9c4; }
+
+    .mascot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .mascot-card {
+      background: var(--bg-card, #fff);
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mascot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mascot-card img {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 0.75rem;
+    }
+    .mascot-card .ms-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+    .mascot-card .ms-desc { font-size: 0.8rem; color: var(--text-muted, #999); }
+
+    .arch-diagram {
+      background: #0d1117;
+      color: #c9d1d9;
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .feature-item {
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: var(--radius-md, 8px);
+      padding: 1.25rem;
+      border-left: 3px solid var(--accent, #1a73e8);
+    }
+    .feature-item .fi-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .feature-item .fi-title { font-weight: 700; margin-bottom: 0.35rem; }
+    .feature-item .fi-desc { font-size: 0.875rem; color: var(--text-secondary, #666); line-height: 1.6; }
+
+    .layer-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    .layer-table th, .layer-table td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border, #e5e5e5); }
+    .layer-table th { background: var(--bg-subtle, #f5f5f5); font-weight: 700; font-size: 0.875rem; }
+    .layer-table td { font-size: 0.9rem; }
+
+    .stack-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    .stack-table th, .stack-table td { padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border, #e5e5e5); }
+    .stack-table th { background: var(--bg-subtle, #f5f5f5); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .demo-scene {
+      background: var(--bg-subtle, #f9f9f9);
+      border-left: 3px solid #009688;
+      border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .demo-scene .ds-label { font-weight: 700; color: #00695c; margin-bottom: 0.5rem; }
+    .demo-scene pre { background: #fff; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; margin: 0.5rem 0; }
+
+    .roadmap { list-style: none; padding: 0; }
+    .roadmap li { padding: 0.5rem 0; padding-left: 1.75rem; position: relative; font-size: 0.9rem; }
+    .roadmap li::before { content: "☐"; position: absolute; left: 0; color: var(--text-muted, #999); }
+    .roadmap li.done::before { content: "✓"; color: #00c853; font-weight: 700; }
+    .roadmap li.done { color: var(--text-secondary, #666); }
+
+    .cta-box {
+      text-align: center;
+      background: linear-gradient(135deg, #e8f1fd, #f3e5f5);
+      border-radius: var(--radius-lg, 12px);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .cta-box .btn { margin: 0 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link">博客</a></li>
+        <li><a href="../projects.html" class="nav-link active">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="post-content">
+
+    <div class="container">
+
+      <p style="margin-top: 2rem;">
+        <a href="../projects.html" style="font-size: 0.875rem; color: var(--text-muted);">← 返回项目列表</a>
+      </p>
+
+      <!-- Hero -->
+      <div class="project-hero">
+        <img src="local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot 桌宠" class="hero-mascot">
+        <h1 style="margin-bottom: 0.5rem;">🪟 Local Window Copilot</h1>
+        <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 640px; margin: 0 auto 1rem;">
+          Windows 本地陪伴式桌面伙伴 · 默认陪伴，不默认汇报
+        </p>
+        <div class="project-badges">
+          <span class="pb platform">Windows 10+</span>
+          <span class="pb lang">Python 3.11+</span>
+          <span class="pb framework">FastAPI</span>
+          <span class="pb model">MiniCPM-V VLM</span>
+          <span class="pb status">Alpha · 开发中</span>
+        </div>
+      </div>
+
+      <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+
+      <!-- 简介 -->
+      <h2>这是什么</h2>
+      <p>
+        Local Window Copilot 是一个<strong>本地、轻量、低打扰</strong>的陪伴式桌面伙伴。
+        它安静地在桌面上存在，理解你的工作节奏，能被随时唤起。
+      </p>
+      <p>
+        它不是又一个屏幕分析器，也不是自动控制型 Agent。截图、VLM、摘要、记忆是后台感知器官，
+        <strong>不是产品本体</strong>。它的价值在于：
+      </p>
+      <ul>
+        <li>🤫 平时安静陪伴 —— 看到状态变化但不急着打断</li>
+        <li>💬 随时进入对话 —— 你想互动时立刻回应</li>
+        <li>🔍 认真拆解分析 —— 你想分析时才调用视觉、历史和记忆</li>
+        <li>🏠 完全本地运行 —— 不要求 Redis / PostgreSQL / Docker</li>
+        <li>🚫 不替你操作电脑 —— 可以观察、陪伴、解释、建议，但不自动点击/输入/提交</li>
+      </ul>
+
+      <!-- 桌宠状态 -->
+      <h2>🎭 桌宠状态</h2>
+      <p>桌宠有 5 种核心状态，对应不同的工作情境，会根据你的工作节奏自然切换表情和姿态。</p>
+
+      <div class="mascot-grid">
+        <div class="mascot-card">
+          <img src="local-window-copilot/img/mascot_idle.png" alt="idle">
+          <div class="ms-name">😴 Idle</div>
+          <div class="ms-desc">默认陪伴，轻微呼吸</div>
+        </div>
+        <div class="mascot-card">
+          <img src="local-window-copilot/img/mascot_observing.png" alt="observing">
+          <div class="ms-name">👀 Observing</div>
+          <div class="ms-desc">注意到状态变化</div>
+        </div>
+        <div class="mascot-card">
+          <img src="local-window-copilot/img/mascot_analyzing.png" alt="analyzing">
+          <div class="ms-name">🧠 Analyzing</div>
+          <div class="ms-desc">认真分析当前屏幕</div>
+        </div>
+        <div class="mascot-card">
+          <img src="local-window-copilot/img/mascot_privacy.png" alt="privacy">
+          <div class="ms-name">🔒 Privacy</div>
+          <div class="ms-desc">隐私模式，停止观察</div>
+        </div>
+        <div class="mascot-card">
+          <img src="local-window-copilot/img/mascot_error.png" alt="error">
+          <div class="ms-name">⚠️ Error</div>
+          <div class="ms-desc">遇到问题，需要关注</div>
+        </div>
+      </div>
+
+      <!-- 三层架构 -->
+      <h2>🏗️ 三层产品结构</h2>
+      <div class="arch-diagram">┌─────────────────────────────────────────────────────────────┐
+│                    桌面悬浮窗 (桌宠 UI)                       │
+│              呼吸 · 眨眼 · 悬浮 · 状态指示灯                   │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+   │  Presence    │ │  Companion   │ │   Work Lens  │
+   │  存在层      │ │  陪伴层       │ │   工作透镜    │
+   ├──────────────┤ ├──────────────┤ ├──────────────┤
+   │ 呼吸/表情    │ │ 情绪回应     │ │ 视觉分析     │
+   │ 姿态动画     │ │ 对话陪伴     │ │ 上下文拆解   │
+   │ 不展示文字   │ │ 记忆+人格    │ │ 用户邀请才触发│
+   └──────────────┘ └──────────────┘ └──────────────┘
+          │                │                │
+          └────────────────┼────────────────┘
+                           ▼
+              ┌────────────────────────┐
+              │   FastAPI Backend      │
+              │   SQLite RuntimeStore  │ ← 本地存储
+              │   llama.cpp Server     │ ← 本地 LLM
+              │   MiniCPM-V VLM        │ ← 视觉模型
+              └────────────────────────┘</div>
+
+      <table class="layer-table">
+        <thead>
+          <tr><th>层级</th><th>职责</th><th>何时工作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Presence Layer</strong> 存在层</td><td>让桌宠像"在场"，而不是按钮</td><td>始终运行，低频动画</td></tr>
+          <tr><td><strong>Companion Layer</strong> 陪伴层</td><td>情绪回应、对话陪伴、记忆与人格</td><td>用户说话时激活</td></tr>
+          <tr><td><strong>Work Lens</strong> 工作透镜</td><td>调用视觉和上下文做认真分析</td><td>仅用户邀请时触发</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 特性 -->
+      <h2>✨ 核心特性</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="fi-icon">🤫</div>
+          <div class="fi-title">低打扰陪伴</div>
+          <div class="fi-desc">默认沉默，不默认分析。主动发言必须满足明确条件，高质量陪伴需要会沉默。</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🏠</div>
+          <div class="fi-title">完全本地</div>
+          <div class="fi-desc">SQLite 存储状态与记忆，llama.cpp 本地推理，无需 Redis/PostgreSQL/Docker。</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🧠</div>
+          <div class="fi-title">视觉理解</div>
+          <div class="fi-desc">MiniCPM-V 视觉语言模型理解屏幕内容，但只在用户邀请时调用，不默认扫描。</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🛡️</div>
+          <div class="fi-title">隐私优先</div>
+          <div class="fi-desc">不替用户操作电脑，不自动点击/输入/提交。可以观察、陪伴、解释、建议、记录。</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">💬</div>
+          <div class="fi-title">陪伴对话</div>
+          <div class="fi-desc">先接住用户的情绪和判断，再根据需要进入分析。陪伴优先于分析。</div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">📐</div>
+          <div class="fi-title">克制工具层</div>
+          <div class="fi-desc">模型可见工具只有三个：screen.look / memory.search / memory.remember，保持克制。</div>
+        </div>
+      </div>
+
+      <!-- 演示场景 -->
+      <h2>🎬 演示场景</h2>
+      <p style="font-size: 0.875rem; color: var(--text-muted);">以下为产品设计的典型交互场景，演示 GIF 将在正式发布后补充。</p>
+
+      <div class="demo-scene">
+        <div class="ds-label">场景一：陪伴模式</div>
+        <pre>用户：我觉得这个方向不对。
+桌宠：我也感觉你不是在挑某个实现细节，而是在怀疑"摘要作为中心"这件事。
+      我们可以先不急着改代码，把产品灵魂重新定一下。</pre>
+      </div>
+
+      <div class="demo-scene">
+        <div class="ds-label">场景二：工作透镜</div>
+        <pre>用户：（点击桌宠"观察"按钮）
+桌宠：[切换到 analyzing 状态]
+      我看到你现在在 IDE 里，打开了三个文件，光标停在 window_analysis.py。
+      这个函数最近的改动引入了一个未关闭的 session，要我帮你看看吗？</pre>
+      </div>
+
+      <div class="demo-scene">
+        <div class="ds-label">场景三：低打扰主动提示</div>
+        <pre>[用户在同一任务上停留 45 分钟，反复切换三个窗口]
+桌宠：[轻微 observing 状态，不弹窗]
+      → 仅在悬浮窗角标显示一个小提示点，用户注意到时才展开</pre>
+      </div>
+
+      <!-- 技术栈 -->
+      <h2>🛠️ 技术栈</h2>
+      <table class="stack-table">
+        <thead><tr><th>组件</th><th>技术</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>后端框架</td><td>FastAPI</td><td>异步 API，自带 OpenAPI 文档</td></tr>
+          <tr><td>本地存储</td><td>SQLite</td><td>RuntimeStore，零配置</td></tr>
+          <tr><td>LLM 推理</td><td>llama.cpp</td><td>本地部署，保护隐私</td></tr>
+          <tr><td>视觉模型</td><td>MiniCPM-V</td><td>视觉语言模型，屏幕理解</td></tr>
+          <tr><td>桌面 UI</td><td>Python + Win32</td><td>悬浮窗，透明置顶</td></tr>
+          <tr><td>包管理</td><td>uv</td><td>快速依赖管理</td></tr>
+        </tbody>
+      </table>
+
+      <!-- 产品原则 -->
+      <h2>📐 产品原则</h2>
+      <ol>
+        <li><strong>默认不汇报屏幕</strong> —— 屏幕分析结果默认进后台，只在用户主动邀请时展示</li>
+        <li><strong>陪伴优先于分析</strong> —— 先接住用户的情绪和判断，再根据需要进入分析</li>
+        <li><strong>低打扰是能力</strong> —— 高质量陪伴需要会沉默，主动发言必须满足明确条件</li>
+        <li><strong>不伪装能力</strong> —— 主链路不清楚就明确说不清楚</li>
+        <li><strong>不替用户操作电脑</strong> —— 可以观察、陪伴、解释、建议、记录，但不自动执行</li>
+      </ol>
+
+      <!-- 路线图 -->
+      <h2>🗺️ 路线图</h2>
+      <ul class="roadmap">
+        <li class="done">桌宠悬浮窗 + 5 种状态动画</li>
+        <li class="done">FastAPI 后端 + SQLite RuntimeStore</li>
+        <li class="done">窗口捕获与分析</li>
+        <li class="done">MiniCPM-V 视觉语言模型接入</li>
+        <li class="done">陪伴对话 + 工具编排</li>
+        <li>演示 GIF / 视频录制</li>
+        <li>Rive 动画迁移（替代 PNG 精灵图）</li>
+        <li>长期记忆向量检索</li>
+        <li>多显示器支持</li>
+      </ul>
+
+      <!-- CTA -->
+      <div class="cta-box">
+        <h3 style="margin-bottom: 0.5rem;">想了解更多？</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">查看完整源码、产品规格文档和开发指南</p>
+        <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn">查看 GitHub →</a>
+        <a href="../projects.html" class="btn btn-secondary">返回项目列表</a>
+      </div>
+
+      <p style="margin: 2rem 0;">
+        <a href="../projects.html" style="font-size: 0.875rem; color: var(--text-muted);">← 返回项目列表</a>
+      </p>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
