@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="大模型应用岗求职准备 — 实习岗位调研与面试面经汇总。">
+  <title>求职准备 · 宋林蔚</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .prep-hero {
+      background: linear-gradient(135deg, #3370ff 0%, #722ed1 100%);
+      color: #fff;
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+    }
+    .prep-hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .prep-hero p  { opacity: 0.9; font-size: 0.95rem; }
+    .prep-back {
+      position: absolute; top: 1rem; left: 1.5rem;
+      color: #fff; text-decoration: none; font-size: 0.9rem;
+      background: rgba(255,255,255,0.15); padding: 0.4rem 0.9rem; border-radius: 0.5rem;
+    }
+    .prep-back:hover { background: rgba(255,255,255,0.25); }
+    .prep-wrap { max-width: 980px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .prep-intro {
+      background: var(--card-bg, #fff); border: 1px solid var(--border, #dee0e3);
+      border-radius: 1rem; padding: 1.5rem 1.75rem; margin-bottom: 2rem;
+      font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary, #646a73);
+    }
+    .prep-intro b { color: var(--text, #1f2329); }
+    .prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .prep-card {
+      display: flex; flex-direction: column;
+      background: var(--card-bg, #fff); border: 1px solid var(--border, #dee0e3);
+      border-radius: 1rem; padding: 1.75rem; text-decoration: none; color: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .prep-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .prep-card .icon {
+      width: 44px; height: 44px; border-radius: 0.7rem; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+    .prep-card .icon-blue { background: #e8f0ff; color: #3370ff; }
+    .prep-card .icon-purple { background: #f5e8ff; color: #722ed1; }
+    .prep-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .prep-card p  { font-size: 0.88rem; color: var(--text-secondary, #646a73); line-height: 1.6; flex: 1; }
+    .prep-card .meta { margin-top: 1rem; font-size: 0.78rem; color: var(--text-tertiary, #8f959e); display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .prep-card .meta span { background: #f2f3f5; padding: 0.2rem 0.6rem; border-radius: 0.4rem; }
+    .prep-card .arrow { margin-top: 1rem; color: #3370ff; font-size: 0.85rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="prep-hero" style="position:relative;">
+    <a href="../index.html" class="prep-back">← 返回首页</a>
+    <h1>大模型应用岗 · 求职准备</h1>
+    <p>实习岗位调研 + 面试面经汇总 · 2026 秋招</p>
+  </section>
+
+  <div class="prep-wrap">
+
+    <div class="prep-intro">
+      针对<b>双非本硕 + 论文 + 国赛</b>背景整理的两份求职资料：
+      一份是覆盖 14 家大厂 / AI 独角兽的<b>纯 AI 应用岗</b>调研（含 JD、技术栈、网申链接、按难度排序）；
+      另一份是从知乎、小红书、牛客、CSDN、抖音搜集的 <b>46 道真实面试题</b>详解（含一面 / 二面 / 终面 / 算法题，每题附解决思路与具体答案）。
+      <br><br>
+      核心结论：大厂<b>日常实习全年滚动招聘，9 月后完全可以投递</b>；AI 应用 / 工程岗普遍比算法研究岗对学历更宽容，论文 + 国赛可有效弥补学历短板。
+    </div>
+
+    <div class="prep-grid">
+
+      <a href="internships.html" class="prep-card">
+        <div class="icon icon-blue">📋</div>
+        <h3>实习岗位调研报告</h3>
+        <p>
+          覆盖智谱 AI、美团、快手、字节、阿里、网易、百度、腾讯、小红书、MiniMax、月之暗面、微软等 14 家公司的<b>纯 AI 应用岗</b>（已剔除所有算法岗）。
+          每个岗位含完整 JD、岗位职责、任职要求、技术栈、学历要求、网申链接、投递状态，并针对双非本硕 + 论文国赛背景给出难度评级与适合度分析。
+        </p>
+        <div class="meta">
+          <span>14 个岗位</span><span>纯应用岗</span><span>按难度排序</span><span>9月后可投</span>
+        </div>
+        <div class="arrow">查看报告 →</div>
+      </a>
+
+      <a href="interview-guide.html" class="prep-card">
+        <div class="icon icon-purple">📝</div>
+        <h3>大模型应用岗面经</h3>
+        <p>
+          从知乎 / 小红书 / 牛客 / CSDN / 抖音搜集的 <b>46 道真实面试题</b>，覆盖字节、阿里、腾讯、美团、快手、小红书、百度等 15+ 公司。
+          分为一面（基础八股 + 项目 + 算法题）、二面（Agent 深度 + 系统设计）、终面（综合 + HR 面），每题含具体问题、解决思路、具体答案、加分点与避坑提示。
+          附大模型特色手撕题（Multi-Head Attention / KV Cache / SFT Loss）。
+        </p>
+        <div class="meta">
+          <span>46 道真题</span><span>一面/二面/终面</span><span>含答案</span><span>含手撕代码</span>
+        </div>
+        <div class="arrow">查看面经 →</div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">宋林蔚 · 福建师范大学 · 2026</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

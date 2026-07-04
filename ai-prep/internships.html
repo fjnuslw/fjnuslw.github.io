@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026大厂AI应用实习岗位调研报告（纯应用岗）</title>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --card-bg: #ffffff;
+  --primary: #3370ff;
+  --primary-light: #e8f0ff;
+  --text: #1f2329;
+  --text-secondary: #646a73;
+  --text-tertiary: #8f959e;
+  --border: #dee0e3;
+  --green: #00b42a;
+  --green-bg: #e8ffea;
+  --orange: #ff7d00;
+  --orange-bg: #fff7e8;
+  --red: #f53f3f;
+  --red-bg: #ffece8;
+  --purple: #722ed1;
+  --purple-bg: #f5e8ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+.header {
+  background: linear-gradient(135deg, #3370ff 0%, #722ed1 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { font-size: 15px; opacity: 0.9; }
+.header .meta { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.header .meta-item {
+  background: rgba(255,255,255,0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.summary-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.summary-card .num { font-size: 32px; font-weight: 700; color: var(--primary); }
+.summary-card .label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+.filter-bar {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+.filter-bar label { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+.filter-btn {
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+.filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+.position-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+.position-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.card-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.company-tag {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.position-name { font-size: 18px; font-weight: 700; }
+.position-type {
+  background: var(--green-bg);
+  color: var(--green);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.difficulty-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.diff-2 { background: var(--green-bg); color: var(--green); }
+.diff-3 { background: var(--orange-bg); color: var(--orange); }
+.diff-4 { background: #fff1f0; color: var(--red); }
+.diff-5 { background: var(--purple-bg); color: var(--purple); }
+.rank-badge {
+  background: var(--text);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.info-item { display: flex; align-items: center; gap: 4px; }
+
+.jd-section { margin-bottom: 16px; }
+.jd-section h4 {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.jd-section h4::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+.jd-list { list-style: none; padding-left: 12px; }
+.jd-list li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  padding-left: 16px;
+  position: relative;
+}
+.jd-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
+
+.tech-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tech-tag {
+  background: #f2f3f5;
+  color: var(--text-secondary);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.advice {
+  font-size: 13px;
+  color: var(--text-secondary);
+  flex: 1;
+  min-width: 200px;
+}
+.advice strong { color: var(--text); }
+.apply-link {
+  background: var(--primary);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.apply-link:hover { background: #2860e0; }
+.status-badge {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-open { background: var(--green-bg); color: var(--green); }
+
+.note-banner {
+  background: #fff7e8;
+  border: 1px solid #ffd591;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #874d00;
+}
+.note-banner strong { color: #613400; }
+
+@media (max-width: 768px) {
+  .card-header { flex-direction: column; }
+  .card-footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<a href="index.html" style="position:fixed;top:16px;left:16px;z-index:9999;background:#3370ff;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 2px 8px rgba(51,112,255,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 返回目录</a>
+<div class="container">
+
+<div class="header">
+  <h1>2026大厂AI应用实习岗位调研报告</h1>
+  <p>覆盖14家公司 | <b>纯AI应用/工程落地岗</b>（已剔除所有算法岗）| 按双非本硕+论文国赛背景评估难度</p>
+  <div class="meta">
+    <div class="meta-item">调研日期：2026-07-04</div>
+    <div class="meta-item">日常实习9月后可投：是（全年滚动招聘）</div>
+    <div class="meta-item">岗位类型：AI应用开发/Agent研发/RAG工程（非算法）</div>
+  </div>
+</div>
+
+<div class="note-banner">
+  <strong>本次修订说明：</strong>已根据反馈严格筛选，<b>剔除所有"算法"类岗位</b>（含智谱算法实习生、百度算法实习生、美团算法应用实习生、小红书Agent算法实习生等）。
+  本次收录的岗位JD均以「应用开发/工程落地」为核心——即使用大模型API做Agent开发、RAG系统搭建、Prompt工程、应用工程化，
+  <b>不涉及模型训练/SFT/RLHF/微调/预训练等算法研究工作</b>。
+</div>
+
+<div class="summary">
+  <div class="summary-card">
+    <div class="num">14</div>
+    <div class="label">纯应用岗位</div>
+  </div>
+  <div class="summary-card">
+    <div class="num">14</div>
+    <div class="label">覆盖公司</div>
+  </div>
+  <div class="summary-card">
+    <div class="num">100%</div>
+    <div class="label">9月后可投</div>
+  </div>
+  <div class="summary-card">
+    <div class="num">0</div>
+    <div class="label">算法岗（已剔除）</div>
+  </div>
+</div>
+
+<div class="position-card" style="border-left: 4px solid var(--green);">
+  <div style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">核心结论：9月之后日常实习完全可以投递</div>
+  <div style="font-size: 14px; color: var(--text-secondary);">
+    大厂的<b>日常实习</b>是全年滚动招聘模式，区别于暑期实习（3-5月窗口）和秋招正式批（7-9月）。日常实习招满即止、常年开放，9月之后依然可以投递。<br>
+    针对双非本硕+论文+国赛背景：<b>AI应用/工程岗</b>普遍比算法研究岗对学历更宽容，你的论文+国赛可以有效弥补学历短板。建议重点投递⭐⭐和⭐⭐⭐难度岗位，⭐⭐⭐⭐岗位可以冲刺。
+  </div>
+</div>
+
+<div class="filter-bar">
+  <label>筛选难度：</label>
+  <button class="filter-btn active" onclick="filterDifficulty('all')">全部</button>
+  <button class="filter-btn" onclick="filterDifficulty('2')">⭐⭐ 较易</button>
+  <button class="filter-btn" onclick="filterDifficulty('3')">⭐⭐⭐ 中等</button>
+  <button class="filter-btn" onclick="filterDifficulty('4')">⭐⭐⭐⭐ 较难</button>
+  <button class="filter-btn" onclick="filterDifficulty('5')">⭐⭐⭐⭐⭐ 困难</button>
+</div>
+
+<!-- ==================== 1. 智谱AI - Prompt应用 ==================== -->
+<div class="position-card" data-difficulty="2">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">1</div>
+      <span class="company-tag">智谱AI</span>
+      <span class="position-name">大模型Prompt实习生（Agent应用方向）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-2">⭐⭐ 较易</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 苏州</div>
+    <div class="info-item">🏢 Agent应用团队</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <div class="info-item">🔄 有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责大模型Prompt工程的设计与优化，探索Prompt在Agent应用场景中的最佳实践</li>
+      <li>参与基于GLM大模型的Agent应用开发，包括工具调用、任务规划、多轮对话等</li>
+      <li>构建和评测Prompt效果，持续优化Agent在具体业务场景中的表现</li>
+      <li>跟踪Prompt Engineering和Agent应用前沿进展并落地</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上在读，对大模型和Agent应用有强烈兴趣</li>
+      <li>熟悉Prompt Engineering，有实际Prompt优化经验者优先</li>
+      <li>了解大模型API调用和Agent开发框架（LangChain/LlamaIndex等）</li>
+      <li>具备良好的文案能力和逻辑思维</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Prompt Engineering</span>
+    <span class="tech-tag">GLM</span>
+    <span class="tech-tag">Agent应用</span>
+    <span class="tech-tag">LangChain</span>
+    <span class="tech-tag">LlamaIndex</span>
+    <span class="tech-tag">工具调用</span>
+    <span class="tech-tag">任务规划</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Prompt/Agent应用方向，无算法训练要求，对双非最友好。智谱官方明确"相比院校更关注实操能力"，本科即可投递。你的论文+国赛是显著加分项。强烈推荐首选投递。
+    </div>
+    <a href="https://zhipu-ai.jobs.feishu.cn/zhipucampus/" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 2. 美团 - AI Agent研发 ==================== -->
+<div class="position-card" data-difficulty="2">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">2</div>
+      <span class="company-tag">美团</span>
+      <span class="position-name">AI Agent研发实习生</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-2">⭐⭐ 较易</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 北京</div>
+    <div class="info-item">🏢 AI Agent技术团队</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <div class="info-item">🔄 有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责AI Agent应用的创新架构设计与核心模块研发，构建和优化Agentic交互逻辑与智能决策引擎</li>
+      <li>推动AI Agent的工程化落地，设计和实现高效的Agentic工作流，确保大语言模型在实际业务场景中的有效应用与闭环</li>
+      <li>与产品及算法团队协作，探索AI Agent的创新应用场景（Autonomous Agents、Multi-Agent Systems等），快速验证并落地技术原型</li>
+      <li>跟踪LLM、Agent及相关AI前沿技术，提出创新性解决方案并应用于实践</li>
+      <li>构建面向Agent的评估体系与方法，推动复杂业务场景下Agent的持续迭代与性能优化</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>计算机科学或相关专业基础扎实，精通Python等至少一门主流编程语言，熟悉Linux开发环境</li>
+      <li>具备AI Agent及LLM工程化能力，了解Prompt Engineering、RAG、Function Calling/Tool Binding</li>
+      <li>具备复杂Agent（任务规划、工具调用、记忆与学习机制）的设计、开发与调优经验</li>
+      <li>熟悉至少一种主流Agent开发框架，并有实际项目应用经验</li>
+      <li>学习能力强，能快速跟进Agent领域的研究成果和开源技术</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>岗位亮点</h4>
+    <ul class="jd-list">
+      <li>专注AI Agent领域的小而精技术团队，成员均为经验丰富的行业专家</li>
+      <li>浓厚的创业氛围与工程师文化，鼓励开放交流、快速迭代和大胆创新</li>
+      <li>深度参与AI Agent和LLM应用的完整生命周期，从概念到落地</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">Prompt Engineering</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">Function Calling</span>
+    <span class="tech-tag">Tool Binding</span>
+    <span class="tech-tag">Agent框架</span>
+    <span class="tech-tag">Multi-Agent</span>
+    <span class="tech-tag">Agentic工作流</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent研发岗，JD明确是"工程化落地/架构设计/工作流"，无任何模型训练要求。本科即可，看重Agent工程能力。你的论文+国赛+Python能力高度匹配，有1V1导师制。强烈推荐。
+    </div>
+    <a href="https://zhaopin.meituan.com/web/position/detail?jobUnionId=3593867252" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 3. 快手 - AI Agent开发 ==================== -->
+<div class="position-card" data-difficulty="3">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">3</div>
+      <span class="company-tag">快手</span>
+      <span class="position-name">大模型AI Agent开发工程师（留用实习）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-3">⭐⭐⭐ 中等</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 杭州</div>
+    <div class="info-item">🏢 大模型团队</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <div class="info-item">💰 250-500元/天</div>
+    <div class="info-item">🔄 有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>参与Agent核心运行时的各项能力建设，包括任务规划、工具调用、记忆管理、多智能体协同等关键模块</li>
+      <li>参与OpenClaw等开源Agent产品在快手内部的工程化落地与能力增强，包括电商、直播、短视频等业务场景</li>
+      <li>参与Agent系统的可观测、评测、稳定性与部署体系建设，提升复杂AI系统的线上可用性</li>
+      <li>跟踪并验证前沿Agent/AI Infra技术演进，推动从技术探索到业务落地的闭环</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上学历，计算机相关专业，有扎实的计算机基础知识以及Java或Python编程功底</li>
+      <li>对大模型、Agent、RAG等方向有较强兴趣，理解LLM的基本原理、上下文机制、Prompt作用方式及常见能力边界</li>
+      <li>有强烈的好奇心，对前沿技术充满热情，具有良好的沟通能力、学习能力和团队合作精神</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>加分项</h4>
+    <ul class="jd-list">
+      <li>有LangChain、LlamaIndex、LangGraph、AutoGen、CrewAI等Agent框架实战经验</li>
+      <li>理解ReAct、CoT、ToT、Reflection、Multi-Agent等常见Agent推理与协作模式</li>
+      <li>有RAG系统开发经验，熟悉向量检索、重排序、Hybrid Search、知识库构建等能力</li>
+      <li>熟悉Docker、Kubernetes、服务化开发或AI系统部署运维</li>
+      <li>有OpenClaw、OpenManus、AutoGPT、Dify、Coze、Flowise等智能体系统经验</li>
+      <li>有个人项目、技术博客或开源贡献经历，有GitHub/Demo/作品集可展示者优先</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Java/Python</span>
+    <span class="tech-tag">LangChain</span>
+    <span class="tech-tag">LlamaIndex</span>
+    <span class="tech-tag">LangGraph</span>
+    <span class="tech-tag">AutoGen</span>
+    <span class="tech-tag">CrewAI</span>
+    <span class="tech-tag">ReAct/CoT/ToT</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">Docker</span>
+    <span class="tech-tag">K8s</span>
+    <span class="tech-tag">Dify</span>
+    <span class="tech-tag">Coze</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent开发岗（任务规划/工具调用/记忆管理/工程化落地），无算法训练。本科即可，不卡985。技术栈非常前沿且全面，是Agent方向最硬核的应用岗之一。你的国赛+论文可弥补学历，薪资较高（250-500元/天）。
+    </div>
+    <a href="https://campus.kuaishou.cn/#/campus/index" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 4. 字节跳动 - AI Agent服务端研发 ==================== -->
+<div class="position-card" data-difficulty="3">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">4</div>
+      <span class="company-tag">字节跳动</span>
+      <span class="position-name">AI Agent服务端研发实习生-开发者服务</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-3">⭐⭐⭐ 中等</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 广州</div>
+    <div class="info-item">🏢 开发者服务团队</div>
+    <div class="info-item">🎓 本科及以上（2027届）</div>
+    <div class="info-item">🔄 ByteIntern有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>围绕研发高可用治理，质量保障AI化，研发环境管理等方向进行Agent应用开发工作，推动AI技术在相关场景的落地与突破</li>
+      <li>参与大模型应用开发全流程，包括但不限于模型接入、AI Agent开发、RAG优化、MCP及工具开发、数据工程等</li>
+      <li>跟踪AI领域的发展动态，推动Agent应用的持续优化</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>2027届本科及以上学历在读，计算机、人工智能、自动化、数学相关专业优先</li>
+      <li>优秀的代码能力、数据结构和基础算法功底，熟练掌握至少一门编程语言（Python、Java、Go等）</li>
+      <li>了解AI Agent相关技术与设计思想，了解主流AI模型及其应用场景</li>
+      <li>有从0-1搭建AI Agent应用经验，能够独立完成Agent应用的设计开发者优先</li>
+      <li>在ACM/ICPC、NOI/IOI、Top Coder、Kaggle等比赛获奖者优先</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">Java</span>
+    <span class="tech-tag">Go</span>
+    <span class="tech-tag">AI Agent</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">MCP</span>
+    <span class="tech-tag">数据工程</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent应用开发岗（模型接入/Agent开发/RAG/MCP工具开发），无模型训练。本科即可，ByteIntern有转正。明确提到"比赛获奖者优先"→ 你的国赛经历是直接加分项。涉及MCP等前沿技术。推荐投递。
+    </div>
+    <a href="https://jobs.bytedance.com/campus/position/7615821783838542085/detail" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 5. 阿里巴巴 - 灵犀互娱应用开发 ==================== -->
+<div class="position-card" data-difficulty="3">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">5</div>
+      <span class="company-tag">阿里巴巴</span>
+      <span class="position-name">大模型应用开发工程师（灵犀互娱）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-3">⭐⭐⭐ 中等</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 广州</div>
+    <div class="info-item">🏢 灵犀互娱</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责大模型在游戏/娱乐场景中的应用开发，包括AI NPC、智能对话、内容生成等</li>
+      <li>使用Coze/Dify/Langchain等框架进行大模型应用工程化落地</li>
+      <li>参与AI Agent的设计、开发与优化，推动大模型技术在游戏业务中的创新应用</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上学历，计算机相关专业</li>
+      <li>熟悉Python编程，有大模型应用开发经验</li>
+      <li>熟悉Coze、Dify、Langchain等大模型应用开发框架</li>
+      <li>对AI应用落地有热情，有游戏/娱乐行业经验加分</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">Coze</span>
+    <span class="tech-tag">Dify</span>
+    <span class="tech-tag">Langchain</span>
+    <span class="tech-tag">AI Agent</span>
+    <span class="tech-tag">AI NPC</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯应用开发岗（用Coze/Dify/Langchain做AI NPC/智能对话），无算法训练。灵犀互娱是阿里游戏业务，应用岗对学历相对宽容。广州地点竞争相对北上深略小。你的论文+国赛可以弥补学历短板。推荐投递。
+    </div>
+    <a href="https://talent.alibaba.com/campus/position-list?campusType=internship" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 6. 网易 - AI应用工程师 ==================== -->
+<div class="position-card" data-difficulty="3">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">6</div>
+      <span class="company-tag">网易</span>
+      <span class="position-name">AI应用工程师（日常实习）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-3">⭐⭐⭐ 中等</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 广州</div>
+    <div class="info-item">🏢 网易集团</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责AI相关产品的核心技术研发与落地，包括大模型应用开发、AI算法工程化、智能交互系统搭建等</li>
+      <li>深入理解业务场景，设计高可用、高性能的技术方案，解决实际业务痛点</li>
+      <li>参与AI应用的全流程开发，从需求分析到系统上线</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上学历，计算机相关专业</li>
+      <li>熟悉Python编程，有AI/大模型应用开发经验</li>
+      <li>熟悉主流大模型API和Agent开发框架</li>
+      <li>有良好的工程能力和解决问题的能力</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">大模型API</span>
+    <span class="tech-tag">Agent开发</span>
+    <span class="tech-tag">AI工程化</span>
+    <span class="tech-tag">智能交互</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯AI应用工程师（大模型API调用/Agent开发/工程化），无算法训练。网易整体门槛适中，广州地点竞争较小。偏工程落地，对双非背景较友好。你的论文+国赛+编程能力匹配度较高。推荐投递。
+    </div>
+    <a href="https://hr.163.com/" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 7. 百度 - 大模型应用开发 ==================== -->
+<div class="position-card" data-difficulty="3">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">7</div>
+      <span class="company-tag">百度</span>
+      <span class="position-name">大模型应用开发工程师（J97670）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-3">⭐⭐⭐ 中等</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 北京</div>
+    <div class="info-item">🏢 百度集团</div>
+    <div class="info-item">🎓 不限毕业时间</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责基于文心一言的大模型应用开发，包括智能体构建、工具链开发、插件开发等</li>
+      <li>参与大模型应用的全流程开发，从需求分析到产品上线</li>
+      <li>研究和探索大模型前沿应用技术，推动产品智能化升级</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>不限毕业时间，全年开放投递</li>
+      <li>熟悉Python编程，有大模型应用开发经验</li>
+      <li>熟悉文心一言等国产大模型生态者优先</li>
+      <li>有Agent/RAG/Prompt Engineering实践经验加分</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">文心一言</span>
+    <span class="tech-tag">Agent</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">Prompt Engineering</span>
+    <span class="tech-tag">插件开发</span>
+    <span class="tech-tag">工具链</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯应用开发岗（智能体构建/工具链/插件开发），无模型训练。不限毕业时间，全年开放，投递门槛低。偏应用开发方向，对双非背景友好。你的论文+国赛+Python能力高度匹配。推荐投递。
+    </div>
+    <a href="https://talent.baidu.com/jobs/list" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 8. 字节跳动 - 抖音AI Agent研发 ==================== -->
+<div class="position-card" data-difficulty="4">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">8</div>
+      <span class="company-tag">字节跳动</span>
+      <span class="position-name">AI Agent研发实习生-抖音研发</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-4">⭐⭐⭐⭐ 较难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 北京</div>
+    <div class="info-item">🏢 抖音研发部门</div>
+    <div class="info-item">🎓 本科及以上（2027届）</div>
+    <div class="info-item">🔄 ByteIntern有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>构建高效、可靠的AI Agent，精准理解产品的复杂需求，实现自规划、任务拆解及执行</li>
+      <li>设计高效的Multi-Agent系统，确保多Agent间任务流转高效，上下文管理准确</li>
+      <li>实现AI支撑企业级、大用户规模C端产品的需求端到端生成</li>
+      <li>负责研发基于LLM的AI Agent系统，负责构建工程研发不同阶段的Agent</li>
+      <li>参与探索Multi-Agent协作机制，推动Multi-Agent系统对复杂任务的规划和拆解</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>2027届本科及以上学历在读，计算机、软件工程等相关专业优先</li>
+      <li>扎实的计算机、编程基础，熟悉主流大语言模型的原理及方法</li>
+      <li>理解Multi-Agent系统、任务分解、自动化规划、Prompt Engineering等技术领域之一或多个</li>
+      <li>有AI Agent相关实践项目者优先</li>
+      <li>出色的结构化表达能力，较强的技术敏感度与前瞻性</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">LLM</span>
+    <span class="tech-tag">Multi-Agent</span>
+    <span class="tech-tag">Prompt Engineering</span>
+    <span class="tech-tag">任务分解</span>
+    <span class="tech-tag">自动化规划</span>
+    <span class="tech-tag">Agent系统</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent研发岗（自规划/任务拆解/Multi-Agent系统构建），无模型训练。抖音核心团队，竞争更激烈，技术要求更高。字节简历可能卡学校，但你的论文+国赛可以搏一搏。如果有Multi-Agent相关项目经验会很有竞争力。建议冲刺投递。
+    </div>
+    <a href="https://jobs.bytedance.com/campus/position/7622940046030571829/detail" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 9. 阿里巴巴 - AI Agent应用开发 ==================== -->
+<div class="position-card" data-difficulty="4">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">9</div>
+      <span class="company-tag">阿里巴巴</span>
+      <span class="position-name">AI Agent应用开发工程师</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-4">⭐⭐⭐⭐ 较难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 杭州</div>
+    <div class="info-item">🏢 阿里集团</div>
+    <div class="info-item">🎓 硕士优先</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责多智能体协作系统的设计与开发，涉及ReAct、CoT、A2A（Agent-to-Agent）等前沿技术应用</li>
+      <li>参与大模型应用的全流程开发，包括Agent编排、工具调用、记忆管理等</li>
+      <li>推动AI Agent在电商、云等核心业务场景的落地应用</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>硕士优先，计算机/人工智能相关专业</li>
+      <li>熟悉大模型原理，有Agent/Multi-Agent应用开发经验</li>
+      <li>熟悉ReAct、CoT、A2A等多智能体协作模式</li>
+      <li>优秀的编程能力（Python/Java），有工程化经验</li>
+      <li>有顶会论文或竞赛获奖者优先</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python/Java</span>
+    <span class="tech-tag">Multi-Agent</span>
+    <span class="tech-tag">ReAct</span>
+    <span class="tech-tag">CoT</span>
+    <span class="tech-tag">A2A</span>
+    <span class="tech-tag">Agent编排</span>
+    <span class="tech-tag">工具调用</span>
+    <span class="tech-tag">记忆管理</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent应用开发岗（多智能体协作/Agent编排/工具调用），无模型训练。硕士优先，阿里简历筛选可能卡985，但明确提到"论文或竞赛获奖者优先"→ 你的论文+国赛是关键加分项。建议冲刺投递。
+    </div>
+    <a href="https://talent.alibaba.com/campus/position-list?campusType=internship" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 10. 腾讯 - AI应用开发 ==================== -->
+<div class="position-card" data-difficulty="4">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">10</div>
+      <span class="company-tag">腾讯</span>
+      <span class="position-name">AI应用开发实习生（智能Agent方向）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-4">⭐⭐⭐⭐ 较难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 深圳</div>
+    <div class="info-item">🏢 腾讯集团</div>
+    <div class="info-item">🎓 硕士优先</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>负责智能Agent应用的设计与开发，包括Prompt工程、知识库构建、RAG系统搭建</li>
+      <li>参与大模型在社交、内容、游戏等腾讯核心业务场景的应用落地</li>
+      <li>探索Agent在复杂业务流程中的自动化能力，提升业务效率</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>硕士优先，计算机/人工智能相关专业</li>
+      <li>熟悉Python编程，有大模型应用开发经验</li>
+      <li>熟悉Prompt Engineering、RAG、知识库构建等技术</li>
+      <li>有论文/竞赛经历者优先</li>
+      <li>良好的沟通能力和团队协作能力</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">Prompt Engineering</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">知识库</span>
+    <span class="tech-tag">Agent</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯应用开发岗（Prompt工程/RAG/知识库/Agent），无模型训练。腾讯简历筛选较严格，但明确提到"论文/竞赛经历者优先"→ 你的论文+国赛是重要加分项。建议冲刺投递。
+    </div>
+    <a href="https://join.qq.com/post.html?query=p_2,b_14129" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 11. 小红书 - AI Agent研发 ==================== -->
+<div class="position-card" data-difficulty="4">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">11</div>
+      <span class="company-tag">小红书</span>
+      <span class="position-name">Serverless/AI Agent研发工程师</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-4">⭐⭐⭐⭐ 较难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 上海/北京</div>
+    <div class="info-item">🏢 引擎团队</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>参与小红书AI Agent框架技术研发，包括DeepResearch Agent、PlanExecutor Agent、Multi Agent、通用Agent等技术开发</li>
+      <li>打造小红书AI Agent分布式研发运维体系，包括传统应用低成本接入，Agent的调试、运维、上线等</li>
+      <li>构建并探索面向Agent的评估体系，帮助复杂业务的Agent形成持续迭代优化的正向循环体系</li>
+      <li>探索创新更易上手开发的Agent构建方式，更稳定可靠的Agent运行方式，突破大模型能力应用上限</li>
+      <li>参与Serverless/FaaS研发框架设计开发，支持Java、C++等多语言应用接入</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上学历，计算机等相关专业优先</li>
+      <li>扎实的计算机专业基础知识，熟练掌握基础数据结构/算法设计</li>
+      <li>对大数据技术Hadoop/Spark/Hive/Flink/Kafka/DataLake等感兴趣，有相关实践/开源社区参与经验优先</li>
+      <li>有计算广告、推荐系统、信息检索等项目实习经验优先</li>
+      <li>具备强烈的求知欲和动手实践能力，具备较强的团队合作精神和沟通能力</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Java/C++</span>
+    <span class="tech-tag">AI Agent框架</span>
+    <span class="tech-tag">DeepResearch Agent</span>
+    <span class="tech-tag">Multi Agent</span>
+    <span class="tech-tag">Serverless</span>
+    <span class="tech-tag">FaaS</span>
+    <span class="tech-tag">Hadoop/Spark</span>
+    <span class="tech-tag">分布式系统</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent框架研发岗（DeepResearch/Multi Agent/分布式运维），无模型训练。本科即可，偏工程研发。涉及Serverless+AI Agent新范式，技术要求较高。你的国赛+论文可证明工程能力。建议冲刺投递。
+    </div>
+    <a href="https://job.xiaohongshu.com/campus" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 12. MiniMax - AI应用开发 ==================== -->
+<div class="position-card" data-difficulty="4">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">12</div>
+      <span class="company-tag">MiniMax</span>
+      <span class="position-name">AI应用/Agent开发实习生（日常实习）</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-4">⭐⭐⭐⭐ 较难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 上海/北京</div>
+    <div class="info-item">🏢 MiniMax</div>
+    <div class="info-item">🎓 不限（Top Talent不受学历束缚）</div>
+    <div class="info-item">🔄 有转正</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>参与MiniMax大模型（MiniMax-M3等）在各类应用场景中的开发与落地</li>
+      <li>负责Agent测试开发、AI应用工程化、智能体产品开发等工作</li>
+      <li>参与大模型应用的全流程开发，包括模型接入、应用开发、性能优化等</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>面向全体在校生（日常实习）</li>
+      <li>有AI/大模型相关开发经验，熟悉Agent开发框架</li>
+      <li>优秀的编程能力，熟悉Python/Go等语言</li>
+      <li>对AI充满热情，有好奇心和探索精神</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">Go</span>
+    <span class="tech-tag">Agent开发</span>
+    <span class="tech-tag">MiniMax-M3</span>
+    <span class="tech-tag">AI工程化</span>
+    <span class="tech-tag">智能体产品</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯应用/Agent开发岗，无模型训练。MiniMax的Top Talent计划明确表示"优秀不受毕业时间与学历束缚"，对双非背景开放。作为AI独角兽，技术要求较高但更看重实际能力。你的论文+国赛可以证明技术实力。建议投递。
+    </div>
+    <a href="https://vrfi1sk8a0.jobs.feishu.cn/379481/?keywords=&category=&location=&project=7352753013591755047%2C7572193079274801454" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 13. 月之暗面 - AI Agent产品 ==================== -->
+<div class="position-card" data-difficulty="5">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">13</div>
+      <span class="company-tag">月之暗面</span>
+      <span class="position-name">AI Agent产品实习生</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-5">⭐⭐⭐⭐⭐ 困难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 北京</div>
+    <div class="info-item">🏢 月之暗面(Kimi)</div>
+    <div class="info-item">🎓 不限（偏好顶尖院校）</div>
+    <div class="info-item">💰 有期权+餐补+住宿补贴</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>参与Kimi AI Agent产品的设计与开发，探索大模型在各类场景中的创新应用</li>
+      <li>负责Agent产品的需求分析、功能设计、用户反馈收集与迭代优化</li>
+      <li>与算法团队紧密合作，推动大模型能力的工程化落地</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>对AI/大模型有强烈兴趣和深入理解</li>
+      <li>有算法竞赛背景的同学是加分项</li>
+      <li>熟悉大模型应用开发，有Agent/RAG相关经验</li>
+      <li>出色的产品思维和工程能力</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">大模型应用</span>
+    <span class="tech-tag">Agent</span>
+    <span class="tech-tag">RAG</span>
+    <span class="tech-tag">产品思维</span>
+    <span class="tech-tag">Kimi</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯Agent产品/应用岗，无模型训练。顶级AI独角兽，竞争极其激烈，通常偏好顶尖院校。但明确提到"算法竞赛背景加分"→ 你的国赛经历是关键亮点。实习生有期权，待遇极好。有论文可搏一搏，建议作为冲刺投递。
+    </div>
+    <a href="https://www.kimi.com" target="_blank" class="apply-link">查看官网</a>
+  </div>
+</div>
+
+<!-- ==================== 14. 微软 - AI应用开发 ==================== -->
+<div class="position-card" data-difficulty="5">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="rank-badge">14</div>
+      <span class="company-tag">微软</span>
+      <span class="position-name">AI应用开发实习生</span>
+      <span class="position-type">纯应用</span>
+    </div>
+    <span class="difficulty-badge diff-5">⭐⭐⭐⭐⭐ 困难</span>
+  </div>
+  <div class="card-info">
+    <div class="info-item">📍 北京/苏州</div>
+    <div class="info-item">🏢 Microsoft</div>
+    <div class="info-item">🎓 本科及以上</div>
+    <div class="info-item">🌐 英语要求</div>
+    <span class="status-badge status-open">全年可投</span>
+  </div>
+  <div class="jd-section">
+    <h4>岗位职责</h4>
+    <ul class="jd-list">
+      <li>参与微软AI产品（Copilot、Azure OpenAI等）的应用开发与落地</li>
+      <li>负责大模型在企业级场景中的应用开发，包括Agent、RAG、智能助手等</li>
+      <li>与全球团队合作，推动AI技术的创新应用</li>
+    </ul>
+  </div>
+  <div class="jd-section">
+    <h4>任职要求</h4>
+    <ul class="jd-list">
+      <li>本科及以上在读学生</li>
+      <li>优秀的编程能力（Python/C#/TypeScript）</li>
+      <li>熟悉Azure/OpenAI API，有AI应用开发经验</li>
+      <li>良好的英语沟通能力（工作语言）</li>
+      <li>有论文/竞赛/开源项目经历者优先</li>
+    </ul>
+  </div>
+  <div class="tech-tags">
+    <span class="tech-tag">Python</span>
+    <span class="tech-tag">C#</span>
+    <span class="tech-tag">TypeScript</span>
+    <span class="tech-tag">Azure OpenAI</span>
+    <span class="tech-tag">Copilot</span>
+    <span class="tech-tag">Agent</span>
+    <span class="tech-tag">RAG</span>
+  </div>
+  <div class="card-footer">
+    <div class="advice">
+      <strong>适合度分析：</strong>纯AI应用开发岗（Copilot/Azure OpenAI/Agent/RAG），无模型训练。微软实习生门槛极高，通常偏好985/海归+英语流利。外企面试偏重项目深度和系统设计。你的论文+国赛可作为技术实力证明，但英语能力同样重要。建议有准备地冲刺投递。
+    </div>
+    <a href="https://jobs.careers.microsoft.com/global/en/search?lc=China&exp=Students%20and%20graduates&et=Internship" target="_blank" class="apply-link">立即投递</a>
+  </div>
+</div>
+
+<!-- ==================== 已剔除的算法岗说明 ==================== -->
+<div class="position-card" style="border-left: 4px solid var(--red);">
+  <div style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--red);">已剔除的算法类岗位（不在本次范围内）</div>
+  <div style="font-size: 13px; color: var(--text-secondary); line-height: 2;">
+    以下岗位因涉及<b>模型训练/SFT/RLHF/微调/预训练</b>等算法研究工作，已从本次「AI应用」调研中剔除：<br>
+    • 智谱AI - 大模型算法实习生-行业应用（JD含SFT/RLHF/训练语料优化）<br>
+    • 百度 - 大模型算法实习生 J99230（JD含模型训练/多模态模型研发）<br>
+    • 美团 - 大模型算法应用实习生（JD含SFT/RLHF/LORA微调）<br>
+    • 小红书 - AI Agent算法实习生（岗位定位算法）<br>
+    • 美团 - 大模型应用算法研究员（北斗实习，含Planning算法研究）<br>
+    • 字节/阿里等 - 各类"大模型算法工程师"岗位<br>
+    <br>
+    <b>判断标准：</b>JD中涉及"模型训练/微调/SFT/RLHF/预训练/蒸馏/对齐"等关键词的均视为算法岗，已剔除。本次保留的岗位JD核心均为"API调用/Agent开发/RAG搭建/Prompt工程/应用工程化"。
+  </div>
+</div>
+
+<!-- ==================== 补充说明 ==================== -->
+<div class="position-card" style="border-left: 4px solid var(--primary);">
+  <div style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">补充说明：其他值得关注的公司</div>
+  <div style="font-size: 13px; color: var(--text-secondary); line-height: 2;">
+    <b>京东</b>：有AI应用岗但绑定暑期/校招届别批次，日常实习AI应用岗较少。入口：<a href="https://campus.jd.com/#/jobs" target="_blank" style="color: var(--primary);">campus.jd.com</a><br>
+    <b>哔哩哔哩</b>：有AI应用相关JD（Agent/RAG/LLM），但多绑定暑期/校招批次。入口：<a href="https://jobs.bilibili.com/campus/positions?type=0" target="_blank" style="color: var(--primary);">jobs.bilibili.com</a><br>
+    <b>小米</b>：有AI应用岗，但绑定暑期/校招届别批次。入口：<a href="https://xiaomi.jobs.f.mioffice.cn/campus/" target="_blank" style="color: var(--primary);">xiaomi.jobs.f.mioffice.cn</a><br>
+    <b>拼多多</b>：大模型岗位偏算法研究，AI应用类实习岗当前较少。入口：<a href="https://careers.pddglobalhr.com/campus" target="_blank" style="color: var(--primary);">careers.pddglobalhr.com</a><br>
+    <b>百川智能</b>：AI独角兽，可通过官网或Boss直聘投递。搜索"百川智能实习"获取最新应用岗。<br>
+    <b>阶跃星辰</b>：聚焦智能终端Agent方向，可通过Moka系统或邮箱投递。<br>
+    <b>苹果</b>：外企，门槛极高，AI岗位较少且偏好海归。入口：<a href="https://jobs.apple.com/zh-cn/search?location=china-mainland" target="_blank" style="color: var(--primary);">jobs.apple.com</a>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 24px; color: var(--text-tertiary); font-size: 13px;">
+  <p>调研日期：2026年7月4日 | 数据来源：各公司官方招聘网站、BOSS直聘、牛客网等</p>
+  <p>难度评估基于双非本硕+论文+国赛背景，仅供参考 | 岗位信息以官网最新发布为准</p>
+  <p>本次已严格剔除所有"算法"类岗位，仅保留纯AI应用/工程落地岗</p>
+</div>
+
+</div>
+
+<script>
+function filterDifficulty(level) {
+  const cards = document.querySelectorAll('.position-card[data-difficulty]');
+  const buttons = document.querySelectorAll('.filter-btn');
+  
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  cards.forEach(card => {
+    if (level === 'all' || card.dataset.difficulty === level) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

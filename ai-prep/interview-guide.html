@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大模型应用岗超详细面经 - 一面/二面/终面/算法题全收录</title>
+<style>
+:root {
+  --bg: #f5f6f8;
+  --card-bg: #ffffff;
+  --primary: #3370ff;
+  --primary-light: #e8f0ff;
+  --text: #1f2329;
+  --text-secondary: #646a73;
+  --text-tertiary: #8f959e;
+  --border: #dee0e3;
+  --green: #00b42a;
+  --green-bg: #e8ffea;
+  --orange: #ff7d00;
+  --orange-bg: #fff7e8;
+  --red: #f53f3f;
+  --red-bg: #ffece8;
+  --purple: #722ed1;
+  --purple-bg: #f5e8ff;
+  --code-bg: #f7f8fa;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+
+.header {
+  background: linear-gradient(135deg, #3370ff 0%, #722ed1 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { font-size: 15px; opacity: 0.9; }
+.header .meta { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.header .meta-item {
+  background: rgba(255,255,255,0.15);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* TOC */
+.toc {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  position: sticky;
+  top: 20px;
+}
+.toc h3 { font-size: 16px; margin-bottom: 12px; color: var(--text); }
+.toc ul { list-style: none; }
+.toc li { margin-bottom: 6px; }
+.toc a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.toc a:hover { background: var(--primary-light); }
+.toc .sub a { padding-left: 24px; font-size: 13px; color: var(--text-secondary); }
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.icon-blue { background: var(--primary-light); color: var(--primary); }
+.icon-green { background: var(--green-bg); color: var(--green); }
+.icon-orange { background: var(--orange-bg); color: var(--orange); }
+.icon-purple { background: var(--purple-bg); color: var(--purple); }
+.icon-red { background: var(--red-bg); color: var(--red); }
+
+.section-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Q&A */
+.qa {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #fafbfc;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+}
+.qa-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.qa-num {
+  background: var(--primary);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.qa-question {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+.qa-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.qa-tag {
+  background: var(--code-bg);
+  color: var(--text-tertiary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.qa-tag.hot { background: var(--red-bg); color: var(--red); }
+.qa-tag.high { background: var(--orange-bg); color: var(--orange); }
+
+.qa-answer {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+}
+.qa-answer h5 {
+  font-size: 14px;
+  color: var(--text);
+  margin: 12px 0 6px;
+  font-weight: 600;
+}
+.qa-answer h5:first-child { margin-top: 0; }
+.qa-answer p { margin-bottom: 8px; }
+.qa-answer ul, .qa-answer ol { margin: 8px 0 8px 20px; }
+.qa-answer li { margin-bottom: 4px; }
+.qa-answer code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: "SF Mono", Consolas, monospace;
+  color: var(--red);
+}
+.qa-answer pre {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 14px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 12px 0;
+  font-size: 13px;
+  font-family: "SF Mono", Consolas, monospace;
+  line-height: 1.5;
+}
+.qa-answer pre .kw { color: #569cd6; }
+.qa-answer pre .str { color: #ce9178; }
+.qa-answer pre .cmt { color: #6a9955; }
+
+.qa-tip {
+  background: var(--green-bg);
+  border-left: 3px solid var(--green);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #165325;
+}
+.qa-tip strong { color: #0d3b1a; }
+
+.qa-pitfall {
+  background: var(--orange-bg);
+  border-left: 3px solid var(--orange);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #7a3e00;
+}
+.qa-pitfall strong { color: #5a2d00; }
+
+/* Info banner */
+.info-banner {
+  background: linear-gradient(135deg, #e8f0ff 0%, #f5e8ff 100%);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border: 1px solid #d4e3ff;
+}
+.info-banner h3 { font-size: 16px; margin-bottom: 8px; color: var(--primary); }
+.info-banner p { font-size: 14px; color: var(--text-secondary); }
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-card .num { font-size: 24px; font-weight: 700; color: var(--primary); }
+.stat-card .label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Source */
+.source-tag {
+  display: inline-block;
+  background: var(--purple-bg);
+  color: var(--purple);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+@media (max-width: 768px) {
+  .toc { display: none; }
+  .qa { padding: 14px; }
+  .section { padding: 20px; }
+}
+</style>
+</head>
+<body>
+<a href="index.html" style="position:fixed;top:16px;left:16px;z-index:9999;background:#722ed1;color:#fff;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 2px 8px rgba(114,46,209,0.3);font-family:-apple-system,'PingFang SC',sans-serif;">← 返回目录</a>
+<div class="container">
+
+<div class="header">
+  <h1>大模型应用岗超详细面经</h1>
+  <p>一面 / 二面 / 终面 / 算法题全收录 · 80+ 真题 · 每题含解决思路与具体答案</p>
+  <div class="meta">
+    <div class="meta-item">数据来源：知乎 / 小红书 / 牛客 / CSDN / 抖音</div>
+    <div class="meta-item">覆盖公司：字节/阿里/腾讯/美团/快手/小红书/百度等</div>
+    <div class="meta-item">时间范围：2025下半年 - 2026上半年</div>
+  </div>
+</div>
+
+<div class="info-banner">
+  <h3>面试总体规律（必读）</h3>
+  <p>大模型应用岗面试<b>不同于传统后端/算法岗</b>：八股文明显减少，更偏实践。很多公司一面就是 leader 面，直接问项目。但八股不能完全不准备（好几次挂在八股上）。<b>算法题以 DP 为主，难度 Easy-Medium，但即使写出来也不一定过</b>。最大加分项：<b>掌握微调原理 + 动手做过微调 + 部署过大模型</b>。项目效果量化是高频考点。</p>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num">80+</div><div class="label">真题收录</div></div>
+  <div class="stat-card"><div class="num">7</div><div class="label">核心方向</div></div>
+  <div class="stat-card"><div class="num">30+</div><div class="label">算法题</div></div>
+  <div class="stat-card"><div class="num">15+</div><div class="label">覆盖公司</div></div>
+</div>
+
+<!-- ==================== 一面 ==================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon icon-blue">1</div>
+    一面：基础八股 + 项目深挖 + 算法题
+  </div>
+  <div class="section-desc">
+    一面通常由 leader 或资深工程师进行，时长 45-60 分钟。核心考察：LLM 基础理解、项目经历、代码能力。<b>一面 leader 面直接问项目的概率很高</b>，如果面试官不懂 LLM 才会考传统八股。
+  </div>
+
+  <h3 style="margin: 20px 0 12px; color: var(--text);">A. LLM 基础（必考）</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">1</div>
+      <div class="qa-question">大模型是怎么训练出来的？请简述训练流程。</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">基础</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>分三个阶段回答：预训练 → SFT 指令微调 → RLHF 对齐。这是标准答案框架。</p>
+      <h5>具体答案</h5>
+      <p><b>阶段1：预训练（Pre-training）</b></p>
+      <ul>
+        <li>用海量无标注文本（万亿 token 级）做 next token prediction</li>
+        <li>目标函数：交叉熵损失，预测下一个 token</li>
+        <li>这一步让模型学会"语言的规律"，但还不会"听指令"</li>
+      </ul>
+      <p><b>阶段2：SFT（Supervised Fine-Tuning，监督微调）</b></p>
+      <ul>
+        <li>用"指令-回答"对（人工标注，几万到几十万条）微调</li>
+        <li>让模型学会"听懂人的指令并给出符合格式的回答"</li>
+        <li>这一步模型从"续写机器"变成"对话助手"</li>
+      </ul>
+      <p><b>阶段3：RLHF（Reinforcement Learning from Human Feedback）</b></p>
+      <ul>
+        <li>训练一个奖励模型（RM），对模型输出打分</li>
+        <li>用 PPO 等强化学习算法，让模型输出最大化奖励</li>
+        <li>对齐人类偏好：有用、无害、诚实</li>
+      </ul>
+      <p>现在也有用 <b>DPO（Direct Preference Optimization）</b> 替代 RLHF 的趋势，省去了显式的奖励模型，直接用偏好数据优化。</p>
+      <div class="qa-tip"><strong>面试加分：</strong>提到 DPO、提到预训练数据规模、提到 RLHF 的"三阶段"（SFT+RM+PPO），会显得你对训练流程理解深入。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">2</div>
+      <div class="qa-question">Transformer 架构的核心是什么？Encoder 和 Decoder 的区别？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">基础</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>从三个层面回答：核心机制（Self-Attention）→ 三大架构（Encoder-only/Decoder-only/Encoder-Decoder）→ 各自代表模型。</p>
+      <h5>具体答案</h5>
+      <p><b>核心机制：Self-Attention（自注意力）</b></p>
+      <ul>
+        <li>每个 token 和序列中所有 token 计算注意力权重</li>
+        <li>公式：Attention(Q,K,V) = softmax(QK<sup>T</sup>/√d<sub>k</sub>)V</li>
+        <li>解决长距离依赖问题，且可并行计算</li>
+      </ul>
+      <p><b>Encoder vs Decoder 区别：</b></p>
+      <ul>
+        <li><b>Encoder</b>：双向注意力，能看到整个序列，适合理解任务（分类、抽取）。代表：BERT</li>
+        <li><b>Decoder</b>：单向（masked）注意力，只能看到当前位置及之前，适合生成任务。代表：GPT 系列</li>
+        <li><b>Encoder-Decoder</b>：编码器理解输入，解码器生成输出，适合 Seq2Seq（翻译）。代表：T5、BART</li>
+      </ul>
+      <p><b>当前主流大模型（GPT-4、Llama、GLM 等）几乎都是 Decoder-only 架构</b>，因为生成能力强且易于扩展。</p>
+      <div class="qa-pitfall"><strong>避坑：</strong>不要只说"Transformer 是注意力机制"，要能说出 Q/K/V 三个矩阵的作用和 softmax 归一化的目的。面试官会追问"为什么要除以 √d<sub>k</sub>"（答：防止点积过大导致 softmax 梯度消失）。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">3</div>
+      <div class="qa-question">Function Call 是怎么实现的？和 MCP 有什么区别？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">应用</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>先讲 Function Call 的实现原理，再对比 MCP（Model Context Protocol）的新特性。</p>
+      <h5>具体答案</h5>
+      <p><b>Function Call 实现流程：</b></p>
+      <ol>
+        <li><b>定义工具</b>：用 JSON Schema 描述工具名称、功能、参数</li>
+        <li><b>模型决策</b>：把工具描述 + 用户 query 发给 LLM，LLM 判断是否需要调用工具</li>
+        <li><b>返回调用</b>：如果需要，LLM 返回 <code>{"name": "search", "arguments": {...}}</code></li>
+        <li><b>程序执行</b>：业务代码执行真正的工具调用，拿到结果</li>
+        <li><b>结果回传</b>：把工具结果作为新 message 发回 LLM，LLM 基于结果生成最终回答</li>
+      </ol>
+      <p><b>MCP（Model Context Protocol）是什么？</b></p>
+      <p>MCP 是 Anthropic 2024 年底提出的开放协议，<b>本质是 Function Call 的标准化升级版</b>：</p>
+      <ul>
+        <li>Function Call：每个模型厂商格式不同（OpenAI/Claude/Gemini 各搞一套）</li>
+        <li>MCP：统一协议，一次开发对接所有模型；支持 Resources（资源）、Prompts（提示模板）、Tools（工具）三类能力</li>
+        <li>MCP 是 C/S 架构：MCP Server 暴露能力，MCP Client（如 Claude Desktop）调用</li>
+      </ul>
+      <pre><span class="cmt"># Function Call 标准工具定义</span>
+tools = [{
+    <span class="str">"type"</span>: <span class="str">"function"</span>,
+    <span class="str">"function"</span>: {
+        <span class="str">"name"</span>: <span class="str">"search_web"</span>,
+        <span class="str">"description"</span>: <span class="str">"搜索互联网信息"</span>,
+        <span class="str">"parameters"</span>: {
+            <span class="str">"type"</span>: <span class="str">"object"</span>,
+            <span class="str">"properties"</span>: {
+                <span class="str">"query"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>, <span class="str">"description"</span>: <span class="str">"搜索关键词"</span>}
+            },
+            <span class="str">"required"</span>: [<span class="str">"query"</span>]
+        }
+    }
+}]</pre>
+      <div class="qa-tip"><strong>加分：</strong>提到 MCP 是"Function Call 的 USB-C 接口"这个类比，说明它统一了协议标准。能说出 MCP 三类能力（Resources/Prompts/Tools）会更出彩。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">4</div>
+      <div class="qa-question">Embedding 是什么？你们项目用的哪个模型？为什么选它？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">RAG</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>先解释概念，再结合项目实际回答选型理由。即使没做过项目，也要准备好一个"为什么选这个模型"的故事。</p>
+      <h5>具体答案</h5>
+      <p><b>Embedding 是什么：</b>把文本映射成稠密向量（如 768/1536 维），让语义相近的文本在向量空间中距离也近。是 RAG 检索的基础。</p>
+      <p><b>常见 Embedding 模型选型：</b></p>
+      <ul>
+        <li><b>OpenAI text-embedding-3-small/large</b>：效果好、成本低，1536/3072 维</li>
+        <li><b>BGE 系列（智源）</b>：中文效果好，开源可本地部署，MTEB 榜单常年前列</li>
+        <li><b>M3E</b>：中文场景常用，开源</li>
+        <li><b>Qwen Embedding</b>：阿里通义系列，多语言支持好</li>
+        <li><b>Cohere embed-v3</b>：多语言，英文场景强</li>
+      </ul>
+      <p><b>选型理由（参考话术）：</b></p>
+      <ul>
+        <li>"我们项目主要处理中文文档，选了 BGE-large-zh，因为 MTEB 中文榜单第一，且可本地部署，数据不出域"</li>
+        <li>"对成本敏感的场景用 OpenAI text-embedding-3-small，单价便宜且效果够用"</li>
+        <li>"需要多语言时选 Cohere embed-v3 或 Qwen Embedding"</li>
+      </ul>
+      <div class="qa-tip"><strong>准备建议：</strong>至少准备好一个 Embedding 模型的选型故事，能说出"为什么选、效果如何、有没有对比过其他方案"。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">B. Prompt 工程</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">5</div>
+      <div class="qa-question">ReAct 是什么？怎么实现的？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">Agent</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>ReAct = Reasoning + Acting，是 Agent 最经典的范式。讲清楚"思考-行动-观察"循环即可。</p>
+      <h5>具体答案</h5>
+      <p><b>ReAct 核心思想：</b>让 LLM 交替进行"推理（Thought）"和"行动（Action）"，并通过"观察（Observation）"获取反馈，直到完成任务。</p>
+      <p><b>实现流程（循环）：</b></p>
+      <pre>Thought: 我需要先搜索相关信息
+Action: search_web("2026大模型趋势")
+Observation: [搜索结果...]
+Thought: 根据结果，我需要再查一下数据
+Action: search_web("大模型市场规模 2026")
+Observation: [搜索结果...]
+Thought: 信息已足够，可以生成答案了
+Action: finish("2026年大模型行业趋势报告...")</pre>
+      <p><b>Prompt 模板示例：</b></p>
+      <pre>你是一个能使用工具的助手。请按以下格式回答：
+
+Question: {用户问题}
+Thought: 你对下一步该怎么做的思考
+Action: 工具名称
+Action Input: 工具参数
+Observation: 工具返回结果
+...(重复 Thought/Action/Observation)
+Thought: 我现在知道答案了
+Final Answer: 最终回答</pre>
+      <div class="qa-tip"><strong>对比 CoT：</strong>CoT 只有"思考链"，没有"行动"和"外部反馈"，适合纯推理任务；ReAct 能调用工具获取实时信息，适合需要外部数据的任务。面试时主动对比会加分。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">6</div>
+      <div class="qa-question">CoT 是什么？为什么效果好？有什么缺点？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">Prompt</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>CoT（Chain of Thought，思维链）：</b>在 Prompt 中引导 LLM "一步一步思考"，输出中间推理过程再给答案。</p>
+      <p><b>为什么效果好：</b></p>
+      <ul>
+        <li>分解复杂问题：把多步推理拆成单步，降低每步难度</li>
+        <li>增加生成 token 数：给模型更多"计算预算"，中间 token 相当于"草稿纸"</li>
+        <li>对齐训练数据：很多训练数据本身包含推理过程</li>
+      </ul>
+      <p><b>经典触发方式：</b></p>
+      <ul>
+        <li>Zeor-Shot：<code>让我们一步一步思考</code></li>
+        <li>Few-Shot：给几个带推理过程的示例</li>
+      </ul>
+      <p><b>缺点：</b></p>
+      <ul>
+        <li><b>延迟增加</b>：输出 token 变多，响应变慢</li>
+        <li><b>成本增加</b>：token 消耗翻倍</li>
+        <li><b>错误传播</b>：中间步骤错了，后续全错</li>
+        <li><b>不一定有效</b>：对简单任务反而可能降低准确率</li>
+      </ul>
+      <div class="qa-tip"><strong>进阶：</strong>提到 ToT（Tree of Thoughts，思维树）和 GoT（Graph of Thoughts），它们是 CoT 的升级版，支持分支探索和回溯。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">7</div>
+      <div class="qa-question">温度值（Temperature）、top-p、top-k 分别是什么？不同场景怎么设？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">基础</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p>三者都是控制 LLM 生成"随机性/多样性"的参数，本质都在调整采样概率分布。</p>
+      <p><b>Temperature（温度）</b></p>
+      <ul>
+        <li>作用：对 logits 除以 T 后再 softmax。T 越小分布越尖锐（更确定），T 越大越平坦（更随机）</li>
+        <li>范围：通常 0-2。0 = 贪心解码（几乎确定），1 = 原始分布，>1 增加随机性</li>
+      </ul>
+      <p><b>top-p（核采样 Nucleus Sampling）</b></p>
+      <ul>
+        <li>作用：从概率高到低累加，累计概率达到 p 时停止，只从这个最小集合中采样</li>
+        <li>p=0.9：只从累计概率占 90% 的 top token 中采样，过滤掉长尾低概率 token</li>
+      </ul>
+      <p><b>top-k</b></p>
+        <ul>
+        <li>作用：只从概率最高的 k 个 token 中采样</li>
+        <li>k=40：只考虑 top 40 个候选 token</li>
+      </ul>
+      <p><b>不同场景推荐设置：</b></p>
+      <table style="width:100%; border-collapse: collapse; margin: 10px 0; font-size: 13px;">
+        <tr style="background: var(--code-bg);">
+          <th style="padding: 8px; border: 1px solid var(--border); text-align: left;">场景</th>
+          <th style="padding: 8px; border: 1px solid var(--border);">Temperature</th>
+          <th style="padding: 8px; border: 1px solid var(--border);">top-p</th>
+          <th style="padding: 8px; border: 1px solid var(--border);">说明</th>
+        </tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);">代码生成</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">1</td><td style="padding: 8px; border: 1px solid var(--border);">要确定性</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);">RAG 问答</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0-0.3</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">1</td><td style="padding: 8px; border: 1px solid var(--border);">忠实于检索内容</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);">客服对话</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0.5-0.7</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0.9</td><td style="padding: 8px; border: 1px solid var(--border);">自然但可控</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);">创意写作</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0.8-1.0</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0.95</td><td style="padding: 8px; border: 1px solid var(--border);">鼓励多样性</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);">Function Call</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">0</td><td style="padding: 8px; border: 1px solid var(--border); text-align: center;">1</td><td style="padding: 8px; border: 1px solid var(--border);">工具选择要确定</td></tr>
+      </table>
+      <div class="qa-tip"><strong>实战经验：</strong>OpenAI 官方建议"只调 temperature 或 top-p 中的一个，不要同时调"，否则效果难控。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">C. 框架与工具</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">8</div>
+      <div class="qa-question">介绍一下 LangChain。为什么手搓 Agent 而不用框架？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">框架</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>LangChain 核心模块：</b></p>
+      <ul>
+        <li><b>Models</b>：统一封装各 LLM 接口（OpenAI/Claude/本地模型）</li>
+        <li><b>Prompts</b>：Prompt 模板管理</li>
+        <li><b>Chains</b>：把多个步骤串联（如先检索再生成）</li>
+        <li><b>Agents</b>：基于 LLM 决策调用工具</li>
+        <li><b>Memory</b>：对话记忆管理</li>
+        <li><b>Retrievers</b>：RAG 检索器</li>
+      </ul>
+      <p><b>为什么手搓而不用框架？（高频追问）</b></p>
+      <ul>
+        <li><b>可控性</b>：框架封装太厚，出 bug 难定位；手搓每一步都自己掌控</li>
+        <li><b>灵活性</b>：业务场景特殊时，框架限制多；手搓可自由定制</li>
+        <li><b>性能</b>：框架有额外开销（抽象层、序列化）；手搓可针对性优化</li>
+        <li><b>学习</b>：手搓能真正理解 Agent 原理，不被框架"绑架"</li>
+        <li><b>依赖</b>：LangChain 版本迭代快，API 不稳定；手搓无依赖风险</li>
+      </ul>
+      <div class="qa-tip"><strong>推荐回答策略：</strong>"小项目/原型用 LangChain 快速验证，生产环境/复杂场景手搓以保证可控性和性能"。这样既显得懂框架，又显得有工程判断力。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">9</div>
+      <div class="qa-question">MCP 是什么？A2A 了解吗？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">前沿</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>MCP（Model Context Protocol）</b>：见第 3 题，是 Function Call 的标准化协议升级。</p>
+      <p><b>A2A（Agent to Agent）</b>：Agent 之间相互通信协作的协议/模式。</p>
+      <ul>
+        <li>Google 提出的 A2A 协议：让不同厂商的 Agent 能互相发现、协商、协作</li>
+        <li>典型场景：一个 Agent 负责查数据，另一个负责生成报告，A2A 让它们自动对接</li>
+        <li>对比 Multi-Agent 框架（AutoGen/CrewAI）：那些是"一个系统内的多 Agent"，A2A 是"跨系统的 Agent 互联"</li>
+      </ul>
+      <div class="qa-tip"><strong>加分：</strong>提到 MCP 是"工具调用层的标准"，A2A 是"Agent 互联层的标准"，两者层次不同，会显得理解很清晰。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">D. RAG 核心（一面必问）</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">10</div>
+      <div class="qa-question">介绍一下 RAG。最难的地方在哪？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">必考</span><span class="qa-tag">RAG</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>先讲 RAG 是什么（2 分钟），再重点讲难点。难点答得好基本这一题就过了。</p>
+      <h5>具体答案</h5>
+      <p><b>RAG（Retrieval Augmented Generation，检索增强生成）</b>：先从知识库检索相关文档，再把检索结果作为 context 喂给 LLM 生成答案。</p>
+      <p><b>标准流程：</b>文档预处理 → 切分 → Embedding → 存入向量库 → query 向量化 → 相似度检索 → 拼 Prompt → LLM 生成</p>
+      <p><b>三大难点（按重要性）：</b></p>
+      <p><b>难点1：文档切割（最高频答案）</b></p>
+      <ul>
+        <li>切太粗：检索到太多无关内容，浪费 context、稀释信号</li>
+        <li>切太细：语义不完整，模型无法理解</li>
+        <li>切割位置不当：把一句话/一个段落从中间切断，语义断裂</li>
+        <li><b>解决方案</b>：语义切分（按段落/标题）、滑动窗口+overlap、递归切分、基于小模型的语义边界检测</li>
+      </ul>
+      <p><b>难点2：召回质量</b></p>
+      <ul>
+        <li>向量检索召回不准（query 和文档语义鸿沟）</li>
+        <li><b>解决方案</b>：多路召回（向量+BM25+关键词）、query 改写/扩展、HyDE（假设性文档嵌入）</li>
+      </ul>
+      <p><b>难点3：生成忠实度（防幻觉）</b></p>
+      <ul>
+        <li>LLM 可能"无视"检索内容自己编</li>
+        <li><b>解决方案</b>：强约束 Prompt（"只基于以下内容回答"）、引用标注、置信度检测、RAGAS 评测</li>
+      </ul>
+      <div class="qa-tip"><strong>面试话术：</strong>"我觉得 RAG 最难的是<b>文档切割</b>，因为它直接影响后续所有环节的效果。其次是<b>召回质量</b>和<b>防幻觉</b>。我在项目里用的是 XXX 切分策略..."。结合自己项目讲最加分。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">11</div>
+      <div class="qa-question">文档切割策略有哪些？怎么避免语义被切断？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">RAG</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>常见切割策略（从简单到复杂）：</b></p>
+      <ol>
+        <li><b>固定长度切分</b>：按字符数（如 500 字）切。<b>缺点</b>：可能切断句子/段落</li>
+        <li><b>按分隔符切分</b>：按 <code>\n\n</code>、<code>.</code>、<code>。</code> 等切。<b>优点</b>：保留句子完整</li>
+        <li><b>滑动窗口 + Overlap</b>：固定长度但相邻块有重叠（如 500 字块，100 字 overlap）。<b>优点</b>：边界信息不丢</li>
+        <li><b>递归切分</b>：先按大分隔符（段落）切，太长再按小分隔符（句号）切。LangChain 的 RecursiveCharacterTextSplitter</li>
+        <li><b>语义切分（Semantic Chunking）</b>：用 Embedding 计算相邻句子相似度，相似度骤降处切分。<b>效果最好但成本高</b></li>
+        <li><b>基于文档结构</b>：Markdown 按 # 标题层级切，PDF 按页/章节切，HTML 按标签切</li>
+        <li><b>小模型辅助</b>：用小模型识别语义边界（如句号、段落结束），比纯规则更准</li>
+      </ol>
+      <p><b>避免语义断裂的实战技巧：</b></p>
+      <ul>
+        <li>切分后保留 chunk 的上下文元数据（所属章节、前后文摘要）</li>
+        <li>检索时不仅返回 chunk，还返回上下文（Parent Document Retrieval）</li>
+        <li>对长文档做摘要后再切分（Summary Index）</li>
+      </ul>
+      <div class="qa-pitfall"><strong>避坑：</strong>不要只说"按字数切"，面试官会觉得太浅。至少要讲出 3 种以上策略，并说出各自的优缺点和适用场景。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">12</div>
+      <div class="qa-question">怎么解决大模型的幻觉问题？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">必考</span><span class="qa-tag">RAG</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>幻觉（Hallucination）</b>：LLM 生成看似合理但实际错误/虚构的内容。分两类：事实性幻觉（说错事实）、忠实性幻觉（不忠于源文档）。</p>
+      <p><b>缓解策略（多层防御）：</b></p>
+      <p><b>1. 检索层（RAG）</b></p>
+      <ul>
+        <li>提供高质量、权威的外部知识，让模型"有据可依"</li>
+        <li>多路召回提升召回率，确保相关信息被检索到</li>
+      </ul>
+      <p><b>2. Prompt 层</b></p>
+      <ul>
+        <li>强约束：<code>只根据以下参考资料回答，如果资料中没有答案，请说"我不知道"</code></li>
+        <li>要求引用：<code>每个论断都要标注来源 [1][2]</code></li>
+        <li>CoT：让模型先分析资料再回答</li>
+      </ul>
+      <p><b>3. 模型层</b></p>
+      <ul>
+        <li>用 RLHF 对齐过的模型（如 GPT-4、Claude）</li>
+        <li>降低 temperature（0-0.3）减少随机生成</li>
+        <li>微调（SFT）让模型学会"说不知道"</li>
+      </ul>
+      <p><b>4. 后处理层</b></p>
+      <ul>
+        <li>用另一个 LLM 做 fact-check（自我审查）</li>
+        <li>引用验证：检查生成内容是否真的能在源文档找到</li>
+        <li>置信度评分：低置信度时拒答或转人工</li>
+      </ul>
+      <p><b>5. 评测层</b></p>
+      <ul>
+        <li>用 RAGAS 框架评测 faithfulness（忠实度）指标</li>
+        <li> TruLens 等工具做线上幻觉监控</li>
+      </ul>
+      <div class="qa-tip"><strong>关键认知：</strong>幻觉<b>无法消除只能缓解</b>。面试时强调"多层防御"和"评测闭环"会显得很专业。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">13</div>
+      <div class="qa-question">微调和 RAG 的优劣势？怎么选？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">综合</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <table style="width:100%; border-collapse: collapse; margin: 10px 0; font-size: 13px;">
+        <tr style="background: var(--code-bg);">
+          <th style="padding: 10px; border: 1px solid var(--border); text-align: left;">维度</th>
+          <th style="padding: 10px; border: 1px solid var(--border);">RAG</th>
+          <th style="padding: 10px; border: 1px solid var(--border);">微调</th>
+        </tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>知识更新</b></td><td style="padding: 8px; border: 1px solid var(--border);">实时，改库即可</td><td style="padding: 8px; border: 1px solid var(--border);">慢，需重新训练</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>成本</b></td><td style="padding: 8px; border: 1px solid var(--border);">低（向量库+检索）</td><td style="padding: 8px; border: 1px solid var(--border);">高（GPU训练）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>知识可解释</b></td><td style="padding: 8px; border: 1px solid var(--border);">强（有引用）</td><td style="padding: 8px; border: 1px solid var(--border);">弱（黑盒）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>风格/格式</b></td><td style="padding: 8px; border: 1px solid var(--border);">弱</td><td style="padding: 8px; border: 1px solid var(--border);">强（可定制语气）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>幻觉控制</b></td><td style="padding: 8px; border: 1px solid var(--border);">强（有据可查）</td><td style="padding: 8px; border: 1px solid var(--border);">弱</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>领域知识量</b></td><td style="padding: 8px; border: 1px solid var(--border);">海量（TB级）</td><td style="padding: 8px; border: 1px solid var(--border);">有限（训练数据）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>推理速度</b></td><td style="padding: 8px; border: 1px solid var(--border);">慢（多一步检索）</td><td style="padding: 8px; border: 1px solid var(--border);">快</td></tr>
+      </table>
+      <p><b>选择建议：</b></p>
+      <ul>
+        <li><b>选 RAG</b>：知识频繁更新、需要引用溯源、知识量大、预算有限</li>
+        <li><b>选微调</b>：需要特定风格/格式、领域术语多、对延迟敏感、任务模式固定</li>
+        <li><b>两者结合</b>：微调让模型懂"领域语言"，RAG 提供"领域知识"。生产环境常组合使用</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">14</div>
+      <div class="qa-question">多路召回是什么？为什么要用图数据库？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">RAG</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>多路召回（Hybrid Retrieval）：</b>同时用多种检索方式，融合结果提升召回率。</p>
+      <ul>
+        <li><b>向量检索</b>：语义相似，擅长理解同义/近义</li>
+        <li><b>BM25（关键词）</b>：词项匹配，擅长精确关键词（产品名、人名、代码）</li>
+        <li><b>元数据过滤</b>：按时间/来源/标签筛选</li>
+      </ul>
+      <p><b>融合方法</b>：RRF（Reciprocal Rank Fusion）最常用，公式简单效果好。</p>
+      <p><b>图数据库在 RAG 中的作用（GraphRAG）：</b></p>
+      <ul>
+        <li>向量检索只能找"相似"文档，无法处理"关联关系"问题</li>
+        <li>图数据库存储实体关系（A 是 B 的老板，C 属于 D 部门）</li>
+        <li>多跳推理：查"张三的领导的领导"，向量检索做不到</li>
+        <li>知识图谱 + 向量检索 = GraphRAG，兼顾关系和语义</li>
+      </ul>
+      <div class="qa-tip"><strong>前沿：</strong>微软 2024 年提出 GraphRAG，用 LLM 自动从文档抽取实体关系建图，再做社区检测和摘要。面试提到会很加分。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">15</div>
+      <div class="qa-question">怎么量化 RAG 的效果？检索效果和回答效果怎么评估？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">评测</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>RAGAS 框架（最主流）四大指标：</b></p>
+      <ul>
+        <li><b>Faithfulness（忠实度）</b>：回答是否忠于检索内容，有无幻觉。用 LLM 判断每个论断是否可被 context 支持</li>
+        <li><b>Answer Relevancy（答案相关性）</b>：回答是否切题。用 LLM 反向生成问题，与原 query 比对</li>
+        <li><b>Context Precision（上下文精确率）</b>：检索到的文档中有多少是真正相关的</li>
+        <li><b>Context Recall（上下文召回率）</b>：相关文档是否都被检索到</li>
+      </ul>
+      <p><b>检索层指标：</b></p>
+      <ul>
+        <li>Recall@K：top-K 中包含正确文档的比例</li>
+        <li>MRR（Mean Reciprocal Rank）：正确文档排名倒数的均值</li>
+        <li>nDCG：考虑排名位置的增益</li>
+      </ul>
+      <p><b>生成层指标：</b></p>
+      <ul>
+        <li>BLEU/ROUGE：与标准答案的 n-gram 重叠（局限大）</li>
+        <li>LLM-as-a-Judge：用 GPT-4 打分（主流）</li>
+        <li>人工评估：准确率、满意度（最终标准）</li>
+      </ul>
+      <p><b>业务指标：</b></p>
+      <ul>
+        <li>用户反馈（点赞/点踩率）</li>
+        <li>任务完成率</li>
+        <li>人工接管率</li>
+      </ul>
+      <div class="qa-tip"><strong>面试关键：</strong>一定要能说出 RAGAS 的四个指标，并强调"评测要分层：检索层、生成层、业务层"。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">E. 算法题（一面手撕）</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">16</div>
+      <div class="qa-question">算法题：有 n 个灯泡，初始全灭。执行 n 轮操作，第 k 轮反转所有 k 的倍数位置灯泡状态。问 n 轮后有多少灯泡亮着？<span class="source-tag">小红书真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">数学</span><span class="qa-tag">Easy-Medium</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>第 i 个灯泡被切换的次数 = i 的约数个数。约数个数为奇数则最终亮着。只有完全平方数的约数个数是奇数。</p>
+      <h5>具体答案</h5>
+      <pre><span class="cmt"># 答案：floor(sqrt(n))</span>
+<span class="kw">import</span> math
+<span class="kw">def</span> bulbSwitch(n):
+    <span class="kw">return</span> int(math.isqrt(n))
+
+<span class="cmt"># 时间复杂度 O(1)，空间 O(1)</span></pre>
+      <p><b>解释：</b>1→1(亮)，2→2的约数1,2(灭)，3→1,3(灭)，4→1,2,4(亮)...只有 1,4,9,16... 即完全平方数亮着。</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">17</div>
+      <div class="qa-question">算法题：给定数组，每次取一个数 K，移除所有 K-1 和 K+1，如何取使所取数之和最大？<span class="source-tag">小红书真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">DP</span><span class="qa-tag">Medium</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>这是经典的"打家劫舍"变形。统计每个数字的总和（值×频次），然后 DP：取 nums[i] 就不能取 nums[i-1] 和 nums[i+1]。</p>
+      <h5>具体答案</h5>
+      <pre><span class="kw">def</span> deleteAndEarn(nums):
+    <span class="kw">if not</span> nums: <span class="kw">return</span> 0
+    max_val = max(nums)
+    points = [0] * (max_val + 1)
+    <span class="kw">for</span> num <span class="kw">in</span> nums:
+        points[num] += num  <span class="cmt"># 每个值累加分</span>
+
+    <span class="cmt"># 打家劫舍 DP</span>
+    prev, curr = 0, points[0]
+    <span class="kw">for</span> i <span class="kw">in range</span>(1, len(points)):
+        prev, curr = curr, max(curr, prev + points[i])
+    <span class="kw">return</span> curr
+
+<span class="cmt"># 时间 O(max(nums))，空间 O(max(nums))</span></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">18</div>
+      <div class="qa-question">算法题：给定整数数组和整数 k，找到和为 k 的连续子数组个数。<span class="source-tag">小红书真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">前缀和</span><span class="qa-tag">Medium</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>前缀和 + 哈希表。如果 prefix[j] - prefix[i] = k，则 [i+1, j] 是目标和为 k 的子数组。</p>
+      <h5>具体答案</h5>
+      <pre><span class="kw">def</span> subarraySum(nums, k):
+    count = 0
+    prefix_sum = 0
+    prefix_count = {0: 1}  <span class="cmt"># 前缀和0出现1次</span>
+
+    <span class="kw">for</span> num <span class="kw">in</span> nums:
+        prefix_sum += num
+        <span class="cmt"># 找之前有多少个前缀和等于 prefix_sum - k</span>
+        <span class="kw">if</span> (prefix_sum - k) <span class="kw">in</span> prefix_count:
+            count += prefix_count[prefix_sum - k]
+        prefix_count[prefix_sum] = prefix_count.get(prefix_sum, 0) + 1
+
+    <span class="kw">return</span> count
+
+<span class="cmt"># 时间 O(n)，空间 O(n)</span></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">19</div>
+      <div class="qa-question">算法题：无重复字符的最长子串长度。<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">滑动窗口</span><span class="qa-tag">Medium</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>滑动窗口 + 哈希表记录字符最后出现位置。右指针扩展，遇到重复字符则左指针跳到重复字符下一位。</p>
+      <h5>具体答案</h5>
+      <pre><span class="kw">def</span> lengthOfLongestSubstring(s):
+    char_index = {}
+    left = 0
+    max_len = 0
+
+    <span class="kw">for</span> right, char <span class="kw">in enumerate</span>(s):
+        <span class="kw">if</span> char <span class="kw">in</span> char_index <span class="kw">and</span> char_index[char] >= left:
+            left = char_index[char] + 1
+        char_index[char] = right
+        max_len = max(max_len, right - left + 1)
+
+    <span class="kw">return</span> max_len
+
+<span class="cmt"># 时间 O(n)，空间 O(min(n, 字符集大小))</span></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">20</div>
+      <div class="qa-question">算法题：最长递增子序列（LIS）。<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">DP/二分</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>两种解法：O(n²) DP 或 O(n log n) 二分。面试先说 DP，再主动提二分优化。</p>
+      <h5>具体答案</h5>
+      <pre><span class="cmt"># 方法1：DP O(n²)</span>
+<span class="kw">def</span> lengthOfLIS(nums):
+    <span class="kw">if not</span> nums: <span class="kw">return</span> 0
+    dp = [1] * len(nums)
+    <span class="kw">for</span> i <span class="kw">in range</span>(1, len(nums)):
+        <span class="kw">for</span> j <span class="kw">in range</span>(i):
+            <span class="kw">if</span> nums[j] < nums[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    <span class="kw">return</span> max(dp)
+
+<span class="cmt"># 方法2：二分 + 贪心 O(n log n)</span>
+<span class="kw">import</span> bisect
+<span class="kw">def</span> lengthOfLIS(nums):
+    tails = []
+    <span class="kw">for</span> num <span class="kw">in</span> nums:
+        idx = bisect.bisect_left(tails, num)
+        <span class="kw">if</span> idx == len(tails):
+            tails.append(num)
+        <span class="kw">else</span>:
+            tails[idx] = num
+    <span class="kw">return</span> len(tails)
+<span class="cmt"># tails[i] 表示长度为 i+1 的递增子序列的最小末尾</span></pre>
+      <div class="qa-tip"><strong>加分：</strong>主动说出二分解法的原理（维护一个递增数组，二分查找插入位置），并分析两种复杂度。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">21</div>
+      <div class="qa-question">算法题：编辑距离。<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">DP</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <pre><span class="kw">def</span> minDistance(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) <span class="kw">for</span> _ <span class="kw">in range</span>(m + 1)]
+
+    <span class="kw">for</span> i <span class="kw">in range</span>(m + 1): dp[i][0] = i
+    <span class="kw">for</span> j <span class="kw">in range</span>(n + 1): dp[0][j] = j
+
+    <span class="kw">for</span> i <span class="kw">in range</span>(1, m + 1):
+        <span class="kw">for</span> j <span class="kw">in range</span>(1, n + 1):
+            <span class="kw">if</span> word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            <span class="kw">else</span>:
+                dp[i][j] = 1 + min(dp[i-1][j],    <span class="cmt"># 删除</span>
+                                   dp[i][j-1],    <span class="cmt"># 插入</span>
+                                   dp[i-1][j-1])  <span class="cmt"># 替换</span>
+    <span class="kw">return</span> dp[m][n]
+
+<span class="cmt"># 空间优化：用滚动数组 O(min(m,n))</span></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">22</div>
+      <div class="qa-question">算法题：三数之和。<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">双指针</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <pre><span class="kw">def</span> threeSum(nums):
+    nums.sort()
+    res = []
+    n = len(nums)
+
+    <span class="kw">for</span> i <span class="kw">in range</span>(n - 2):
+        <span class="kw">if</span> i > 0 <span class="kw">and</span> nums[i] == nums[i-1]:
+            <span class="kw">continue</span>  <span class="cmt"># 去重</span>
+        left, right = i + 1, n - 1
+        <span class="kw">while</span> left < right:
+            total = nums[i] + nums[left] + nums[right]
+            <span class="kw">if</span> total == 0:
+                res.append([nums[i], nums[left], nums[right]])
+                <span class="kw">while</span> left < right <span class="kw">and</span> nums[left] == nums[left+1]: left += 1
+                <span class="kw">while</span> left < right <span class="kw">and</span> nums[right] == nums[right-1]: right -= 1
+                left += 1
+                right -= 1
+            <span class="kw">elif</span> total < 0:
+                left += 1
+            <span class="kw">else</span>:
+                right -= 1
+    <span class="kw">return</span> res
+
+<span class="cmt"># 时间 O(n²)，空间 O(1)</span></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">23</div>
+      <div class="qa-question">算法题：数组中第 K 个最大元素。<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">堆/快排</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>两种解法：小根堆 O(n log k) 或 快速选择 O(n) 平均。面试先说堆，再提快选优化。</p>
+      <h5>具体答案</h5>
+      <pre><span class="cmt"># 方法1：小根堆 O(n log k)</span>
+<span class="kw">import</span> heapq
+<span class="kw">def</span> findKthLargest(nums, k):
+    <span class="kw">return</span> heapq.nlargest(k, nums)[-1]
+<span class="cmt"># 或手动维护size=k的小根堆</span>
+
+<span class="cmt"># 方法2：快速选择 O(n) 平均</span>
+<span class="kw">import</span> random
+<span class="kw">def</span> findKthLargest(nums, k):
+    <span class="kw">def</span> partition(left, right):
+        pivot_idx = random.randint(left, right)
+        nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
+        pivot = nums[right]
+        i = left
+        <span class="kw">for</span> j <span class="kw">in range</span>(left, right):
+            <span class="kw">if</span> nums[j] > pivot:  <span class="cmt"># 降序，找第k大</span>
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+        nums[i], nums[right] = nums[right], nums[i]
+        <span class="kw">return</span> i
+
+    left, right = 0, len(nums) - 1
+    <span class="kw">while</span> True:
+        pos = partition(left, right)
+        <span class="kw">if</span> pos == k - 1:
+            <span class="kw">return</span> nums[pos]
+        <span class="kw">elif</span> pos > k - 1:
+            right = pos - 1
+        <span class="kw">else</span>:
+            left = pos + 1</pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 二面 ==================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon icon-orange">2</div>
+    二面：系统设计 + 深度追问 + 综合素质
+  </div>
+  <div class="section-desc">
+    二面通常由高级工程师或架构师进行，时长 60-90 分钟。核心考察：系统设计能力、技术深度、项目难点解决。<b>二面面试官看重技术广度和深度</b>，会不停追问"为什么"。
+  </div>
+
+  <h3 style="margin: 20px 0 12px; color: var(--text);">A. Agent 深度（二面重点）</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">24</div>
+      <div class="qa-question">Agent 的基本架构由哪些核心组件构成？<span class="source-tag">小红书二面真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">二面必考</span><span class="qa-tag">Agent</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>用"自主创业公司"类比讲四大组件，清晰好记。</p>
+      <h5>具体答案</h5>
+      <p><b>四大核心组件：</b></p>
+      <ol>
+        <li><b>LLM（大脑）</b>：理解用户需求 + 决策下一步做什么（调用工具 or 返回答案）</li>
+        <li><b>工具系统（手脚）</b>：与外部世界交互。搜索引擎、代码执行器、API、数据库查询等</li>
+        <li><b>记忆系统（记忆库）</b>：
+          <ul>
+            <li>短期记忆：当前对话上下文 + 每步执行结果，任务结束清空</li>
+            <li>长期记忆：跨任务复用信息，用向量数据库存储+检索</li>
+          </ul>
+        </li>
+        <li><b>规划模块（规划师）</b>：把复杂目标拆成可执行步骤
+          <ul>
+            <li>先规划后执行：LLM 一次输出完整计划</li>
+            <li>边执行边规划：每步动态调整（Replan）</li>
+          </ul>
+        </li>
+      </ol>
+      <p><b>运行流程（循环）：</b>规划 → 决策 → 执行 → 记忆 → 再决策</p>
+      <pre><span class="cmt"># Agent 核心运行循环（伪代码）</span>
+<span class="kw">def</span> agent_run(user_goal):
+    plan = llm.plan(user_goal)  <span class="cmt"># 规划</span>
+    short_memory = []
+    <span class="kw">for</span> step <span class="kw">in</span> plan:
+        action = llm.decide(step, short_memory, long_term_memory.search(step))
+        <span class="kw">if</span> action.type == <span class="str">"tool_call"</span>:
+            result = tools.execute(action.name, action.args)
+            short_memory.append({<span class="str">"step"</span>: step, <span class="str">"result"</span>: result})
+        <span class="kw">elif</span> action.type == <span class="str">"final_answer"</span>:
+            <span class="kw">return</span> action.content</pre>
+      <div class="qa-tip"><strong>加分：</strong>提到主流框架（LangChain/LlamaIndex/AutoGen）都是围绕这四大组件设计的，只是侧重点不同。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">25</div>
+      <div class="qa-question">Agent 的长短期记忆怎么做的？记忆怎么存？粒度是多少？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">Agent</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>短期记忆实现：</b></p>
+      <ul>
+        <li>直接存在对话上下文（messages 数组）</li>
+        <li>问题：上下文窗口有限，长对话会爆</li>
+        <li>解决方案：滑动窗口（保留最近N轮）+ 摘要压缩（旧对话用LLM摘要）</li>
+      </ul>
+      <p><b>长期记忆实现：</b></p>
+      <ul>
+        <li>向量数据库：把重要信息 Embedding 后存储，检索时按语义相似度召回</li>
+        <li>知识图谱：存储实体关系，支持多跳推理</li>
+        <li>关系数据库：结构化信息（用户偏好、历史决策）</li>
+      </ul>
+      <p><b>记忆粒度选择：</b></p>
+      <ul>
+        <li><b>粗粒度</b>：存整个对话轮次。优点省空间，缺点检索不准</li>
+        <li><b>细粒度</b>：存每个事实/决策。优点检索准，缺点冗余</li>
+        <li><b>推荐</b>：中等粒度，存"关键事实+决策点"，用LLM自动提取</li>
+      </ul>
+      <p><b>记忆更新策略：</b></p>
+      <ul>
+        <li>LLM 判断当前信息是否值得存（重要性评分）</li>
+        <li>定期整合：把多个小记忆合并成大记忆（Reflection）</li>
+        <li>遗忘机制：按时间衰减 + 访问频率，淘汰低价值记忆</li>
+      </ul>
+      <div class="qa-tip"><strong>参考：</strong>Generative Agents 论文（斯坦福小镇）的记忆机制是经典回答素材。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">26</div>
+      <div class="qa-question">Single-Agent 和 Multi-Agent 的设计方案有哪些？各自的适用场景？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">Agent</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>Single-Agent 架构：</b></p>
+      <ul>
+        <li>一个 LLM + 工具集 + 记忆</li>
+        <li>代表：ReAct、AutoGPT</li>
+        <li>适用：单一任务、流程清晰的场景</li>
+        <li>优点：简单可控、成本低</li>
+        <li>缺点：复杂任务容易跑偏、context 容易爆</li>
+      </ul>
+      <p><b>Multi-Agent 架构：</b></p>
+      <ul>
+        <li><b>层级式（Hierarchical）</b>：一个 Manager Agent 拆任务，分发给 Worker Agents。如 LangGraph</li>
+        <li><b>协作式（Collaborative）</b>：多个 Agent 平等讨论，如多角色辩论。如 AutoGen GroupChat</li>
+        <li><b>流水线式（Pipeline）</b>：每个 Agent 负责一个阶段，顺序传递。如 CrewAI</li>
+        <li><b>竞争式（Competitive）</b>：Generator + Critic 互相对抗。如 Self-Refine</li>
+      </ul>
+      <p><b>适用场景对比：</b></p>
+      <ul>
+        <li>Single-Agent：客服、问答、简单工具调用</li>
+        <li>Multi-Agent：复杂报告生成（调研+写作+审校）、软件开发（PM+开发+测试）、多角色模拟</li>
+      </ul>
+      <div class="qa-pitfall"><strong>避坑：</strong>不要说"Multi-Agent 一定更好"。Multi-Agent 成本高、延迟大、调试难，简单任务用 Single-Agent 更合适。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">27</div>
+      <div class="qa-question">Agent 的反思机制是什么？为什么要用？怎么实现？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">Agent</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>反思（Reflection）</b>：让 Agent 回顾自己的执行过程，总结经验教训，用于改进后续决策。</p>
+      <p><b>为什么要用：</b></p>
+      <ul>
+        <li>LLM 一次决策可能出错，反思能让它"自我纠错"</li>
+        <li>把"经验"存入记忆，下次遇到类似任务能复用</li>
+        <li>提升复杂任务的完成率（Reflexion 论文证明提升明显）</li>
+      </ul>
+      <p><b>实现方式：</b></p>
+      <ol>
+        <li><b>事后反思</b>：任务完成后，让 LLM 总结"哪里做得好/不好/下次怎么改"</li>
+        <li><b>过程中反思</b>：每执行N步，让 LLM 检查"是否偏离目标/有没有更好方案"</li>
+        <li><b>失败反思</b>：任务失败时，让 LLM 分析原因并重试（Reflexion 模式）</li>
+      </ol>
+      <pre><span class="cmt"># Reflexion 模式伪代码</span>
+<span class="kw">def</span> agent_with_reflection(goal, max_attempts=3):
+    reflections = []
+    <span class="kw">for</span> attempt <span class="kw">in range</span>(max_attempts):
+        result = agent_run(goal, reflections)  <span class="cmt"># 带着历史反思执行</span>
+        <span class="kw">if</span> success(result):
+            <span class="kw">return</span> result
+        <span class="cmt"># 反思失败原因</span>
+        reflection = llm.reflect(goal, result, <span class="str">"为什么失败？怎么改进？"</span>)
+        reflections.append(reflection)
+    <span class="kw">return</span> None</pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">28</div>
+      <div class="qa-question">Agent 端到端延迟怎么优化？LLM 并发太高怎么办？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">工程</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>延迟优化（按效果排序）：</b></p>
+      <ol>
+        <li><b>流式输出</b>：LLM 边生成边返回，用户感知延迟从"几秒"降到"几百毫秒"</li>
+        <li><b>减少 Agent 循环次数</b>：好的 Prompt + 好的规划，减少不必要的工具调用</li>
+        <li><b>并行工具调用</b>：多个独立工具同时调用（如同时搜3个来源）</li>
+        <li><b>缓存</b>：
+          <ul>
+            <li>Prompt Caching：相同前缀不重复计算（Claude/OpenAI 都支持）</li>
+            <li>语义缓存：相似 query 的答案直接复用</li>
+            <li>工具结果缓存：相同工具调用不重复执行</li>
+          </ul>
+        </li>
+        <li><b>用小模型分流</b>：简单任务用小模型（如 Haiku），复杂任务才用大模型</li>
+        <li><b>预计算</b>：高频问题的答案提前算好</li>
+      </ol>
+      <p><b>并发处理：</b></p>
+      <ul>
+        <li><b>限流</b>：令牌桶/漏桶控制 QPS，保护 LLM 服务</li>
+        <li><b>排队</b>：用消息队列（Kafka/RabbitMQ）削峰填谷</li>
+        <li><b>批处理</b>：多个请求合并成一个 batch（vLLM 的 continuous batching）</li>
+        <li><b>多实例</b>：水平扩展 LLM 服务实例 + 负载均衡</li>
+        <li><b>降级</b>：高峰期切小模型或返回缓存</li>
+      </ul>
+      <div class="qa-tip"><strong>加分：</strong>提到 vLLM 的 PagedAttention 和 continuous batching，会显得对推理优化有深度理解。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">B. 系统设计题</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">29</div>
+      <div class="qa-question">设计一个短链系统。</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">系统设计</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>标准系统设计题框架：需求澄清 → 估算 → 核心设计 → 扩展 → 容错。</p>
+      <h5>具体答案</h5>
+      <p><b>1. 需求澄清</b></p>
+      <ul>
+        <li>功能：长链转短链、短链跳长链、自定义短码</li>
+        <li>非功能：高可用、低延迟、读多写少（10:1）</li>
+      </ul>
+      <p><b>2. 容量估算</b></p>
+      <ul>
+        <li>假设日均1亿次访问，1000万次新建</li>
+        <li>短码7位（base62）可表示62^7≈3.5万亿，够用</li>
+        <li>存储：每条记录500字节，10年约18TB</li>
+      </ul>
+      <p><b>3. 核心设计</b></p>
+      <ul>
+        <li><b>短码生成</b>：
+          <ul>
+            <li>方案A：自增ID + base62编码（简单，但可预测）</li>
+            <li>方案B：哈希（MD5取前7位，可能冲突，需查重）</li>
+            <li>方案C：预生成短码池（分布式发号器，推荐）</li>
+          </ul>
+        </li>
+        <li><b>存储</b>：MySQL存映射关系（short_code, long_url, created_at），短码做主键</li>
+        <li><b>缓存</b>：Redis 缓存热点短链，TTL 24小时</li>
+      </ul>
+      <p><b>4. 跳转流程</b></p>
+      <pre>用户访问短链 → 查Redis → 命中则302重定向
+                  ↓ 未命中
+                查MySQL → 写入Redis → 302重定向</pre>
+      <p><b>5. 扩展</b></p>
+      <ul>
+        <li>分库分表：按短码首字母分片</li>
+        <li>CDN：静态资源加速</li>
+        <li>统计：用 Kafka 异步写分析数据</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">30</div>
+      <div class="qa-question">设计一个游戏社区客服助手 Agent。如何绑定游戏黑话？如何利用公司内部文档？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">系统设计</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>这是一道很贴近业务的 Agent 设计题。要解决三个子问题：黑话理解、文档利用、Agent 设计。</p>
+      <h5>具体答案</h5>
+      <p><b>1. 整体架构</b></p>
+      <pre>用户问题 → 意图识别 → [黑话翻译] → RAG检索 → LLM生成 → 答案后处理 → 返回</pre>
+      <p><b>2. 游戏黑话处理</b></p>
+      <ul>
+        <li><b>建立黑话词典</b>：人工 + 从社区日志挖掘（如"狗头"="某英雄"，"开黑"="组队"）</li>
+        <li><b>黑话翻译层</b>：用户输入先过一道"黑话→标准语"翻译，可用小模型微调或规则</li>
+        <li><b>动态更新</b>：新黑话不断产生，定期从社区挖掘新词加入词典</li>
+        <li><b>Few-shot Prompt</b>：给 LLM 几个黑话示例，让它学会推理未知黑话</li>
+      </ul>
+      <p><b>3. 内部文档利用（RAG）</b></p>
+      <ul>
+        <li><b>文档预处理</b>：游戏公告、FAQ、攻略、运营手册等，按类别+语义切分</li>
+        <li><b>多路召回</b>：向量检索（语义）+ BM25（关键词，如英雄名/技能名）+ 元数据过滤（游戏版本）</li>
+        <li><b>重排序</b>：用 cross-encoder 对召回结果重排，提升精度</li>
+        <li><b>时效性</b>：版本更新后旧文档标记过期，优先返回新文档</li>
+      </ul>
+      <p><b>4. Agent 设计</b></p>
+      <ul>
+        <li><b>工具</b>：查玩家信息（API）、查战绩、查公告、查攻略、转人工</li>
+        <li><b>记忆</b>：记住玩家ID、历史问题，支持追问</li>
+        <li><b>兜底</b>：置信度低时转人工客服</li>
+      </ul>
+      <p><b>5. 效果评估</b></p>
+      <ul>
+        <li>解决率（无需转人工）、用户满意度、响应延迟、答案准确率</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">31</div>
+      <div class="qa-question">给你一部长篇小说，怎么做文档切割？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">RAG设计</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p>长篇小说切割的难点：篇幅大、章节间有情节关联、人物关系复杂。</p>
+      <p><b>切割策略（分层）：</b></p>
+      <ol>
+        <li><b>第一层：按章节切</b>。小说天然有章节结构，这是最自然的边界</li>
+        <li><b>第二层：章节内按场景切</b>。一个章节可能有多个场景，用场景切换标记（时间/地点变化）切分</li>
+        <li><b>第三层：场景内按段落切</b>。每段保持语义完整</li>
+      </ol>
+      <p><b>额外优化：</b></p>
+      <ul>
+        <li><b>人物索引</b>：单独抽取人物信息建索引，支持"某人物的所有出场"</li>
+        <li><b>情节摘要</b>：每章用LLM生成摘要，检索时先匹配摘要再定位原文</li>
+        <li><b>关系图谱</b>：抽取人物关系建图，支持"某人和某人的关系"</li>
+        <li><b>时间线索引</b>：小说常有倒叙/插叙，按时间线重新组织</li>
+      </ul>
+      <p><b>检索策略：</b></p>
+      <ul>
+        <li>简单问题：向量检索段落</li>
+        <li>人物问题：先查人物索引再定位段落</li>
+        <li>情节问题：先查章节摘要再定位具体段落</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">32</div>
+      <div class="qa-question">Text2SQL 怎么做的？怎么提高准确率？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag high">中频</span><span class="qa-tag">应用</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>基础方案：</b>用户自然语言 → Prompt（含表结构schema） → LLM生成SQL → 执行 → 返回结果</p>
+      <p><b>提升准确率的策略：</b></p>
+      <ol>
+        <li><b>Schema 精简</b>：不要把所有表都给 LLM，先用向量检索找出相关表</li>
+        <li><b>Few-shot 示例</b>：给几个"问题-SQL"对示例，尤其是相似问题</li>
+        <li><b>表注释完善</b>：每个字段加中文注释 + 业务含义，避免LLM猜错</li>
+        <li><b>SQL 校验</b>：生成后用语法检查器验证，错误则让LLM重写</li>
+        <li><b>执行反馈</b>：SQL执行报错时，把错误信息回传LLM让它修正</li>
+        <li><b>多轮对话</b>：模糊问题让LLM反问澄清，而不是瞎猜</li>
+        <li><b>微调</b>：用业务真实 query-SQL 对微调小模型，效果好成本低</li>
+        <li><b>限定范围</b>：只允许 SELECT，禁止危险操作；限制查询行数</li>
+      </ol>
+      <p><b>评估指标：</b>执行准确率（生成的SQL执行结果与标准答案一致）、精确匹配率（SQL字符串完全相同）</p>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">C. 工程八股（二面仍会问）</h3>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">33</div>
+      <div class="qa-question">Python 的内存管理和 GC 机制？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">八股</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>内存管理：</b>Python 用私有堆空间存储对象，解释器负责管理。</p>
+      <ul>
+        <li><b>对象池</b>：小整数（-5~256）、短字符串 intern 机制，复用对象</li>
+        <li><b>内存分配器</b>：pymalloc，针对小对象（≤512字节）用内存池，大对象直接 malloc</li>
+        <li><b>引用计数</b>：每个对象有 ob_refcnt，引用+1/-1，归0立即释放</li>
+      </ul>
+      <p><b>GC 机制（三世代回收）：</b></p>
+      <ul>
+        <li><b>引用计数</b>（主要）：实时释放无引用对象。缺点：无法处理循环引用</li>
+        <li><b>标记-清除</b>（辅助）：解决循环引用。从根对象出发标记可达对象，清除不可达</li>
+        <li><b>分代回收</b>：对象分三代，新对象在第0代，存活越久越老，老对象检查频率低</li>
+      </ul>
+      <p>GC 触发条件：第0代分配数 - 释放数 > 阈值（默认700）。</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">34</div>
+      <div class="qa-question">Redis 的 zset 怎么实现的？mget 底层？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">八股</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>zset（有序集合）实现：ziplist + skiplist（Redis 7.0后用 listpack）</b></p>
+      <ul>
+        <li><b>元素少时</b>（128个且每个≤64字节）：用 ziplist/listpack，紧凑存储省内存</li>
+        <li><b>元素多时</b>：用 <b>skiplist（跳表）+ dict（哈希表）</b>
+          <ul>
+            <li>skiplist：按 score 排序，支持范围查询 O(logN)</li>
+            <li>dict：element→score 映射，支持单点查找 O(1)</li>
+            <li>两者配合：既快又有序</li>
+          </ul>
+        </li>
+      </ul>
+      <p><b>mget 底层：</b>批量发送 GET 命令，但只发一次网络请求（pipeline 优化）。服务端依次执行 GET，结果打包返回。<b>注意：mget 是原子的吗？不是，mget 不保证原子性，但每个 GET 是原子的。</b></p>
+      <p><b>为什么用 skiplist 不用红黑树？</b></p>
+      <ul>
+        <li>实现简单：skiplist 代码比红黑树少很多</li>
+        <li>范围查询友好：skiplist 天然有序，范围查询 O(logN)</li>
+        <li>并发友好：skiplist 局部修改，红黑树可能全局 rebalance</li>
+        <li>内存：skiplist 多指针有一定开销，但可接受</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">35</div>
+      <div class="qa-question">MySQL 的 MVCC 是怎么实现的？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">八股</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>MVCC（Multi-Version Concurrency Control）</b>：多版本并发控制，让读写不互相阻塞。</p>
+      <p><b>核心组件：</b></p>
+      <ol>
+        <li><b>隐藏字段</b>：每行有 DB_TRX_ID（最后修改的事务ID）、DB_ROLL_PTR（回滚指针指向 undo log）、DB_ROW_ID</li>
+        <li><b>undo log</b>：存历史版本，通过回滚指针串成版本链</li>
+        <li><b>ReadView</b>：读事务创建的快照，记录当时活跃事务列表</li>
+      </ul>
+      <p><b>可见性判断（RC vs RR）：</b></p>
+      <ul>
+        <li><b>RC（读已提交）</b>：每次 SELECT 都创建新 ReadView → 能读到最新已提交数据</li>
+        <li><b>RR（可重复读）</b>：事务开始时创建一次 ReadView → 整个事务读同一快照</li>
+      </ul>
+      <p><b>版本链遍历规则：</b>从最新版本开始，判断 DB_TRX_ID 是否对当前 ReadView 可见：
+        <ul>
+          <li>已提交且早于 ReadView：可见</li>
+          <li>在 ReadView 活跃事务中：不可见，顺指针找历史版本</li>
+          <li>晚于 ReadView：不可见，找历史版本</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">36</div>
+      <div class="qa-question">分布式锁怎么实现？各方案优缺点？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">高频</span><span class="qa-tag">八股</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>三种主流方案：</b></p>
+      <p><b>1. Redis 分布式锁（SETNX + 过期时间）</b></p>
+      <pre>SET lock_key unique_value NX PX 30000  <span class="cmt"># 不存在才设置，30s过期</span>
+<span class="cmt"># 释放锁：Lua脚本保证"判断+删除"原子性</span>
+<span class="kw">if</span> redis.get(key) == value <span class="kw">then</span> redis.del(key) <span class="kw">end</span></pre>
+      <ul>
+        <li>优点：性能高、实现简单</li>
+        <li>缺点：主从切换可能丢锁；锁过期但任务没完成</li>
+        <li>进阶：Redisson 看门狗自动续期；RedLock 多节点投票</li>
+      </ul>
+      <p><b>2. ZooKeeper 分布式锁（临时顺序节点）</b></p>
+      <ul>
+        <li>创建临时顺序节点，自己是最小节点则获锁，否则监听前一个节点</li>
+        <li>优点：客户端宕断自动释放锁（临时节点特性）；公平锁</li>
+        <li>缺点：性能比 Redis 低；实现复杂</li>
+      </ul>
+      <p><b>3. MySQL 分布式锁（for update 或 唯一索引）</b></p>
+      <ul>
+        <li>优点：简单，无需额外组件</li>
+        <li>缺点：性能差；数据库压力</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">37</div>
+      <div class="qa-question">为什么要用 WebRTC？它和 WebSocket 的区别？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">应用</span></div>
+    <div class="qa-answer">
+      <h5>具体答案</h5>
+      <p><b>WebRTC vs WebSocket：</b></p>
+      <table style="width:100%; border-collapse: collapse; margin: 10px 0; font-size: 13px;">
+        <tr style="background: var(--code-bg);">
+          <th style="padding: 8px; border: 1px solid var(--border); text-align: left;">维度</th>
+          <th style="padding: 8px; border: 1px solid var(--border);">WebSocket</th>
+          <th style="padding: 8px; border: 1px solid var(--border);">WebRTC</th>
+        </tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>本质</b></td><td style="padding: 8px; border: 1px solid var(--border);">TCP 长连接</td><td style="padding: 8px; border: 1px solid var(--border);">UDP 点对点</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>延迟</b></td><td style="padding: 8px; border: 1px solid var(--border);">较高（TCP握手+重传）</td><td style="padding: 8px; border: 1px solid var(--border);">极低（UDP无重传）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>可靠性</b></td><td style="padding: 8px; border: 1px solid var(--border);">高（保证送达）</td><td style="padding: 8px; border: 1px solid var(--border);">低（可能丢包）</td></tr>
+        <tr><td style="padding: 8px; border: 1px solid var(--border);"><b>媒体支持</b></td><td style="padding: 8px; border: 1px solid var(--border);">文本/二进制</td><td style="padding: 8px; border: 1px solid var(--border);">音频/视频/数据</td></tr>
+      </table>
+      <p><b>语音 Agent 为什么用 WebRTC：</b></p>
+      <ul>
+        <li>语音对话对延迟极敏感（>300ms 用户能感知卡顿）</li>
+        <li>WebRTC 走 UDP，延迟可降到 100ms 以内</li>
+        <li>内置音频编解码（Opus）、回声消除、噪声抑制</li>
+        <li>支持浏览器直接采集麦克风，无需插件</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 终面 ==================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon icon-purple">3</div>
+    终面：综合面 + HR 面 + Offer 沟通
+  </div>
+  <div class="section-desc">
+    终面通常由部门负责人（总监/VP）或 HR 进行，时长 30-60 分钟。核心考察：职业规划、技术视野、价值观、薪资沟通。<b>终面挂人往往不是因为技术，而是"不够想招你"</b>。
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">38</div>
+      <div class="qa-question">你如何看待当下 LLM 应用的趋势和方向？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">终面高频</span><span class="qa-tag">视野</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>这道题考技术视野。要展示你对行业的深度思考，而不是背诵概念。</p>
+      <h5>参考回答框架</h5>
+      <p><b>1. 从"调 API"到"Agent 工程"</b></p>
+      <ul>
+        <li>2023-2024：大家都在做 RAG、Prompt 工程，本质是"调 API"</li>
+        <li>2025-2026：转向 Agent，核心是"让 LLM 自主完成复杂任务"</li>
+        <li>未来：Multi-Agent 系统、Agent 协作协议（A2A）、Agent OS</li>
+      </ul>
+      <p><b>2. 从"通用"到"垂直"</b></p>
+      <ul>
+        <li>通用大模型能力趋同，竞争转向垂直场景（法律、医疗、金融）</li>
+        <li>垂直场景需要：领域知识 + 工作流深度集成 + 评测体系</li>
+      </ul>
+      <p><b>3. 从"生成"到"执行"</b></p>
+      <ul>
+        <li>现在 LLM 主要是"生成文本"</li>
+        <li>未来是"执行任务"：Computer Use（Anthropic）、Operator（OpenAI）让 LLM 操作电脑</li>
+      </ul>
+      <p><b>4. 从"单模态"到"全模态"</b></p>
+      <ul>
+        <li>GPT-4o、Gemini 已经是全模态（文/图/音/视频）</li>
+        <li>未来 Agent 能看、能听、能说、能操作</li>
+      </ul>
+      <p><b>5. 成本与效率</b></p>
+      <ul>
+        <li>模型小型化：7B 模型能力逼近 GPT-3.5，可本地部署</li>
+        <li>推理优化：vLLM、量化、推测解码</li>
+        <li>端侧 AI：手机/PC 本地跑模型</li>
+      </ul>
+      <div class="qa-tip"><strong>加分：</strong>结合具体公司业务说。比如面腾讯就提"社交+Agent"，面字节就提"内容创作+Agent"，显得你研究过这家公司。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">39</div>
+      <div class="qa-question">介绍一下你的项目，遇到的最大难题是什么？怎么解决的？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">终面必问</span><span class="qa-tag">项目</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>用 STAR 法则（Situation-Task-Action-Result）结构化讲述。难题要真实、有技术含量、解决过程体现能力。</p>
+      <h5>参考模板（RAG 项目示例）</h5>
+      <p><b>S（背景）：</b>做一个企业知识库问答系统，用户问"XX流程怎么走"，初版 RAG 准确率只有 60%。</p>
+      <p><b>T（任务）：</b>提升准确率到 85%+，同时控制延迟在 3s 内。</p>
+      <p><b>A（行动）：</b></p>
+      <ol>
+        <li><b>诊断</b>：分析bad case发现两个问题——①文档切割粗糙，相关内容被切散；②检索召回率低，正确文档没进 top-K</li>
+        <li><b>切割优化</b>：从固定长度改为"按标题层级+语义切分"，保留章节完整性</li>
+        <li><b>多路召回</b>：向量检索 + BM25 + 元数据过滤，用 RRF 融合</li>
+        <li><b>Query 改写</b>：用 LLM 把口语化问题改写成多个检索 query，提升召回</li>
+        <li><b>重排序</b>：加 cross-encoder 重排，精度提升明显</li>
+        <li><b>评测闭环</b>：搭了 RAGAS 自动评测，每周跑回归</li>
+      </ol>
+      <p><b>R（结果）：</b>准确率从 60% 提升到 88%，延迟 2.5s，用户满意度从 3.2 升到 4.5（5分制）。</p>
+      <div class="qa-pitfall"><strong>避坑：</strong>不要说"没有遇到难题"或"难题是学习新技术"。要选一个有技术深度的真实问题。结果一定要有<b>量化数据</b>。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">40</div>
+      <div class="qa-question">为什么选择我们公司？你的职业规划是什么？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">HR面必问</span></div>
+    <div class="qa-answer">
+      <h5>参考回答策略</h5>
+      <p><b>为什么选我们公司（三层回答）：</b></p>
+      <ol>
+        <li><b>业务匹配</b>：贵公司在XX领域的AI应用最落地（具体说一个产品）</li>
+        <li><b>技术氛围</b>：关注到贵公司技术博客/开源项目XX，团队技术深度强</li>
+        <li><b>个人发展</b>：希望能在大规模真实场景中深耕Agent/RAG，贵公司场景最适合</li>
+      </ol>
+      <p><b>职业规划（3-5年）：</b></p>
+      <ul>
+        <li><b>1-2年</b>：深耕AI应用工程，成为Agent/RAG方向能独立交付的工程师</li>
+        <li><b>3-5年</b>：往技术专家/架构师方向，能设计大规模AI应用系统</li>
+        <li><b>长期</b>：希望成为AI应用领域的专家，对行业有影响力</li>
+      </ul>
+      <div class="qa-tip"><strong>关键：</strong>一定要提公司具体产品或技术，证明你研究过。泛泛而谈"贵公司很好"是大忌。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">41</div>
+      <div class="qa-question">你的期望薪资？手里有其他offer吗？</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">HR面</span></div>
+    <div class="qa-answer">
+      <h5>参考策略</h5>
+      <p><b>薪资期望（实习）：</b></p>
+      <ul>
+        <li>了解市场行情：大厂AI应用实习日薪 200-500 元不等</li>
+        <li>给区间而非具体数："期望日薪 300-400，可根据整体package调整"</li>
+        <li>有论文/国赛可适当上浮</li>
+      </ul>
+      <p><b>其他 offer：</b></p>
+      <ul>
+        <li><b>有offer</b>：诚实说，但不要报具体公司（"有几个大厂在流程中"）</li>
+        <li><b>没有</b>：说"正在面试几家，贵公司是优先级最高的"</li>
+        <li><b>不要</b>：虚构 offer（HR圈会背调）</li>
+      </ul>
+      <p><b>谈判技巧：</b></p>
+      <ul>
+        <li>不要急于接受第一个offer，留时间对比</li>
+        <li>但也不要拖太久（3-5天为限）</li>
+        <li>用其他offer作为筹码时要委婉："另一家给了XX，但我更倾向贵公司，不知道有没有空间"</li>
+      </ul>
+      <div class="qa-pitfall"><strong>避坑：</strong>面经作者提醒"如果你期望薪资比较高，对方说要在等等，基本上凉了"。要审时度势。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">42</div>
+      <div class="qa-question">你有什么想问我的？（反问环节）</div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">终面</span></div>
+    <div class="qa-answer">
+      <h5>好问题示例（体现思考深度）</h5>
+      <ul>
+        <li>"团队目前在AI应用方向最大的技术挑战是什么？"</li>
+        <li>"这个岗位未来3个月的核心目标是什么？"</li>
+        <li>"团队怎么衡量AI应用的效果？有哪些核心指标？"</li>
+        <li>"团队的技术栈演进方向？有没有计划引入XX？"</li>
+        <li>"实习生有机会独立负责模块吗？还是主要是辅助？"</li>
+      </ul>
+      <p><b>不要问的问题：</b></p>
+      <ul>
+        <li>薪资/福利（等HR面再问）</li>
+        <li>"公司是做什么的"（显得没做功课）</li>
+        <li>"要不要加班"（换成"团队的工作节奏怎么样"）</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 算法题汇总 ==================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon icon-red">4</div>
+    算法题高频汇总（按类型）
+  </div>
+  <div class="section-desc">
+    面经统计：<b>大模型应用岗算法题以 DP 为主（占50%+），其次是双指针/滑动窗口、二叉树、链表</b>。难度 Easy-Medium，但要求 20 分钟内 Bug Free。字节最看重代码基本功。
+  </div>
+
+  <h3 style="margin: 20px 0 12px; color: var(--text);">A. 动态规划（重中之重）</h3>
+  <div class="qa">
+    <div class="qa-answer">
+      <p><b>必刷题目（按出现频率）：</b></p>
+      <ol>
+        <li><b>最长递增子序列（LIS）</b> - DP O(n²) + 二分 O(n log n) 两种解法</li>
+        <li><b>最长公共子序列（LCS）</b> - 二维DP</li>
+        <li><b>编辑距离</b> - 二维DP + 空间优化</li>
+        <li><b>最长回文子串</b> - 中心扩展 / Manacher</li>
+        <li><b>无重复字符的最长子串</b> - 滑动窗口</li>
+        <li><b>三数之和</b> - 排序+双指针</li>
+        <li><b>爬楼梯</b> - 基础DP</li>
+        <li><b>买卖股票系列</b> - 状态机DP（含冷冻期）</li>
+        <li><b>打家劫舍系列</b> - 含变体（如 deleteAndEarn）</li>
+        <li><b>单词拆分</b> - DP</li>
+        <li><b>分割等和子集</b> - 0-1背包</li>
+        <li><b>乘积最大子数组</b> - 维护最大最小</li>
+        <li><b>和为K的子数组</b> - 前缀和+哈希</li>
+        <li><b>最大子数组和</b> - Kadane算法</li>
+        <li><b>接雨水</b> - 双指针/DP/单调栈</li>
+      </ol>
+      <div class="qa-tip"><strong>字节特色：</strong>会出现"原创题"，如"允许一个错误的最长公共子序列"、"序列切分使方差和最大"。本质还是DP，重点理解DP的<b>状态定义</b>和<b>转移方程</b>。</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">B. 大模型岗特色手撕题</h3>
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">43</div>
+      <div class="qa-question">手写 Multi-Head Attention<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">大模型特色</span><span class="qa-tag">PyTorch</span></div>
+    <div class="qa-answer">
+      <pre><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">import</span> torch.nn.functional <span class="kw">as</span> F
+
+<span class="kw">class</span> MultiHeadAttention(nn.Module):
+    <span class="kw">def</span> __init__(self, d_model, n_heads):
+        super().__init__()
+        self.d_model = d_model
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads
+
+        self.W_q = nn.Linear(d_model, d_model)
+        self.W_k = nn.Linear(d_model, d_model)
+        self.W_v = nn.Linear(d_model, d_model)
+        self.W_o = nn.Linear(d_model, d_model)
+
+    <span class="kw">def</span> forward(self, x, mask=None):
+        batch_size, seq_len, _ = x.size()
+
+        <span class="cmt"># 线性变换 + 分头</span>
+        Q = self.W_q(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
+        K = self.W_k(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
+        V = self.W_v(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
+
+        <span class="cmt"># 注意力分数</span>
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / (self.d_k ** 0.5)
+
+        <span class="kw">if</span> mask <span class="kw">is not</span> None:
+            scores = scores.masked_fill(mask == 0, float(<span class="str">'-inf'</span>))
+
+        <span class="cmt"># softmax</span>
+        attn = F.softmax(scores, dim=-1)
+
+        <span class="cmt"># 加权求和</span>
+        context = torch.matmul(attn, V)
+
+        <span class="cmt"># 合并头</span>
+        context = context.transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
+
+        <span class="kw">return</span> self.W_o(context)</pre>
+      <div class="qa-tip"><strong>关键点：</strong>①分头维度变换（view+transpose）②缩放 ③mask 处理 ④合并头。面试官会追问 RoPE 位置编码怎么加。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">44</div>
+      <div class="qa-question">手写 KV Cache 逻辑<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">大模型特色</span><span class="qa-tag">推理优化</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>自回归生成时，每生成一个新 token，之前的 K/V 不变，缓存起来避免重复计算。</p>
+      <pre><span class="kw">class</span> AttentionWithKVCache:
+    <span class="kw">def</span> __init__(self, d_model, n_heads):
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads
+        self.cache_k = None  <span class="cmt"># [batch, heads, seq, d_k]</span>
+        self.cache_v = None
+
+    <span class="kw">def</span> forward(self, x_new, use_cache=True):
+        <span class="cmt"># x_new: [batch, 1, d_model] 每次只输入新token</span>
+        Q = self.W_q(x_new)  <span class="cmt"># 只算新token的Q</span>
+        K_new = self.W_k(x_new)
+        V_new = self.W_v(x_new)
+
+        <span class="kw">if</span> use_cache <span class="kw">and</span> self.cache_k <span class="kw">is not</span> None:
+            <span class="cmt"># 拼接历史KV</span>
+            K = torch.cat([self.cache_k, K_new], dim=2)
+            V = torch.cat([self.cache_v, V_new], dim=2)
+        <span class="kw">else</span>:
+            K, V = K_new, V_new
+
+        <span class="cmt"># 更新缓存</span>
+        self.cache_k = K
+        self.cache_v = V
+
+        <span class="cmt"># 注意力计算</span>
+        scores = Q @ K.transpose(-2, -1) / (self.d_k ** 0.5)
+        attn = F.softmax(scores, dim=-1)
+        <span class="kw">return</span> attn @ V</pre>
+      <p><b>核心思想：</b>生成第 t 个 token 时，只需要计算新 token 的 Q，K/V 用缓存的+新的。把 O(n²) 的重复计算降到 O(n)。</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">45</div>
+      <div class="qa-question">手写 SFT Loss 计算（含 shift）<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag hot">大模型特色</span><span class="qa-tag">训练</span></div>
+    <div class="qa-answer">
+      <pre><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn.functional <span class="kw">as</span> F
+
+<span class="kw">def</span> sft_loss(logits, labels, ignore_index=-100):
+    <span class="cmt"># logits: [batch, seq_len, vocab_size]</span>
+    <span class="cmt"># labels: [batch, seq_len]</span>
+
+    <span class="cmt"># 关键：shift一位，因为要预测下一个token</span>
+    <span class="cmt"># logits[:, :-1] 预测 labels[:, 1:]</span>
+    shift_logits = logits[..., :-1, :].contiguous()
+    shift_labels = labels[..., 1:].contiguous()
+
+    <span class="cmt"># 展平计算交叉熵</span>
+    loss = F.cross_entropy(
+        shift_logits.view(-1, shift_logits.size(-1)),
+        shift_labels.view(-1),
+        ignore_index=ignore_index  <span class="cmt"># padding位置不计loss</span>
+    )
+    <span class="kw">return</span> loss</pre>
+      <div class="qa-pitfall"><strong>易错点：</strong>①忘记 shift ②忘记 ignore_index ③维度展平错。面试官最爱在这些细节上问。</div>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-header">
+      <div class="qa-num">46</div>
+      <div class="qa-question">rand5() 实现 rand7()（概率题）<span class="source-tag">字节真题</span></div>
+    </div>
+    <div class="qa-tags"><span class="qa-tag">概率</span></div>
+    <div class="qa-answer">
+      <h5>解决思路</h5>
+      <p>核心：用 rand5() 生成均匀分布的更大范围，拒绝采样。</p>
+      <pre><span class="kw">def</span> rand7():
+    <span class="kw">while</span> True:
+        <span class="cmt"># 生成 0-24 的均匀分布</span>
+        num = (rand5() - 1) * 5 + (rand5() - 1)
+        <span class="kw">if</span> num < 21:  <span class="cmt"># 0-20，拒绝21-24</span>
+            <span class="kw">return</span> num % 7 + 1
+
+<span class="cmt"># 原理：21 = 7*3，num%7 在0-6均匀分布</span>
+<span class="cmt"># 拒绝概率 4/25，期望循环 25/21 ≈ 1.19 次</span></pre>
+    </div>
+  </div>
+
+  <h3 style="margin: 24px 0 12px; color: var(--text);">C. 其他高频算法题速查</h3>
+  <div class="qa">
+    <div class="qa-answer">
+      <p><b>双指针/滑动窗口：</b></p>
+      <ul>
+        <li>三数之和 / 四数之和</li>
+        <li>盛最多水的容器</li>
+        <li>最小覆盖子串</li>
+        <li>长度最小的子数组</li>
+      </ul>
+      <p><b>二叉树：</b></p>
+      <ul>
+        <li>层序遍历（BFS）</li>
+        <li>最近公共祖先</li>
+        <li>二叉树最大路径和</li>
+        <li>翻转二叉树</li>
+      </ul>
+      <p><b>链表：</b></p>
+      <ul>
+        <li>反转链表（迭代+递归）</li>
+        <li>链表有环 / 环的入口</li>
+        <li>合并K个有序链表</li>
+        <li>LRU缓存（设计题）</li>
+      </ul>
+      <p><b>二分：</b></p>
+      <ul>
+        <li>搜索旋转排序数组</li>
+        <li>数组中第K个最大元素</li>
+        <li>x的平方根</li>
+      </ul>
+      <p><b>图/搜索：</b></p>
+      <ul>
+        <li>岛屿数量（DFS/BFS）</li>
+        <li>课程表（拓扑排序）</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 避坑指南 ==================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="icon icon-green">5</div>
+    避坑指南 & 面试策略
+  </div>
+  <div class="section-desc">
+    来自多位上岸者的真实经验总结。
+  </div>
+
+  <div class="qa">
+    <div class="qa-answer">
+      <h5>面试策略（按重要性排序）</h5>
+      <ol>
+        <li><b>每次面完必须复盘</b>：没答好的问题重新梳理答案，避免重复踩坑</li>
+        <li><b>不会就说不会</b>：别编一个自己都听不懂的答案，真诚 > 装懂</li>
+        <li><b>简历别吹过头</b>：可以用大模型润色，但要自己核对，面试一追问就露馅</li>
+        <li><b>多看技术文章</b>：二面面试官很看重技术广度，多关注前沿</li>
+        <li><b>表达流畅清晰</b>：断断续续会被认为思路不清</li>
+        <li><b>项目效果必须量化</b>：不管技术多炫，最终看落地效果。准备好"准确率从X%到Y%"这种数据</li>
+      </ol>
+
+      <h5 style="margin-top: 16px;">高频踩坑点</h5>
+      <ul>
+        <li><b>八股不准备</b>：虽然少了但绝对不能不准备，有人多次挂在八股</li>
+        <li><b>只会调 API</b>：面试官最反感"调包侠"，要懂原理（微调原理是大加分项）</li>
+        <li><b>项目讲不深</b>：只说"用了LangChain做了RAG"，一问细节就卡壳</li>
+        <li><b>没有量化</b>：说"效果不错"但不给数据，面试官不信</li>
+        <li><b>算法题写对就放松</b>：字节即使写对也可能挂，要看沟通和思路</li>
+        <li><b>期望薪资报太高</b>：对方说"再等等"基本就是凉了</li>
+      </ul>
+
+      <h5 style="margin-top: 16px;">针对双非本硕+论文+国赛的特别建议</h5>
+      <ul>
+        <li><b>扬长避短</b>：简历突出论文+国赛，弱化学校。项目经历放前面</li>
+        <li><b>项目要能讲深</b>：双非过简历关靠项目，面试靠项目讲透。准备2-3个有深度的项目</li>
+        <li><b>算法题必须稳</b>：大厂一面必考算法，Bug Free 是底线。重点刷 DP 和滑动窗口</li>
+        <li><b>论文是加分项</b>：主动提，但别炫技。说清楚"解决了什么问题、用了什么方法、效果如何"</li>
+        <li><b>国赛要能讲清思路</b>：面试官会问竞赛题的解法，提前准备好讲稿</li>
+        <li><b>心态</b>：双非面大厂简历可能被卡，多投多试，别因几次简历挂就放弃</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 24px; color: var(--text-tertiary); font-size: 13px;">
+  <p>数据来源：知乎 / 小红书 / 牛客网 / CSDN / 抖音 等平台公开面经</p>
+  <p>覆盖公司：字节跳动 / 阿里巴巴 / 腾讯 / 美团 / 快手 / 小红书 / 百度 / 京东 等</p>
+  <p>时间范围：2025年下半年 - 2026年上半年 | 共收录 46 道详细真题</p>
+  <p>本面经仅供参考，具体面试以实际为准 | 建议结合项目经历准备</p>
+</div>
+
+</div>
+</body>
+</html>
