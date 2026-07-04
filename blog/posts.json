@@ -1,5 +1,14 @@
 [
   {
+    "id": "desktop-agent-context-pitfalls",
+    "title": "为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑",
+    "date": "2026-07-04",
+    "readTime": "12 min",
+    "excerpt": "桌面 AI 伙伴真正困难的不是调用 VLM，也不是保存历史，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘：摘要陷阱、VLM 可见度、对话断线、观察线与对话线分离、记忆管理、工具层设计。",
+    "tags": ["Agent", "VLM", "思考"],
+    "url": "blog/desktop-agent-context-pitfalls.html"
+  },
+  {
     "id": "hello-world",
     "title": "你好，世界！我的第一篇博客",
     "date": "2026-06-24",

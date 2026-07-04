@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="桌面 AI 伙伴真正困难的不是调用 VLM，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
+  <title>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑 — 宋林蔚</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* 文章专属样式 */
+    .article-svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 2rem auto;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: var(--radius-lg, 12px);
+      background: var(--bg-card, #fff);
+      padding: 1rem;
+    }
+    .svg-caption {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted, #999);
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+    .fail-dialogue {
+      background: #fff5f5;
+      border-left: 4px solid #e53e3e;
+      border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .fail-dialogue .role-user { color: #1a73e8; font-weight: 600; }
+    .fail-dialogue .role-bot { color: #c53030; }
+    .principle-card {
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--accent, #1a73e8);
+    }
+    .principle-card ol { margin: 0; padding-left: 1.25rem; }
+    .principle-card li { margin-bottom: 0.6rem; line-height: 1.7; }
+    .callout {
+      background: #f0f7ff;
+      border: 1px solid #cce0ff;
+      border-radius: var(--radius-md, 8px);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .callout strong { color: #1a73e8; }
+    article.post-content h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    article.post-content p { line-height: 1.85; }
+    article.post-content code {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.88em;
+      padding: 1px 5px;
+      background: var(--bg-subtle, #f5f5f5);
+      border-radius: 4px;
+    }
+    article.post-content pre {
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md, 8px);
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    article.post-content pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="post-header">
+    <div class="container">
+      <div class="tags-group" style="margin-bottom: 0.75rem">
+        <span class="tag">Agent</span>
+        <span class="tag">VLM</span>
+        <span class="tag">桌面应用</span>
+        <span class="tag">复盘</span>
+      </div>
+      <h1>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑</h1>
+      <div class="post-meta">
+        <span>2026-07-04</span>
+        <span>·</span>
+        <span>12 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </div>
+
+  <article class="post-content">
+
+    <div class="container">
+
+      <!-- 开头：一个看起来很蠢的对话 -->
+      <p>
+        我做的是一个 Windows 桌面悬浮的小伙伴，能看屏幕、能聊天。有一天我随手测了一句对话，它大概是这样的：
+      </p>
+
+      <div class="fail-dialogue">
+        <div><span class="role-user">我：</span>要不要我帮你分析当前任务进展或下一步计划？</div>
+        <div><span class="role-bot">桌宠：</span>你可以告诉我，我帮你分析当前任务进展或下一步计划吗？</div>
+      </div>
+
+      <p>
+        看着像是模型在复读我上一句的提议。但它其实没坏——它只是不知道我在回应什么。
+        在它的视角里，我刚才那句话就是一句全新的、孤立的输入，
+        而我真正想说的"可以，那就帮我分析一下"这个承接关系，在它那里压根不存在。
+      </p>
+
+      <p>
+        这件事让我意识到，桌面 AI 伙伴真正难的，不是能不能截图、能不能调 VLM、能不能存历史。
+        难的是<strong>让模型在正确时刻拿到正确上下文</strong>，并且承认自己看不清、记不住、没证据。
+        这篇文章是我这个原型一路踩坑的复盘——不是为了证明我做出了什么，而是为了记录一个原型如何暴露出桌面 Agent 的核心矛盾。
+      </p>
+
+      <!-- 图1：错误链路图 -->
+      <svg class="article-svg" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="摘要链路太短导致信息丢失">
+        <defs>
+          <marker id="arr1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#9aa4b2"/>
+          </marker>
+        </defs>
+        <rect x="20" y="60" width="120" height="60" rx="10" fill="#e8f1fd" stroke="#1a73e8" stroke-width="1.5"/>
+        <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="14" fill="#1a73e8" font-weight="600">截图</text>
+
+        <rect x="180" y="60" width="120" height="60" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+        <text x="240" y="95" text-anchor="middle" font-family="system-ui" font-size="14" fill="#e65100" font-weight="600">窗口摘要</text>
+
+        <rect x="340" y="60" width="120" height="60" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+        <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" fill="#7b1fa2" font-weight="600">拼进 Prompt</text>
+
+        <rect x="500" y="60" width="160" height="60" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+        <text x="580" y="90" text-anchor="middle" font-family="system-ui" font-size="13" fill="#c62828" font-weight="600">泛泛回答</text>
+        <text x="580" y="108" text-anchor="middle" font-family="system-ui" font-size="11" fill="#c62828">丢细节 · 丢意图</text>
+
+        <line x1="140" y1="90" x2="175" y2="90" stroke="#9aa4b2" stroke-width="2" marker-end="url(#arr1)"/>
+        <line x1="300" y1="90" x2="335" y2="90" stroke="#9aa4b2" stroke-width="2" marker-end="url(#arr1)"/>
+        <line x1="460" y1="90" x2="495" y2="90" stroke="#9aa4b2" stroke-width="2" marker-end="url(#arr1)"/>
+
+        <text x="340" y="150" text-anchor="middle" font-family="system-ui" font-size="12" fill="#6b7785">链路越短，看似越优雅，但细节和用户意图一路在丢</text>
+      </svg>
+      <p class="svg-caption">图 1：早期"截图 → 摘要 → 回答"链路，看似优雅，实则在每一步都在丢信息</p>
+
+      <!-- 第一部分 -->
+      <h2>一、我以为截图 + 摘要就够了</h2>
+
+      <p>
+        原型的最初设想很直接：桌宠悬浮在桌面，实时读取当前窗口，生成一段摘要；用户提问时，把摘要塞进 prompt 让模型回答。
+        我当时觉得这条链路已经覆盖了"看屏幕"这件事的全部——能截、能看、能总结、能回答，齐了。
+      </p>
+
+      <p>
+        然后现实很快打脸。用户问"页面里中间那段代码具体是什么"，
+        摘要里只剩"这是一个代码编辑器窗口，包含若干文件"，
+        回答就只能复述摘要，根本说不出用户想知道的细节。
+        摘要越短，回答越像模板；摘要想写长，又会把上下文撑爆、拖慢响应，还把无关信息塞进模型视野。
+      </p>
+
+      <p>
+        更隐蔽的问题是，<strong>摘要一旦成为回答的唯一来源，模型就不再"看屏幕"，而是在"复述摘要"</strong>。
+        这两者看起来都能产出文字，但本质完全不同：前者是视觉证据驱动的判断，后者是对压缩文本的改写。
+        用户问细节时，摘要回答不出来；用户问感受时，摘要又显得太干巴。
+      </p>
+
+      <p>
+        我后来把摘要降级成了 <strong>RAG 索引</strong>，而不是最终证据。摘要用来回答"用户大概在哪个窗口、在做什么任务"，
+        但具体问题必须回看截图或局部截图。这个调整让回答质量明显改善——代价是链路变复杂了，
+        但这个复杂度是必须付的，因为"看见"和"理解"本来就是两件事。
+      </p>
+
+      <div class="callout">
+        <strong>踩坑要点：</strong>摘要适合做索引，不适合回答细节。"看不清"比泛泛回答更诚实。
+      </div>
+
+      <!-- 第二部分 -->
+      <h2>二、VLM 能看图，但不等于理解用户此刻的问题</h2>
+
+      <p>
+        把摘要降级成索引之后，我开始直面第二个问题：VLM 本身的可见度。
+        页面在人眼看来清清楚楚，VLM 却经常说不出具体文字；文件夹窗口识别很快，
+        复杂网页、IDE、重叠窗口就明显变差。有时候桌宠自己的对话框还会被误当成用户正在看的目标窗口。
+      </p>
+
+      <p>
+        可能的原因列了一串：截图缩放后小字不可读、UI 层级复杂时 VLM 倾向于描述布局而不是识别内容、
+        目标窗口被遮挡、整图输入导致细节被稀释。每一个都好理解，但叠在一起就很折磨。
+      </p>
+
+      <p>
+        我学到的最重要的一点是：<strong>多模态模型的"视觉理解"其实同时包含 OCR、布局理解和语义理解，
+        而这些能力都会受分辨率、裁剪、遮挡和 prompt 影响</strong>。它不是一个"能不能看"的开关，
+        而是一个"在什么条件下能看清多少"的连续谱。如果要回答细节，系统应该先选图、选区域、再细看，
+        而不是把整张屏幕丢给模型指望它什么都认得出来。
+      </p>
+
+      <p>
+        这期间也 tempted 想加一层 OCR fallback——VLM 说不出来就用 OCR 兜底。
+        但我后来克制住了：OCR fallback 会掩盖主链路的问题，让"看不清"变成"看起来看清了"，
+        而这种假性成功比直接承认看不清更危险。主链路不行就应该暴露出来、修它，而不是用兜底糊过去。
+      </p>
+
+      <!-- 第三部分：上下文断线 -->
+      <h2>三、对话历史不是字符串拼接</h2>
+
+      <p>
+        文章开头那个复读对话，本质上是上下文断线。
+        我说"可以"，是在回应桌宠上一轮的提议；但桌宠的 planner 只看到了孤立的"可以"二字，
+        没有任何承接信息，于是它只能把"可以"当成一个新任务去理解，结果就崩了。
+      </p>
+
+      <p>
+        这个问题暴露了一个很容易被忽略的事实：<strong>对话连续性不能只靠模型自己猜，系统要显式保留 turn state</strong>。
+        如果上一轮助手提了一个问题，而用户用"可以""继续""好的"这种短回复接话，
+        系统应该把上一轮的提议作为承接提示注入 planner 和 answer，而不是把短回复当成孤立输入。
+      </p>
+
+      <p>
+        我加了一个叫 <code>dialogue bridge</code> 的机制：当用户短回复时，
+        系统检测到这是承接型回复，把上一轮助手的提议拼回上下文。这不是硬编码回答，
+        而是恢复对话状态——告诉模型"用户在回应你刚才那句话"。
+        加上之后，那种复读式的失败基本消失了。
+      </p>
+
+      <div class="callout">
+        <strong>关键认知：</strong>好的上下文管理要保护"用户正在回应什么"，而不只是"用户说了什么"。
+      </div>
+
+      <!-- 第四部分：观察线与对话线 -->
+      <h2>四、观察线和对话线不能混在一起</h2>
+
+      <p>
+        早期系统试图一边自动观察屏幕，一边回答用户问题。听上去很合理——后台一直看着，用户问什么都能答。
+        但实际跑起来全是问题：用户打开对话框后，自动观察可能把对话框本身当成目标窗口；
+        回答过程中窗口一变，上下文就漂移；观察摘要和用户问答混在一起，模型根本分不清
+        "后台感知到的内容"和"当前对话要回答的问题"。
+      </p>
+
+      <!-- 图3：双线架构图 -->
+      <svg class="article-svg" viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="观察线和对话线分离">
+        <defs>
+          <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#9aa4b2"/>
+          </marker>
+        </defs>
+
+        <!-- 观察线 -->
+        <rect x="20" y="30" width="640" height="80" rx="12" fill="#f0f7ff" stroke="#1a73e8" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="40" y="55" font-family="system-ui" font-size="13" fill="#1a73e8" font-weight="700">Ambient Observation Line（后台观察线）</text>
+
+        <rect x="40" y="70" width="140" height="30" rx="6" fill="#fff" stroke="#1a73e8"/>
+        <text x="110" y="90" text-anchor="middle" font-family="system-ui" font-size="12" fill="#1a73e8">截图</text>
+
+        <rect x="210" y="70" width="180" height="30" rx="6" fill="#fff" stroke="#1a73e8"/>
+        <text x="300" y="90" text-anchor="middle" font-family="system-ui" font-size="12" fill="#1a73e8">富屏幕索引</text>
+
+        <rect x="420" y="70" width="220" height="30" rx="6" fill="#fff" stroke="#1a73e8"/>
+        <text x="530" y="90" text-anchor="middle" font-family="system-ui" font-size="12" fill="#1a73e8">本地存储（不打扰用户）</text>
+
+        <line x1="180" y1="85" x2="205" y2="85" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="390" y1="85" x2="415" y2="85" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- 对话线 -->
+        <rect x="20" y="140" width="640" height="90" rx="12" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+        <text x="40" y="165" font-family="system-ui" font-size="13" fill="#f57f17" font-weight="700">User Dialogue Line（用户对话线）</text>
+
+        <rect x="40" y="180" width="120" height="30" rx="6" fill="#fff" stroke="#f57f17"/>
+        <text x="100" y="200" text-anchor="middle" font-family="system-ui" font-size="12" fill="#f57f17">用户意图</text>
+
+        <rect x="190" y="180" width="120" height="30" rx="6" fill="#fff" stroke="#f57f17"/>
+        <text x="250" y="200" text-anchor="middle" font-family="system-ui" font-size="12" fill="#f57f17">Tool Planner</text>
+
+        <rect x="340" y="180" width="120" height="30" rx="6" fill="#fff" stroke="#f57f17"/>
+        <text x="400" y="200" text-anchor="middle" font-family="system-ui" font-size="12" fill="#f57f17">证据</text>
+
+        <rect x="490" y="180" width="140" height="30" rx="6" fill="#fff" stroke="#f57f17"/>
+        <text x="560" y="200" text-anchor="middle" font-family="system-ui" font-size="12" fill="#f57f17">回答</text>
+
+        <line x1="160" y1="195" x2="185" y2="195" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="310" y1="195" x2="335" y2="195" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="460" y1="195" x2="485" y2="195" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <text x="340" y="232" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7785">观察线 ≠ 回答线，用户邀请时才把视觉证据带入对话</text>
+      </svg>
+      <p class="svg-caption">图 2：观察线和对话线分离，后台建立索引但不直接打扰用户</p>
+
+      <p>
+        于是我把两条线拆开了。<strong>自动观察线</strong>负责在后台默默建立屏幕索引，不直接打扰用户；
+        <strong>用户对话线</strong>负责承接意图、调用工具、回答问题。只有当用户点击观察按钮、
+        或者在对话里明确要求看屏幕时，视觉证据才会被带进对话线。
+        这样模型拿到的上下文永远是干净的——要么是纯对话，要么是用户明确邀请后的"对话 + 视觉"。
+      </p>
+
+      <!-- 第五部分：记忆管理 -->
+      <h2>五、记忆管理不是加数据库</h2>
+
+      <p>
+        项目早期我认真考虑过引入 Redis、PostgreSQL，甚至 Docker Compose 一把梭。
+        听上去很"工程化"，很"可扩展"。后来我把它们全拆了。
+      </p>
+
+      <p>
+        不是因为这些技术不好，而是因为它们解决的不是我当前阶段的问题。
+        Redis 解决的是缓存和并发，PostgreSQL 解决的是结构化数据持久化，
+        Docker 解决的是部署一致性——这些是规模和团队问题。
+        但<strong>桌宠第一阶段要面对的不是规模问题，是"该记什么、何时取出、如何注入"</strong>。
+        加一个 Redis 不会让模型更聪明，只会让依赖更重、启动更慢、用户体验更差。
+      </p>
+
+      <p>
+        我最终留的是 SQLite + markdown profile + runtime store。
+        真正重要的不是存储介质，而是把记忆分成四类、分别管理：
+      </p>
+
+      <ul>
+        <li><strong>profile</strong>：用户长期偏好和助手人设，低频更新，几乎每次对话都会带。</li>
+        <li><strong>working memory</strong>：最近屏幕和任务状态，高频写入，短期有效。</li>
+        <li><strong>conversation memory</strong>：当前会话历史，会话结束就归档。</li>
+        <li><strong>episodic memory</strong>：重要事件或项目决策，偶尔写入，长期保留。</li>
+      </ul>
+
+      <p>
+        记忆管理的核心是<strong>写入策略、检索策略和注入策略</strong>，而不是用什么数据库。
+        一个乱写日志的 Redis 比一个干净的 SQLite 更糟，因为它会让模型在错误时刻拿到错误的东西。
+      </p>
+
+      <!-- 第六部分：工具层 -->
+      <h2>六、工具层不能变成关键词路由</h2>
+
+      <p>
+        原型一度滑向了一个看起来很务实的方案：用关键词决定走哪条路。
+      </p>
+
+      <pre><code>如果用户说"看 / 页面 / 截图" -> 走视觉
+如果用户说"记住"            -> 写记忆
+否则                       -> 普通聊天</code></pre>
+
+      <p>
+        一开始挺好用，关键词越补越多。但很快系统就变脆了：用户换个说法就 miss，
+        小模型失去判断空间，用户也觉得对话死板。更糟的是，错误不会暴露在工具调用日志里，
+        而是表现为奇怪回答——你根本不知道是模型笨还是路由错了。
+      </p>
+
+      <p>
+        后来我把它改成了 Hermes-like 的工具层思路（受到启发，不是照搬）：
+        让 LLM 自己在少量工具里选择，工具执行后返回证据，再由 answer model 基于证据组织回答。
+      </p>
+
+      <!-- 图2：上下文分层图 -->
+      <svg class="article-svg" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上下文分层与工具结果注入">
+        <defs>
+          <marker id="arr3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#9aa4b2"/>
+          </marker>
+        </defs>
+
+        <!-- 稳定 system prompt -->
+        <rect x="120" y="20" width="440" height="44" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+        <text x="340" y="47" text-anchor="middle" font-family="system-ui" font-size="13" fill="#2e7d32" font-weight="600">Stable System Prompt（协议 · 边界 · 回答原则）</text>
+
+        <line x1="340" y1="64" x2="340" y2="84" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- profile -->
+        <rect x="160" y="84" width="360" height="44" rx="8" fill="#f0f7ff" stroke="#1a73e8" stroke-width="1.5"/>
+        <text x="340" y="111" text-anchor="middle" font-family="system-ui" font-size="13" fill="#1a73e8" font-weight="600">Profile / Persona（低频，用户可编辑）</text>
+
+        <line x1="340" y1="128" x2="340" y2="148" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- dialogue state -->
+        <rect x="160" y="148" width="360" height="44" rx="8" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5"/>
+        <text x="340" y="175" text-anchor="middle" font-family="system-ui" font-size="13" fill="#f57f17" font-weight="600">Dialogue State（对话状态 · 承接提示）</text>
+
+        <line x1="340" y1="192" x2="340" y2="212" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- tool results -->
+        <rect x="80" y="212" width="520" height="44" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+        <text x="340" y="232" text-anchor="middle" font-family="system-ui" font-size="13" fill="#7b1fa2" font-weight="600">Tool Results（动态）</text>
+        <text x="340" y="250" text-anchor="middle" font-family="system-ui" font-size="11" fill="#7b1fa2">screen.look · memory.search · memory.remember</text>
+
+        <line x1="340" y1="256" x2="340" y2="276" stroke="#9aa4b2" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- final answer -->
+        <rect x="160" y="276" width="360" height="36" rx="8" fill="#e0f2f1" stroke="#00695c" stroke-width="1.5"/>
+        <text x="340" y="299" text-anchor="middle" font-family="system-ui" font-size="13" fill="#00695c" font-weight="600">Final Answer</text>
+
+        <text x="340" y="316" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7785">稳定前缀 → 低频 profile → 对话状态 → 动态工具结果 → 回答</text>
+      </svg>
+      <p class="svg-caption">图 3：上下文分层，稳定部分靠前保护 KV cache，动态部分作为工具结果注入</p>
+
+      <p>
+        当前暴露给模型的工具只有四个：
+      </p>
+
+      <ul>
+        <li><code>screen.look(question)</code>：看当前屏幕或用户图片。</li>
+        <li><code>memory.search(query)</code>：查 profile、历史对话、近期目标。</li>
+        <li><code>memory.remember(note)</code>：仅用户明确要求时写入。</li>
+        <li><code>none</code>：普通陪伴和讨论，不调工具。</li>
+      </ul>
+
+      <p>
+        后端 provider 可以很复杂——要管截图索引、窗口 metadata、局部裁剪、VLM 分层 messages——
+        但<strong>模型可见的工具要少、要稳定、要可审计</strong>。
+        Hermes-like 思想给我的启发不是"工具越多越 Agent"，而是"工具边界要清楚、可审计、可调试"。
+        工具调用日志也应该暴露给高级调试，否则系统会越来越像黑盒，出了问题根本定位不到。
+      </p>
+
+      <div class="callout">
+        <strong>关于 KV cache：</strong>稳定的 system prompt 只放协议、边界、回答原则，是为了保护可缓存 prefix。
+        动态上下文（当前屏幕、历史截图、记忆检索结果）作为工具结果注入，而不是揉成一段巨大的 prompt。
+        KV cache 不是记忆，只是性能优化——为了缓存，系统提示词要稳；为了回答质量，动态上下文要分层。
+      </div>
+
+      <!-- 第七部分：产品方向 -->
+      <h2>七、产品方向：从"屏幕摘要器"转向"陪伴式桌宠"</h2>
+
+      <p>
+        上面这些技术调整累积起来，把我对产品的理解也改变了。
+      </p>
+
+      <p>
+        原型早期我满脑子都是"它能看屏幕、它能摘要、它能回答"，越强调摘要，桌宠就越像一个机械的屏幕分析器——
+        每隔几秒弹一段"当前你在看 XX 窗口"，用户不问它也在汇报。这不是陪伴，这是骚扰。
+      </p>
+
+      <p>
+        后来我把产品中心从"摘要"切换到"陪伴"：
+      </p>
+
+      <blockquote style="border-left:4px solid var(--accent,#1a73e8); padding:0.5rem 1.25rem; margin:1.5rem 0; color:var(--text-secondary,#666); font-style:italic;">
+        默认陪伴，不默认汇报。<br>
+        默认沉默，不默认分析。<br>
+        用户邀请时，才认真看、认真想、认真回应。
+      </blockquote>
+
+      <p>
+        截图、VLM、摘要、记忆仍然重要，但它们是<strong>后台感知器官，不是产品本体</strong>。
+        产品本体是一个在桌面上安静存在、理解工作节奏、能被随时唤起的小伙伴。
+        它平时不打扰，用户想互动时立刻进入对话，用户想分析时再认真拆解。
+      </p>
+
+      <!-- 结尾：架构原则 -->
+      <h2>八、失败给出的架构原则</h2>
+
+      <p>
+        回头看这一路，真正有价值的不是任何一个具体修复，而是几次失败之后慢慢沉淀下来的几条判断：
+      </p>
+
+      <div class="principle-card">
+        <ol>
+          <li><strong>摘要是索引，不是答案。</strong>摘要用来定位"用户大概在哪、在做什么"，细节问题必须回看证据。</li>
+          <li><strong>截图是证据，不是上下文全部。</strong>视觉信息要按需取用，而不是无差别塞进 prompt。</li>
+          <li><strong>记忆是选择，不是日志。</strong>该记什么、何时取出、如何注入，比用什么数据库更重要。</li>
+          <li><strong>工具是协议，不是关键词分支。</strong>让模型在少量稳定工具里选择，比写一长串 if-else 更可持续。</li>
+          <li><strong>陪伴式 Agent 的价值在于"接住用户"，不是"炫耀能力"。</strong>低打扰是一种能力，会沉默比会说话更难。</li>
+        </ol>
+      </div>
+
+      <h2>下一步计划</h2>
+
+      <p>
+        接下来我想做三件事：第一，让模型通过少量工具自由选择上下文，摘要只做索引不进回答；
+        第二，记忆写入必须可解释——什么时候写、写了什么、为什么写，都要能查得到；
+        第三，把上下文使用率和交互轨迹做成可调试的视图，让自己能在出问题时第一时间看到
+        "模型当时到底拿到了什么"。
+      </p>
+
+      <p>
+        我不打算把它包装成一个"已经成熟的 Agent"。它更准确的状态是——
+        <strong>一个正在逼近正确问题的原型</strong>。很多失败暴露了桌面 AI 伙伴最难的工程部分，
+        而目前的价值，在于形成了还算清晰的架构判断。
+      </p>
+
+      <blockquote style="border-left:4px solid var(--accent,#1a73e8); padding:0.75rem 1.25rem; margin:2rem 0; color:var(--text-secondary,#666); font-style:italic;">
+        后来我意识到，一个桌面 AI 伙伴的核心不是每秒总结屏幕，
+        而是在用户需要它的时候，知道该看哪里、该记起什么、该承认什么不知道，
+        以及该怎样像一个在场的伙伴那样回应。
+      </blockquote>
+
+      <p>— 宋林蔚</p>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+        <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
+        <a href="../projects/local-window-copilot.html" class="btn">查看相关项目 →</a>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
