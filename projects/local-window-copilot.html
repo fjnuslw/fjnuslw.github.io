@@ -3,133 +3,469 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Local Window Copilot — Windows 本地陪伴式桌面伙伴，FastAPI + SQLite + llama.cpp + MiniCPM-V VLM">
+  <meta name="description" content="Local Window Copilot — Windows 本地陪伴式桌面伙伴，观察线生成可审计证据，对话线按需检索回答。">
   <title>Local Window Copilot — 宋林蔚</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    /* 项目详情页专属样式 */
+    :root {
+      --lwc-ink: #111827;
+      --lwc-muted: #5f6877;
+      --lwc-soft: #f6f8fb;
+      --lwc-line: #e4e8ef;
+      --lwc-blue: #2563eb;
+      --lwc-teal: #0f9f8c;
+      --lwc-amber: #b7791f;
+    }
+
+    .post-content.project-case {
+      max-width: none;
+      padding: 0 0 var(--space-16);
+    }
+
+    .case-shell {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .case-narrow {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-top: calc(var(--nav-height) + 24px);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+
     .project-hero {
-      text-align: center;
-      padding: 3rem 0 2rem;
+      padding: 56px 0 42px;
+      border-bottom: 1px solid var(--lwc-line);
     }
-    .project-hero img.hero-mascot {
-      width: 200px;
-      height: 200px;
-      border-radius: 24px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-      margin-bottom: 1.5rem;
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+      gap: 56px;
+      align-items: center;
     }
-    .project-badges {
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 4px 10px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 999px;
+      color: var(--lwc-muted);
+      background: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0;
+    }
+
+    .project-hero h1 {
+      margin: 0 0 18px;
+      color: var(--lwc-ink);
+      font-size: clamp(2.15rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .hero-lede {
+      max-width: 660px;
+      margin: 0 0 28px;
+      color: var(--lwc-muted);
+      font-size: clamp(1rem, 1.6vw, 1.22rem);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      gap: 12px;
+      margin-bottom: 26px;
     }
-    .project-badges .pb {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: var(--bg-subtle, #f5f5f5);
-      color: var(--text-secondary, #666);
-      border: 1px solid var(--border, #e5e5e5);
-    }
-    .pb.platform { background: #e8f1fd; color: #1a73e8; border-color: #d0e3fc; }
-    .pb.lang { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
-    .pb.framework { background: #e0f2f1; color: #00695c; border-color: #b2dfdb; }
-    .pb.model { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
-    .pb.status { background: #fff8e1; color: #f57f17; border-color: #fff9c4; }
 
-    .mascot-grid {
+    .hero-visual {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
+      place-items: center;
+      min-height: 360px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(17, 24, 39, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(17, 24, 39, 0.045) 1px, transparent 1px),
+        #fbfcfd;
+      background-size: 28px 28px;
     }
-    .mascot-card {
-      background: var(--bg-card, #fff);
-      border: 1px solid var(--border, #e5e5e5);
-      border-radius: var(--radius-lg, 12px);
-      padding: 1.5rem 1rem;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .mascot-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-    .mascot-card img {
-      width: 110px;
-      height: 110px;
-      margin-bottom: 0.75rem;
-    }
-    .mascot-card .ms-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
-    .mascot-card .ms-desc { font-size: 0.8rem; color: var(--text-muted, #999); }
 
-    .arch-diagram {
-      background: #0d1117;
-      color: #c9d1d9;
-      border-radius: var(--radius-lg, 12px);
-      padding: 1.5rem;
+    .hero-visual img {
+      width: min(330px, 72%);
+      height: auto;
+      object-fit: contain;
+    }
+
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 640px;
+      margin-top: 22px;
+    }
+
+    .fact-pill {
+      padding: 12px 14px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+
+    .fact-label {
+      display: block;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0;
+    }
+
+    .fact-value {
+      display: block;
+      margin-top: 5px;
+      color: var(--lwc-ink);
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .section-block {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--lwc-line);
+    }
+
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      margin: 0 0 18px;
+      color: var(--lwc-ink);
+      font-size: clamp(1.45rem, 2.8vw, 2.2rem);
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 820px;
+      color: var(--lwc-muted);
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+
+    .principle-grid,
+    .feature-grid,
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .feature-grid.compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 0;
+    }
+
+    .principle-card,
+    .feature-card,
+    .tech-card,
+    .boundary-card,
+    .roadmap-card,
+    .flow-card {
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background: var(--bg);
+      padding: 22px;
+    }
+
+    .principle-card strong,
+    .feature-card strong,
+    .tech-card strong,
+    .boundary-card strong,
+    .roadmap-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--lwc-ink);
+      font-size: 1rem;
+    }
+
+    .principle-card p,
+    .feature-card p,
+    .tech-card p,
+    .boundary-card p,
+    .roadmap-card p,
+    .flow-card p {
+      margin: 0;
+      color: var(--lwc-muted);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .flow-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .flow-card h3 {
+      margin: 0 0 16px;
+      color: var(--lwc-ink);
+      font-size: 1.05rem;
+    }
+
+    .flow-steps {
+      display: grid;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .flow-step {
+      padding: 10px 12px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 6px;
+      color: var(--lwc-muted);
+      background: var(--lwc-soft);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .flow-step code,
+    .tool-chip code {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .state-card {
+      min-width: 0;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background: var(--bg);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .state-card img {
+      width: min(138px, 88%);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      margin: 0 auto 16px;
+    }
+
+    .state-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--lwc-ink);
+      font-size: 0.98rem;
+    }
+
+    .state-card span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .tool-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .tool-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 999px;
+      color: var(--lwc-ink);
+      background: var(--lwc-soft);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+
+    .split-band {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 28px;
+      align-items: start;
+      margin-top: 28px;
+    }
+
+    .boundary-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .boundary-card {
+      padding: 18px 20px;
+    }
+
+    .code-panel {
+      margin: 0;
+      padding: 22px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background: #101418;
+      color: #d8e0e8;
       overflow-x: auto;
-      margin: 1.5rem 0;
-      font-family: var(--font-mono, monospace);
+      font-family: var(--font-mono);
       font-size: 0.8rem;
-      line-height: 1.5;
+      line-height: 1.7;
       white-space: pre;
     }
-    .feature-grid {
+
+    .roadmap-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
     }
-    .feature-item {
-      background: var(--bg-subtle, #f9f9f9);
-      border-radius: var(--radius-md, 8px);
-      padding: 1.25rem;
-      border-left: 3px solid var(--accent, #1a73e8);
+
+    .roadmap-card {
+      padding: 18px;
+      border-top: 3px solid var(--lwc-blue);
     }
-    .feature-item .fi-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .feature-item .fi-title { font-weight: 700; margin-bottom: 0.35rem; }
-    .feature-item .fi-desc { font-size: 0.875rem; color: var(--text-secondary, #666); line-height: 1.6; }
 
-    .layer-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-    .layer-table th, .layer-table td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border, #e5e5e5); }
-    .layer-table th { background: var(--bg-subtle, #f5f5f5); font-weight: 700; font-size: 0.875rem; }
-    .layer-table td { font-size: 0.9rem; }
-
-    .stack-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-    .stack-table th, .stack-table td { padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border, #e5e5e5); }
-    .stack-table th { background: var(--bg-subtle, #f5f5f5); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-    .demo-scene {
-      background: var(--bg-subtle, #f9f9f9);
-      border-left: 3px solid #009688;
-      border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
-      padding: 1rem 1.25rem;
-      margin: 1rem 0;
-      font-size: 0.9rem;
+    .roadmap-card.pending {
+      border-top-color: var(--lwc-amber);
     }
-    .demo-scene .ds-label { font-weight: 700; color: #00695c; margin-bottom: 0.5rem; }
-    .demo-scene pre { background: #fff; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; margin: 0.5rem 0; }
 
-    .roadmap { list-style: none; padding: 0; }
-    .roadmap li { padding: 0.5rem 0; padding-left: 1.75rem; position: relative; font-size: 0.9rem; }
-    .roadmap li::before { content: "☐"; position: absolute; left: 0; color: var(--text-muted, #999); }
-    .roadmap li.done::before { content: "✓"; color: #00c853; font-weight: 700; }
-    .roadmap li.done { color: var(--text-secondary, #666); }
+    .demo-frame {
+      margin-top: 28px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--lwc-soft);
+    }
+
+    .demo-frame iframe {
+      width: 100%;
+      height: 620px;
+      border: 0;
+      display: block;
+    }
 
     .cta-box {
+      margin-top: 28px;
+      padding: 30px;
+      border: 1px solid var(--lwc-line);
+      border-radius: 8px;
+      background: var(--lwc-soft);
       text-align: center;
-      background: linear-gradient(135deg, #e8f1fd, #f3e5f5);
-      border-radius: var(--radius-lg, 12px);
-      padding: 2rem;
-      margin: 2rem 0;
     }
-    .cta-box .btn { margin: 0 0.5rem; }
+
+    .cta-box h3 {
+      margin: 0 0 10px;
+      color: var(--lwc-ink);
+      font-size: 1.35rem;
+    }
+
+    .cta-box p {
+      margin: 0 auto 20px;
+      max-width: 620px;
+      color: var(--lwc-muted);
+      line-height: 1.8;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .split-band,
+      .flow-board {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-facts,
+      .principle-grid,
+      .feature-grid,
+      .feature-grid.compact,
+      .tech-grid,
+      .roadmap-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .state-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .case-shell {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .project-hero {
+        padding-top: 36px;
+      }
+
+      .hero-visual {
+        min-height: 260px;
+      }
+
+      .hero-facts,
+      .principle-grid,
+      .feature-grid,
+      .feature-grid.compact,
+      .tech-grid,
+      .roadmap-grid,
+      .state-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-block {
+        padding: 42px 0;
+      }
+
+      .demo-frame iframe {
+        height: 520px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -150,233 +486,258 @@
     </div>
   </nav>
 
-  <article class="post-content">
-
-    <div class="container">
-
-      <p style="margin-top: 2rem;">
-        <a href="../projects.html" style="font-size: 0.875rem; color: var(--text-muted);">← 返回项目列表</a>
-      </p>
-
-      <!-- Hero -->
-      <div class="project-hero">
-        <img src="local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot 桌宠" class="hero-mascot">
-        <h1 style="margin-bottom: 0.5rem;">🪟 Local Window Copilot</h1>
-        <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 640px; margin: 0 auto 1rem;">
-          Windows 本地陪伴式桌面伙伴 · 默认陪伴，不默认汇报
-        </p>
-        <div class="project-badges">
-          <span class="pb platform">Windows 10+</span>
-          <span class="pb lang">Python 3.11+</span>
-          <span class="pb framework">FastAPI</span>
-          <span class="pb model">MiniCPM-V VLM</span>
-          <span class="pb status">Alpha · 开发中</span>
-        </div>
-      </div>
-
-      <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
-
-      <!-- 简介 -->
-      <h2>这是什么</h2>
-      <p>
-        Local Window Copilot 是一个<strong>本地、轻量、低打扰</strong>的陪伴式桌面伙伴。
-        它安静地在桌面上存在，理解你的工作节奏，能被随时唤起。
-      </p>
-      <p>
-        它不是又一个屏幕分析器，也不是自动控制型 Agent。截图、VLM、摘要、记忆是后台感知器官，
-        <strong>不是产品本体</strong>。它的价值在于：
-      </p>
-      <ul>
-        <li>🤫 平时安静陪伴 —— 看到状态变化但不急着打断</li>
-        <li>💬 随时进入对话 —— 你想互动时立刻回应</li>
-        <li>🔍 认真拆解分析 —— 你想分析时才调用视觉、历史和记忆</li>
-        <li>🏠 完全本地运行 —— 不要求 Redis / PostgreSQL / Docker</li>
-        <li>🚫 不替你操作电脑 —— 可以观察、陪伴、解释、建议，但不自动点击/输入/提交</li>
-      </ul>
-
-      <!-- 桌宠状态 -->
-      <h2>🎭 桌宠状态</h2>
-      <p>桌宠有 5 种核心状态，对应不同的工作情境，会根据你的工作节奏自然切换表情和姿态。</p>
-
-      <div class="mascot-grid">
-        <div class="mascot-card">
-          <img src="local-window-copilot/img/mascot_idle.png" alt="idle">
-          <div class="ms-name">😴 Idle</div>
-          <div class="ms-desc">默认陪伴，轻微呼吸</div>
-        </div>
-        <div class="mascot-card">
-          <img src="local-window-copilot/img/mascot_observing.png" alt="observing">
-          <div class="ms-name">👀 Observing</div>
-          <div class="ms-desc">注意到状态变化</div>
-        </div>
-        <div class="mascot-card">
-          <img src="local-window-copilot/img/mascot_analyzing.png" alt="analyzing">
-          <div class="ms-name">🧠 Analyzing</div>
-          <div class="ms-desc">认真分析当前屏幕</div>
-        </div>
-        <div class="mascot-card">
-          <img src="local-window-copilot/img/mascot_privacy.png" alt="privacy">
-          <div class="ms-name">🔒 Privacy</div>
-          <div class="ms-desc">隐私模式，停止观察</div>
-        </div>
-        <div class="mascot-card">
-          <img src="local-window-copilot/img/mascot_error.png" alt="error">
-          <div class="ms-name">⚠️ Error</div>
-          <div class="ms-desc">遇到问题，需要关注</div>
-        </div>
-      </div>
-
-      <!-- 三层架构 -->
-      <h2>🏗️ 三层产品结构</h2>
-      <div class="arch-diagram">┌─────────────────────────────────────────────────────────────┐
-│                    桌面悬浮窗 (桌宠 UI)                       │
-│              呼吸 · 眨眼 · 悬浮 · 状态指示灯                   │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-          ┌────────────────┼────────────────┐
-          ▼                ▼                ▼
-   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-   │  Presence    │ │  Companion   │ │   Work Lens  │
-   │  存在层      │ │  陪伴层       │ │   工作透镜    │
-   ├──────────────┤ ├──────────────┤ ├──────────────┤
-   │ 呼吸/表情    │ │ 情绪回应     │ │ 视觉分析     │
-   │ 姿态动画     │ │ 对话陪伴     │ │ 上下文拆解   │
-   │ 不展示文字   │ │ 记忆+人格    │ │ 用户邀请才触发│
-   └──────────────┘ └──────────────┘ └──────────────┘
-          │                │                │
-          └────────────────┼────────────────┘
-                           ▼
-              ┌────────────────────────┐
-              │   FastAPI Backend      │
-              │   SQLite RuntimeStore  │ ← 本地存储
-              │   llama.cpp Server     │ ← 本地 LLM
-              │   MiniCPM-V VLM        │ ← 视觉模型
-              └────────────────────────┘</div>
-
-      <table class="layer-table">
-        <thead>
-          <tr><th>层级</th><th>职责</th><th>何时工作</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Presence Layer</strong> 存在层</td><td>让桌宠像"在场"，而不是按钮</td><td>始终运行，低频动画</td></tr>
-          <tr><td><strong>Companion Layer</strong> 陪伴层</td><td>情绪回应、对话陪伴、记忆与人格</td><td>用户说话时激活</td></tr>
-          <tr><td><strong>Work Lens</strong> 工作透镜</td><td>调用视觉和上下文做认真分析</td><td>仅用户邀请时触发</td></tr>
-        </tbody>
-      </table>
-
-      <!-- 特性 -->
-      <h2>✨ 核心特性</h2>
-      <div class="feature-grid">
-        <div class="feature-item">
-          <div class="fi-icon">🤫</div>
-          <div class="fi-title">低打扰陪伴</div>
-          <div class="fi-desc">默认沉默，不默认分析。主动发言必须满足明确条件，高质量陪伴需要会沉默。</div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">🏠</div>
-          <div class="fi-title">完全本地</div>
-          <div class="fi-desc">SQLite 存储状态与记忆，llama.cpp 本地推理，无需 Redis/PostgreSQL/Docker。</div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">🧠</div>
-          <div class="fi-title">视觉理解</div>
-          <div class="fi-desc">MiniCPM-V 视觉语言模型理解屏幕内容，但只在用户邀请时调用，不默认扫描。</div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">🛡️</div>
-          <div class="fi-title">隐私优先</div>
-          <div class="fi-desc">不替用户操作电脑，不自动点击/输入/提交。可以观察、陪伴、解释、建议、记录。</div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">💬</div>
-          <div class="fi-title">陪伴对话</div>
-          <div class="fi-desc">先接住用户的情绪和判断，再根据需要进入分析。陪伴优先于分析。</div>
-        </div>
-        <div class="feature-item">
-          <div class="fi-icon">📐</div>
-          <div class="fi-title">克制工具层</div>
-          <div class="fi-desc">模型可见工具只有三个：screen.look / memory.search / memory.remember，保持克制。</div>
-        </div>
-      </div>
-
-      <!-- 演示场景 -->
-      <h2>🎬 演示场景</h2>
-      <p style="font-size: 0.875rem; color: var(--text-muted);">以下为产品设计的典型交互场景，演示 GIF 将在正式发布后补充。</p>
-
-      <div class="demo-scene">
-        <div class="ds-label">场景一：陪伴模式</div>
-        <pre>用户：我觉得这个方向不对。
-桌宠：我也感觉你不是在挑某个实现细节，而是在怀疑"摘要作为中心"这件事。
-      我们可以先不急着改代码，把产品灵魂重新定一下。</pre>
-      </div>
-
-      <div class="demo-scene">
-        <div class="ds-label">场景二：工作透镜</div>
-        <pre>用户：（点击桌宠"观察"按钮）
-桌宠：[切换到 analyzing 状态]
-      我看到你现在在 IDE 里，打开了三个文件，光标停在 window_analysis.py。
-      这个函数最近的改动引入了一个未关闭的 session，要我帮你看看吗？</pre>
-      </div>
-
-      <div class="demo-scene">
-        <div class="ds-label">场景三：低打扰主动提示</div>
-        <pre>[用户在同一任务上停留 45 分钟，反复切换三个窗口]
-桌宠：[轻微 observing 状态，不弹窗]
-      → 仅在悬浮窗角标显示一个小提示点，用户注意到时才展开</pre>
-      </div>
-
-      <!-- 技术栈 -->
-      <h2>🛠️ 技术栈</h2>
-      <table class="stack-table">
-        <thead><tr><th>组件</th><th>技术</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td>后端框架</td><td>FastAPI</td><td>异步 API，自带 OpenAPI 文档</td></tr>
-          <tr><td>本地存储</td><td>SQLite</td><td>RuntimeStore，零配置</td></tr>
-          <tr><td>LLM 推理</td><td>llama.cpp</td><td>本地部署，保护隐私</td></tr>
-          <tr><td>视觉模型</td><td>MiniCPM-V</td><td>视觉语言模型，屏幕理解</td></tr>
-          <tr><td>桌面 UI</td><td>Python + Win32</td><td>悬浮窗，透明置顶</td></tr>
-          <tr><td>包管理</td><td>uv</td><td>快速依赖管理</td></tr>
-        </tbody>
-      </table>
-
-      <!-- 产品原则 -->
-      <h2>📐 产品原则</h2>
-      <ol>
-        <li><strong>默认不汇报屏幕</strong> —— 屏幕分析结果默认进后台，只在用户主动邀请时展示</li>
-        <li><strong>陪伴优先于分析</strong> —— 先接住用户的情绪和判断，再根据需要进入分析</li>
-        <li><strong>低打扰是能力</strong> —— 高质量陪伴需要会沉默，主动发言必须满足明确条件</li>
-        <li><strong>不伪装能力</strong> —— 主链路不清楚就明确说不清楚</li>
-        <li><strong>不替用户操作电脑</strong> —— 可以观察、陪伴、解释、建议、记录，但不自动执行</li>
-      </ol>
-
-      <!-- 路线图 -->
-      <h2>🗺️ 路线图</h2>
-      <ul class="roadmap">
-        <li class="done">桌宠悬浮窗 + 5 种状态动画</li>
-        <li class="done">FastAPI 后端 + SQLite RuntimeStore</li>
-        <li class="done">窗口捕获与分析</li>
-        <li class="done">MiniCPM-V 视觉语言模型接入</li>
-        <li class="done">陪伴对话 + 工具编排</li>
-        <li>演示 GIF / 视频录制</li>
-        <li>Rive 动画迁移（替代 PNG 精灵图）</li>
-        <li>长期记忆向量检索</li>
-        <li>多显示器支持</li>
-      </ul>
-
-      <!-- CTA -->
-      <div class="cta-box">
-        <h3 style="margin-bottom: 0.5rem;">想了解更多？</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">查看完整源码、产品规格文档和开发指南</p>
-        <a href="../demos/local-window-copilot/index.html" class="btn btn-primary">体验 Demo →</a>
-        <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn">查看 GitHub →</a>
-        <a href="../projects.html" class="btn btn-secondary">返回项目列表</a>
-      </div>
-
-      <p style="margin: 2rem 0;">
-        <a href="../projects.html" style="font-size: 0.875rem; color: var(--text-muted);">← 返回项目列表</a>
-      </p>
-
+  <article class="post-content project-case">
+    <div class="case-shell">
+      <a class="back-link" href="../projects.html">← 返回项目列表</a>
     </div>
+
+    <header class="project-hero">
+      <div class="case-shell hero-grid">
+        <div>
+          <span class="eyebrow">LOCAL · WINDOWS · DESKTOP COMPANION</span>
+          <h1>Local Window Copilot</h1>
+          <p class="hero-lede">
+            一个本地、轻量、低打扰的桌面陪伴伙伴。它不把“当前屏幕摘要”当成产品本体，而是把截图、VLM、观察记录和记忆放在后台；用户需要时，再通过可审计证据认真回答。
+          </p>
+          <div class="hero-actions">
+            <a href="../demos/local-window-copilot/index.html" class="btn btn-primary">体验 Demo</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-secondary">GitHub</a>
+          </div>
+          <div class="hero-facts" aria-label="项目要点">
+            <div class="fact-pill"><span class="fact-label">Product</span><span class="fact-value">默认陪伴，不默认汇报</span></div>
+            <div class="fact-pill"><span class="fact-label">Runtime</span><span class="fact-value">FastAPI + SQLite</span></div>
+            <div class="fact-pill"><span class="fact-label">Evidence</span><span class="fact-value">截图 + 结构化观察</span></div>
+            <div class="fact-pill"><span class="fact-label">Tool</span><span class="fact-value">memory.search(query)</span></div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Local Window Copilot 桌宠预览">
+          <img src="local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot 桌宠">
+        </div>
+      </div>
+    </header>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Current Direction</p>
+        <h2 class="section-heading">从“屏幕总结按钮”转向“在旁边的伙伴”</h2>
+        <p class="section-copy">
+          这个项目早期验证了窗口截图、MiniCPM-V 识图和本地问答链路，但继续围绕“摘要”推进会变得机械。现在的主线更明确：桌宠平时安静存在；观察线只生成证据；对话线默认不塞窗口摘要，模型需要时自己调用检索工具取证；调试线把所有观察、截图和工具轨迹展示给开发者。
+        </p>
+        <div class="principle-grid">
+          <div class="principle-card">
+            <strong>低打扰</strong>
+            <p>默认沉默，不连续汇报屏幕。主动提示必须短、少、确定有帮助。</p>
+          </div>
+          <div class="principle-card">
+            <strong>按需取证</strong>
+            <p>窗口观察不再固定注入 prompt；用户问题需要证据时，模型调用检索工具。</p>
+          </div>
+          <div class="principle-card">
+            <strong>诚实边界</strong>
+            <p>缺截图、缺观察、工具失败都明确暴露，不用泛泛回答伪装理解。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Architecture</p>
+        <h2 class="section-heading">三条线：观察、对话、调试</h2>
+        <p class="section-copy">
+          当前版本不追求复杂 planner，也不把一堆上下文硬塞给模型。系统被拆成三条责任清晰的链路：观察线保存可审计证据，对话线组织用户问题和工具调用，WebUI 调试线回答“到底看到了什么、查了什么、为什么这么答”。
+        </p>
+        <div class="flow-board">
+          <div class="flow-card">
+            <h3>观察线</h3>
+            <p>只负责把目标窗口转成结构化证据，不负责和用户聊天。</p>
+            <div class="flow-steps">
+              <div class="flow-step">目标窗口截图 + metadata</div>
+              <div class="flow-step">MiniCPM-V 结构化观察</div>
+              <div class="flow-step">SQLite 记录 + 截图文件</div>
+            </div>
+          </div>
+          <div class="flow-card">
+            <h3>对话线</h3>
+            <p>默认只有 system、profile、当前会话历史和用户问题。</p>
+            <div class="flow-steps">
+              <div class="flow-step">用户问题进入 ChatAgent</div>
+              <div class="flow-step">模型按需调用 <code>memory.search</code></div>
+              <div class="flow-step">基于证据流式回答</div>
+            </div>
+          </div>
+          <div class="flow-card">
+            <h3>调试线</h3>
+            <p>让本地 Agent 的上下文和证据来源可检查、可复盘。</p>
+            <div class="flow-steps">
+              <div class="flow-step">WebUI 查看 latest/history</div>
+              <div class="flow-step">展开原始 JSON 字段</div>
+              <div class="flow-step">查看工具 query 与 record_id</div>
+            </div>
+          </div>
+        </div>
+        <div class="tool-strip" aria-label="关键技术标签">
+          <span class="tool-chip"><code>RuntimeStore / SQLite</code></span>
+          <span class="tool-chip"><code>window:summaries</code></span>
+          <span class="tool-chip"><code>FTS5 BM25</code></span>
+          <span class="tool-chip"><code>prefix cache snapshot</code></span>
+          <span class="tool-chip"><code>transient state reset</code></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Mascot States</p>
+        <h2 class="section-heading">状态是存在感，不是大段解释</h2>
+        <p class="section-copy">
+          桌宠状态主要承担“我在”“我注意到了”“我正在认真看”的轻量反馈。图片保持原始比例展示，避免旧版卡片在窄容器里被挤压变形。
+        </p>
+        <div class="state-grid">
+          <div class="state-card">
+            <img src="local-window-copilot/img/mascot_idle.png" alt="Idle 状态">
+            <strong>Idle</strong>
+            <span>默认陪伴，轻微呼吸，不主动汇报。</span>
+          </div>
+          <div class="state-card">
+            <img src="local-window-copilot/img/mascot_observing.png" alt="Observing 状态">
+            <strong>Observing</strong>
+            <span>注意到窗口变化，生成后台观察证据。</span>
+          </div>
+          <div class="state-card">
+            <img src="local-window-copilot/img/mascot_analyzing.png" alt="Analyzing 状态">
+            <strong>Analyzing</strong>
+            <span>用户邀请时认真分析当前问题。</span>
+          </div>
+          <div class="state-card">
+            <img src="local-window-copilot/img/mascot_privacy.png" alt="Privacy 状态">
+            <strong>Privacy</strong>
+            <span>隐私模式，暂停观察和截图链路。</span>
+          </div>
+          <div class="state-card">
+            <img src="local-window-copilot/img/mascot_error.png" alt="Error 状态">
+            <strong>Error</strong>
+            <span>暴露真实失败点，避免伪装能力。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell split-band">
+        <div>
+          <p class="section-kicker">Implementation</p>
+          <h2 class="section-heading">当前已经落地的能力</h2>
+          <p class="section-copy">
+            它不是一个云端 SaaS，也不是自动操作电脑的 Agent。它的工程重点放在本地链路、观察证据、短期会话和可调试性上。
+          </p>
+        </div>
+        <div class="feature-grid compact">
+          <div class="feature-card">
+            <strong>原生桌面悬浮窗</strong>
+            <p>Windows 置顶透明窗口，支持拖动、状态表情、独立聊天窗和恢复观察。</p>
+          </div>
+          <div class="feature-card">
+            <strong>结构化视觉观察</strong>
+            <p>窗口截图、标题、进程、bounds、hash 一起进入观察记录，保留不确定区域。</p>
+          </div>
+          <div class="feature-card">
+            <strong>确定性证据检索</strong>
+            <p>候选观察和记忆用 FTS5 BM25 排名，不复用小 VLM 做不稳定 JSON rerank。</p>
+          </div>
+          <div class="feature-card">
+            <strong>WebUI 高级调试</strong>
+            <p>配置、观察存储、运行日志、profile、runtime JSON 和工具 trace 可视化。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Mainline Contract</p>
+        <h2 class="section-heading">对话不默认吃观察，观察不自动变记忆</h2>
+        <div class="split-band">
+          <pre class="code-panel">观察线
+  target window screenshot
+  -> VLM structured observation
+  -> window:latest_analysis
+  -> window:summaries
+  -> screenshot PNG
+
+对话线
+  user question + profile + session history
+  -> model decides whether to call memory.search(query)
+  -> evidence records with source / record_id
+  -> final answer
+
+调试线
+  WebUI shows raw observation fields,
+  screenshot thumbnails and tool traces.</pre>
+          <div class="boundary-list">
+            <div class="boundary-card">
+              <strong>唯一模型可见工具</strong>
+              <p><code>memory.search(query)</code> 负责检索窗口观察、短期记忆、profile 和历史对话证据。</p>
+            </div>
+            <div class="boundary-card">
+              <strong>不做固定大礼包上下文</strong>
+              <p>不再每次把 latest、recent、memory 全塞进 prompt，避免“看起来有上下文，实际不可控”。</p>
+            </div>
+            <div class="boundary-card">
+              <strong>不做自动电脑操作</strong>
+              <p>可以观察、陪伴、解释、建议和记录，但不自动点击、输入、提交或替用户执行高风险动作。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Roadmap</p>
+        <h2 class="section-heading">接下来打磨的是主链路质量</h2>
+        <div class="roadmap-grid">
+          <div class="roadmap-card">
+            <strong>观察触发</strong>
+            <p>点击观察后稳定捕获用户真正想看的窗口，并返回 record_id、title 和截图 hash。</p>
+          </div>
+          <div class="roadmap-card">
+            <strong>存储完整性</strong>
+            <p>latest/history 写入完整结构化字段，截图路径和原始 JSON 都可追踪。</p>
+          </div>
+          <div class="roadmap-card pending">
+            <strong>工具 trace</strong>
+            <p>对话过程展示模型查了什么、拿到哪些证据、最终回答使用了哪些来源。</p>
+          </div>
+          <div class="roadmap-card pending">
+            <strong>产品化边界</strong>
+            <p>启动检查、模型上下文校验、错误状态和 transient 状态恢复继续补齐。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Interactive Demo</p>
+        <h2 class="section-heading">先体验桌宠状态切换</h2>
+        <p class="section-copy">
+          这个静态 Demo 展示桌宠的视觉状态和拖拽交互；完整的本地观察、SQLite、VLM 和聊天链路需要在 Windows 本机运行后端。
+        </p>
+        <div class="demo-frame">
+          <iframe src="../demos/local-window-copilot/index.html" title="Local Window Copilot 交互 Demo" loading="lazy"></iframe>
+        </div>
+        <div class="cta-box">
+          <h3>本地桌面伙伴，而不是屏幕摘要工具</h3>
+          <p>项目目标是让 AI 以低打扰方式在桌面上存在：平时安静，需要时认真看，回答时能说明证据从哪里来。</p>
+          <div class="cta-actions">
+            <a href="../demos/local-window-copilot/index.html" class="btn btn-primary">打开完整 Demo</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-secondary">查看源码</a>
+            <a href="../projects.html" class="btn btn-secondary">返回项目列表</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 
   <footer class="footer">
