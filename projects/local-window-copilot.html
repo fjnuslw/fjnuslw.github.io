@@ -562,6 +562,39 @@
 
     <section class="section-block">
       <div class="case-shell">
+        <p class="section-kicker">Tech Stack</p>
+        <h2 class="section-heading">技术栈与运行时</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:28px;">
+          <div class="tech-card">
+            <strong>后端</strong>
+            <p>Python 3.13 · FastAPI · SQLite (RuntimeStore + FTS5) · uvicorn</p>
+          </div>
+          <div class="tech-card">
+            <strong>模型运行时</strong>
+            <p>llama.cpp (llama-server) · MiniCPM-V 4.6 (F16.gguf) · 256K context · 本地 GPU 推理</p>
+          </div>
+          <div class="tech-card">
+            <strong>前端</strong>
+            <p>原生 HTML/CSS/JS · Windows 透明置顶悬浮窗 · SSE 流式对话</p>
+          </div>
+          <div class="tech-card">
+            <strong>检索</strong>
+            <p>SQLite FTS5 + BM25 · bigram 中文双字滑窗分词 · 跨会话对话索引</p>
+          </div>
+          <div class="tech-card">
+            <strong>测试</strong>
+            <p>pytest · 55 单元测试覆盖 probe→stream、FTS5 排名、状态重置、工具调用循环</p>
+          </div>
+          <div class="tech-card">
+            <strong>规范文档</strong>
+            <p>Spec-driven 开发：context_observation_tool_mainline_spec_zh.md 驱动所有改动</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
         <p class="section-kicker">Architecture</p>
         <h2 class="section-heading">三条线：观察、对话、调试</h2>
         <p class="section-copy">
@@ -770,39 +803,6 @@
           <div class="roadmap-card pending">
             <strong>工具结果裁剪</strong>
             <p>按 token 预算压缩 evidence records，让 <code>memory.search</code> 结果更适合进入流式回答阶段。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block">
-      <div class="case-shell">
-        <p class="section-kicker">Tech Stack</p>
-        <h2 class="section-heading">技术栈与运行时</h2>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:28px;">
-          <div class="tech-card">
-            <strong>后端</strong>
-            <p>Python 3.13 · FastAPI · SQLite (RuntimeStore + FTS5) · uvicorn</p>
-          </div>
-          <div class="tech-card">
-            <strong>模型运行时</strong>
-            <p>llama.cpp (llama-server) · MiniCPM-V 4.6 (F16.gguf) · 256K context · 本地 GPU 推理</p>
-          </div>
-          <div class="tech-card">
-            <strong>前端</strong>
-            <p>原生 HTML/CSS/JS · Windows 透明置顶悬浮窗 · SSE 流式对话</p>
-          </div>
-          <div class="tech-card">
-            <strong>检索</strong>
-            <p>SQLite FTS5 + BM25 · bigram 中文双字滑窗分词 · 跨会话对话索引</p>
-          </div>
-          <div class="tech-card">
-            <strong>测试</strong>
-            <p>pytest · 55 单元测试覆盖 probe→stream、FTS5 排名、状态重置、工具调用循环</p>
-          </div>
-          <div class="tech-card">
-            <strong>规范文档</strong>
-            <p>Spec-driven 开发：context_observation_tool_mainline_spec_zh.md 驱动所有改动</p>
           </div>
         </div>
       </div>
