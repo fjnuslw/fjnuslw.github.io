@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Local Window Copilot — Windows 本地陪伴式桌面伙伴，观察线生成可审计证据，对话线按需检索回答。">
+  <meta name="description" content="Local Window Copilot — Windows 本地桌面 Agent 项目，围绕上下文管理、记忆检索、VLM 观察和 FastAPI/SQLite 本地运行时构建。">
   <title>Local Window Copilot — 宋林蔚</title>
-  <link rel="stylesheet" href="../css/style.css?v=20260705-visual4">
+  <link rel="stylesheet" href="../css/style.css?v=20260705-visual9">
   <style>
     :root {
       --lwc-ink: #111827;
@@ -25,6 +25,7 @@
     .case-shell {
       width: min(1120px, calc(100% - 48px));
       margin: 0 auto;
+      min-width: 0;
     }
 
     .case-narrow {
@@ -49,6 +50,11 @@
       grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
       gap: 56px;
       align-items: center;
+    }
+
+    .hero-grid > *,
+    .split-band > * {
+      min-width: 0;
     }
 
     .eyebrow {
@@ -191,6 +197,7 @@
     .boundary-card,
     .roadmap-card,
     .flow-card {
+      min-width: 0;
       border: 1px solid var(--lwc-line);
       border-radius: 8px;
       background: var(--bg);
@@ -218,6 +225,7 @@
       color: var(--lwc-muted);
       font-size: 0.92rem;
       line-height: 1.75;
+      overflow-wrap: anywhere;
     }
 
     .flow-board {
@@ -341,6 +349,8 @@
     }
 
     .code-panel {
+      max-width: 100%;
+      min-width: 0;
       margin: 0;
       padding: 22px;
       border: 1px solid var(--lwc-line);
@@ -455,7 +465,17 @@
       .tech-grid,
       .roadmap-grid,
       .state-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .tool-chip {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      .code-panel {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
       }
 
       .section-block {
@@ -497,17 +517,17 @@
           <span class="eyebrow">LOCAL · WINDOWS · DESKTOP COMPANION</span>
           <h1>Local Window Copilot</h1>
           <p class="hero-lede">
-            一个本地、轻量、低打扰的桌面陪伴伙伴。它不把“当前屏幕摘要”当成产品本体，而是把截图、VLM、观察记录和记忆放在后台；用户需要时，再通过可审计证据认真回答。
+            一个运行在 Windows 本地的桌面 Agent：后台将窗口截图转成可检索的结构化观察，前台由 ChatAgent 编排会话、profile 与记忆检索，在用户提问时通过 <code>memory.search(query)</code> 调取相关上下文并给出可追溯回答。
           </p>
           <div class="hero-actions">
             <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-primary">GitHub 源码</a>
             <a href="../blog/small-vlm-function-calling-instability.html" class="btn btn-secondary">技术博客</a>
           </div>
           <div class="hero-facts" aria-label="项目要点">
-            <div class="fact-pill"><span class="fact-label">Product</span><span class="fact-value">默认陪伴，不默认汇报</span></div>
-            <div class="fact-pill"><span class="fact-label">Runtime</span><span class="fact-value">FastAPI + SQLite</span></div>
-            <div class="fact-pill"><span class="fact-label">Evidence</span><span class="fact-value">截图 + 结构化观察</span></div>
-            <div class="fact-pill"><span class="fact-label">Tool</span><span class="fact-value">memory.search(query)</span></div>
+            <div class="fact-pill"><span class="fact-label">Agent</span><span class="fact-value">ChatAgent + 工具调用循环</span></div>
+            <div class="fact-pill"><span class="fact-label">Context</span><span class="fact-value">profile / session / evidence 分层</span></div>
+            <div class="fact-pill"><span class="fact-label">Memory</span><span class="fact-value">SQLite FTS5 + BM25</span></div>
+            <div class="fact-pill"><span class="fact-label">Runtime</span><span class="fact-value">FastAPI + llama.cpp</span></div>
           </div>
         </div>
         <div class="hero-visual" aria-label="Local Window Copilot 桌宠预览">
@@ -519,22 +539,22 @@
     <section class="section-block">
       <div class="case-shell">
         <p class="section-kicker">Current Direction</p>
-        <h2 class="section-heading">从"屏幕总结按钮"转向"在旁边的伙伴"</h2>
+        <h2 class="section-heading">围绕桌面 Agent 的上下文系统重构</h2>
         <p class="section-copy">
-          这个项目早期验证了窗口截图、MiniCPM-V 识图和本地问答链路，但继续围绕"摘要"推进会变得机械。现在的主线更明确：桌宠平时安静存在；观察线只生成证据；对话线默认不塞窗口摘要，模型需要时自己调用检索工具取证；调试线把所有观察、截图和工具轨迹展示给开发者。
+          当前主线把桌宠、观察引擎、ChatAgent 和调试台组合成一套本地 Agent 运行时。桌宠负责低打扰交互，观察线持续沉淀窗口事实，对话线在 probe→stream 流程中决定何时检索记忆，WebUI 则把截图、原始 JSON、工具 trace 和 runtime event 展开，方便复盘每一次回答的上下文来源。
         </p>
         <div class="principle-grid">
           <div class="principle-card">
-            <strong>低打扰</strong>
-            <p>默认沉默，不连续汇报屏幕。主动提示必须短、少、确定有帮助。</p>
+            <strong>Agent 交互</strong>
+            <p>桌宠用 Idle、Observing、Analyzing、Privacy、Error 等状态表达运行节奏，把交互反馈压缩成轻量但清晰的存在感。</p>
           </div>
           <div class="principle-card">
-            <strong>按需取证</strong>
-            <p>窗口观察不再固定注入 prompt；用户问题需要证据时，模型调用检索工具。</p>
+            <strong>上下文编排</strong>
+            <p>ChatAgent 将 system、profile、会话历史和工具证据分层组织，让模型在正确阶段拿到正确上下文。</p>
           </div>
           <div class="principle-card">
-            <strong>诚实边界</strong>
-            <p>缺截图、缺观察、工具失败都明确暴露，不用泛泛回答伪装理解。</p>
+            <strong>记忆检索</strong>
+            <p><code>memory.search(query)</code> 汇总窗口观察、短期记忆、profile 和跨会话对话记录，并返回带 source 与 record_id 的证据。</p>
           </div>
         </div>
       </div>
@@ -545,12 +565,12 @@
         <p class="section-kicker">Architecture</p>
         <h2 class="section-heading">三条线：观察、对话、调试</h2>
         <p class="section-copy">
-          当前版本不追求复杂 planner，也不把一堆上下文硬塞给模型。系统被拆成三条责任清晰的链路：观察线保存可审计证据，对话线组织用户问题和工具调用，WebUI 调试线回答"到底看到了什么、查了什么、为什么这么答"。
+          系统按 Agent 运行时拆成三条协作链路：观察线把窗口状态转成可检索证据，对话线负责问题理解、工具选择和流式回答，WebUI 调试线展示每次观察、检索和生成过程。
         </p>
         <div class="flow-board">
           <div class="flow-card">
             <h3>观察线</h3>
-            <p>静默截图 → VLM 结构化分析 → SQLite 存储。只生成证据，不负责对话。</p>
+            <p>静默截图 → VLM 结构化分析 → SQLite 存储，持续把窗口状态沉淀为可检索证据。</p>
             <div class="flow-steps">
               <div class="flow-step">目标窗口截图 + metadata（标题/进程/bounds/hash）</div>
               <div class="flow-step">MiniCPM-V 按 prompt 契约生成结构化观察</div>
@@ -559,7 +579,7 @@
           </div>
           <div class="flow-card">
             <h3>对话线</h3>
-            <p>probe → stream(+可循环) 架构，模型自行决定是否调工具取证。</p>
+            <p>probe → stream(+可循环) 架构，ChatAgent 在回答前完成工具选择、证据读取和上下文组装。</p>
             <div class="flow-steps">
               <div class="flow-step">用户问题 + profile + 会话历史进入 ChatAgent</div>
               <div class="flow-step">probe 阶段：模型决定是否调 <code>memory.search(query)</code></div>
@@ -591,15 +611,15 @@
     <section class="section-block">
       <div class="case-shell">
         <p class="section-kicker">Mascot States</p>
-        <h2 class="section-heading">状态是存在感，不是大段解释</h2>
+        <h2 class="section-heading">桌宠状态承载 Agent 运行节奏</h2>
         <p class="section-copy">
-          桌宠状态主要承担“我在”“我注意到了”“我正在认真看”的轻量反馈。图片保持原始比例展示，避免旧版卡片在窄容器里被挤压变形。
+          桌宠状态把后台链路可视化成用户能理解的轻量反馈：空闲时保持陪伴，窗口变化时进入观察，用户提问时进入分析，隐私和错误状态也都有明确表达。
         </p>
         <div class="state-grid">
           <div class="state-card">
             <img src="local-window-copilot/img/mascot_idle.png" alt="Idle 状态">
             <strong>Idle</strong>
-            <span>默认陪伴，轻微呼吸，不主动汇报。</span>
+            <span>轻微呼吸，保持低打扰陪伴。</span>
           </div>
           <div class="state-card">
             <img src="local-window-copilot/img/mascot_observing.png" alt="Observing 状态">
@@ -619,7 +639,7 @@
           <div class="state-card">
             <img src="local-window-copilot/img/mascot_error.png" alt="Error 状态">
             <strong>Error</strong>
-            <span>暴露真实失败点，避免伪装能力。</span>
+            <span>提示链路异常，便于快速定位问题。</span>
           </div>
         </div>
       </div>
@@ -631,7 +651,7 @@
           <p class="section-kicker">Implementation</p>
           <h2 class="section-heading">已落地的核心工程</h2>
           <p class="section-copy">
-            不是云端 SaaS，不是自动操作电脑的 Agent。工程重点在本地链路稳定性、观察证据可审计性、小 VLM 不稳定性的架构级应对。
+            核心工程集中在四个部分：Agent 决策循环、上下文包组织、记忆检索和本地运行时。FastAPI 提供 API 与 SSE，对话由 ChatAgent 编排，SQLite RuntimeStore 统一保存窗口观察、会话、profile、工具 trace 与 FTS5 索引，llama.cpp + MiniCPM-V 负责本地推理。
           </p>
         </div>
         <div class="feature-grid compact">
@@ -641,7 +661,7 @@
           </div>
           <div class="feature-card">
             <strong>FTS5 BM25 确定性 ranker</strong>
-            <p>候选证据 30-40 条用内存 FTS5 + BM25 排名，中文 bigram 分词。零失败率、毫秒级延迟，替代不稳定 VLM reranker。</p>
+            <p><code>memory.search</code> 从 RuntimeStore 聚合窗口观察、短期记忆、profile 和历史对话，再用 FTS5 + BM25 排名，中文 bigram 分词，毫秒级返回候选证据。</p>
           </div>
           <div class="feature-card">
             <strong>prefix cache 冻结快照</strong>
@@ -649,7 +669,7 @@
           </div>
           <div class="feature-card">
             <strong>跨会话对话检索</strong>
-            <p>对话结束写入持久 FTS5 表，memory.search 候选集包含所有历史对话。用户问"之前讨论过什么"时能搜到。</p>
+            <p>对话结束写入持久 FTS5 表，<code>memory.search</code> 候选集覆盖历史会话，让 Agent 能在新会话中找回之前讨论过的任务、结论和偏好。</p>
           </div>
           <div class="feature-card">
             <strong>prompt 契约与模型能力匹配</strong>
@@ -657,7 +677,7 @@
           </div>
           <div class="feature-card">
             <strong>WebUI 调试 + 清理接口</strong>
-            <p>观察存储、运行日志、工具 trace、profile 可视化。一键清理对话/观察/记忆/日志/FTS5 索引。</p>
+            <p>观察存储、运行日志、工具 trace、profile 可视化。调试台支持清理对话、观察、记忆、日志和 FTS5 索引，便于压测和回归。</p>
           </div>
         </div>
       </div>
@@ -668,7 +688,7 @@
         <p class="section-kicker">Engineering Data</p>
         <h2 class="section-heading">修复前后的关键数据</h2>
         <p class="section-copy">
-          所有数据来自 SQLite runtime.sqlite3 的实际运行记录，不是估算。
+          所有指标来自 SQLite runtime.sqlite3 的实际运行记录，用于追踪每轮优化是否真的改善 Agent 链路。
         </p>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:20px; margin-top:28px;">
           <div style="padding:24px; border:1px solid var(--lwc-line); border-radius:8px; text-align:center;">
@@ -694,7 +714,7 @@
     <section class="section-block">
       <div class="case-shell">
         <p class="section-kicker">Mainline Contract</p>
-        <h2 class="section-heading">对话不默认吃观察，观察不自动变记忆</h2>
+        <h2 class="section-heading">Agent 上下文进入模型的方式</h2>
         <div class="split-band">
           <pre class="code-panel">观察线
   target window screenshot
@@ -714,16 +734,16 @@
   screenshot thumbnails and tool traces.</pre>
           <div class="boundary-list">
             <div class="boundary-card">
-              <strong>唯一模型可见工具</strong>
+              <strong>上下文检索入口</strong>
               <p><code>memory.search(query)</code> 负责检索窗口观察、短期记忆、profile 和历史对话证据。</p>
             </div>
             <div class="boundary-card">
-              <strong>不做固定大礼包上下文</strong>
-              <p>不再每次把 latest、recent、memory 全塞进 prompt，避免“看起来有上下文，实际不可控”。</p>
+              <strong>分层上下文包</strong>
+              <p>system、profile、session history、evidence records 按职责进入模型，动态证据通过工具结果注入。</p>
             </div>
             <div class="boundary-card">
-              <strong>不做自动电脑操作</strong>
-              <p>可以观察、陪伴、解释、建议和记录，但不自动点击、输入、提交或替用户执行高风险动作。</p>
+              <strong>用户确认动作</strong>
+              <p>Agent 聚焦观察、陪伴、解释、建议和记录；点击、输入、提交等高影响动作保留给用户确认。</p>
             </div>
           </div>
         </div>
@@ -749,7 +769,7 @@
           </div>
           <div class="roadmap-card pending">
             <strong>工具结果裁剪</strong>
-            <p>memory.search 返回内容按 token 预算裁剪，避免小 VLM 被大量信息淹没导致回答过短。</p>
+            <p>按 token 预算压缩 evidence records，让 <code>memory.search</code> 结果更适合进入流式回答阶段。</p>
           </div>
         </div>
       </div>
@@ -792,7 +812,7 @@
       <div class="case-shell">
         <p class="section-kicker">Related</p>
         <h2 class="section-heading">相关博客与文档</h2>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; margin-top:28px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(0, 1fr)); gap:16px; margin-top:28px;">
           <a href="../blog/small-vlm-function-calling-instability.html" style="text-decoration:none;">
             <div class="feature-card" style="height:100%;">
               <strong>小 VLM 的 function calling 有多不稳定 →</strong>
@@ -807,8 +827,8 @@
           </a>
         </div>
         <div class="cta-box" style="margin-top:36px;">
-          <h3>本地桌面伙伴，而不是屏幕摘要工具</h3>
-          <p>项目目标是让 AI 以低打扰方式在桌面上存在：平时安静，需要时认真看，回答时能说明证据从哪里来。所有代码和 spec 文档在 GitHub 开源。</p>
+          <h3>围绕上下文和记忆构建的桌面 Agent</h3>
+          <p>项目目标是把屏幕观察、会话状态、长期记忆和本地推理组织成一套可调试的桌面 Agent 运行时。代码、spec 文档和关键工程复盘已在 GitHub 开源。</p>
           <div class="cta-actions">
             <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-primary">查看源码</a>
             <a href="../blog/small-vlm-function-calling-instability.html" class="btn btn-secondary">阅读技术博客</a>
