@@ -1059,3 +1059,126 @@ a.card-blog:hover h3 {
   border-color: var(--border-hover);
   color: var(--text-primary);
 }
+/* ===== Visual Refresh 2026-07: stronger hierarchy, less empty space ===== */
+:root {
+  --max-width: 880px;
+  --max-width-wide: 1120px;
+}
+
+body {
+  line-height: 1.65;
+}
+
+.section {
+  padding: var(--space-12) 0;
+}
+
+.hero {
+  padding-top: calc(var(--nav-height) + var(--space-12));
+  padding-bottom: var(--space-12);
+}
+
+.hero-desc {
+  max-width: 680px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  min-width: 48px;
+  background: var(--border);
+}
+
+.grid-2,
+.grid-3 {
+  gap: var(--space-5);
+}
+
+.card {
+  padding: var(--space-6);
+}
+
+.card-project {
+  gap: var(--space-4);
+}
+
+.card-project h3,
+.interest-card h3,
+.timeline-content h3 {
+  font-size: var(--text-lg);
+  line-height: 1.35;
+}
+
+.card-project p {
+  flex: none;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.card-project .tags-group {
+  margin-top: var(--space-2) !important;
+  padding-top: 0 !important;
+}
+
+.card-project .btn-link,
+.card-project a[href] {
+  font-size: 0.88rem;
+}
+
+.card-blog .post-date {
+  font-size: 0.78rem;
+}
+
+.card-blog h3 {
+  font-size: var(--text-lg);
+  line-height: 1.45;
+}
+
+.card-blog .card-excerpt {
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.currently-grid {
+  background: var(--bg);
+}
+
+.currently-item {
+  padding: var(--space-4) var(--space-6);
+}
+
+.currently-value {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: calc(var(--nav-height) + var(--space-10));
+    padding-bottom: var(--space-10);
+  }
+}

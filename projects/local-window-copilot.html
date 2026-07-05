@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Local Window Copilot — Windows 本地陪伴式桌面伙伴，观察线生成可审计证据，对话线按需检索回答。">
   <title>Local Window Copilot — 宋林蔚</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/style.css?v=20260705-visual2">
   <style>
     :root {
       --lwc-ink: #111827;
@@ -500,8 +500,8 @@
             一个本地、轻量、低打扰的桌面陪伴伙伴。它不把“当前屏幕摘要”当成产品本体，而是把截图、VLM、观察记录和记忆放在后台；用户需要时，再通过可审计证据认真回答。
           </p>
           <div class="hero-actions">
-            <a href="../demos/local-window-copilot/index.html" class="btn btn-primary">体验 Demo</a>
-            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-secondary">GitHub</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-primary">GitHub 源码</a>
+            <a href="../blog/small-vlm-function-calling-instability.html" class="btn btn-secondary">技术博客</a>
           </div>
           <div class="hero-facts" aria-label="项目要点">
             <div class="fact-pill"><span class="fact-label">Product</span><span class="fact-value">默认陪伴，不默认汇报</span></div>
@@ -519,9 +519,9 @@
     <section class="section-block">
       <div class="case-shell">
         <p class="section-kicker">Current Direction</p>
-        <h2 class="section-heading">从“屏幕总结按钮”转向“在旁边的伙伴”</h2>
+        <h2 class="section-heading">从"屏幕总结按钮"转向"在旁边的伙伴"</h2>
         <p class="section-copy">
-          这个项目早期验证了窗口截图、MiniCPM-V 识图和本地问答链路，但继续围绕“摘要”推进会变得机械。现在的主线更明确：桌宠平时安静存在；观察线只生成证据；对话线默认不塞窗口摘要，模型需要时自己调用检索工具取证；调试线把所有观察、截图和工具轨迹展示给开发者。
+          这个项目早期验证了窗口截图、MiniCPM-V 识图和本地问答链路，但继续围绕"摘要"推进会变得机械。现在的主线更明确：桌宠平时安静存在；观察线只生成证据；对话线默认不塞窗口摘要，模型需要时自己调用检索工具取证；调试线把所有观察、截图和工具轨迹展示给开发者。
         </p>
         <div class="principle-grid">
           <div class="principle-card">
@@ -545,42 +545,44 @@
         <p class="section-kicker">Architecture</p>
         <h2 class="section-heading">三条线：观察、对话、调试</h2>
         <p class="section-copy">
-          当前版本不追求复杂 planner，也不把一堆上下文硬塞给模型。系统被拆成三条责任清晰的链路：观察线保存可审计证据，对话线组织用户问题和工具调用，WebUI 调试线回答“到底看到了什么、查了什么、为什么这么答”。
+          当前版本不追求复杂 planner，也不把一堆上下文硬塞给模型。系统被拆成三条责任清晰的链路：观察线保存可审计证据，对话线组织用户问题和工具调用，WebUI 调试线回答"到底看到了什么、查了什么、为什么这么答"。
         </p>
         <div class="flow-board">
           <div class="flow-card">
             <h3>观察线</h3>
-            <p>只负责把目标窗口转成结构化证据，不负责和用户聊天。</p>
+            <p>静默截图 → VLM 结构化分析 → SQLite 存储。只生成证据，不负责对话。</p>
             <div class="flow-steps">
-              <div class="flow-step">目标窗口截图 + metadata</div>
-              <div class="flow-step">MiniCPM-V 结构化观察</div>
-              <div class="flow-step">SQLite 记录 + 截图文件</div>
+              <div class="flow-step">目标窗口截图 + metadata（标题/进程/bounds/hash）</div>
+              <div class="flow-step">MiniCPM-V 按 prompt 契约生成结构化观察</div>
+              <div class="flow-step">写入 <code>window:latest_analysis</code> + <code>window:summaries</code></div>
             </div>
           </div>
           <div class="flow-card">
             <h3>对话线</h3>
-            <p>默认只有 system、profile、当前会话历史和用户问题。</p>
+            <p>probe → stream(+可循环) 架构，模型自行决定是否调工具取证。</p>
             <div class="flow-steps">
-              <div class="flow-step">用户问题进入 ChatAgent</div>
-              <div class="flow-step">模型按需调用 <code>memory.search</code></div>
-              <div class="flow-step">基于证据流式回答</div>
+              <div class="flow-step">用户问题 + profile + 会话历史进入 ChatAgent</div>
+              <div class="flow-step">probe 阶段：模型决定是否调 <code>memory.search(query)</code></div>
+              <div class="flow-step">stream 阶段：携带 tools，支持流式工具调用循环（最多 2 轮）</div>
+              <div class="flow-step">基于证据流式生成最终回答</div>
             </div>
           </div>
           <div class="flow-card">
             <h3>调试线</h3>
-            <p>让本地 Agent 的上下文和证据来源可检查、可复盘。</p>
+            <p>所有观察、截图、工具轨迹、运行日志可检查、可复盘、可清理。</p>
             <div class="flow-steps">
-              <div class="flow-step">WebUI 查看 latest/history</div>
-              <div class="flow-step">展开原始 JSON 字段</div>
-              <div class="flow-step">查看工具 query 与 record_id</div>
+              <div class="flow-step">WebUI 查看 latest/history + 原始 JSON + 截图缩略图</div>
+              <div class="flow-step">工具 trace：模型查了什么、拿到哪些 record_id</div>
+              <div class="flow-step">清理接口：memory/clear、runtime-events/clear、reset-all</div>
             </div>
           </div>
         </div>
         <div class="tool-strip" aria-label="关键技术标签">
           <span class="tool-chip"><code>RuntimeStore / SQLite</code></span>
-          <span class="tool-chip"><code>window:summaries</code></span>
-          <span class="tool-chip"><code>FTS5 BM25</code></span>
-          <span class="tool-chip"><code>prefix cache snapshot</code></span>
+          <span class="tool-chip"><code>FTS5 BM25 (bigram)</code></span>
+          <span class="tool-chip"><code>probe→stream 职责分离</code></span>
+          <span class="tool-chip"><code>prefix cache 冻结快照</code></span>
+          <span class="tool-chip"><code>跨会话对话检索</code></span>
           <span class="tool-chip"><code>transient state reset</code></span>
         </div>
       </div>
@@ -627,27 +629,63 @@
       <div class="case-shell split-band">
         <div>
           <p class="section-kicker">Implementation</p>
-          <h2 class="section-heading">当前已经落地的能力</h2>
+          <h2 class="section-heading">已落地的核心工程</h2>
           <p class="section-copy">
-            它不是一个云端 SaaS，也不是自动操作电脑的 Agent。它的工程重点放在本地链路、观察证据、短期会话和可调试性上。
+            不是云端 SaaS，不是自动操作电脑的 Agent。工程重点在本地链路稳定性、观察证据可审计性、小 VLM 不稳定性的架构级应对。
           </p>
         </div>
         <div class="feature-grid compact">
           <div class="feature-card">
-            <strong>原生桌面悬浮窗</strong>
-            <p>Windows 置顶透明窗口，支持拖动、状态表情、独立聊天窗和恢复观察。</p>
+            <strong>probe→stream 职责分离</strong>
+            <p>probe 阶段只决策是否调工具，content 一律丢弃；stream 阶段携带 tools，支持流式工具调用循环。解决小 VLM function calling 不稳定问题。</p>
           </div>
           <div class="feature-card">
-            <strong>结构化视觉观察</strong>
-            <p>窗口截图、标题、进程、bounds、hash 一起进入观察记录，保留不确定区域。</p>
+            <strong>FTS5 BM25 确定性 ranker</strong>
+            <p>候选证据 30-40 条用内存 FTS5 + BM25 排名，中文 bigram 分词。零失败率、毫秒级延迟，替代不稳定 VLM reranker。</p>
           </div>
           <div class="feature-card">
-            <strong>确定性证据检索</strong>
-            <p>候选观察和记忆用 FTS5 BM25 排名，不复用小 VLM 做不稳定 JSON rerank。</p>
+            <strong>prefix cache 冻结快照</strong>
+            <p>会话级冻结 profile_packet 字符串，保证 system+profile 前缀字节级一致，llama.cpp KV cache 稳定命中，首 token 延迟降低 30-60%。</p>
           </div>
           <div class="feature-card">
-            <strong>WebUI 高级调试</strong>
-            <p>配置、观察存储、运行日志、profile、runtime JSON 和工具 trace 可视化。</p>
+            <strong>跨会话对话检索</strong>
+            <p>对话结束写入持久 FTS5 表，memory.search 候选集包含所有历史对话。用户问"之前讨论过什么"时能搜到。</p>
+          </div>
+          <div class="feature-card">
+            <strong>prompt 契约与模型能力匹配</strong>
+            <p>精简 VLM 观察 prompt 字段密度至模型稳定输出范围，max_tokens 回归 8192。成功率从 54% 提升到 80%。</p>
+          </div>
+          <div class="feature-card">
+            <strong>WebUI 调试 + 清理接口</strong>
+            <p>观察存储、运行日志、工具 trace、profile 可视化。一键清理对话/观察/记忆/日志/FTS5 索引。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Engineering Data</p>
+        <h2 class="section-heading">修复前后的关键数据</h2>
+        <p class="section-copy">
+          所有数据来自 SQLite runtime.sqlite3 的实际运行记录，不是估算。
+        </p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:20px; margin-top:28px;">
+          <div style="padding:24px; border:1px solid var(--lwc-line); border-radius:8px; text-align:center;">
+            <div style="font-size:2rem; font-weight:700; font-family:var(--font-mono); color:#e53e3e;">54% → 80%</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">VLM 分析成功率</div>
+          </div>
+          <div style="padding:24px; border:1px solid var(--lwc-line); border-radius:8px; text-align:center;">
+            <div style="font-size:2rem; font-weight:700; font-family:var(--font-mono); color:#16a34a;">46% → 0%</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">memory.search 失败率</div>
+          </div>
+          <div style="padding:24px; border:1px solid var(--lwc-line); border-radius:8px; text-align:center;">
+            <div style="font-size:2rem; font-weight:700; font-family:var(--font-mono); color:#7b1fa2;">30s → 10ms</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">排名器延迟</div>
+          </div>
+          <div style="padding:24px; border:1px solid var(--lwc-line); border-radius:8px; text-align:center;">
+            <div style="font-size:2rem; font-weight:700; font-family:var(--font-mono); color:#1a73e8;">55 tests</div>
+            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">单元测试全通过</div>
           </div>
         </div>
       </div>
@@ -695,23 +733,23 @@
     <section class="section-block">
       <div class="case-shell">
         <p class="section-kicker">Roadmap</p>
-        <h2 class="section-heading">接下来打磨的是主链路质量</h2>
+        <h2 class="section-heading">已完成与下一步</h2>
         <div class="roadmap-grid">
           <div class="roadmap-card">
-            <strong>观察触发</strong>
-            <p>点击观察后稳定捕获用户真正想看的窗口，并返回 record_id、title 和截图 hash。</p>
+            <strong>✓ 观察线稳定性</strong>
+            <p>prompt 契约精简至模型稳定输出范围，max_tokens 回归 8192，成功率 54%→80%。</p>
           </div>
           <div class="roadmap-card">
-            <strong>存储完整性</strong>
-            <p>latest/history 写入完整结构化字段，截图路径和原始 JSON 都可追踪。</p>
+            <strong>✓ 对话线解耦</strong>
+            <p>FTS5 BM25 替代 VLM ranker，memory.search 零失败；probe→stream 职责分离 + 流式工具调用循环。</p>
+          </div>
+          <div class="roadmap-card">
+            <strong>✓ prefix cache 优化</strong>
+            <p>会话级冻结 profile 快照，llama.cpp KV cache 稳定命中。跨会话 FTS5 对话检索已落地。</p>
           </div>
           <div class="roadmap-card pending">
-            <strong>工具 trace</strong>
-            <p>对话过程展示模型查了什么、拿到哪些证据、最终回答使用了哪些来源。</p>
-          </div>
-          <div class="roadmap-card pending">
-            <strong>产品化边界</strong>
-            <p>启动检查、模型上下文校验、错误状态和 transient 状态恢复继续补齐。</p>
+            <strong>工具结果裁剪</strong>
+            <p>memory.search 返回内容按 token 预算裁剪，避免小 VLM 被大量信息淹没导致回答过短。</p>
           </div>
         </div>
       </div>
@@ -719,20 +757,61 @@
 
     <section class="section-block">
       <div class="case-shell">
-        <p class="section-kicker">Interactive Demo</p>
-        <h2 class="section-heading">先体验桌宠状态切换</h2>
-        <p class="section-copy">
-          这个静态 Demo 展示桌宠的视觉状态和拖拽交互；完整的本地观察、SQLite、VLM 和聊天链路需要在 Windows 本机运行后端。
-        </p>
-        <div class="demo-frame">
-          <iframe src="../demos/local-window-copilot/index.html" title="Local Window Copilot 交互 Demo" loading="lazy"></iframe>
+        <p class="section-kicker">Tech Stack</p>
+        <h2 class="section-heading">技术栈与运行时</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:28px;">
+          <div class="tech-card">
+            <strong>后端</strong>
+            <p>Python 3.13 · FastAPI · SQLite (RuntimeStore + FTS5) · uvicorn</p>
+          </div>
+          <div class="tech-card">
+            <strong>模型运行时</strong>
+            <p>llama.cpp (llama-server) · MiniCPM-V 4.6 (F16.gguf) · 256K context · 本地 GPU 推理</p>
+          </div>
+          <div class="tech-card">
+            <strong>前端</strong>
+            <p>原生 HTML/CSS/JS · Windows 透明置顶悬浮窗 · SSE 流式对话</p>
+          </div>
+          <div class="tech-card">
+            <strong>检索</strong>
+            <p>SQLite FTS5 + BM25 · bigram 中文双字滑窗分词 · 跨会话对话索引</p>
+          </div>
+          <div class="tech-card">
+            <strong>测试</strong>
+            <p>pytest · 55 单元测试覆盖 probe→stream、FTS5 排名、状态重置、工具调用循环</p>
+          </div>
+          <div class="tech-card">
+            <strong>规范文档</strong>
+            <p>Spec-driven 开发：context_observation_tool_mainline_spec_zh.md 驱动所有改动</p>
+          </div>
         </div>
-        <div class="cta-box">
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="case-shell">
+        <p class="section-kicker">Related</p>
+        <h2 class="section-heading">相关博客与文档</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; margin-top:28px;">
+          <a href="../blog/small-vlm-function-calling-instability.html" style="text-decoration:none;">
+            <div class="feature-card" style="height:100%;">
+              <strong>小 VLM 的 function calling 有多不稳定 →</strong>
+              <p>probe→stream 架构重构复盘：VLM 退化重复、连锁失败、probe content 被当答案、对话惰性、prefix cache 冻结快照。</p>
+            </div>
+          </a>
+          <a href="../blog/desktop-agent-context-pitfalls.html" style="text-decoration:none;">
+            <div class="feature-card" style="height:100%;">
+              <strong>为什么「看见屏幕」还不够 →</strong>
+              <p>桌面 AI 伙伴的上下文管理踩坑：摘要陷阱、VLM 可见度、对话断线、观察线与对话线分离。</p>
+            </div>
+          </a>
+        </div>
+        <div class="cta-box" style="margin-top:36px;">
           <h3>本地桌面伙伴，而不是屏幕摘要工具</h3>
-          <p>项目目标是让 AI 以低打扰方式在桌面上存在：平时安静，需要时认真看，回答时能说明证据从哪里来。</p>
+          <p>项目目标是让 AI 以低打扰方式在桌面上存在：平时安静，需要时认真看，回答时能说明证据从哪里来。所有代码和 spec 文档在 GitHub 开源。</p>
           <div class="cta-actions">
-            <a href="../demos/local-window-copilot/index.html" class="btn btn-primary">打开完整 Demo</a>
-            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-secondary">查看源码</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn btn-primary">查看源码</a>
+            <a href="../blog/small-vlm-function-calling-instability.html" class="btn btn-secondary">阅读技术博客</a>
             <a href="../projects.html" class="btn btn-secondary">返回项目列表</a>
           </div>
         </div>
