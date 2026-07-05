@@ -105,7 +105,66 @@
       font-weight: 600;
     }
     .data-table .num { font-family: var(--font-mono, monospace); }
-  </style>
+    .key-findings {
+      background: linear-gradient(135deg, #f0f7ff 0%, #f5f0ff 100%);
+      border: 1px solid #d0e3ff;
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .key-findings h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #1a73e8;
+      margin: 0 0 1rem;
+    }
+    .key-findings ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .key-findings li {
+      padding: 0.4rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+    .key-findings li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #1a73e8;
+      font-weight: 700;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border, #e5e5e5);
+      margin: 3rem 0;
+    }
+    .stat-highlight {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-family: var(--font-mono, monospace);
+      color: #1a73e8;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted, #999);
+      margin-top: 0.25rem;
+    }
+    .stat-row {
+      display: flex;
+      gap: 2.5rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+    }
 </head>
 <body>
 
@@ -164,6 +223,34 @@
         而是"重构职责边界"。
       </p>
 
+      <div class="key-findings">
+        <h3>TL;DR — 五个核心发现</h3>
+        <ul>
+          <li>VLM 退化重复不是 max_tokens 不够，是 prompt 契约超过模型稳定输出范围</li>
+          <li>排名器复用同一 VLM → 连锁失败，换成 FTS5 BM25 后零失败毫秒级</li>
+          <li>小 VLM 的 function calling 不稳定：有时把调用意图写成自然语言而非结构化 tool_calls</li>
+          <li>probe 阶段的 content 不可信，一律丢弃，最终答案由 stream 阶段生成</li>
+          <li>保证 system+profile 前缀字节级一致，llama.cpp 的 KV cache 能稳定命中</li>
+        </ul>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-highlight" style="color: #e53e3e;">54% → 80%</div>
+          <div class="stat-label">VLM 分析成功率</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-highlight" style="color: #16a34a;">46% → 0%</div>
+          <div class="stat-label">memory.search 失败率</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-highlight" style="color: #7b1fa2;">30s → 10ms</div>
+          <div class="stat-label">排名器延迟</div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
       <h2>一、观察线：46% 失败率背后的退化运行</h2>
 
       <p>
@@ -214,6 +301,8 @@
         <strong>核心认知：</strong>小模型的 prompt 契约不能照搬大模型的字段密度。
         prompt 要求的字段数量必须匹配模型的稳定输出能力，否则不是"少输出几个字段"，而是"整体退化"。
       </div>
+
+      <hr class="section-divider">
 
       <h2>二、对话线：排名器复用 VLM 导致连锁失败</h2>
 
@@ -276,6 +365,8 @@
         观察线 VLM 挂了不影响对话线的工具检索，对话线不再依赖任何模型调用就能完成证据排名。
       </p>
 
+      <hr class="section-divider">
+
       <h2>三、probe content 被当答案：小 VLM function calling 的隐藏陷阱</h2>
 
       <p>
@@ -337,6 +428,8 @@
         就不让它承担产出答案的职责。这不是 fallback，是职责边界。
       </div>
 
+      <hr class="section-divider">
+
       <h2>四、对话惰性：15642 字符证据只换回 99 字回答</h2>
 
       <p>
@@ -391,6 +484,8 @@
         写 profile 时要主动消除指令间的矛盾，不能指望模型自己权衡。
       </div>
 
+      <hr class="section-divider">
+
       <h2>五、借鉴 Hermes：prefix cache 冻结快照</h2>
 
       <p>
@@ -443,6 +538,8 @@
         本地 llama.cpp 没有 API 断点，靠的是 prompt 前缀的天然稳定性命中 KV cache。
         这意味着优化方式更底层、更优雅——不是靠 API 特性，而是靠保证 prompt 结构的字节级一致性。
       </div>
+
+      <hr class="section-divider">
 
       <h2>六、方法论复盘</h2>
 

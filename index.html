@@ -66,8 +66,8 @@
         <div class="currently-item">
           <span class="currently-label">开发</span>
           <span class="currently-value">
-            RAG 知识库问答 Agent ·
-            <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank">SilentDeck</a>
+            Local Window Copilot ·
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank">桌面 AI 伙伴</a>
           </span>
         </div>
         <div class="currently-item">
@@ -87,6 +87,28 @@
       <div class="grid-3">
 
         <div class="card card-project reveal reveal-delay-1">
+          <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.75rem;">
+            <img src="projects/local-window-copilot/img/mascot_idle.png" alt="mascot" width="56" height="56" style="border-radius:12px; flex-shrink:0;">
+            <div>
+              <h3 style="margin:0;">Local Window Copilot</h3>
+              <span class="badge badge-live" style="margin-top:2px; display:inline-block;">活跃开发</span>
+            </div>
+          </div>
+          <p>Windows 本地陪伴式桌面伙伴。FastAPI + SQLite + llama.cpp + MiniCPM-V，双线架构（观察线/对话线），VLM 静默截图分析 → FTS5 BM25 证据检索 → 模型按需调用。prefix cache 冻结快照优化、5 种桌宠状态动画。</p>
+          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+            <span class="tag">Agent</span>
+            <span class="tag">VLM</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">llama.cpp</span>
+            <span class="tag">桌面应用</span>
+          </div>
+          <div style="margin-top:0.5rem; display:flex; gap:0.75rem; align-items:center;">
+            <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">GitHub ↗</a>
+          </div>
+        </div>
+
+        <div class="card card-project reveal reveal-delay-2">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
             <h3>SilentDeck</h3>
             <span class="badge badge-live">已上线</span>
@@ -104,7 +126,7 @@
           </a>
         </div>
 
-        <div class="card card-project reveal reveal-delay-2">
+        <div class="card card-project reveal reveal-delay-3">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
             <h3>智能问答 Agent</h3>
             <span class="badge badge-coming">开发中</span>
@@ -114,19 +136,6 @@
             <span class="tag">LangChain</span>
             <span class="tag">RAG</span>
             <span class="tag">Qdrant</span>
-          </div>
-        </div>
-
-        <div class="card card-project reveal reveal-delay-3">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
-            <h3>数据分析助手</h3>
-            <span class="badge badge-wip">规划中</span>
-          </div>
-          <p>自然语言驱动的数据查询工具，AI 自动生成 SQL、执行分析并输出图表报告，目标接入私有数据库。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
-            <span class="tag">Text2SQL</span>
-            <span class="tag">LLM</span>
-            <span class="tag">可视化</span>
           </div>
         </div>
 
