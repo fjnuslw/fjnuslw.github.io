@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="小 VLM 的 function calling 不稳定、probe content 被当答案、对话惰性根因分析、prefix cache 冻结快照。Local Window Copilot 第二轮调试复盘。">
+  <title>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构 — 宋林蔚</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 2rem auto;
+      border: 1px solid var(--border, #e5e5e5);
+      border-radius: var(--radius-lg, 12px);
+      background: var(--bg-card, #fff);
+      padding: 1rem;
+    }
+    .svg-caption {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted, #999);
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+    .fail-dialogue {
+      background: #fff5f5;
+      border-left: 4px solid #e53e3e;
+      border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .fail-dialogue .role-user { color: #1a73e8; font-weight: 600; }
+    .fail-dialogue .role-bot { color: #c53030; }
+    .principle-card {
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: var(--radius-lg, 12px);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--accent, #1a73e8);
+    }
+    .principle-card ol { margin: 0; padding-left: 1.25rem; }
+    .principle-card li { margin-bottom: 0.6rem; line-height: 1.7; }
+    .callout {
+      background: #f0f7ff;
+      border: 1px solid #cce0ff;
+      border-radius: var(--radius-md, 8px);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .callout strong { color: #1a73e8; }
+    .callout-warn {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: var(--radius-md, 8px);
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .callout-warn strong { color: #e65100; }
+    article.post-content h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    article.post-content p { line-height: 1.85; }
+    article.post-content code {
+      font-family: var(--font-mono, monospace);
+      font-size: 0.88em;
+      padding: 1px 5px;
+      background: var(--bg-subtle, #f5f5f5);
+      border-radius: 4px;
+    }
+    article.post-content pre {
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md, 8px);
+      overflow-x: auto;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    article.post-content pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    .data-table th, .data-table td {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border, #e5e5e5);
+      text-align: left;
+    }
+    .data-table th {
+      background: var(--bg-subtle, #f9f9f9);
+      font-weight: 600;
+    }
+    .data-table .num { font-family: var(--font-mono, monospace); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="post-header">
+    <div class="container">
+      <div class="tags-group" style="margin-bottom: 0.75rem">
+        <span class="tag">Agent</span>
+        <span class="tag">VLM</span>
+        <span class="tag">架构</span>
+        <span class="tag">复盘</span>
+      </div>
+      <h1>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构</h1>
+      <div class="post-meta">
+        <span>2026-07-05</span>
+        <span>·</span>
+        <span>15 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </div>
+
+  <article class="post-content">
+
+    <div class="container">
+
+      <p>
+        上一篇文章写了桌面 AI 伙伴的上下文管理踩坑，这篇是第二天继续调试的复盘。
+        如果说上一篇的主题是"架构怎么分"，这篇的主题就是"分了之后，每一层都会出什么你意想不到的问题"。
+      </p>
+
+      <p>
+        项目有两条链路：观察线（静默截图 → VLM 分析 → 存 SQLite）和对话线（用户提问 → 工具检索 → 生成回答）。
+        两条链路都坏了，但坏的方式完全不同。观察线的 VLM 成功率只有 54%，对话线则"能跑但不干活"——
+        模型知道该调工具，却不调，或者调了之后不回答。
+      </p>
+
+      <p>
+        这篇文章记录我是怎么一步步定位这两个问题的根因的，以及为什么最终的修复方式不是"加 fallback"
+        而是"重构职责边界"。
+      </p>
+
+      <h2>一、观察线：46% 失败率背后的退化运行</h2>
+
+      <p>
+        先看观察线。SQLite 里有 26 次成功、22 次失败，失败率 46%。
+        我最初以为是 <code>max_tokens</code> 不够，于是从 8192 调到 16384，失败率几乎没变。
+      </p>
+
+      <p>
+        真正的发现来自对比成功和失败的输出长度：
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>状态</th><th>输出 tokens</th><th>耗时</th><th>输出内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>成功</td><td class="num">1000–1754</td><td class="num">8–11s</td><td>结构化 JSON，字段完整</td></tr>
+          <tr><td>失败</td><td class="num">16384（打满）</td><td class="num">~110s</td><td>退化重复，同一句话循环</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        失败模式不是"token 不够"，而是<strong>模型退化重复</strong>——它在一个短语上无限循环，
+        直到打满 <code>max_tokens</code> 才停。增大 <code>max_tokens</code> 不仅没用，反而让单次失败从 30 秒拖到 110 秒。
+      </p>
+
+      <div class="callout-warn">
+        <strong>误区警示：</strong>当模型输出退化重复时，增大 <code>max_tokens</code> 是最坏的选择。
+        它不解决问题，只是让失败更慢。正确的方向是减少 prompt 的结构复杂度，让模型在稳定输出范围内完成任务。
+      </div>
+
+      <p>
+        根因在 prompt 契约。观察 prompt 要求 VLM 输出 10+ 个嵌套字段
+        （<code>key_points[6-12]</code>、<code>regions[4-8]</code> 每个 region 里还有
+        <code>visible_text[2-8]</code> 和 <code>ui_elements[2-8]</code>）。
+        MiniCPM-V 是一个小模型，它的稳定输出能力远低于这个字段密度。
+        当 prompt 要求的复杂度超过模型的稳定输出范围，它就开始退化。
+      </p>
+
+      <p>
+        修复方式是精简 prompt 契约，把字段下限降到模型实际能稳定输出的范围：
+        <code>key_points</code> 6-12 → 3-6，<code>regions</code> 4-8 → 3-5，
+        <code>visible_text</code> 8-30 → 5-15。同时 <code>max_tokens</code> 回归 8192。
+        修复后成功率从 54% 提升到 80%。
+      </p>
+
+      <div class="callout">
+        <strong>核心认知：</strong>小模型的 prompt 契约不能照搬大模型的字段密度。
+        prompt 要求的字段数量必须匹配模型的稳定输出能力，否则不是"少输出几个字段"，而是"整体退化"。
+      </div>
+
+      <h2>二、对话线：排名器复用 VLM 导致连锁失败</h2>
+
+      <p>
+        对话线的问题更隐蔽。用户提问时，模型通过 <code>memory.search(query)</code> 工具检索窗口观察记录。
+        但这个工具的 ranker（排名器）复用了观察线的同一个 VLM——要求模型输出
+        <code>{"ids":[...], "notes":{...}}</code> 的 JSON 来对候选证据排序。
+      </p>
+
+      <p>
+        问题很明显：VLM 在观察线上有 46% 概率无法稳定输出 JSON，在排名器上同样不稳定。
+        于是形成了<strong>连锁失败</strong>：
+      </p>
+
+      <svg class="article-svg" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="连锁失败链路">
+        <defs>
+          <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#c62828"/>
+          </marker>
+        </defs>
+        <rect x="20" y="35" width="140" height="50" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="1.5"/>
+        <text x="90" y="65" text-anchor="middle" font-family="system-ui" font-size="12" fill="#c62828" font-weight="600">VLM JSON 不稳定</text>
+
+        <rect x="200" y="35" width="140" height="50" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+        <text x="270" y="65" text-anchor="middle" font-family="system-ui" font-size="12" fill="#e65100" font-weight="600">排名器失败</text>
+
+        <rect x="380" y="35" width="140" height="50" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
+        <text x="450" y="60" text-anchor="middle" font-family="system-ui" font-size="12" fill="#7b1fa2" font-weight="600">memory.search</text>
+        <text x="450" y="75" text-anchor="middle" font-family="system-ui" font-size="11" fill="#7b1fa2">返回空</text>
+
+        <rect x="560" y="35" width="100" height="50" rx="10" fill="#e8f1fd" stroke="#1a73e8" stroke-width="1.5"/>
+        <text x="610" y="65" text-anchor="middle" font-family="system-ui" font-size="12" fill="#1a73e8" font-weight="600">无证据回答</text>
+
+        <line x1="160" y1="60" x2="195" y2="60" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
+        <line x1="340" y1="60" x2="375" y2="60" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
+        <line x1="520" y1="60" x2="555" y2="60" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
+      </svg>
+
+      <p>
+        修复方式是<strong>用确定性算法替代 LLM ranker</strong>。
+        候选集只有 30-40 条（窗口观察 30 条 + 最新 1 条 + 记忆数条），
+        这个规模下 BM25 的区分度完全够用，而且零失败率、毫秒级延迟。
+        中文采用 bigram（双字滑窗）分词，不需要外部分词器依赖。
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>指标</th><th>VLM ranker（旧）</th><th>FTS5 BM25（新）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>失败率</td><td class="num">46%</td><td class="num">0%</td></tr>
+          <tr><td>延迟</td><td class="num">12-30s</td><td class="num">&lt;10ms</td></tr>
+          <tr><td>依赖</td><td>同一 VLM</td><td>内存 SQLite</td></tr>
+          <tr><td>连锁风险</td><td>有（VLM 挂 = ranker 挂）</td><td>无（完全解耦）</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        这一步修复后，<code>memory.search</code> 工具零失败。两条链路彻底解耦——
+        观察线 VLM 挂了不影响对话线的工具检索，对话线不再依赖任何模型调用就能完成证据排名。
+      </p>
+
+      <h2>三、probe content 被当答案：小 VLM function calling 的隐藏陷阱</h2>
+
+      <p>
+        修完前两个问题后，我遇到了一个更诡异的 bug。用户问"你确认一下里面都有什么吧"，
+        桌宠回答："调用 memory.search 检查窗口内容。"——然后就没了。
+      </p>
+
+      <div class="fail-dialogue">
+        <div><span class="role-user">我：</span>你确认一下里面都有什么吧</div>
+        <div><span class="role-bot">桌宠：</span>调用 memory.search 检查窗口内容。</div>
+        <div><span class="role-user">我：</span>……然后呢？</div>
+      </div>
+
+      <p>
+        它把<strong>工具调用的意图描述</strong>当成了最终答案返回。这听起来很蠢，但定位过程很有意思。
+      </p>
+
+      <p>
+        对话线的设计是两阶段：先做一个 probe 调用（带 <code>tools</code> 参数），让模型决定是否调 <code>memory.search</code>；
+        如果 probe 返回了 <code>tool_calls</code>，执行工具后进入 stream 生成答案；如果没有 <code>tool_calls</code>，
+        原代码直接把 probe 返回的 <code>content</code> 当答案。
+      </p>
+
+      <p>
+        问题在于：MiniCPM-V 的 function calling 不稳定。有时候它正确返回结构化 <code>tool_calls</code>，
+        有时候它把调用意图<strong>写成自然语言</strong>放在 <code>content</code> 里
+        （比如"调用 memory.search 检查窗口内容"），而不是结构化字段。
+        原代码看到 <code>tool_calls</code> 为空，就把这句自然语言当答案返回了。
+      </p>
+
+      <p>
+        我查了 SQLite 里的交互轨迹，对比了成功和失败的 session：
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Session</th><th>问题</th><th>probe 返回</th><th>结果</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">4cbfc5a6</td><td>"当前窗口是？"</td><td>tool_calls ✓</td><td>正确调工具 → 生成答案</td></tr>
+          <tr><td class="num">f8a6d000</td><td>"你确认一下里面都有什么吧"</td><td>content="调用memory.search..." ✗</td><td>意图描述当答案返回</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        两条路径的唯一区别就是模型有没有正确发出结构化 <code>tool_calls</code>。这不是 prompt 能控制的——
+        同一个 prompt，模型有时发结构化字段，有时写自然语言，这是小模型 function calling 的固有不确定性。
+      </p>
+
+      <p>
+        修复方式是<strong>职责分离</strong>：probe 阶段的 <code>content</code> 一律不信任。
+        probe 的唯一职责是决策是否调工具，只有 <code>tool_calls</code> 是它的有效产出。
+        无论 probe 返回什么 <code>content</code>，都丢弃，最终答案由 stream 阶段生成。
+      </p>
+
+      <div class="callout">
+        <strong>设计原则：</strong>当模型的某种输出格式不稳定时，不要试图"修好"它，
+        而是让架构<strong>不依赖那个不稳定的输出</strong>。probe 的 content 不可信，
+        就不让它承担产出答案的职责。这不是 fallback，是职责边界。
+      </div>
+
+      <h2>四、对话惰性：15642 字符证据只换回 99 字回答</h2>
+
+      <p>
+        修完 probe 之后又发现新问题。有一条对话：用户问"当前 codex 有什么问题"，
+        模型成功调了 <code>memory.search</code>，拿到了 4 条高度相关的窗口观察记录，
+        <strong>共 15642 字符</strong>——里面有 summary、key_points、regions、visible_text、ui_elements，
+        证据非常丰富。但模型最终只输出了 <strong>99 个字</strong>。
+      </p>
+
+      <p>
+        15642 字符的丰富证据，只换回 99 字的泛泛回答。这不是模型能力问题，是两个隐藏根因叠加：
+      </p>
+
+      <h3>根因 A：stream 阶段没有 tools，probe 失败 = 永远没第二次机会</h3>
+
+      <p>
+        原架构中，只有 probe 阶段带 <code>tools</code> 参数，stream 阶段不带。
+        如果 probe 没发出 <code>tool_calls</code>（上面那个问题），stream 阶段模型手里没有任何工具，
+        只能凭训练数据编。即使 probe 成功调了工具，stream 也只是"带着工具结果生成文本"，
+        模型在 stream 中无法再发起工具调用。
+      </p>
+
+      <p>
+        修复：stream 阶段也带 <code>tools</code>。如果模型在流式输出中发起了 <code>tool_calls</code>，
+        代码自动执行工具、把结果注入 messages、重新 stream。最多循环 2 轮。
+        这样 probe 失败时，stream 阶段仍有第二次机会调 <code>memory.search</code>。
+      </p>
+
+      <h3>根因 B：Profile 里"能短则短"和"给出具体分析"自相矛盾</h3>
+
+      <p>
+        Profile（助手画像）里同时写着：
+      </p>
+
+      <pre><code>## 回答风格
+- 先给结论，再给理由；能短则短。           ← 这条赢了
+- 用户问具体屏幕内容时，不用泛化观察索引糊弄；
+  看得清就具体说，看不清就说看不清。       ← 这条被忽略</code></pre>
+
+      <p>
+        "能短则短"和"基于证据给出具体分析"在语义上是矛盾的。模型面对 15642 字符的丰富证据时，
+        "能短则短"这条指令反而让它觉得不该展开说。修复方式是去掉矛盾：
+      </p>
+
+      <pre><code>## 回答风格
+- 先给结论，再给理由；简洁但不省略关键信息。
+- 有观察数据时基于证据给出具体分析，不要泛泛而谈或一句话带过。</code></pre>
+
+      <div class="callout">
+        <strong>教训：</strong>profile 里的每一条指令都会被模型当真。当两条指令有张力时，
+        更短、更绝对的那条（"能短则短"）会赢过更长、更条件化的那条。
+        写 profile 时要主动消除指令间的矛盾，不能指望模型自己权衡。
+      </div>
+
+      <h2>五、借鉴 Hermes：prefix cache 冻结快照</h2>
+
+      <p>
+        上面都是修 bug。最后讲一个架构优化，灵感来自 Hermes Agent 的上下文管理设计。
+      </p>
+
+      <p>
+        Hermes 有一个"冻结快照"机制：会话开始时把 profile/memory 冻结成快照注入 system prompt，
+        中途写入只更新磁盘文件，不更新 prompt，下次会话才刷新。目的是保 prefix cache。
+      </p>
+
+      <p>
+        我的项目用 llama.cpp 本地模型，虽然没有 Anthropic 那种 API 级 <code>cache_control</code> 断点，
+        但 llama.cpp 自己有 KV cache——如果两次请求的 prompt 前缀<strong>字节级完全一致</strong>，
+        它会直接复用上次算好的 KV 矩阵，不重算。
+      </p>
+
+      <p>
+        问题在于，原代码每次 <code>ask</code> 都调 <code>profile_packet()</code> 重新读文件拼接。
+        虽然拼接结果大概率一致，但任何细微差异（空格、换行）都会导致整个前缀 KV 重算。
+      </p>
+
+      <p>
+        修复很简单——会话级冻结：
+      </p>
+
+      <pre><code>class ChatAgent:
+    def __init__(self, ...):
+        self._frozen_profile_packet: str | None = None
+
+    def _get_profile_packet(self) -> str:
+        if self._frozen_profile_packet is None:
+            self._frozen_profile_packet = get_profile_store().profile_packet()
+        return self._frozen_profile_packet</code></pre>
+
+      <p>
+        第一次 <code>ask</code> 时冻结，整个会话内复用同一字符串对象。
+        system + profile 前缀（约 1373 字符 ≈ 700 tokens）字节级不变，
+        llama.cpp 的 KV cache 稳定命中。连续对话时，第二、三次请求的前缀计算量从 700 tokens 降到 0，
+        首 token 延迟显著降低。
+      </p>
+
+      <p>
+        对桌宠式陪伴场景特别重要——用户问一句话要等 8-11 秒才出第一个字，
+        前缀命中能省到 4-6 秒，体感完全不同。
+      </p>
+
+      <div class="callout">
+        <strong>为什么说这是"核心创新"：</strong>Hermes 的 <code>cache_control</code> 面向云模型 API（按断点收费）。
+        本地 llama.cpp 没有 API 断点，靠的是 prompt 前缀的天然稳定性命中 KV cache。
+        这意味着优化方式更底层、更优雅——不是靠 API 特性，而是靠保证 prompt 结构的字节级一致性。
+      </div>
+
+      <h2>六、方法论复盘</h2>
+
+      <div class="principle-card">
+        <ol>
+          <li><strong>不修症状，修根因。</strong>VLM 退化重复不是 max_tokens 不够，是 prompt 契约超过模型稳定输出范围。排名器失败不是算法不好，是复用了不稳定的 VLM。</li>
+          <li><strong>当某种输出格式不稳定时，让架构不依赖它。</strong>probe 的 content 不稳定，就不让 content 承担产出职责。这不是 fallback，是职责边界。</li>
+          <li><strong>确定性算法优先于 LLM。</strong>30-40 条候选集的排名，BM25 零失败毫秒级，LLM ranker 46% 失败 12-30 秒。小规模排名不需要语义理解。</li>
+          <li><strong>profile 指令要消除内部矛盾。</strong>"能短则短"和"给出具体分析"矛盾时，模型会选更短的那条。写 profile 要主动消除张力。</li>
+          <li><strong>prefix cache 是本地模型的关键优化点。</strong>保证 system+profile 前缀字节级一致，llama.cpp 的 KV cache 能稳定命中，首 token 延迟降低 30-60%。</li>
+        </ol>
+      </div>
+
+      <h2>数据对比</h2>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>指标</th><th>修复前</th><th>修复后</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>VLM 分析成功率</td><td class="num">54%</td><td class="num">80%</td></tr>
+          <tr><td>memory.search 失败率</td><td class="num">46%</td><td class="num">0%</td></tr>
+          <tr><td>排名器延迟</td><td class="num">12-30s</td><td class="num">&lt;10ms</td></tr>
+          <tr><td>probe content 误当答案</td><td>有</td><td>无（职责分离）</td></tr>
+          <tr><td>stream 阶段工具调用</td><td>不支持</td><td>支持（2 轮循环）</td></tr>
+          <tr><td>prefix cache 命中</td><td>不稳定</td><td>稳定（冻结快照）</td></tr>
+        </tbody>
+      </table>
+
+      <blockquote style="border-left:4px solid var(--accent,#1a73e8); padding:0.75rem 1.25rem; margin:2rem 0; color:var(--text-secondary,#666); font-style:italic;">
+        小模型不是大模型的降级版，它有自己独特的不稳定性。
+        架构设计的任务不是消除这些不稳定性，而是让系统的正确性不依赖于那些不稳定的部分。
+      </blockquote>
+
+      <p>— 宋林蔚</p>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+        <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
+        <a href="desktop-agent-context-pitfalls.html" class="btn">上一篇：上下文管理踩坑 →</a>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
