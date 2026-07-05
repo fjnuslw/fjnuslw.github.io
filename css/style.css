@@ -1107,7 +1107,7 @@ body {
 .grid-2,
 .grid-3 {
   gap: var(--space-5);
-  align-items: start;
+  align-items: stretch;
 }
 
 .card {
@@ -1182,4 +1182,30 @@ body {
     padding-top: calc(var(--nav-height) + var(--space-10));
     padding-bottom: var(--space-10);
   }
+}
+/* ===== Visual Refresh 2026-07 alignment fix ===== */
+.grid-2,
+.grid-3 {
+  align-items: stretch;
+}
+
+.grid-2 > .card,
+.grid-2 > .card-blog,
+.grid-3 > .card,
+.grid-3 > .card-blog {
+  height: 100%;
+}
+
+.card-project {
+  min-height: 100%;
+}
+
+.card-project .tags-group {
+  margin-top: auto !important;
+  padding-top: var(--space-4) !important;
+}
+
+.card-project > a:last-child,
+.card-project > div:last-child {
+  margin-top: var(--space-2) !important;
 }
