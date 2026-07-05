@@ -1107,6 +1107,7 @@ body {
 .grid-2,
 .grid-3 {
   gap: var(--space-5);
+  align-items: start;
 }
 
 .card {
