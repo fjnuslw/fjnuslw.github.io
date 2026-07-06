@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="一个关于 Claude Code 工作机制可视化合集的推荐阅读入口，内嵌原作者的交互演示页并保留出处。">
+  <title>推荐阅读：Claude Code 工作原理可视化合集 - 宋林蔚</title>
+  <link rel="stylesheet" href="../css/style.css?v=20260705-visual9">
+  <style>
+    .source-note {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin: var(--space-6) 0;
+      background: var(--bg-subtle);
+    }
+
+    .source-note p {
+      margin-bottom: var(--space-3);
+    }
+
+    .source-note p:last-child {
+      margin-bottom: 0;
+    }
+
+    .source-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+
+    .external-preview {
+      width: min(1120px, calc(100vw - 2 * var(--space-6)));
+      margin: var(--space-8) 50% var(--space-10);
+      transform: translateX(-50%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-subtle);
+    }
+
+    .external-preview iframe {
+      width: 100%;
+      height: min(760px, 74vh);
+      min-height: 540px;
+      border: 0;
+      display: block;
+      background: #faf9f5;
+    }
+
+    .preview-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      background: var(--bg);
+    }
+
+    .topic-list {
+      columns: 2;
+      column-gap: var(--space-8);
+      margin-top: var(--space-2);
+    }
+
+    .topic-list li {
+      break-inside: avoid;
+    }
+
+    @media (max-width: 768px) {
+      .external-preview {
+        width: calc(100vw - 2 * var(--space-4));
+      }
+
+      .external-preview iframe {
+        height: 70vh;
+        min-height: 480px;
+      }
+
+      .preview-caption {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topic-list {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="post-header">
+    <div class="container">
+      <div class="tags-group" style="margin-bottom: 0.75rem">
+        <span class="tag">Agent</span>
+        <span class="tag">Claude Code</span>
+        <span class="tag">可视化</span>
+      </div>
+      <h1>推荐阅读：Claude Code 工作原理可视化合集</h1>
+      <div class="post-meta">
+        <span>2026-07-06</span>
+        <span>·</span>
+        <span>4 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </div>
+
+  <article class="post-content">
+    <p>
+      这个页面是我放进博客栏的一份外部资源推荐：原作者把 Claude Code 里的请求结构、缓存、工具调用、权限、Skills 等机制做成了一组交互式可视化演示，很适合边看边拆 Agent 系统的工程细节。
+    </p>
+
+    <div class="source-note">
+      <p>
+        原页面和源仓库均来自 zhangchitc。由于源仓库目前没有声明许可证，本站只做推荐、嵌入与出处保留，不重新托管原始 HTML、图片和演示文件。
+      </p>
+      <div class="source-actions">
+        <a class="btn btn-primary" href="https://zhangchitc.github.io/claude_code/index.html" target="_blank" rel="noopener noreferrer">打开原页面</a>
+        <a class="btn btn-secondary" href="https://github.com/zhangchitc/claude_code" target="_blank" rel="noopener noreferrer">查看源仓库</a>
+      </div>
+    </div>
+
+    <div class="external-preview">
+      <iframe
+        title="Claude Code 工作原理可视化合集"
+        src="https://zhangchitc.github.io/claude_code/index.html"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+      ></iframe>
+      <div class="preview-caption">
+        <span>内嵌预览来自原站，内容更新以原站为准。</span>
+        <a href="https://zhangchitc.github.io/claude_code/index.html" target="_blank" rel="noopener noreferrer">新窗口查看</a>
+      </div>
+    </div>
+
+    <h2>我觉得值得看的点</h2>
+    <p>
+      它有意思的地方不只是“做了图”，而是把 Agent 运行时里那些平时藏在日志、请求体和客户端协议里的东西拆开了。对正在做桌面 Agent、工具调用、上下文压缩或缓存优化的人来说，这类材料比抽象概念更容易建立直觉。
+    </p>
+
+    <ul class="topic-list">
+      <li>请求与响应里到底有哪些结构化字段。</li>
+      <li>Prompt cache 如何影响多轮对话成本。</li>
+      <li>工具调用为什么是模型与客户端之间的契约。</li>
+      <li>动态加载工具如何兼顾上下文和缓存前缀。</li>
+      <li>权限系统如何把自动化能力放进可控边界。</li>
+      <li>Skills、压缩、搜索工具这些机制如何服务长期任务。</li>
+    </ul>
+
+    <h2>留给自己的提醒</h2>
+    <p>
+      读这类系统拆解时，我最想带走的是“工程边界感”：模型能提出意图，客户端要负责执行、记录、审计和兜底。真正稳定的 Agent 不是把所有内容塞进 prompt，而是把状态、权限、工具和证据组织成模型能可靠使用的结构。
+    </p>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+      <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

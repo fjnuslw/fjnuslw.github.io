@@ -1,5 +1,14 @@
 [
   {
+    "id": "claude-code-visuals",
+    "title": "推荐阅读：Claude Code 工作原理可视化合集",
+    "date": "2026-07-06",
+    "readTime": "4 min",
+    "excerpt": "把一个 Claude Code 内部机制可视化合集放进博客栏：请求结构、缓存、工具调用、权限、Skills、压缩等主题都有交互演示。本站以内嵌预览和出处链接形式展示，不重新托管原始文件。",
+    "tags": ["Agent", "Claude Code", "可视化"],
+    "url": "blog/claude-code-visuals.html"
+  },
+  {
     "id": "small-vlm-function-calling-instability",
     "title": "小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构",
     "date": "2026-07-05",
