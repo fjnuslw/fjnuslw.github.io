@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="宋林蔚的项目展示 — LLM、Agent、RAG 相关项目与在线 Demo">
   <title>项目 — 宋林蔚</title>
-  <link rel="stylesheet" href="css/style.css?v=20260705-visual9">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=20260706-redesign1">
 </head>
 <body>
 
@@ -35,51 +36,53 @@
   <div class="container">
 
     <!-- 项目列表 -->
-    <p class="section-title reveal">所有项目</p>
+    <p class="section-title reveal" data-num="01"><span class="section-color-bar"></span>所有项目</p>
     <div class="grid-2" style="margin-bottom: 3rem;">
 
-      <div class="card card-project reveal reveal-delay-1">
-        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.75rem;">
-          <img src="projects/local-window-copilot/img/mascot_idle.png" alt="mascot" width="64" height="64" style="border-radius:12px; flex-shrink:0;">
-          <div>
-            <h3 style="margin:0;">Local Window Copilot</h3>
-            <span class="badge badge-live" style="margin-top:2px; display:inline-block;">活跃开发</span>
-          </div>
+      <div class="card card-project reveal reveal-delay-1" style="--card-color: var(--c-blue); --card-color-2: var(--c-cyan);">
+        <div class="card-cover cover-img">
+          <span class="badge badge-live">活跃开发</span>
+          <img src="projects/local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot mascot">
         </div>
+        <h3>Local Window Copilot</h3>
         <p>Windows 本地桌面 Agent。观察线用 MiniCPM-V 生成窗口证据，对话线由 ChatAgent 通过 memory.search(query) 检索上下文；SQLite RuntimeStore 管理观察、截图、profile、会话记忆与工具 trace，FastAPI + llama.cpp 本地运行。</p>
-        <div class="tags-group" style="margin-bottom: 0.75rem">
+        <div class="tags-group">
           <span class="tag">Agent</span>
           <span class="tag">VLM</span>
           <span class="tag">FastAPI</span>
           <span class="tag">llama.cpp</span>
           <span class="tag">桌面应用</span>
         </div>
-        <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
-        <span style="margin: 0 0.5rem; color: var(--border);">|</span>
-        <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" class="btn-link">GitHub →</a>
-        <span style="margin: 0 0.5rem; color: var(--border);">|</span>
-        <a href="demos/local-window-copilot/index.html" class="btn-link">体验 Demo →</a>
+        <div class="card-links">
+          <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
+          <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank">GitHub ↗</a>
+          <a href="demos/local-window-copilot/index.html">体验 Demo ↗</a>
+        </div>
       </div>
 
-      <div class="card card-project reveal reveal-delay-2">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+      <div class="card card-project reveal reveal-delay-2" style="--card-color: var(--c-violet); --card-color-2: var(--c-rose);">
+        <div class="card-cover">
           <span class="badge badge-live">已上线</span>
+          <span class="card-cover-icon">🎬</span>
         </div>
         <h3>SilentDeck</h3>
         <p>开源 Codex Skill，将静音演示视频/短视频转为带讲解和字幕的 narrated MP4。基于 agent-first 工作流，结合关键帧抽取、VLM 视觉分析、LLM 讲稿生成、TTS 语音合成与 FFmpeg 视频合成。</p>
-        <div class="tags-group" style="margin-bottom: 0.75rem">
+        <div class="tags-group">
           <span class="tag">Agent</span>
           <span class="tag">VLM</span>
           <span class="tag">TTS</span>
           <span class="tag">SiliconFlow</span>
           <span class="tag">开源</span>
         </div>
-        <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" class="btn-link">查看 GitHub →</a>
+        <div class="card-links">
+          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" class="btn-link">查看 GitHub →</a>
+        </div>
       </div>
 
-      <div class="card card-project reveal reveal-delay-3">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+      <div class="card card-project reveal reveal-delay-3" style="--card-color: var(--c-emerald); --card-color-2: var(--c-cyan);">
+        <div class="card-cover">
           <span class="badge badge-coming">开发中</span>
+          <span class="card-cover-icon">💬</span>
         </div>
         <h3>智能问答 Agent</h3>
         <p>基于 RAG 的多轮问答系统，支持文档上传与知识库管理，通过 Embedding 检索 + Rerank 优化召回率，附可交互 Demo。</p>
@@ -91,9 +94,10 @@
         </div>
       </div>
 
-      <div class="card card-project reveal reveal-delay-4">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem">
+      <div class="card card-project reveal reveal-delay-4" style="--card-color: var(--c-amber); --card-color-2: var(--c-rose);">
+        <div class="card-cover">
           <span class="badge badge-wip">规划中</span>
+          <span class="card-cover-icon">📊</span>
         </div>
         <h3>数据分析助手</h3>
         <p>自然语言驱动的数据分析工具。用户描述分析需求，AI 自动生成 SQL 查询、执行数据分析并输出可视化图表和报告。</p>
@@ -107,7 +111,7 @@
     </div>
 
     <!-- Demo 区域 -->
-    <p class="section-title reveal">在线 Demo</p>
+    <p class="section-title reveal" data-num="02"><span class="section-color-bar"></span>在线 Demo</p>
     <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem;" class="reveal">
       项目完成后，可在此直接体验可交互 Demo，支持嵌入 HuggingFace Spaces 或独立页面。
     </p>

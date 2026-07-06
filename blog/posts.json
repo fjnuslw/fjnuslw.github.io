@@ -6,6 +6,8 @@
     "readTime": "4 min",
     "excerpt": "把一个 Claude Code 内部机制可视化合集放进博客栏：请求结构、缓存、工具调用、权限、Skills、压缩等主题都有交互演示。本站以内嵌预览和出处链接形式展示，不重新托管原始文件。",
     "tags": ["Agent", "Claude Code", "可视化"],
+    "color": "amber",
+    "icon": "✨",
     "url": "blog/claude-code-visuals.html"
   },
   {
@@ -15,6 +17,8 @@
     "readTime": "15 min",
     "excerpt": "小 VLM 的 function calling 不稳定、probe content 被当答案、对话惰性根因分析、prefix cache 冻结快照。Local Window Copilot 第二轮调试复盘：从 54% 成功率到 80%，从连锁失败到链路解耦。",
     "tags": ["Agent", "VLM", "架构"],
+    "color": "cyan",
+    "icon": "🔧",
     "url": "blog/small-vlm-function-calling-instability.html"
   },
   {
@@ -24,6 +28,8 @@
     "readTime": "12 min",
     "excerpt": "桌面 AI 伙伴真正困难的不是调用 VLM，也不是保存历史，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘：摘要陷阱、VLM 可见度、对话断线、观察线与对话线分离、记忆管理、工具层设计。",
     "tags": ["Agent", "VLM", "思考"],
+    "color": "rose",
+    "icon": "💭",
     "url": "blog/desktop-agent-context-pitfalls.html"
   },
   {
@@ -33,6 +39,8 @@
     "readTime": "3 min",
     "excerpt": "这是我个人网站的第一篇文章。在这里，我会分享我在 LLM 和 Agent 方向的学习笔记、技术思考和实习经历。欢迎来到我的小世界！",
     "tags": ["随笔", "起点"],
+    "color": "emerald",
+    "icon": "🌱",
     "url": "blog/hello-world.html"
   }
 ]

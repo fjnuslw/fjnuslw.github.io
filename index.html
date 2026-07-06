@@ -6,7 +6,8 @@
   <meta name="description" content="宋林蔚的个人网站 — 软件工程硕士，专注大模型应用开发、RAG 与 AI Agent 工程化。">
   <meta name="keywords" content="宋林蔚, fjnuslw, LLM, Agent, RAG, 大模型应用, AI">
   <title>宋林蔚</title>
-  <link rel="stylesheet" href="css/style.css?v=20260705-visual9">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=20260706-redesign1">
 </head>
 <body>
 
@@ -48,9 +49,9 @@
   </section>
 
   <!-- Currently -->
-  <section class="section">
+  <section class="section" data-section="currently">
     <div class="container-wide">
-      <p class="section-title reveal">Currently</p>
+      <h2 class="section-title reveal" data-num="00"><span class="section-color-bar"></span>Currently</h2>
       <div class="currently-grid reveal">
         <div class="currently-item">
           <span class="currently-label">在读</span>
@@ -72,8 +73,8 @@
         </div>
         <div class="currently-item">
           <span class="currently-label">状态</span>
-          <span class="currently-value" style="color: #16a34a; font-weight: 500;">
-            寻找大模型应用方向实习 · 欢迎联系
+          <span class="currently-value">
+            <span class="status-live">寻找大模型应用方向实习 · 欢迎联系</span>
           </span>
         </div>
       </div>
@@ -81,59 +82,58 @@
   </section>
 
   <!-- 精选项目 -->
-  <section class="section">
+  <section class="section" data-section="projects">
     <div class="container-wide">
-      <p class="section-title reveal">精选项目</p>
+      <h2 class="section-title reveal" data-num="01"><span class="section-color-bar"></span>精选项目</h2>
       <div class="grid-3">
 
-        <div class="card card-project reveal reveal-delay-1">
-          <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.75rem;">
-            <img src="projects/local-window-copilot/img/mascot_idle.png" alt="mascot" width="56" height="56" style="border-radius:12px; flex-shrink:0;">
-            <div>
-              <h3 style="margin:0;">Local Window Copilot</h3>
-              <span class="badge badge-live" style="margin-top:2px; display:inline-block;">活跃开发</span>
-            </div>
+        <div class="card card-project reveal reveal-delay-1" style="--card-color: var(--c-blue); --card-color-2: var(--c-cyan);">
+          <div class="card-cover cover-img">
+            <span class="badge badge-live">活跃开发</span>
+            <img src="projects/local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot mascot">
           </div>
+          <h3>Local Window Copilot</h3>
           <p>Windows 本地桌面 Agent。观察线用 MiniCPM-V 生成窗口证据，对话线由 ChatAgent 通过 memory.search(query) 检索上下文；SQLite RuntimeStore 管理观察、截图、profile、会话记忆与工具 trace，FastAPI + llama.cpp 本地运行。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+          <div class="tags-group">
             <span class="tag">Agent</span>
             <span class="tag">VLM</span>
             <span class="tag">FastAPI</span>
             <span class="tag">llama.cpp</span>
             <span class="tag">桌面应用</span>
           </div>
-          <div style="margin-top:0.5rem; display:flex; gap:0.75rem; align-items:center;">
+          <div class="card-links">
             <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
-            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">GitHub ↗</a>
-            <a href="demos/local-window-copilot/index.html" style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Demo ↗</a>
+            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank">GitHub ↗</a>
+            <a href="demos/local-window-copilot/index.html">Demo ↗</a>
           </div>
         </div>
 
-        <div class="card card-project reveal reveal-delay-2">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
-            <h3>SilentDeck</h3>
+        <div class="card card-project reveal reveal-delay-2" style="--card-color: var(--c-violet); --card-color-2: var(--c-rose);">
+          <div class="card-cover">
             <span class="badge badge-live">已上线</span>
+            <span class="card-cover-icon">🎬</span>
           </div>
+          <h3>SilentDeck</h3>
           <p>开源 Agent Skill。将静音演示视频自动转为带 AI 讲解与字幕的 MP4——关键帧抽取 → VLM 分析 → LLM 讲稿 → TTS 合成 → FFmpeg 封装，全流程 agent-first 设计。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+          <div class="tags-group">
             <span class="tag">Agent</span>
             <span class="tag">VLM</span>
             <span class="tag">TTS</span>
             <span class="tag">开源</span>
           </div>
-          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank"
-             style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem; display:block; font-family:var(--font-mono);">
-            github.com/fjnuslw/silentdeck-codex-skill ↗
-          </a>
+          <div class="card-links">
+            <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" class="btn-link">查看 GitHub →</a>
+          </div>
         </div>
 
-        <div class="card card-project reveal reveal-delay-3">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
-            <h3>智能问答 Agent</h3>
+        <div class="card card-project reveal reveal-delay-3" style="--card-color: var(--c-emerald); --card-color-2: var(--c-cyan);">
+          <div class="card-cover">
             <span class="badge badge-coming">开发中</span>
+            <span class="card-cover-icon">💬</span>
           </div>
+          <h3>智能问答 Agent</h3>
           <p>基于 RAG 的多轮对话系统，支持文档上传与知识库管理，Embedding 检索 + Rerank 优化，附在线可交互 Demo。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+          <div class="tags-group">
             <span class="tag">LangChain</span>
             <span class="tag">RAG</span>
             <span class="tag">Qdrant</span>
@@ -141,70 +141,76 @@
         </div>
 
       </div>
-      <p style="margin-top:1.25rem" class="reveal">
+      <p style="margin-top:1.5rem" class="reveal">
         <a href="projects.html" class="btn-link">查看全部项目 →</a>
       </p>
     </div>
   </section>
 
   <!-- 最新文章 -->
-  <section class="section">
+  <section class="section" data-section="posts">
     <div class="container-wide">
-      <p class="section-title reveal">最新文章</p>
+      <h2 class="section-title reveal" data-num="02"><span class="section-color-bar"></span>最新文章</h2>
       <div class="grid-2" id="latest-posts">
         <!-- JS 动态加载 -->
       </div>
-      <p style="margin-top:1.25rem" class="reveal">
+      <p style="margin-top:1.5rem" class="reveal">
         <a href="blog.html" class="btn-link">阅读更多 →</a>
       </p>
     </div>
   </section>
 
   <!-- 求职准备 -->
-  <section class="section">
+  <section class="section" data-section="career">
     <div class="container-wide">
-      <p class="section-title reveal">求职准备</p>
+      <h2 class="section-title reveal" data-num="03"><span class="section-color-bar"></span>求职准备</h2>
       <div class="grid-2">
-        <div class="card card-project reveal">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
-            <h3>实习岗位调研</h3>
+        <div class="card card-project reveal" style="--card-color: var(--c-emerald); --card-color-2: var(--c-blue);">
+          <div class="card-cover">
             <span class="badge badge-live">14 岗位</span>
+            <span class="card-cover-icon">🎯</span>
           </div>
+          <h3>实习岗位调研</h3>
           <p>覆盖智谱 AI、美团、快手、字节、阿里、腾讯、小红书、MiniMax、月之暗面、微软等 14 家公司的纯 AI 应用岗（已剔除算法岗）。含完整 JD、技术栈、网申链接，按双非本硕 + 论文国赛背景评估难度并排序。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+          <div class="tags-group">
             <span class="tag">AI 应用</span>
             <span class="tag">Agent</span>
             <span class="tag">RAG</span>
             <span class="tag">9月可投</span>
           </div>
-          <a href="ai-prep/internships.html" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem; display:block; font-family:var(--font-mono);">查看岗位调研 →</a>
+          <div class="card-links">
+            <a href="ai-prep/internships.html" class="btn-link">查看岗位调研 →</a>
+          </div>
         </div>
 
-        <div class="card card-project reveal">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem">
-            <h3>大模型应用面经</h3>
+        <div class="card card-project reveal" style="--card-color: var(--c-amber); --card-color-2: var(--c-rose);">
+          <div class="card-cover">
             <span class="badge badge-live">46 真题</span>
+            <span class="card-cover-icon">📝</span>
           </div>
+          <h3>大模型应用面经</h3>
           <p>从知乎 / 小红书 / 牛客 / CSDN / 抖音搜集的真实面试题，覆盖一面、二面、终面与算法手撕题。每题含具体问题、解决思路、具体答案、加分点与避坑提示。附 Multi-Head Attention、KV Cache、SFT Loss 等大模型特色手撕。</p>
-          <div class="tags-group" style="margin-top:auto; padding-top:1rem">
+          <div class="tags-group">
             <span class="tag">面经</span>
             <span class="tag">算法题</span>
             <span class="tag">手撕代码</span>
             <span class="tag">含答案</span>
           </div>
-          <a href="ai-prep/interview-guide.html" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem; display:block; font-family:var(--font-mono);">查看面经 →</a>
+          <div class="card-links">
+            <a href="ai-prep/interview-guide.html" class="btn-link">查看面经 →</a>
+          </div>
         </div>
       </div>
-      <p style="margin-top:1.25rem" class="reveal">
+      <p style="margin-top:1.5rem" class="reveal">
         <a href="ai-prep/index.html" class="btn-link">进入求职准备专区 →</a>
       </p>
     </div>
   </section>
 
   <!-- 技术栈 -->
-  <section class="section">
+  <section class="section" data-section="stack">
     <div class="container-wide">
-      <p class="section-title reveal">技术栈</p>
+      <h2 class="section-title reveal" data-num="04"><span class="section-color-bar"></span>技术栈</h2>
       <div class="tech-list reveal">
         <span class="tech-item">Python</span>
         <span class="tech-item">LangChain</span>

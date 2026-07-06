@@ -78,6 +78,50 @@ function initActiveNavLink() {
 }
 
 /* ===== 博客文章加载（blog.html + index.html 调用） ===== */
+
+// 标签 → 主题色映射（用于自动生成头图色）
+const TAG_COLORS = {
+  'Agent':       { c: 'var(--c-blue)',   c2: 'var(--c-violet)', icon: '🤖' },
+  'VLM':         { c: 'var(--c-cyan)',   c2: 'var(--c-blue)',   icon: '👁️' },
+  'RAG':         { c: 'var(--c-emerald)',c2: 'var(--c-cyan)',   icon: '📚' },
+  'LLM':         { c: 'var(--c-violet)', c2: 'var(--c-blue)',   icon: '🧠' },
+  'Claude Code': { c: 'var(--c-amber)',  c2: 'var(--c-rose)',   icon: '✨' },
+  '架构':        { c: 'var(--c-rose)',   c2: 'var(--c-violet)', icon: '🏗️' },
+  '可视化':      { c: 'var(--c-amber)',  c2: 'var(--c-violet)', icon: '📊' },
+  '思考':        { c: 'var(--c-slate)',  c2: 'var(--c-violet)', icon: '💭' },
+  '随笔':        { c: 'var(--c-slate)',  c2: 'var(--c-violet)', icon: '✍️' },
+  '起点':        { c: 'var(--c-emerald)',c2: 'var(--c-blue)',   icon: '🌱' },
+};
+
+// color 字段名 → CSS 变量
+const COLOR_NAME_MAP = {
+  blue:    { c: 'var(--c-blue)',    c2: 'var(--c-cyan)' },
+  violet:  { c: 'var(--c-violet)',  c2: 'var(--c-blue)' },
+  emerald: { c: 'var(--c-emerald)', c2: 'var(--c-cyan)' },
+  amber:   { c: 'var(--c-amber)',   c2: 'var(--c-rose)' },
+  rose:    { c: 'var(--c-rose)',    c2: 'var(--c-violet)' },
+  cyan:    { c: 'var(--c-cyan)',    c2: 'var(--c-blue)' },
+};
+
+// 根据文章数据推断头图色与图标
+function resolveCover(post) {
+  // 优先用显式声明的 color/icon
+  let colors = null, icon = post.icon || '';
+  if (post.color && COLOR_NAME_MAP[post.color]) {
+    colors = COLOR_NAME_MAP[post.color];
+  }
+  // 否则按首个匹配标签自动选色
+  if (!colors) {
+    for (const tag of (post.tags || [])) {
+      if (TAG_COLORS[tag]) { colors = TAG_COLORS[tag]; if (!icon) icon = TAG_COLORS[tag].icon; break; }
+    }
+  }
+  // 兜底
+  if (!colors) colors = { c: 'var(--c-violet)', c2: 'var(--c-blue)' };
+  if (!icon) icon = '📝';
+  return { ...colors, icon };
+}
+
 async function loadBlogPosts(containerId, limit) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -97,16 +141,23 @@ async function loadBlogPosts(containerId, limit) {
       return;
     }
 
-    container.innerHTML = list.map((post, i) => `
-      <a href="${post.url}" class="card card-blog reveal reveal-delay-${(i % 4) + 1}">
-        <div class="post-date">${post.date} · ${post.readTime || '5 min read'}</div>
+    container.innerHTML = list.map((post, i) => {
+      const cover = resolveCover(post);
+      return `
+      <a href="${post.url}" class="card card-blog reveal reveal-delay-${(i % 4) + 1}"
+         data-tags="${(post.tags || []).join(',').toLowerCase()}"
+         style="--card-color: ${cover.c}; --card-color-2: ${cover.c2};">
+        <div class="card-cover">
+          <div class="post-date">${post.date} · ⏱ ${post.readTime || '5 min'}</div>
+          <span class="card-cover-icon">${cover.icon}</span>
+        </div>
         <h3>${post.title}</h3>
         <p class="card-excerpt">${post.excerpt}</p>
-        <div class="tags-group" style="margin-top:0.75rem">
-          ${post.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+        <div class="tags-group">
+          ${(post.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
         </div>
       </a>
-    `).join('');
+    `;}).join('');
 
     initScrollReveal();
   } catch {
@@ -123,11 +174,42 @@ function emptyState(title, desc) {
 
 /* ===== 博客标签过滤 ===== */
 function initBlogFilter() {
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+  const buttons = document.querySelectorAll('.filter-btn');
+  if (!buttons.length) return;
+  const grid = document.getElementById('blog-posts');
+  if (!grid) return;
+
+  buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // 预留：按 data-tag 过滤
+
+      const tag = (btn.dataset.tag || 'all').toLowerCase();
+      const cards = grid.querySelectorAll('.card-blog');
+      cards.forEach(card => {
+        if (tag === 'all') {
+          card.style.display = '';
+        } else {
+          const cardTags = (card.dataset.tags || '').split(',');
+          card.style.display = cardTags.includes(tag) ? '' : 'none';
+        }
+      });
+
+      // 过滤后若全部隐藏，显示空提示
+      const visible = Array.from(cards).filter(c => c.style.display !== 'none');
+      let empty = grid.querySelector('.filter-empty');
+      if (!visible.length) {
+        if (!empty) {
+          empty = document.createElement('div');
+          empty.className = 'empty-state filter-empty';
+          empty.style.gridColumn = '1 / -1';
+          empty.innerHTML = '<h3>暂无该标签的文章</h3><p>换个标签看看？</p>';
+          grid.appendChild(empty);
+        }
+        empty.style.display = '';
+      } else if (empty) {
+        empty.style.display = 'none';
+      }
     });
   });
 }
