@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="测试版面 — 大模型应用开发岗 128 道面试题总览、检索与随机自测。">
+  <title>测试版面 · 宋林蔚</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=20260706-redesign1">
+  <style>
+    body {
+      background: var(--bg-subtle);
+    }
+
+    .test-shell {
+      padding-top: var(--nav-height);
+    }
+
+    .test-hero {
+      background:
+        linear-gradient(135deg, rgba(37,99,235,.95), rgba(124,58,237,.95)),
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,.22), transparent 28%);
+      color: #fff;
+      padding: var(--space-10) 0 var(--space-8);
+    }
+
+    .test-hero .container-wide {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-6);
+      align-items: end;
+    }
+
+    .test-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .84;
+      margin-bottom: var(--space-3);
+    }
+
+    .test-kicker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: #fff;
+      opacity: .9;
+    }
+
+    .test-hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-3);
+    }
+
+    .test-hero p {
+      max-width: 720px;
+      color: rgba(255,255,255,.88);
+      font-size: var(--text-base);
+    }
+
+    .test-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--space-3);
+    }
+
+    .test-hero .btn {
+      background: rgba(255,255,255,.16);
+      color: #fff;
+      border-color: rgba(255,255,255,.28);
+      backdrop-filter: blur(6px);
+    }
+
+    .test-hero .btn:hover {
+      background: rgba(255,255,255,.24);
+      color: #fff;
+    }
+
+    .test-board {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6) var(--space-16);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .stat-tile {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      display: block;
+      color: var(--text-muted);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      margin-bottom: var(--space-2);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--text-primary);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .test-tabs {
+      display: inline-flex;
+      gap: var(--space-1);
+      padding: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .test-tab {
+      border: 0;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      padding: .55rem .9rem;
+    }
+
+    .test-tab.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
+      box-shadow: var(--shadow-sm);
+    }
+
+    .test-view {
+      display: none;
+    }
+
+    .test-view.active {
+      display: block;
+    }
+
+    .board-controls {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(150px, .7fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .control-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .control-field label {
+      color: var(--text-muted);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+    }
+
+    .control-field input,
+    .control-field select,
+    .answer-box textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text-primary);
+      font: inherit;
+      padding: .72rem .85rem;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .control-field input:focus,
+    .control-field select:focus,
+    .answer-box textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .board-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 360px;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    .category-rail,
+    .question-list-wrap,
+    .detail-panel,
+    .selftest-panel {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .category-rail {
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-4));
+      padding: var(--space-3);
+    }
+
+    .category-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-3);
+      align-items: center;
+      border: 0;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--text-sm);
+      line-height: 1.35;
+      padding: .65rem .7rem;
+      text-align: left;
+    }
+
+    .category-button.active,
+    .category-button:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .category-count {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+
+    .question-list-wrap {
+      overflow: hidden;
+    }
+
+    .question-list-head {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: center;
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-list-head h2 {
+      font-size: var(--text-base);
+      line-height: 1.4;
+    }
+
+    .question-list {
+      display: grid;
+      max-height: 720px;
+      overflow: auto;
+    }
+
+    .question-row {
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      display: grid;
+      gap: var(--space-2);
+      padding: var(--space-4) var(--space-5);
+      text-align: left;
+      transition: background var(--transition);
+    }
+
+    .question-row:last-child {
+      border-bottom: 0;
+    }
+
+    .question-row.active,
+    .question-row:hover {
+      background: var(--bg-subtle);
+    }
+
+    .question-row-title {
+      display: flex;
+      gap: var(--space-3);
+      color: var(--text-primary);
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .q-number {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      min-width: 42px;
+      padding-top: 2px;
+    }
+
+    .question-row-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      padding-left: 54px;
+      color: var(--text-muted);
+      font-size: var(--text-xs);
+    }
+
+    .mini-pill,
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .12rem .5rem;
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-size: var(--text-xs);
+      white-space: nowrap;
+    }
+
+    .status-pill.status-wrong { color: var(--c-rose); border-color: var(--c-rose-100); background: var(--c-rose-50); }
+    .status-pill.status-fuzzy { color: var(--c-amber-600); border-color: var(--c-amber-100); background: var(--c-amber-50); }
+    .status-pill.status-known { color: var(--c-blue-600); border-color: var(--c-blue-100); background: var(--c-blue-50); }
+    .status-pill.status-mastered { color: var(--c-emerald-600); border-color: var(--c-emerald-100); background: var(--c-emerald-50); }
+
+    .detail-panel {
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-4));
+      max-height: calc(100vh - var(--nav-height) - var(--space-8));
+      overflow: auto;
+    }
+
+    .detail-empty,
+    .detail-content {
+      padding: var(--space-5);
+    }
+
+    .detail-empty {
+      color: var(--text-muted);
+      text-align: center;
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+    }
+
+    .detail-title {
+      font-size: var(--text-xl);
+      line-height: 1.45;
+      margin: var(--space-3) 0;
+    }
+
+    .detail-actions,
+    .status-actions,
+    .session-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin: var(--space-4) 0;
+    }
+
+    .small-button {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--text-sm);
+      padding: .45rem .7rem;
+    }
+
+    .small-button:hover,
+    .small-button.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .small-button.primary {
+      border-color: var(--accent);
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .answer-section {
+      border-top: 1px solid var(--border);
+      padding-top: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    .answer-section h3 {
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-3);
+      color: var(--text-primary);
+    }
+
+    .markdown-body {
+      color: var(--text-secondary);
+      font-size: .92rem;
+      line-height: 1.78;
+    }
+
+    .markdown-body p,
+    .markdown-body ul,
+    .markdown-body ol,
+    .markdown-body blockquote,
+    .markdown-body pre,
+    .markdown-body table {
+      margin-bottom: var(--space-3);
+    }
+
+    .markdown-body ul,
+    .markdown-body ol {
+      padding-left: var(--space-5);
+    }
+
+    .markdown-body ul li { list-style: disc; }
+    .markdown-body ol li { list-style: decimal; }
+
+    .markdown-body code {
+      font-family: var(--font-mono);
+      font-size: .88em;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1px 5px;
+      color: var(--text-primary);
+    }
+
+    .markdown-body pre {
+      background: #111827;
+      color: #e5e7eb;
+      border-radius: var(--radius);
+      overflow: auto;
+      padding: var(--space-4);
+    }
+
+    .markdown-body pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: inherit;
+    }
+
+    .markdown-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: var(--space-3) var(--space-4);
+      background: var(--accent-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--text-primary);
+    }
+
+    .markdown-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .86rem;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .markdown-body th,
+    .markdown-body td {
+      border: 1px solid var(--border);
+      padding: .45rem .6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .markdown-body th {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .selftest-layout {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+
+    .selftest-panel {
+      padding: var(--space-5);
+    }
+
+    .selftest-panel h2 {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-4);
+    }
+
+    .setting-grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .session-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      min-height: 560px;
+      padding: var(--space-6);
+    }
+
+    .session-placeholder {
+      min-height: 480px;
+      display: grid;
+      place-items: center;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .session-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: center;
+      margin-bottom: var(--space-5);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .session-question {
+      font-size: var(--text-2xl);
+      line-height: 1.45;
+      margin-bottom: var(--space-5);
+      letter-spacing: -0.01em;
+    }
+
+    .answer-box textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .evaluation {
+      display: grid;
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+
+    .eval-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .eval-tile {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      padding: var(--space-4);
+    }
+
+    .eval-tile strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-1);
+    }
+
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .keyword-list .hit {
+      border-color: var(--c-emerald-100);
+      color: var(--c-emerald-600);
+      background: var(--c-emerald-50);
+    }
+
+    .keyword-list .miss {
+      border-color: var(--border);
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+
+    .checklist {
+      display: grid;
+      gap: var(--space-2);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    .check-item {
+      display: flex;
+      gap: var(--space-2);
+      align-items: flex-start;
+    }
+
+    .check-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      flex: 0 0 18px;
+      margin-top: 2px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .check-item.pass .check-dot {
+      background: var(--c-emerald-500);
+      border-color: var(--c-emerald-500);
+    }
+
+    .toast {
+      position: fixed;
+      right: var(--space-6);
+      bottom: var(--space-6);
+      z-index: 200;
+      background: #111827;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: .75rem 1rem;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .board-layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+      }
+
+      .detail-panel {
+        position: static;
+        grid-column: 1 / -1;
+        max-height: none;
+      }
+
+      .selftest-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .test-hero .container-wide {
+        grid-template-columns: 1fr;
+      }
+
+      .test-hero-actions {
+        justify-content: flex-start;
+      }
+
+      .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .board-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .board-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .category-rail {
+        position: static;
+      }
+
+      .question-list {
+        max-height: none;
+      }
+
+      .question-row-meta {
+        padding-left: 0;
+      }
+
+      .question-row-title {
+        flex-direction: column;
+        gap: var(--space-1);
+      }
+
+      .eval-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="test-shell">
+    <section class="test-hero">
+      <div class="container-wide">
+        <div>
+          <div class="test-kicker">Interview Test Board</div>
+          <h1>测试版面</h1>
+          <p>大模型应用开发岗题库总览、检索、随机抽题和自测复盘。题库来自「面试题精准解答」，全部题目静态托管在本站。</p>
+        </div>
+        <div class="test-hero-actions">
+          <a class="btn" href="index.html">返回求职准备</a>
+          <button class="btn" type="button" id="daily-five-btn">今日 5 题</button>
+          <button class="btn" type="button" id="random-start-top">随机抽题</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="test-board">
+      <section class="stat-grid" aria-label="题库统计">
+        <div class="stat-tile"><span class="stat-label">Questions</span><span class="stat-value" id="stat-total">--</span></div>
+        <div class="stat-tile"><span class="stat-label">Categories</span><span class="stat-value" id="stat-categories">--</span></div>
+        <div class="stat-tile"><span class="stat-label">Sections</span><span class="stat-value" id="stat-sections">--</span></div>
+        <div class="stat-tile"><span class="stat-label">Today</span><span class="stat-value" id="stat-today">0</span></div>
+        <div class="stat-tile"><span class="stat-label">Mastery</span><span class="stat-value" id="stat-mastery">0%</span></div>
+      </section>
+
+      <div class="test-tabs" role="tablist">
+        <button class="test-tab active" type="button" data-view="overview">题库总览</button>
+        <button class="test-tab" type="button" data-view="selftest">随机自测</button>
+      </div>
+
+      <section class="test-view active" id="overview-view">
+        <div class="board-controls">
+          <div class="control-field">
+            <label for="question-search">搜索</label>
+            <input id="question-search" type="search" placeholder="搜索题目、关键词或答案正文">
+          </div>
+          <div class="control-field">
+            <label for="category-filter">主类</label>
+            <select id="category-filter"></select>
+          </div>
+          <div class="control-field">
+            <label for="status-filter">状态</label>
+            <select id="status-filter">
+              <option value="all">全部状态</option>
+              <option value="new">未测</option>
+              <option value="wrong">不会</option>
+              <option value="fuzzy">模糊</option>
+              <option value="known">基本会</option>
+              <option value="mastered">熟练</option>
+              <option value="favorite">收藏</option>
+            </select>
+          </div>
+          <div class="control-field">
+            <label for="difficulty-filter">难度</label>
+            <select id="difficulty-filter">
+              <option value="all">全部难度</option>
+              <option value="easy">基础</option>
+              <option value="medium">进阶</option>
+              <option value="hard">高阶</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="board-layout">
+          <aside class="category-rail" id="category-rail" aria-label="题库分类"></aside>
+
+          <section class="question-list-wrap">
+            <div class="question-list-head">
+              <h2 id="question-list-title">全部题目</h2>
+              <span class="mini-pill" id="question-count">0 题</span>
+            </div>
+            <div class="question-list" id="question-list"></div>
+          </section>
+
+          <aside class="detail-panel" id="detail-panel">
+            <div class="detail-empty">选择一道题查看完整答案</div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="test-view" id="selftest-view">
+        <div class="selftest-layout">
+          <aside class="selftest-panel">
+            <h2>抽题设置</h2>
+            <div class="setting-grid">
+              <div class="control-field">
+                <label for="test-range">范围</label>
+                <select id="test-range"></select>
+              </div>
+              <div class="control-field">
+                <label for="test-count">题数</label>
+                <select id="test-count">
+                  <option value="1">1 题</option>
+                  <option value="5" selected>5 题</option>
+                  <option value="10">10 题</option>
+                  <option value="20">20 题</option>
+                </select>
+              </div>
+              <div class="control-field">
+                <label for="test-mode">模式</label>
+                <select id="test-mode">
+                  <option value="practice">练习模式</option>
+                  <option value="quick">快问快答 · 90 秒</option>
+                  <option value="weak">弱项优先</option>
+                </select>
+              </div>
+              <button class="small-button primary" type="button" id="start-session-btn">开始自测</button>
+              <button class="small-button" type="button" id="reset-session-btn">重置本轮</button>
+            </div>
+          </aside>
+
+          <section class="session-card" id="session-card">
+            <div class="session-placeholder">
+              <div>
+                <h2>准备抽题</h2>
+                <p>先选范围和模式，再开始本轮自测。</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/test-board.js?v=20260706-test1"></script>
+</body>
+</html>
