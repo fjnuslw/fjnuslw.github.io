@@ -118,18 +118,27 @@
     .example-card pre {
       margin: var(--space-3) 0;
       padding: var(--space-4);
+      border: 1px solid #dbeafe;
       border-radius: 8px;
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-word;
-      background: #0f172a;
-      color: #e2e8f0;
+      background: #f8fafc;
+      color: #1e293b;
       font-size: var(--text-sm);
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
+    .example-card pre code,
     .example-card code {
       font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+    }
+
+    .example-card pre code {
+      color: inherit;
+      background: transparent;
+      border: 0;
+      padding: 0;
     }
 
     .example-tag {
