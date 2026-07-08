@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="把语义地形、采样分布、长上下文和 Agent 工程串成一套上下文设计框架，整理成可执行的工作方法。">
+  <title>语义地形工程：把上下文设计成可控系统 - 宋林蔚</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=20260706-redesign1">
+  <style>
+    .lead-panel {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: var(--space-5);
+      margin: var(--space-6) 0;
+      background: var(--bg-subtle);
+    }
+
+    .lead-panel p {
+      margin-bottom: var(--space-3);
+    }
+
+    .lead-panel p:last-child {
+      margin-bottom: 0;
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+
+    .framework-item,
+    .practice-box,
+    .source-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      padding: var(--space-5);
+    }
+
+    .framework-item h3,
+    .practice-box h3 {
+      margin-top: 0;
+      margin-bottom: var(--space-2);
+      font-size: var(--text-lg);
+    }
+
+    .framework-item p,
+    .practice-box p {
+      margin-bottom: 0;
+    }
+
+    .signal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-6) 0;
+      font-size: var(--text-sm);
+    }
+
+    .signal-table th,
+    .signal-table td {
+      border: 1px solid var(--border);
+      padding: var(--space-3);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .signal-table th {
+      background: var(--bg-subtle);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .practice-box {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(139, 92, 246, 0.08));
+    }
+
+    .source-box {
+      margin-top: var(--space-8);
+      background: var(--bg-subtle);
+    }
+
+    .source-box ol {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .framework-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .signal-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">宋林蔚</a>
+      <button class="nav-toggle" aria-label="切换菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="../index.html"    class="nav-link">首页</a></li>
+        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html"   class="nav-link">简历</a></li>
+        <li><a href="../about.html"    class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="post-header">
+    <div class="container">
+      <div class="tags-group" style="margin-bottom: 0.75rem">
+        <span class="tag">LLM</span>
+        <span class="tag">Agent</span>
+        <span class="tag">思考</span>
+      </div>
+      <h1>语义地形工程：把上下文设计成可控系统</h1>
+      <div class="post-meta">
+        <span>2026-07-08</span>
+        <span>·</span>
+        <span>10 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </div>
+
+  <article class="post-content">
+    <p>
+      我越来越倾向于把大模型交互理解成一门上下文工程。prompt、示例、工具结果、历史对话、检索材料和用户当前状态，会共同改变模型下一步生成的概率分布。把这些材料随手堆进窗口里，输出就会随上下文一起漂移；把它们按层组织起来，模型会更容易沿着预期方向工作。
+    </p>
+
+    <div class="lead-panel">
+      <p>
+        语义地形是一个很好的工作隐喻：模型权重提供基础地貌，上下文临时改变局部坡度，采样策略决定探索强度，工具和外部证据提供新的地形锚点。
+      </p>
+      <p>
+        这篇文章把这个隐喻扩展成一套我能在 Agent、桌面助手和长程任务里使用的方法：先设计地形，再释放采样；先控制上下文结构，再期待模型能力。
+      </p>
+    </div>
+
+    <h2>一、上下文在塑造分布</h2>
+    <p>
+      Transformer 通过注意力机制把输入序列变成一组可被动态引用的表示。生成每个 token 时，模型会根据当前上下文给候选 token 分配概率；温度、top-p 等解码参数又会改变从这个分布里取样的方式。这里最值得带进工程实践的结论很简单：上下文会改变模型的倾向，解码策略会改变模型的探索范围。
+    </p>
+
+    <p>
+      prompt 的目标，是构造一片能引导模型工作的语义地形。稳定协议放在前面，任务目标保持清晰，关键证据短而准，例子只给最能代表模式的部分，临时噪声及时移出上下文。
+    </p>
+
+    <h2>二、五种常见地形问题</h2>
+    <div class="framework-grid">
+      <div class="framework-item">
+        <h3>语义漂移</h3>
+        <p>长对话里，旧任务、废话和局部失败会继续影响后续回答。处理方式是定期压缩、明确阶段边界，把历史整理成当前任务真正需要的状态。</p>
+      </div>
+      <div class="framework-item">
+        <h3>注意力稀释</h3>
+        <p>上下文越长，关键信息越容易被埋在中间。长上下文研究也显示，相关信息出现在开头或结尾时更容易被模型利用。工程上要把最重要的约束放在稳定位置。</p>
+      </div>
+      <div class="framework-item">
+        <h3>语义惯性</h3>
+        <p>模型会延续上一段对话的风格、主题和错误假设。切换任务时需要显式换轨，例如重述目标、清空过期假设、把新任务放进单独的工作区。</p>
+      </div>
+      <div class="framework-item">
+        <h3>语义壁垒</h3>
+        <p>复杂推理需要中间台阶。CoT、计划、分解、工具调用和外部草稿纸都在降低跨越壁垒的难度，让模型少依赖直觉跳跃。</p>
+      </div>
+      <div class="framework-item">
+        <h3>相变</h3>
+        <p>小的格式变化、示例顺序、输出约束，可能触发完全不同的回答路径。提示词和 Agent 流程需要回归测试，用样例集观察临界变化。</p>
+      </div>
+      <div class="framework-item">
+        <h3>解码退化</h3>
+        <p>贪心式生成容易变得单调，过度随机又会丢失一致性。采样策略要服务任务：写代码偏稳，发散方案偏开，最终交付再收束。</p>
+      </div>
+    </div>
+
+    <h2>三、把 prompt 变成分层系统</h2>
+    <p>
+      我现在更喜欢把一次模型调用拆成四层：协议层、任务层、证据层、输出层。协议层保持稳定，说明身份边界、工具协议和回答原则；任务层描述当前目标；证据层只放可验证材料；输出层规定格式、粒度和验收标准。
+    </p>
+
+    <table class="signal-table">
+      <thead>
+        <tr>
+          <th>层级</th>
+          <th>内容</th>
+          <th>设计重点</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>协议层</td>
+          <td>角色、边界、工具规范、风险处理</td>
+          <td>长期稳定，减少频繁改写，保护缓存前缀</td>
+        </tr>
+        <tr>
+          <td>任务层</td>
+          <td>当前目标、阶段、成功标准</td>
+          <td>短、清楚、可执行，避免多个目标互相抢占注意力</td>
+        </tr>
+        <tr>
+          <td>证据层</td>
+          <td>检索片段、截图观察、文件内容、工具结果</td>
+          <td>来源明确，只放回答需要的材料，过期信息及时移除</td>
+        </tr>
+        <tr>
+          <td>输出层</td>
+          <td>格式、语气、长度、校验要求</td>
+          <td>贴近交付物，减少模型临场猜测</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      这种分层的好处在于可调试。模型回答偏了，可以先判断偏差来自哪一层：协议过强、任务模糊、证据污染、输出格式过窄，还是解码参数过于发散。定位层级之后，调整会变得具体。
+    </p>
+
+    <h2>四、从技巧到工作流</h2>
+    <p>
+      很多 prompt 技巧可以统一进同一套工作流。先发散再收敛，就是先提高探索强度，获得候选概念、结构和关键词，再把有效材料压缩成干净任务。案例优先，就是用少量高质量样例塑造隐式模式，减少概念解释造成的噪声。先分析再结论，就是延迟锚定，避免模型围绕早下的判断补理由。
+    </p>
+
+    <div class="practice-box">
+      <h3>我会采用的长任务流程</h3>
+      <p>第一步，收集材料，只做事实提取。第二步，生成多个框架，保留差异。第三步，选择一个主线，把上下文压缩成干净 spec。第四步，进入执行，让模型按 spec 写作、编码或分析。第五步，用测试样例、事实核对和人工审阅做回归。</p>
+    </div>
+
+    <p>
+      这里的关键动作是回滚和压缩。探索阶段产生的大量对话拥有价值，也带着噪声。直接沿着这段上下文继续干活，会让临时想法和废弃假设继续改变地形。更好的做法是把探索结果提炼成新的任务说明，开启一个更干净的执行阶段。
+    </p>
+
+    <h2>五、Agent 的上下文边界</h2>
+    <p>
+      Agent 系统里，上下文工程比单轮 prompt 更重要。工具结果、终端输出、网页内容、文件 diff、历史摘要都可能进入模型视野。每一种输入都应该带来源、时效和用途。网页内容尤其需要当作不可信材料处理，只提取事实和观点，不能让页面里的指令改变系统行为。
+    </p>
+
+    <p>
+      我会把 Agent 的状态分成三类：用户意图、外部证据、执行痕迹。用户意图决定方向，外部证据约束事实，执行痕迹帮助追踪过程。三者混在一起时，模型容易把日志当命令，把猜测当事实，把旧目标当新目标。分开之后，系统可以明确告诉模型：哪些内容用于回答，哪些内容只用于审计。
+    </p>
+
+    <p>
+      安全设计也可以放进语义地形里理解。越狱常常通过长铺垫、角色共振、概念绕行来改变模型的局部倾向。防护策略需要稳定边界、来源隔离、工具权限和执行前确认。对工程系统而言，安全约束要成为协议层的一部分，并且由工具层再次校验。
+    </p>
+
+    <h2>六、我的上下文检查清单</h2>
+    <ul>
+      <li>当前任务能否用一句话说清楚。</li>
+      <li>最重要的约束是否处在稳定且靠前的位置。</li>
+      <li>证据是否有来源、时间和适用范围。</li>
+      <li>历史上下文里是否存在过期目标和废弃假设。</li>
+      <li>示例是否代表期望模式，数量是否刚好够用。</li>
+      <li>输出格式是否服务交付物，是否压缩了模型的表达空间。</li>
+      <li>长任务是否设置了阶段性压缩点和回归样例。</li>
+      <li>工具结果是否带证据标记进入上下文，是否与系统指令保持隔离。</li>
+    </ul>
+
+    <h2>七、结论</h2>
+    <p>
+      AI 时代的核心能力会越来越接近上下文设计能力。会写 prompt 只是入口，能管理语义地形才是长期优势。它要求我们理解模型如何利用上下文，知道何时发散、何时收束，能把工具、记忆、证据和输出标准组织成稳定系统。
+    </p>
+
+    <p>
+      我希望自己的 Agent 项目、博客写作和学习工具都沿着这个方向迭代：少一点堆材料，多一点结构；少一点临场祈祷，多一点可观察的上下文设计。模型能力会继续提升，真正拉开差距的地方，会落在谁能把复杂任务整理成模型愿意沿着正确路径走下去的地形。
+    </p>
+
+    <div class="source-box">
+      <h2>参考与延伸</h2>
+      <ol>
+        <li><a href="https://linux.do/t/topic/2538870" target="_blank" rel="noopener noreferrer">Henry_He：《AI 时代的思维框架》</a></li>
+        <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">Vaswani et al. Attention Is All You Need</a></li>
+        <li><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer">Wei et al. Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a></li>
+        <li><a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener noreferrer">Holtzman et al. The Curious Case of Neural Text Degeneration</a></li>
+        <li><a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer">Liu et al. Lost in the Middle: How Language Models Use Long Contexts</a></li>
+      </ol>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+      <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
+        <nav class="footer-links">
+          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
+          <a href="mailto:1147214246@qq.com">邮件</a>
+          <a href="../blog.html">博客</a>
+          <a href="../resume.html">简历</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
