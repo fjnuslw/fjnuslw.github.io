@@ -3,7 +3,7 @@
     "id": "semantic-terrain-context-engineering",
     "title": "语义地形工程：把上下文设计成可控系统",
     "date": "2026-07-08",
-    "readTime": "10 min",
+    "readTime": "12 min",
     "excerpt": "把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套上下文设计框架：先设计地形，再释放采样；先控制结构，再期待能力。",
     "tags": ["LLM", "Agent", "思考"],
     "color": "violet",

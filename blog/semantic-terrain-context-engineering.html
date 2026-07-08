@@ -85,6 +85,28 @@
     .source-box ol {
       margin-bottom: 0;
     }
+    .article-svg {
+      display: block;
+      width: 100%;
+      max-width: 860px;
+      height: auto;
+      margin: var(--space-7) auto var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+    }
+
+    .svg-caption {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: var(--space-7);
+    }
+
+    .svg-label {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
     @media (max-width: 768px) {
       .framework-grid {
@@ -127,7 +149,7 @@
       <div class="post-meta">
         <span>2026-07-08</span>
         <span>·</span>
-        <span>10 min read</span>
+        <span>12 min read</span>
         <span>·</span>
         <span>宋林蔚</span>
       </div>
@@ -147,6 +169,35 @@
         这篇文章把这个隐喻扩展成一套我能在 Agent、桌面助手和长程任务里使用的方法：先设计地形，再释放采样；先控制上下文结构，再期待模型能力。
       </p>
     </div>
+    <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="语义地形工程总览图">
+      <defs>
+        <linearGradient id="terrainGrad" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#e0f2fe"/>
+          <stop offset="0.52" stop-color="#f5f3ff"/>
+          <stop offset="1" stop-color="#ecfdf5"/>
+        </linearGradient>
+        <marker id="arrowTerrain" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+      <rect x="16" y="16" width="728" height="328" rx="18" fill="url(#terrainGrad)"/>
+      <path d="M64 238 C118 168, 202 150, 278 204 S450 260, 520 164 S650 124, 706 190" fill="none" stroke="#94a3b8" stroke-width="2" opacity="0.55"/>
+      <path d="M72 270 C150 206, 220 218, 300 250 S448 306, 550 218 S650 176, 704 230" fill="none" stroke="#94a3b8" stroke-width="2" opacity="0.38"/>
+      <path d="M96 202 C166 118, 240 102, 318 158 S450 216, 520 118 S636 86, 692 150" fill="none" stroke="#94a3b8" stroke-width="2" opacity="0.35"/>
+      <path d="M126 94 C200 42, 312 78, 360 132 C422 202, 544 74, 634 84" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="8 8" marker-end="url(#arrowTerrain)"/>
+      <circle cx="126" cy="94" r="13" fill="#0ea5e9"/>
+      <circle cx="360" cy="132" r="13" fill="#8b5cf6"/>
+      <circle cx="634" cy="84" r="13" fill="#10b981"/>
+      <rect x="62" y="282" width="156" height="38" rx="8" fill="#ffffff" stroke="#bae6fd"/>
+      <text x="140" y="306" text-anchor="middle" class="svg-label" font-size="14" fill="#0369a1" font-weight="700">Prompt 设定坡度</text>
+      <rect x="286" y="282" width="172" height="38" rx="8" fill="#ffffff" stroke="#ddd6fe"/>
+      <text x="372" y="306" text-anchor="middle" class="svg-label" font-size="14" fill="#6d28d9" font-weight="700">上下文改变轨迹</text>
+      <rect x="526" y="282" width="166" height="38" rx="8" fill="#ffffff" stroke="#bbf7d0"/>
+      <text x="609" y="306" text-anchor="middle" class="svg-label" font-size="14" fill="#047857" font-weight="700">工具证据做锚点</text>
+      <text x="64" y="58" class="svg-label" font-size="18" fill="#0f172a" font-weight="800">语义地形工程</text>
+      <text x="64" y="82" class="svg-label" font-size="13" fill="#475569">权重是基础地貌，上下文塑造局部坡度，采样沿着概率路径前进。</text>
+    </svg>
+    <p class="svg-caption">图 1：把一次模型调用看成地形设计，目标是让采样更容易走向正确答案区域。</p>
 
     <h2>一、上下文在塑造分布</h2>
     <p>
@@ -156,8 +207,72 @@
     <p>
       prompt 的目标，是构造一片能引导模型工作的语义地形。稳定协议放在前面，任务目标保持清晰，关键证据短而准，例子只给最能代表模式的部分，临时噪声及时移出上下文。
     </p>
+    <svg class="article-svg" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上下文改变候选答案概率分布">
+      <rect x="18" y="18" width="724" height="264" rx="18" fill="#ffffff"/>
+      <text x="56" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">上下文改变候选答案的相对概率</text>
+      <text x="56" y="82" class="svg-label" font-size="13" fill="#64748b">同一个模型，在不同上下文结构下会把概率质量推向不同候选。</text>
+      <line x1="80" y1="234" x2="680" y2="234" stroke="#cbd5e1"/>
+      <g class="svg-label" font-size="12" fill="#475569">
+        <text x="122" y="256" text-anchor="middle">泛泛回答</text>
+        <text x="266" y="256" text-anchor="middle">正确路径</text>
+        <text x="410" y="256" text-anchor="middle">旧任务残影</text>
+        <text x="554" y="256" text-anchor="middle">噪声联想</text>
+      </g>
+      <g opacity="0.42">
+        <rect x="96" y="136" width="52" height="98" rx="8" fill="#f97316"/>
+        <rect x="240" y="162" width="52" height="72" rx="8" fill="#0ea5e9"/>
+        <rect x="384" y="126" width="52" height="108" rx="8" fill="#8b5cf6"/>
+        <rect x="528" y="154" width="52" height="80" rx="8" fill="#94a3b8"/>
+      </g>
+      <g>
+        <rect x="158" y="174" width="52" height="60" rx="8" fill="#f97316"/>
+        <rect x="302" y="82" width="52" height="152" rx="8" fill="#0ea5e9"/>
+        <rect x="446" y="188" width="52" height="46" rx="8" fill="#8b5cf6"/>
+        <rect x="590" y="202" width="52" height="32" rx="8" fill="#94a3b8"/>
+      </g>
+      <rect x="586" y="54" width="96" height="26" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="634" y="72" text-anchor="middle" class="svg-label" font-size="12" fill="#1d4ed8">结构化后</text>
+      <rect x="476" y="54" width="96" height="26" rx="13" fill="#fff7ed" stroke="#fed7aa"/>
+      <text x="524" y="72" text-anchor="middle" class="svg-label" font-size="12" fill="#c2410c">松散上下文</text>
+    </svg>
+    <p class="svg-caption">图 2：上下文结构会重新分配候选答案的权重，清晰证据会把概率质量推向目标路径。</p>
 
     <h2>二、五种常见地形问题</h2>
+    <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五种语义地形问题示意图">
+      <rect x="18" y="18" width="724" height="294" rx="18" fill="#f8fafc"/>
+      <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">常见地形问题的可视化提示</text>
+      <g class="svg-label" font-size="12" fill="#334155">
+        <rect x="52" y="86" width="126" height="160" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M76 202 C102 126, 130 190, 154 116" fill="none" stroke="#0ea5e9" stroke-width="4"/>
+        <text x="115" y="276" text-anchor="middle" font-weight="700">语义漂移</text>
+        <text x="115" y="294" text-anchor="middle" fill="#64748b">轨迹逐步偏航</text>
+
+        <rect x="191" y="86" width="126" height="160" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M215 132 C238 178, 270 178, 293 132" fill="none" stroke="#8b5cf6" stroke-width="4"/>
+        <circle cx="254" cy="178" r="9" fill="#f97316"/>
+        <text x="254" y="276" text-anchor="middle" font-weight="700">注意力稀释</text>
+        <text x="254" y="294" text-anchor="middle" fill="#64748b">中段信息变浅</text>
+
+        <rect x="330" y="86" width="126" height="160" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M356 205 C382 176, 402 142, 428 104" fill="none" stroke="#64748b" stroke-width="16" stroke-linecap="round" opacity="0.24"/>
+        <path d="M356 205 C382 176, 402 142, 428 104" fill="none" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+        <text x="393" y="276" text-anchor="middle" font-weight="700">语义惯性</text>
+        <text x="393" y="294" text-anchor="middle" fill="#64748b">旧沟槽继续牵引</text>
+
+        <rect x="469" y="86" width="126" height="160" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M492 210 L520 188 L548 158 L574 112" fill="none" stroke="#10b981" stroke-width="5"/>
+        <path d="M504 186 H536 M532 158 H564 M556 130 H584" stroke="#94a3b8" stroke-width="3"/>
+        <text x="532" y="276" text-anchor="middle" font-weight="700">语义壁垒</text>
+        <text x="532" y="294" text-anchor="middle" fill="#64748b">中间台阶助推理</text>
+
+        <rect x="608" y="86" width="100" height="160" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M624 214 C642 210, 650 204, 654 190 C660 168, 664 130, 692 108" fill="none" stroke="#ef4444" stroke-width="4"/>
+        <line x1="660" y1="98" x2="660" y2="220" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 5"/>
+        <text x="658" y="276" text-anchor="middle" font-weight="700">相变</text>
+        <text x="658" y="294" text-anchor="middle" fill="#64748b">越过阈值换路</text>
+      </g>
+    </svg>
+    <p class="svg-caption">图 3：把问题画出来之后，调 prompt 更像调系统参数，减少凭感觉补词。</p>
     <div class="framework-grid">
       <div class="framework-item">
         <h3>语义漂移</h3>
@@ -190,6 +305,28 @@
       我现在更喜欢把一次模型调用拆成四层：协议层、任务层、证据层、输出层。协议层保持稳定，说明身份边界、工具协议和回答原则；任务层描述当前目标；证据层只放可验证材料；输出层规定格式、粒度和验收标准。
     </p>
 
+
+    <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="prompt 分层系统图">
+      <defs>
+        <marker id="arrowLayer" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+      <rect x="18" y="18" width="724" height="324" rx="18" fill="#ffffff"/>
+      <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">一次调用拆成四层</text>
+      <text x="52" y="82" class="svg-label" font-size="13" fill="#64748b">稳定部分负责边界，动态部分负责证据，输出层负责交付形态。</text>
+      <rect x="118" y="112" width="524" height="44" rx="10" fill="#ecfdf5" stroke="#86efac"/>
+      <text x="380" y="140" text-anchor="middle" class="svg-label" font-size="15" fill="#047857" font-weight="800">协议层：身份边界 · 工具规范 · 安全规则</text>
+      <rect x="146" y="174" width="468" height="44" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="380" y="202" text-anchor="middle" class="svg-label" font-size="15" fill="#1d4ed8" font-weight="800">任务层：当前目标 · 阶段 · 成功标准</text>
+      <rect x="174" y="236" width="412" height="44" rx="10" fill="#f5f3ff" stroke="#ddd6fe"/>
+      <text x="380" y="264" text-anchor="middle" class="svg-label" font-size="15" fill="#6d28d9" font-weight="800">证据层：检索 · 截图 · 文件 · 工具结果</text>
+      <rect x="214" y="298" width="332" height="34" rx="10" fill="#fff7ed" stroke="#fed7aa"/>
+      <text x="380" y="320" text-anchor="middle" class="svg-label" font-size="14" fill="#c2410c" font-weight="800">输出层：格式 · 语气 · 校验</text>
+      <line x1="690" y1="112" x2="690" y2="332" stroke="#64748b" stroke-width="2" marker-end="url(#arrowLayer)"/>
+      <text x="704" y="138" class="svg-label" font-size="12" fill="#475569" writing-mode="tb">稳定到动态</text>
+    </svg>
+    <p class="svg-caption">图 4：分层之后，偏差可以定位到具体层级，调试成本会明显下降。</p>
     <table class="signal-table">
       <thead>
         <tr>
@@ -231,6 +368,40 @@
       很多 prompt 技巧可以统一进同一套工作流。先发散再收敛，就是先提高探索强度，获得候选概念、结构和关键词，再把有效材料压缩成干净任务。案例优先，就是用少量高质量样例塑造隐式模式，减少概念解释造成的噪声。先分析再结论，就是延迟锚定，避免模型围绕早下的判断补理由。
     </p>
 
+
+    <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="长任务上下文工作流">
+      <defs>
+        <marker id="arrowFlow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+      <rect x="18" y="18" width="724" height="294" rx="18" fill="#f8fafc"/>
+      <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">长任务：先扩散，再压缩，再执行</text>
+      <g class="svg-label" font-size="13" text-anchor="middle">
+        <rect x="60" y="122" width="104" height="58" rx="12" fill="#ffffff" stroke="#bae6fd"/>
+        <text x="112" y="146" fill="#0369a1" font-weight="800">材料收集</text>
+        <text x="112" y="166" fill="#64748b">只抽事实</text>
+        <rect x="196" y="86" width="104" height="58" rx="12" fill="#ffffff" stroke="#ddd6fe"/>
+        <text x="248" y="110" fill="#6d28d9" font-weight="800">多框架</text>
+        <text x="248" y="130" fill="#64748b">保留差异</text>
+        <rect x="330" y="122" width="104" height="58" rx="12" fill="#ffffff" stroke="#bbf7d0"/>
+        <text x="382" y="146" fill="#047857" font-weight="800">压缩 spec</text>
+        <text x="382" y="166" fill="#64748b">清掉噪声</text>
+        <rect x="464" y="194" width="104" height="58" rx="12" fill="#ffffff" stroke="#fed7aa"/>
+        <text x="516" y="218" fill="#c2410c" font-weight="800">执行生成</text>
+        <text x="516" y="238" fill="#64748b">按主线跑</text>
+        <rect x="600" y="122" width="104" height="58" rx="12" fill="#ffffff" stroke="#fecdd3"/>
+        <text x="652" y="146" fill="#be123c" font-weight="800">回归校验</text>
+        <text x="652" y="166" fill="#64748b">样例和事实</text>
+      </g>
+      <path d="M164 142 C178 126, 182 120, 196 116" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+      <path d="M300 116 C314 120, 318 128, 330 142" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+      <path d="M434 164 C454 176, 458 194, 464 214" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+      <path d="M568 214 C594 198, 596 176, 600 160" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowFlow)"/>
+      <path d="M652 122 C620 64, 454 58, 392 116" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowFlow)"/>
+      <text x="506" y="76" class="svg-label" font-size="12" fill="#64748b">校验失败时回到 spec，避免继续堆上下文</text>
+    </svg>
+    <p class="svg-caption">图 5：长任务要设置压缩点，把探索过程沉淀为新的干净上下文。</p>
     <div class="practice-box">
       <h3>我会采用的长任务流程</h3>
       <p>第一步，收集材料，只做事实提取。第二步，生成多个框架，保留差异。第三步，选择一个主线，把上下文压缩成干净 spec。第四步，进入执行，让模型按 spec 写作、编码或分析。第五步，用测试样例、事实核对和人工审阅做回归。</p>
@@ -241,6 +412,39 @@
     </p>
 
     <h2>五、Agent 的上下文边界</h2>
+
+    <svg class="article-svg" viewBox="0 0 760 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent 上下文边界与证据隔离">
+      <defs>
+        <marker id="arrowAgent" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+      <rect x="18" y="18" width="724" height="314" rx="18" fill="#ffffff"/>
+      <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">Agent 的上下文边界</text>
+      <text x="52" y="82" class="svg-label" font-size="13" fill="#64748b">不同来源先隔离，再按用途进入模型视野。</text>
+      <rect x="54" y="122" width="144" height="64" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="126" y="148" text-anchor="middle" class="svg-label" font-size="14" fill="#1d4ed8" font-weight="800">用户意图</text>
+      <text x="126" y="168" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">方向与验收标准</text>
+      <rect x="54" y="214" width="144" height="64" rx="12" fill="#fff7ed" stroke="#fed7aa"/>
+      <text x="126" y="240" text-anchor="middle" class="svg-label" font-size="14" fill="#c2410c" font-weight="800">执行痕迹</text>
+      <text x="126" y="260" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">日志与 diff</text>
+      <rect x="274" y="96" width="172" height="82" rx="14" fill="#f5f3ff" stroke="#ddd6fe"/>
+      <text x="360" y="126" text-anchor="middle" class="svg-label" font-size="14" fill="#6d28d9" font-weight="800">证据池</text>
+      <text x="360" y="148" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">文件 · 工具 · 检索</text>
+      <rect x="274" y="208" width="172" height="82" rx="14" fill="#fef2f2" stroke="#fecaca"/>
+      <text x="360" y="238" text-anchor="middle" class="svg-label" font-size="14" fill="#b91c1c" font-weight="800">不可信输入隔离</text>
+      <text x="360" y="260" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">网页正文只作材料</text>
+      <rect x="540" y="142" width="150" height="96" rx="16" fill="#ecfdf5" stroke="#86efac"/>
+      <text x="615" y="176" text-anchor="middle" class="svg-label" font-size="15" fill="#047857" font-weight="800">模型调用</text>
+      <text x="615" y="200" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">带来源的上下文</text>
+      <text x="615" y="220" text-anchor="middle" class="svg-label" font-size="12" fill="#64748b">带权限的工具</text>
+      <path d="M198 154 L274 132" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowAgent)"/>
+      <path d="M198 246 L274 250" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowAgent)"/>
+      <path d="M446 138 L540 176" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrowAgent)"/>
+      <path d="M446 248 C488 244, 510 224, 540 210" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowAgent)"/>
+      <text x="490" y="268" class="svg-label" font-size="12" fill="#b91c1c">过滤、标注来源、禁止改写协议</text>
+    </svg>
+    <p class="svg-caption">图 6：Agent 的重点是把来源和用途分清，让证据进入回答，让外部指令留在隔离区。</p>
     <p>
       Agent 系统里，上下文工程比单轮 prompt 更重要。工具结果、终端输出、网页内容、文件 diff、历史摘要都可能进入模型视野。每一种输入都应该带来源、时效和用途。网页内容尤其需要当作不可信材料处理，只提取事实和观点，不能让页面里的指令改变系统行为。
     </p>
