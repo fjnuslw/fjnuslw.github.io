@@ -57,17 +57,17 @@
 
 一作 · EMNLP 2026（CCF-B）· ARR 3.5 / 3.0 / 2.5
 
-- 多跳 RAG 证据链断裂：单次稠密检索易停在问题语义邻域，显式生成中间推理又易误差放大。提出 training-free 非生成式检索，读 Embedding elite attention heads 抽 next-hop 桥接线索。
-- 指令激活注意力头 → 线索召回 → 语义残差重排（剥离已表达线索，residual 找未覆盖证据）→ beam 多路径；骨干 Qwen3-Embedding-4B。
-- HotpotQA / 2Wiki / MuSiQue 全面优于 BM25、GTR 与同规模 Direct；相对 4B Direct，MuSiQue / 2Wiki 主召回约 +12.7 / +16.3，常打平甚至反超 8B 直检。
+- 发现 Embedding 模型 elite attention heads 可稳定定位跨文档桥接线索，实现无需 CoT、训练或预构图的 next-hop 检索。
+- 指令激活桥接 clue；semantic residual 逐跳扣除已覆盖语义，beam 保留多路径，避免检索停留在原问题语义邻域。
+- Qwen3-Embedding-4B 在 2Wiki / MuSiQue 的 R@5 达 89.10 / 76.45，相对 Direct +16.28 / +12.65，并超过 8B 直检；移除 intrinsic steering 后分别下降 18.0 / 9.7 点。
 
 ### 2. ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions
 
 一作 · AI Open（JCR Q1）· 投稿
 
-- 多跳 agentic RAG 难在中间判断写回：轨迹 / observation 管不住当前关系、分支归属、已接受证据与答案槽位，易漂移与跨分支混用。
-- PlanState 管路线/分支/答案目标；Search/Probe 将检索压成句/实体/答案候选；Workspace 存完整工具输出、模型只读分支 slim 视图；LLM 以 candidate commit 写回可执行状态。
-- 2Wiki / HotpotQA / MuSiQue（各 500）超 Direct、Standard RAG、IR-CoT、MA-RAG；2Wiki EM/F1 0.442/0.550 → 0.674/0.764；bridge-comparison F1 0.889 vs 0.674；observation 约 −90%；去 Workspace 后 F1 0.673→0.208。
+- 将多跳 Agent 的瓶颈定位为证据状态失控：自然语言轨迹无法约束当前关系、分支和答案槽，易状态漂移与跨分支串证据。
+- PlanState 定位 branch/step，Search/Probe 构造带来源候选，Workspace 保存完整输出、只显当前分支；经校验的 candidate commit 写回，并区分候选构建/提交错误。
+- 同骨干/索引下三数据集均优于 Direct、Standard RAG、IR-CoT、MA-RAG；bridge-comparison F1 0.889 vs 0.674，工具 observation −90.4%；移除 Workspace 后 Avg F1 0.673→0.208、loops 5.10→10.52。
 
 ## 技能特长
 
