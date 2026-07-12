@@ -430,6 +430,71 @@
       line-height: 1.3;
     }
 
+    /* Single-page readability pass: keep the CLI language, spend space on content. */
+    body {
+      color: #27313d;
+      font-size: 8.4pt;
+      line-height: 1.4;
+    }
+    .titlebar {
+      padding: 1.5mm 5mm;
+      font-size: 7.2pt;
+      letter-spacing: 0.06em;
+    }
+    .body { padding: 3.4mm 8.5mm 4mm; }
+    .header {
+      grid-template-columns: minmax(0, 1fr) 23.5mm;
+      gap: 4.5mm;
+      margin-bottom: 2.6mm;
+      padding-bottom: 2.3mm;
+    }
+    .identity h1 {
+      margin-bottom: 0.7mm;
+      font-size: 19.5pt;
+      letter-spacing: 0.055em;
+    }
+    .role-line { margin-bottom: 1.6mm; font-size: 9.7pt; }
+    .contact { row-gap: 1.1mm; font-size: 8.1pt; line-height: 1.4; }
+    .contact .label { color: #727e8c; font-size: 7.5pt; }
+    .photo { width: 23.5mm; height: 31.3mm; }
+    .section { margin-bottom: 2.4mm; }
+    .section-head { margin-bottom: 1.1mm; min-height: 5.3mm; }
+    .pill {
+      height: 5.3mm;
+      padding: 0 3.7mm;
+      border-radius: 3px;
+      font-size: 8pt;
+      letter-spacing: 0.07em;
+    }
+    .entry { margin-bottom: 1.8mm; }
+    .entry-bar {
+      grid-template-columns: 29mm minmax(0, 1fr) max-content;
+      column-gap: 3mm;
+      align-items: baseline;
+      margin-bottom: 0.85mm;
+      padding-bottom: 0.65mm;
+    }
+    .entry-date, .entry-role { font-size: 7.9pt; }
+    .entry-mid { justify-content: flex-start; padding: 0; }
+    .entry-mid-inner { max-width: none !important; text-align: left; transform: none; }
+    .entry-org, .entry-org.paper-title { text-align: left; }
+    .entry-org { font-size: 9.1pt; }
+    .entry-org.paper-title { font-size: 8pt; line-height: 1.28; }
+    li { margin-bottom: 0.65mm; padding-left: 3.2mm; font-size: 8.3pt; line-height: 1.36; color: #303b48; }
+    li::before { left: 0.2mm; font-size: 9pt; line-height: 1.32; }
+    .repo { margin: 0.85mm 0 0 3.2mm; font-size: 7.6pt; }
+    .edu-item { margin-bottom: 1.35mm; }
+    .edu-note { font-size: 7.7pt; }
+    .entry-bar.subline { margin-bottom: 0.95mm; }
+    .award-list { gap: 2.2mm; }
+    .award-card { padding: 1.8mm 2.2mm 1.6mm; }
+    .award-card .rank { font-size: 8pt; }
+    .award-card .title { font-size: 7.7pt; }
+    .award-links { font-size: 7.3pt; }
+    .score { font-size: 7.7pt; }
+    .skill-tags { gap: 1.35mm 1.8mm; }
+    .skill-tags span { padding: 0.85mm 2.15mm; font-size: 7.6pt; }
+
     @page { size: A4; margin: 0; }
 
     @media print {
