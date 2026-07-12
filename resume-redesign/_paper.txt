@@ -1,0 +1,978 @@
+      Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for
+                                 Multi-Hop Queries
+
+
+                                             Anonymous ACL submission
+
+
+
+
+001                         Abstract                              et al., 2023; Asai et al., 2024). These methods           043
+                                                                  show considerable flexibility, but as pointed out in      044
+002       For multi-hop queries in retrieval-augmented
+003       generation (RAG), it is crucial to accurately ob-
+                                                                  (Zhang et al., 2023), once errors occur in the early      045
+
+004       tain evidence pieces. In this study, we propose         generation stages, subsequent steps will gradually        046
+005       a training-free method for multi-hop query re-          diverge from the target (Turpin et al., 2023). Other      047
+006       trieval, named Intrinsic Navigating-based Non-          researchers try to use larger embedding models to         048
+007       Generative Retrieval (IN-Retriever). Instead            enhance the representational capacity of dense re-        049
+008       of generating intermediate reasoning text, the          trieval (Karpukhin et al., 2020; Xiong et al., 2021a).    050
+009       method extracts the next-hop clue from the in-          These methods exibit better effectiveness. But they       051
+010       ternal attention of the embedding model based
+                                                                  are still constrained by the expressive capacity of       052
+011       on the current context and retrieve candidate
+012       documents. During the iteration of the ex-              vector representations. As mention in (Ni et al.,         053
+
+013       tracting clues and retrieving documents, IN-            2022; Santhanam et al., 2022), a single query vec-        054
+014       Retriever strips away revealed clues from the           tor is often insufficient to fully capture the evidence   055
+015       embedded query vector, and then reranks can-            across multiple hops. As a result, such retrieval         056
+016       didate documents in a targeted manner, thereby          methods tend to stay within a semantic neighbor-          057
+017       steering retrieval toward the next-hop hidden           hood that is superficially close to the original ques-    058
+018       evidence. In the experiments, we confirm the            tion, making it difficult to locate real clues that       059
+019       feasibility and effectiveness of using intrinsic
+020       attention signals to guide external multi-hop
+                                                                  determine the next hop.                                   060
+
+021       retrieval. Experiment results show that our                Recently, Yu et al. (2023) verified that attention     061
+022       method can precisely collect sufficient doc-            heads of an embedding model can focus on rele-            062
+023       uments to support multi-hop queries, signifi-           vant clues before generating answer tokens. Gould         063
+024       cantly outperforming sparse retrieval methods,          et al. (2024) further identified "Successor Heads"        064
+025       dense retrieval methods.                                and showed that heads with specific functions ex-         065
+                                                                  hibit sparse and stable activation patterns when          066
+026   1   Introduction
+                                                                  handling long-range dependencies. Motivated by            067
+027   Retrieval-augmented generation (RAG) mitigates              these observations, we investigate and verify the         068
+028   the limitations of large language models (LLMs) in          implicit relationship between internal attention          069
+029   knowledge timeliness and domain-specific exper-             heads and next-hop clues, and propose a training-         070
+030   tise by retrieving information from external data           free, non-generative retrieval method for multi-hop       071
+031   sources (Lewis et al., 2020; Gao et al., 2024). In          queries, named the Intrinsic Navigating-based Non-        072
+032   RAG, retrieving sufficient evidence is crucial for          Generative Retrieval method (IN-Retriever). This          073
+033   LLMs to generate the final answer. As to multi-hop          method guides document retrieval by leveraging            074
+034   question answering (QA), RAG systems need to                the internal attention signals of embedding models,       075
+035   progressively gather evidence across multiple doc-          without explicitly generating reasoning text. Specif-     076
+036   uments. Existing single-pass retrieval methods rely         ically, it first activates specific attention heads in    077
+037   directly on the user query, which can not guarantee         the embedding model through instruction-guided            078
+038   the retrieved documents jointly forming a complete          prompting, and then extracts next-hop clues from          079
+039   evidence chain (Xiong et al., 2021b).                       the current context based on the model’s internal at-     080
+040      To address the above issue, some studies explic-         tention to retrieve candidate documents for the next      081
+041   itly generates intermediate reasoning steps and then        hop. It subsequently strips away revealed clues           082
+042   design retrieval paths (Trivedi et al., 2023; Yao           from the embedded query vector and reranks the            083
+
+
+                                                              1
+084   candidate documents, thereby steering retrieval to-          qi ∈ Dbase , and score s are combined into J                   133
+085   ward hidden next-hop evidence.                               triples ([qi ], RQembed , s) and inserted into the pri-        134
+086      Overall, the main contributions of this paper are         ority queue P Q, where s denotes the cumulative                135
+087   summarized as follows.                                       score of the evidence chain [qi ] and serves as the            136
+088      (1) We propose a non-generative retrieval                 priority metric in the priority queue, and the scoring         137
+089   method for multi-hop queries, named the Intrin-              mechanism is defined in Section 2.5.                           138
+090   sic Navigating-based Non-Generative Retrieval                   Stepwise reasoning stage. Elements are repeat-              139
+091   method (IN-Retriever). The method exploits the               edly popped from P Q and processed. For each                   140
+092   internal attention heads of embedding models to              element (D′ , RQembed , s′ ), The process consists of          141
+093   discover next-hop clues for multi-hop queries.               three steps as follows.                                        142
+094      (2) We verify the implicit relationship between
+095   the internal attention of embedding models and                  (1) The instruction I, the last document q ′ in             143
+
+096   next-hop clues, and propose an instruction-driven            the document list D′ , and the original query Q are            144
+
+097   method for locating elite attention heads for ob-            fed into the embedding model. Next, a bridging                 145
+
+098   taining next-hop clues with no explicit reasoning            clue e′ is extracted from q ′ using the instruction-           146
+
+099   text.                                                        driven bridging clue probing method (Section 2.2).             147
+                                                                   Subsequently, e′ is used to retrieve a candidate               148
+100      (3) We design a residual-guided reranking mod-
+                                                                   document set Dcand from the VD.                                149
+101   ule, which gradually removes the semantic com-
+102   ponent in the query vector that has already been                (2) Based on RQembed , the semantic residual-               150
+103   expressed by the current clue, and reranks can-              based reranking method (Section 2.4) is ap-                    151
+104   didate documents using the remaining informa-                plied to Dcand to obtain the top-D documents                   152
+105   tion, thereby steering retrieval toward next-hop evi-        {q1 , . . . , qD }.                                            153
+106   dence.                                                          (3) The D documents are individually appended               154
+107      (4) Experiments show that IN-Retriever outper-            to D′ , forming D document lists {D1′′ , . . . , DD    ′′ }.   155
+108   forms the feasibility and effectiveness in multi-hop         Next, the retrieval-intent residual IRQ       embed
+                                                                                                                       is cal-    156
+109   queries, demonstrating a feasible way to leverage            culated based on RQembed and e′ . Based on s′ , the            157
+110   the internal attention signals of large models to            cumulative score s′′i of each new evidence chain               158
+111   locate bridging clues.                                       Di′′ is calculated. If s′′i is greater than the threshold      159
+                                                                   θ, the evidence chain Di′′ is added to Df inal as a            160
+112   2     Methodology                                            candidate evidence path; otherwise, a new triple               161
+
+113   Problem Definition: Given a query Q and a large-             (Di′′ , IRQembed , s′′i ) is pushed into P Q.                  162
+
+114   scale unstructured corpus C, the aim of retrieval              The stepwise reasoning expands the reasoning                 163
+115   is to extract and construct an evidence documents,           evidence chain. To avoid unlimited expansion, IN-              164
+116   such that these documents can jointly support the            Retriever also limits the expansion path length.               165
+117   reasoning toward the answer A for query Q.
+                                                                      Final evidence set construction stage. Evi-                 166
+
+118   2.1    Framework overview                                    dence paths are selected from Df inal in descending            167
+                                                                   order of score. The documents are merged as final              168
+119   The structure of IN-Retriever is illustrated in Figure       retrieval results.                                             169
+120   1. The retrieval process can be divided into three
+121   stages: initialization, stepwise reasoning, and final          IN-Retriever adopts the beam search mechanism                170
+
+122   evidence set construction.                                   (Zhao et al., 2021), which allows it to maintain               171
+
+123      Initialization stage. First, the potential named          multiple potential reasoning trajectories (trajectory          172
+
+124   entities and noun phrases contained in the query             hypotheses) simultaneously, thereby enabling the               173
+
+125   Q are extracted as an initial entity set Einit .             model to tolerate local uncertainty.                           174
+
+126   Then, the most similar J documents are retrieved                In the remainder of this section, we will in-               175
+127   from the Vector Datastore (VD) based on se-                  troduce the instruction-driven bridging clue prob-             176
+128   mantic retrieval, forming Dbase . Subsequently,              ing method (Section 2.2), retrieval-intent residual            177
+129   the retrieval-intent residual RQembed is computed            computation (Section 2.3), semantic residual-based             178
+130   based on the user query embedding Qembed and                 reranking (Section 2.4), and the cumulative scoring            179
+131   Einit , where the residual computation is defined            mechanism for evidence chains (Section 2.5) in                 180
+132   in Section 2.3. Finally, RQembed , the document              detail.                                                        181
+
+
+                                                               2
+      Figure 1: Framework of the Intrinsic Navigating-based Retrieval Method (IN-Retriever). The overall process is
+      delineated into three stages: initialization, stepwise reasoning, and final evidence set construction. The initialization
+      stage retrieves documents grounded on semantic similarity. The stepwise reasoning stage employs a beam search
+      mechanism to progressively expand the document evidence chains. Ultimately, the trajectory attaining the highest
+      cumulative score is selected to yield the final evidence set.
+
+182   2.2   Instruction-Driven Bridging Clue Probing                    clue signals for key attention head selection and         210
+
+183   The instruction-driven bridging clue probing                      subsequent bridging clue probing.                         211
+
+184   method aims to identify bridging clues support-                      For elite attention head selection, we first con-      212
+
+185   ing next-hop expansion. It consists of two steps:                 struct a calibration dataset Dcalib based on the          213
+
+186   task-oriented attention head selection and bridging               2WikiMultihopQA (2Wiki) (Ho et al., 2020),                214
+
+187   clue extraction. Among them, the first step requires              where each sample contains a context C, a query Q,        215
+
+188   only a one-time calibration for a specific embed-                 and a bridging clue E extracted via a lexical match-      216
+
+189   ding model to identify the attention heads. Once                  ing strategy. Then, for each attention head, we           217
+
+190   the calibration and selection are completed, no fur-              compute the Bridge Focus Score (BFS), as defined          218
+
+191   ther adjustment is required during the subsequent                 in Formula 1, to measure the degree of attention          219
+
+192   inference process.                                                allocated to the bridging clue.                           220
+
+                                                                                              1            X         (h,l)
+193   2.2.1 Task-Oriented Attention Head Selection                          BFS(h, l) =                             sQ,E
+                                                                                           |Dcalib |
+194   To steer the model’s internal attention toward clues                                           (C,Q,E)∈Dcalib
+                                                                                                                           (1)    221
+195   relevant to the next hop, we propose a task-oriented                  (h,l)      1   X    X        (h,l)
+                                                                           sQ,E =                      Ai,j
+196   method for selecting key attention heads, termed                               |TQ |
+                                                                                          i∈TQ j∈TE
+197   elite attention heads. Specifically, task orientation
+198   is implemented through instruction guidance by                    where TQ and TE denote the token-index sets of            222
+                                                                                                                         (h,l)
+199   prepending a task-related instruction I to the input,             the query and the annotated bridging clue. Ai,j           223
+200   together with the context C and the user query Q.                 is the attention weight from position i to position j     224
+201   The instruction is defined as:                                    by the h-th head in the l-th layer.                       225
+202         Identify the key evidence in the context that helps            Finally, based on the layer-wise bridge focus          226
+203         find the next context to finally answer the question.       score (LBFS) as defined in Formula 2, we select           227
+204         Focus specifically on the entity type requested in
+205         the query.                                                  the L-th layer as the key attention layer, and then       228
+                                                                        choose the top-H attention heads with the highest         229
+206     This instruction encourages the embedding                       BFS values in that layer as the elite head set Helite .   230
+207   model to focus on local segments in the context                                            X                                231
+208   that are relevant to the query, thereby activating                    LBFS(l) =                       BFS(h, l) (2)         232
+209   specific attention heads and providing more stable                                h∈argTopH (BFS(h,l))
+
+
+                                                                    3
+233   where H denotes the number of selected attention                    Overall, based on the internal attention weights          279
+234   heads. We set H = 8.                                             of the embedding model and the syntactic structure           280
+235     According to our empirical analysis, for the                   of the text, the probing method provides a schema            281
+236   Qwen embedding model, attention heads in                         for conversing diffuse attention signals to discrete         282
+237   Helite = {10, 30, 8, 28, 31, 6, 4, 9} at layer L =               reasoning clues at a low computational cost.                 283
+238   23 are set as elite attention heads. They are the
+                                                                       2.3   Retrieval-Intent Residual Computation                  284
+239   basis for bridging clue extraction.
+                                                                       In multi-hop retrieval, relying solely on the original       285
+240   2.2.2   Bridging Clue Extraction                                 query Q often traps the retriever within a semantic          286
+241   Bridging clue extraction aim to extract text frag-               neighborhood highly similar to Q. Consequently,              287
+242   ment that bridges hops. After feeding [I; C; Q]                  even after multiple retrieval rounds, the model still        288
+243   into the embedding model, we first pinpoints local               repeatedly recalls documents that contribute little          289
+244   peaks in Helite , and then extends them into com-                new evidence (as shown in Figure 2(a)). To enable            290
+245   plete semantic units through locally aware bound-                the retriever to discover new evidences for next-hop         291
+246   ary expansion. The extraction method seeks to                    reasoning, we propose a retrieval-intent residual            292
+247   isolate clues with reasoning value from long docu-               computation method. This method strips away the              293
+248   ments. It consists of the following steps.                       semantic components of the query embedding that              294
+249      (1) Given the query Q and the document C =                    have been referred by the current clue, so that the          295
+250   {s1 , . . . , si , . . .}, where si is a sentence in C, we       residual can better guide the retriever to capture           296
+251   define the average attention weight of each sen-                 the clue required for the next hop (as shown in              297
+252   tence si on the elite attention heads according For-             Figure 2(b)).                                                298
+253   mula 3, and then retain the top-S sentences with
+254   the highest weights for the subsequent process. In
+255   our experiments, we set S = 3.
+                           1 X X
+256           W (si ) =             Att(t, h)               (3)
+                          |si | t∈s
+                                  i h∈Helite
+
+
+257   where |si | is the size of tokens in si , and Att(t, h)
+258   denotes the attention weight assigned to token t by
+259   attention head h.
+260      (2) For the selected S sentences, we accumu-                  Figure 2: Reasoning for the multi-hop query "Who is the
+261   late attention weights of each token over the elite              paternal grandmother of Princess Augusta of Waldeck-
+262   attention heads. Let tj,i denote the i-th token in               Pyrmont?". (a) Misled by the high lexical frequency of
+263   sentence sj . Its cumulative attention weight on                 "George II" and "Princess", the dense retriever always
+264   Helite is defined as Formula 4.                                  recalls documents concerning "King George II of Great
+                                                                       Britain" and "Princess Amelia", failing to pinpoint the
+                                    X
+265                  CW(tj,i ) =          αh,i            (4)          gold-standard document (George II, Prince of Waldeck).
+                                                                       (b) Upon successfully identifying the bridging clue "el-
+                                   h∈Helite
+                                                                       dest daughter of George II", the query is projected onto
+266   where αh,i denotes the attention weight assigned                 the orthogonal complement of the clue. By isolating
+267   to tn,i by the h-th elite head.                                  the residual intent vector and maximizing its alignment
+                                                                       score, the retriever explicitly upweights the target docu-
+268      (3) For each selected sentence, we select the
+                                                                       ment (George II, Prince of Waldeck and Pyrmont)
+269   top-A token anchors with the highest cumulative
+270   attention scores on Helite as peak anchors. In our                  Let Qembed denote the current query embedding             299
+271   experiments, A = 20.                                             and e denote the embedding of the current bridging           300
+272      (4) For each selected sentence, we take the peak              clue. We compute the retrieval-intent residual by            301
+273   anchors as centers, and extend them bidirection-                 subtracting from Qembed its component along e as:            302
+274   ally to absorb adjacent words until a predefined                                                                              303
+                                                                                                 Qembed · e
+275   syntactic-semantic blocking token is reached. The                        Qembed
+                                                                                res   = Qembed −            e.               (5)    304
+276   clue is then obtained by decoding the extracted to-                                          ∥e∥2
+277   kens. By extracting one clue from each sentence,                   The resulting vector Qembed
+                                                                                               res   captures the com-              305
+278   we finally acquire a total of S clues.                           ponents of Q  embed that are orthogonal to the               306
+
+
+                                                                   4
+307   parsed clue e, and thus represents the seman-                 where Ssym (q, e) = |Tok(e)∩Tok(q)|
+                                                                                             |Tok(e)|    measures the             351
+308   tic information to be targeted in the next-hop re-            explicit token coverage of the bridging clue e in             352
+309   trieval. Introducing the semantic residual mech-              document q. q embed and eembed are the embeddings             353
+310   anism turns deduplication into a vector-space op-             of q and e.                                                   354
+311   eration, thereby reducing the system’s reliance on               The three terms keep the path aligned with the             355
+312   explicit deduplication logic.                                 original query, favor documents matching the unre-            356
+
+313   2.4   Semantic Residual-based Reranking                       solved retrieval intent, and require explicit support         357
+                                                                    for the current bridging clue. In experiments, We             358
+314   After retrieving candidate documents based on the             set λvec = 8.0, λintent = 7.0, and λsym = 20.                 359
+315   next-hop clue, the documents that are most relevant
+316   to the clue need to be identified, avoiding arbitrary         Definition 2 (Cumulative Score). Let the current              360
+
+317   drifting of evidence chains. To this end, a semantic          evidence chain is D′ with cumulative score s′ .               361
+
+318   residual-based reranking method is proposed to                When a candidate document q is appended to D′ to              362
+
+319   score documents using Formula 6.                              form a new path D′′ = D′ . append(q), the cumu-               363
+                                                                    lative score of D′′ is defined as:                            364
+         Srerank (cembed ) = λ sim(Qembed , cembed )                                                 |D′ |
+320
+                                   embed embed
+                                                         (6)                 Spath (D′′ ) = s′ + γ           · Slocal (q)   (8)   365
+                     +(1 − λ) sim(qres  ,c     )
+                                                                    where γ ∈ (0, 1) is the step discount factor, and             366
+321   where sim(·, ·) computes similarity, λ ∈ [0, 1] is
+                                                                    |D′ | denotes the path depth.                                 367
+322   a tunable parameter, Qembed is the original query
+323   embedding, Qembed     is the retrieval-intent residual,          The cumulative scoring mechanism enables the               368
+                      res
+324   and cembed  is the embedding of the candidate docu-           search process to preferentially preserve reasoning           369
+
+325   ment.                                                         trajectories that are continuously supported by high-         370
+
+326      This scoreing method jointly captures the global           quality local evidence. The discount term penalizes           371
+
+327   semantic relevance to the original query and the              excessively long paths and mitigates the accumu-              372
+
+328   targeted relevance to the retrieval-intent residual,          lation of uncertainty in deeper expansions. Ulti-             373
+
+329   thereby upweighting candidate documents that ad-              mately, the cumulative scoring mechanism jointly              374
+
+330   dress the unresolved semantic components along                considers the historical score of the path and the            375
+
+331   the current retrieval path. Finally, the top-D most           importance of the current document.                           376
+
+332   relevant documents are retained. Each of the re-
+                                                                    3     Experiments and Analysis                                377
+333   tained documents is subsequently appended to
+334   the current evidence chain in parallel, yielding D            In this section, we first introduces the experimental         378
+335   newly expanded reasoning paths.                               setup (Section 3.1), then analyze the effectiveness           379
+                                                                    of the internal-attention-guided mechanism (Sec-              380
+336   2.5   Scoring Mechanism for Evidence Chains                   tion 3.2). Subsequence, comparisons are conducted             381
+337   In the stepwise reasoning stage, it is essential to           to evaluate the overall performance of our method             382
+338   estimate the reliability of expanded paths. We de-            (Section 3.3).                                                383
+339   fine a unified scoring function composed of a local
+340   node score (Definition 1) and a cumulative path               3.1    Experimental Setup                                     384
+
+341   score (Definition 2). The scoring function jointly            Datasets: Three representative multi-hop ques-                385
+342   considers the global relevance to the original query          tion answering datasets, 2Wiki (Ho et al., 2020),             386
+343   and the guidance provided by the retrieval residual           MuSiQue (Trivedi et al., 2022), and HotpotQA                  387
+344   for the next hop.                                             (Yang et al., 2018), are selected as benchmark                388
+
+345   Definition 1 (Local Node Score). Given the orig-              datasets.                                                     389
+
+346   inal query embedding Qembed , the retrieval-intent               Baseline Methods: Three categories of re-                  390
+
+347   residual RQembed , a bridging clue e, and a can-              trieval method are selected as baselines. They                391
+
+348   didate document q, the local node score of q is               are the sparse retrieval method BM25 (Robert-                 392
+
+349   defined as:                                                   son and Zaragoza, 2009), the standard dense re-               393
+                                                                    trieval model GTR (T5-Large) (Ni et al., 2022),               394
+        Slocal (q) = λvec cos(Qembed , q embed )
+                                                                    and strong large-scale embedding models, includ-              395
+                                     embed
+                     + λintent ReLU(RQ     · q embed )              ing Qwen3-Embedding-8B (Zhang et al., 2025) and               396
+                     + λsym Ssym (q, e).                            SFR-Embedding-Mistral-7B (Meng et al., 2024).                 397
+350                                                      (7)        Our method is build on Qwen3-Embedding-4B.                    398
+
+
+                                                                5
+399      Implementation Details: In default, all experi-             Transformers: although there is no strictly fixed       449
+400   ments use the same embedding backbone and the                  functional segmentation across layers, the encoded      450
+401   same probing configuration. The maximum reason-                representations gradually transition from shallow,      451
+402   ing depth T = 3. In practice, for a fixed number               localized lexical features to higher-level semantic     452
+403   of retained paths, the total number of deduplicated            integration as depth increases (Jawahar et al., 2019;   453
+404   documents returned by IN-Retriever varies dynam-               Tenney et al., 2019; Niu et al., 2022).                 454
+405   ically. Therefore, we align the retrieval budget of
+406   each baseline with the number of deduplicated doc-             3.2.2   Analysis of Elite Attention Heads               455
+
+407   uments produced by IN-Retriever, and then com-                 Furthermore, taking layer 23 as the basis, we re-       456
+408   pute recall accordingly.                                       trieve the next-hop document using the top-H            457
+409      Evaluation Metric: Recall@F measures                        heads with higher BFS scores. Figure 4(b) shows         458
+410   whether the final returned documents cover the                 the relationship between H and the recall of next-      459
+411   gold supporting documents.                                     hop document. Across all three datasets, the figure     460
+                                                                     shows that the head exhibiting the highest BFS          461
+412   3.2     Attention Analysis                                     encapsulate the vast majority of the model’s rea-       462
+413   The effectiveness of IN-Retriever is grounded in a             soning capacity. As H increases, the highest recall     463
+414   fundamental hypothesis: the elite attention heads              is achieved when H = 8. On MuSiQue and 2Wiki,           464
+415   of a pre-trained embedding model imply the clues               recall increases noticeably as the number of atten-     465
+416   required for reasoning. In this subsection, we ana-            tion heads grows when H < 8. When H > 8,                466
+417   lyze the model’s layer-wise attention weights, ver-            recall on 2Wiki largely plateaus, whereas recall on     467
+418   ify the stability of the elite attention heads that play       MuSiQue and HotpotQA shows a certain degree             468
+419   the dominant role in locating reasoning clues, and             of decline. These results suggest that it is suffi-     469
+420   visualize two cases for understanding.                         cient to focus on attention heads with the higher       470
+                                                                     BFS values, while incorporating too many heads          471
+421   3.2.1    Layer-wise Sensitivity                                may instead introduce noise and degrade the per-        472
+422   To investigate the layer-wise pattern of the atten-            formance. Taking both performance and stability         473
+423   tion mechanism, we randomly sampled 400 query-                 into account, we finally select the attention heads     474
+424   context pairs from 2Wiki, fed them into the model,             specified by Helite = {10, 30, 8, 28, 31, 6, 4, 9} in   475
+425   and ouput attention weights. The heat map of                   layer L = 23 as the elite attention heads for the       476
+426   bridge focus score (BFS) across attention heads is             Qwen3-Embedding-4B.                                     477
+427   is visualized as Figure 3a. The figure shows that at-
+428   tention heads with high BFS values are mainly con-             3.2.3   Case Analysis                                   478
+
+429   centrated in the middle-to-late layers of the model,           Focusing on head 10 at layer 23, we visualize token-    479
+430   revealing a sparse and clearly non-uniform spatial             level attention patterns of two representative cases.   480
+431   distribution. Similar results (as shown in Figure              The weight matrix between the query and the con-        481
+432   3b and Figure 3c) are also supported in the other              text is shown in Figure 5.                              482
+433   datasets.                                                         In Figure 5a, it exhibits distinct and persistent    483
+434      Following the setting, we extracted the top-8               vertical bands. This geometric pattern indicates        484
+435   attention heads with the highest BFS values in each            that the attention head consistently focuses on the     485
+436   layer and evaluated the ability to retrieve the correct        same bridging clue across multiple query tokens,        486
+437   next-hop documents via the bridging clues. The                 rather than distributing attentions diffusely over      487
+438   results are shown in Figure 4a.                                the broader context. In Figure 5b, it show a case       488
+439      Figure 4a shows that the recall exhibit a consis-           with dense semantic interference, where the con-        489
+440   tent trend across all three datasets. The recall first         text contains multiple homogeneous named entities.      490
+441   decreases in layers 0 to 3, then remains relatively            Even in the presence of several same-type distrac-      491
+442   low and stable from layers 4 to 12. It subsequently            tors, the attention remains strongly discriminative     492
+443   rises gradually from layers 13 to 23 with fluctua-             and aligns more concentratedly with the target clue.    493
+444   tions. Finally, the recall reaches its peak at layer           The visualization of the two cases further verifies     494
+445   23, followed by fluctuations across layers 24–35.              that the selected attention head is not merely per-     495
+446   In the last layer (layer 36), the recall exhibits a            forming surface-level lexical matching, but instead     496
+447   distinct decline. This layer-wise trend is broadly             provides a stable and interpretable signal for clue     497
+448   consistent with prior observations on pre-trained              localization.                                           498
+
+
+                                                                 6
+                   (a) 2Wiki                              (b) MuSiQue                             (c) HotpotQA
+
+                   Figure 3: Heatmaps of Bridge Focus Score (BFS) on 2Wiki, MuSiQue, and HotpotQA.
+
+
+
+
+               (a) Recall@20 vs. attention layer depth.                     (b) Cumulative impact of top-H attention heads.
+
+      Figure 4: Layer-wise and head-wise analysis for selecting elite attention heads on 2Wiki, MuSiQue, and HotpotQA.
+
+
+499   3.3   Comparative Analysis                                        search; and (2) for multi-hop queries, relying solely   525
+
+500   The comparison results between IN-Retriever and                   on embedding-based document retrieval is insuffi-       526
+
+501   existing baselines on the three multi-hop datasets                cient.                                                  527
+
+502   are shown in Table 1. In Table 1, we reports recalls                 We further examine the recall of two larger em-      528
+503   under different numbers of retained paths, provid-                bedding models, SFR-Embedding-Mistral-7B and            529
+504   ing a comprehensive evaluation of each method’s                   Qwen3-Embedding-8B. First, despite their larger         530
+505   ability to cover supporting evidence for down-                    parameter scales, their performances do not ap-         531
+506   stream generation.                                                parentily exceed that of Qwen3-Embedding-4B             532
+
+507      As shown in Table 1, IN-Retriever with Qwen3-                  (Direct). This suggests that although larger em-        533
+
+508   Embedding-4B as the backbone achieves the best                    bedding models are generally more favorable for         534
+
+509   results on R@5, R@10, R@15, and R@20 for the                      document retrieval and can improve recall, such         535
+
+510   more challenging MuSiQue and 2Wiki datasets.                      gains remain limited in multi-hop settings. More-       536
+
+511   Meanwhile, on HotpotQA, it outperforms direct re-                 over, as shown in Table 1, except on HotpotQA,          537
+
+512   trieval baselines of similar scale, including BM25,               our method achieves the best recall on the other        538
+
+513   GTR, and Qwen3-Embedding-4B, while remain-                        two datasets, which demonstrates that even when         539
+
+514   ing competitive with larger embedding models                      using Qwen3-Embedding-4B as the backbone, IN-           540
+
+515   such as SFR-Embedding-Mistral-7B and Qwen3-                       Retriever can in most cases match or even surpass       541
+
+516   Embedding-8B.                                                     larger embedding model baselines. This further          542
+
+517      Taking R@20 as an example, comparing with                      confirms the necessity of targeted multi-hop clue       543
+
+518   simple baselines, BM25 and GTR-Large, our                         discovery and stepwise retrieval guided by such         544
+
+519   method improves R@20 by +27.80 and +20.05                         clues.                                                  545
+
+520   on MuSiQue, by +24.60 and +23.82 on 2Wiki,                           Finally, a comparison across datasets shows that     546
+521   and by +4.10 and +8.60 on HotpotQA. These re-                     the recall improvements of our method are more          547
+522   sults reveal the following two key observations: (1)              pronounced on MuSiQue and 2Wiki, while the              548
+523   explicitly leveraging internal attention signals to               gains on HotpotQA are relatively limited. This          549
+524   guide retrieval is effective for multi-hop evidence               is consistent with the analysis in Min et al. (2019),   550
+
+
+                                                                  7
+                             (a) Case 1                                                  (b) Case 2
+
+      Figure 5: Case analysis of token-to-token in head 10, layer 23. (a) Case 1 shows persistent vertical attention bands.
+      (b) Case 2 shows a dense semantic interference from homogeneous entities
+
+      Table 1: Comparison of retrieval methods on MuSiQue, 2Wiki, and HotpotQA. The best performances are bolded,
+      the second-best performances are underlined.
+                                             MuSiQue                        2Wiki                      HotpotQA
+      Retrieval Methods
+                                    R@5 R@10 R@15 R@20 R@5 R@10 R@15 R@20 R@5 R@10 R@15 R@20
+      Simple Baselines
+      BM25                          48.80 53.30    57.40   59.30 64.50 68.43   70.17   70.97 76.35 87.70    91.15   92.60
+      GTR (T5-Large)                53.50 59.65    64.15   67.05 65.87 69.05   70.63   71.75 78.50 84.15    86.70   88.10
+      Large Embedding Models
+      SFR-Embedding-Mistral-7B      65.65 72.55    77.90   79.75 73.95 78.17   79.73   80.77 90.60 95.10    96.30   96.90
+      Qwen3-Embedding-8B            65.40 72.45    77.85   79.30 74.02 77.32   79.43   80.55 88.75 93.30    95.10   95.85
+      Baseline RAG
+      Qwen3-Embedding-4B (Direct) 63.80 70.20      75.35   77.95 72.82 76.28   77.85   78.90 86.10 92.15    93.90   94.80
+      IN-Retriever                  76.45 82.80    85.40   87.10 89.10 94.33   95.27   95.57 86.35 92.10    94.75   96.70
+
+
+551   which suggests that a substantial fraction of Hot-           method (IN-Retriever). The method directly ex-             570
+552   potQA queries can be resolved through reasoning              tracts next-hop clues from the internal attention          571
+553   shortcuts, with answers obtainable from a single             of the embedding model and uses them to retrieve           572
+554   document. In contrast, 2Wiki and MuSiQue rely                candidate documents.                                       573
+555   more on bridging evidence across documents. In                  Based on Qwen3-Embedding-4B, we first an-               574
+556   such tasks, the system must not only retrieve docu-          alyze the BFSs across attention heads, revealing           575
+557   ments that are superficially relevant to the original        clear layer-wise sensitivity and stable distribution       576
+558   question, but also progressively identify the next-          patterns among high-BFS heads. Then, the experi-           577
+559   hop clues that connect different pieces of evidence.         ments verify the consistency of the elite attention        578
+560   Compared with methods that rely on a single query            heads across datasets. Comparative experiments             579
+561   vector alone, IN-Retriever demonstrates clearer ad-          indicate that IN-Retriever is effective at locating        580
+562   vantages in multi-hop retrieval and is better suited         next-hop clues and retrieving supporting evidence,         581
+563   to retrieval tasks that require progressively locating       and that attention weights can be directly leveraged       582
+564   multi-hop evidence.                                          to guide multi-hop retrieval.                              583
+
+565   4   Conclusion                                                  Overall, our findings suggest that pre-trained em-      584
+                                                                   bedding models contain internal attention signals          585
+566   Establishing a coherent and complete evidence                that support multi-hop retrieval in a non-generative       586
+567   chain remains a core challenge for multi-hop QA              manner. This study offers a practical idea for bridg-      587
+568   tasks. In this study, we propose a training-free In-         ing internal model signals with external retrieval in      588
+569   trinsic Navigating-based non-generative Retrieval            complex reasoning tasks.                                   589
+
+
+                                                               8
+590   Limitations                                                  References                                                    639
+
+                                                                   Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, and           640
+591   Although IN-Retriever shows strong gains on                    Hannaneh Hajishirzi. 2024. Self-RAG: Learning to            641
+592   MuSiQue and 2Wiki and remains competitive on                   retrieve, generate, and critique through self-reflection.   642
+                                                                     In International Conference on Learning Representa-         643
+593   HotpotQA, the conclusions of this work should be               tions.                                                      644
+594   interpreted within a limited scope. Our results show
+595   that intrinsic attention in embedding models can             Shiwei Chen, Bin Liang, Yue Yu, Kam-Fai Wong, Hui             645
+596   provide a useful signal for bridge-clue discovery              Wang, and Ruifeng Xu. 2026a. Retrieving on a topic          646
+                                                                     graph for long document question answering. Neuro-          647
+597   in multi-hop retrieval, but they do not provide a              computing, 669:132447.                                      648
+598   causal explanation of how embedding models per-
+599   form multi-hop reasoning. Attention is used here as          Xiaojin Chen, Sai Zhang, Xinxing Li, Ruiqin Ma, and           649
+600   retrieval signals, rather than as a internal reasoning         Qinan Zhao. 2026b. DairyGoatQA: A knowledge                 650
+                                                                     graph enhanced large language models approach for           651
+601   process.                                                       question answering in the dairy goat domain. Expert         652
+602      IN-Retriever is training-free. However, it                  Systems with Applications, 299:130146.                      653
+603   requires white-box access to internal attention
+                                                                   Darren Edge, Ha Trinh, Newman Cheng, Joshua                   654
+604   weights and a one-time calibration step to iden-               Bradley, Alex Chao, Apurva Mody, Steven Truitt,             655
+605   tify elite attention heads for a given backbone. Al-           Dasha Metropolitansky, Robert Osazuwa Ness, and             656
+606   though we observe similar sparse BFS patterns in               Jonathan Larson. 2024. From local to global: A              657
+607   other architectures, comprehensive retrieval evalua-           graph RAG approach to query-focused summariza-              658
+                                                                     tion. arXiv preprint arXiv:2404.16130.                      659
+608   tions across diverse embedding backbones, closed-
+609   source retrieval APIs, multilingual scenarios and            Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia,              660
+610   domain-specific models have not yet been con-                  Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, Meng Wang,         661
+611   ducted.                                                        and Haofen Wang. 2024. Retrieval-augmented gen-             662
+                                                                     eration for large language models: A survey. arXiv          663
+612      The current clue extraction procedure also relies           preprint arXiv:2312.10997. Submitted in 2023; re-           664
+613   on several lightweight hand-designed steps, includ-            vised in 2024.                                              665
+614   ing sentence filtering, peak-token selection, bound-
+                                                                   Rhys Gould, Euan Ong, George Ogden, and Arthur                666
+615   ary expansion, lexical support scoring, and fixed              Conmy. 2024. Successor heads: Recurring, inter-             667
+616   search budgets. These choices make the method                  pretable attention heads in the wild. In International      668
+617   simple and interpretable, but they may be less ro-             Conference on Learning Representations.                     669
+618   bust when bridging clues are weakly lexicalized,
+                                                                   Xanh Ho, Anh-Khoa Duong Nguyen, Saku Sugawara,                670
+619   highly paraphrastic, distributed across multiple sen-          and Akiko Aizawa. 2020. Constructing a multi-               671
+620   tences, or expressed through temporal, numerical,              hop QA dataset for comprehensive evaluation of              672
+621   comparative, or implicit relational constraints. The           reasoning steps. In Proceedings of the 28th Inter-          673
+622   method is therefore most naturally suited to entity-           national Conference on Computational Linguistics,           674
+                                                                     pages 6609–6625, Barcelona, Spain (Online). Inter-          675
+623   or noun-phrase-centric multi-hop questions, and                national Committee on Computational Linguistics.            676
+624   its behavior on longer or more highly branching
+625   evidence chains remains to be studied.                       Ganesh Jawahar, Benoît Sagot, and Djamé Seddah.               677
+                                                                     2019. What does BERT learn about the structure of           678
+626      Finally, our evaluation focuses on retrieval qual-          language? In Proceedings of the 57th Annual Meet-           679
+627   ity rather than end-to-end generation. This matches            ing of the Association for Computational Linguistics,       680
+628   the main contribution of the paper, but higher Re-             pages 3651–3657, Florence, Italy. Association for           681
+                                                                     Computational Linguistics.                                  682
+629   call@F does not necessarily imply proportional
+630   improvements for every downstream generator. In              Vladimir Karpukhin, Barlas Oğuz, Sewon Min, Patrick          683
+631   addition, IN-Retriever returns a dynamic number                Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and            684
+632   of deduplicated documents and requires iterative               Wen tau Yih. 2020. Dense passage retrieval for open-        685
+                                                                     domain question answering. In Proceedings of the            686
+633   attention probing, multi-step retrieval, and rerank-           2020 Conference on Empirical Methods in Natural             687
+634   ing, which introduce more inference overhead than              Language Processing (EMNLP), pages 6769–6781,               688
+635   single-shot dense retrieval. Future work should                Online. Association for Computational Linguistics.          689
+636   study fixed-budget evaluation, end-to-end RAG per-
+                                                                   Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio          690
+637   formance, and latency-quality trade-offs in realistic          Petroni, Vladimir Karpukhin, Naman Goyal, Hein-             691
+638   deployments.                                                   rich Küttler, Mike Lewis, Wen tau Yih, Tim Rock-            692
+                                                                     täschel, Sebastian Riedel, and Douwe Kiela. 2020.           693
+
+
+                                                               9
+694     Retrieval-augmented generation for knowledge-                    Proceedings of the 57th Annual Meeting of the Asso-     751
+695     intensive NLP tasks. In Advances in Neural Infor-                ciation for Computational Linguistics, pages 4593–      752
+696     mation Processing Systems, volume 33, pages 9459–                4601, Florence, Italy. Association for Computational    753
+697     9474. Curran Associates, Inc.                                    Linguistics.                                            754
+
+698   Kevin Meng, David Bau, Alex Andonian, and Yonatan                Harsh Trivedi, Niranjan Balasubramanian, Tushar Khot,     755
+699     Belinkov. 2022. Locating and editing factual associ-             and Ashish Sabharwal. 2022. MuSiQue: Multi-             756
+700     ations in GPT. In Advances in Neural Information                 hop questions via single-hop question composition.      757
+701     Processing Systems, volume 35, pages 17359–17372.                Transactions of the Association for Computational       758
+702     Curran Associates, Inc.                                          Linguistics, 10:539–554.                                759
+
+703   Rui Meng, Ye Liu, Shafiq Joty, Caiming Xiong, Yingbo             Harsh Trivedi, Niranjan Balasubramanian, Tushar Khot,     760
+704     Zhou, and Semih Yavuz. 2024. SFR-Embedding-                      and Ashish Sabharwal. 2023. Interleaving retrieval      761
+705     Mistral: Enhance text retrieval with transfer learning.          with chain-of-thought reasoning for knowledge-          762
+706     Salesforce Blog. Published on October 28, 2024.                  intensive multi-step questions. In Proceedings of       763
+                                                                         the 61st Annual Meeting of the Association for Com-     764
+707   Sewon Min, Eric Wallace, Sameer Singh, Matt Gardner,               putational Linguistics (Volume 1: Long Papers),         765
+708     Hannaneh Hajishirzi, and Luke Zettlemoyer. 2019.                 pages 10014–10037, Toronto, Canada. Association         766
+709     Compositional questions do not necessitate multi-hop             for Computational Linguistics.                          767
+710     reasoning. In Proceedings of the 57th Annual Meet-
+711     ing of the Association for Computational Linguistics,          Miles Turpin, Julian Michael, Ethan Perez, and Samuel     768
+712     pages 4249–4257, Florence, Italy. Association for                Bowman. 2023. Language models don’t always say          769
+713     Computational Linguistics.                                       what they think: Unfaithful explanations in chain-of-   770
+                                                                         thought prompting. In Advances in Neural Informa-       771
+714   Jianmo Ni, Chen Qu, Jing Lu, Zhuyun Dai, Gustavo Her-              tion Processing Systems, volume 36, pages 74952–        772
+715      nandez Abrego, Ji Ma, Vincent Zhao, Yi Luan,                    74965. Curran Associates, Inc.                          773
+716      Keith Hall, Ming-Wei Chang, and Yinfei Yang. 2022.
+717      Large dual encoders are generalizable retrievers. In          Lee Xiong, Chenyan Xiong, Ye Li, Kwok-Fung Tang,          774
+718      Proceedings of the 2022 Conference on Empirical                 Jialin Liu, Paul N. Bennett, Junaid Ahmed, and          775
+719      Methods in Natural Language Processing, pages                   Arnold Overwijk. 2021a. Approximate nearest neigh-      776
+720      9844–9855, Abu Dhabi, United Arab Emirates. As-                 bor negative contrastive learning for dense text re-    777
+721      sociation for Computational Linguistics.                        trieval. In International Conference on Learning        778
+                                                                         Representations.                                        779
+722   Jingcheng Niu, Wenjie Lu, and Gerald Penn. 2022.
+723      Does BERT rediscover a classical NLP pipeline? In             Wenhan Xiong, Xiang Lorraine Li, Srinivasan Iyer,         780
+724      Proceedings of the 29th International Conference               Jingfei Du, Patrick Lewis, William Yang Wang,            781
+725      on Computational Linguistics, pages 3143–3153,                 Yashar Mehdad, Wen tau Yih, Sebastian Riedel,            782
+726      Gyeongju, Republic of Korea. International Com-                Douwe Kiela, and Barlas Oğuz. 2021b. Answer-            783
+727      mittee on Computational Linguistics.                           ing complex open-domain questions with multi-hop         784
+                                                                        dense retrieval. In International Conference on          785
+728   Catherine Olsson, Nelson Elhage, Neel Nanda, Nicholas             Learning Representations.                                786
+729     Joseph, Nova DasSarma, Tom Henighan, Ben Mann,
+730     Amanda Askell, Yuntao Bai, Anna Chen, Tom Con-                 Wan-Chi Yang, Xuan Li, Chih-Yung Chang, and Dip-          787
+731     erly, Dawn Drain, Deep Ganguli, Zac Hatfield-Dodds,             tendu Sinha Roy. 2025. Hierarchical knowledge            788
+732     Danny Hernandez, Scott Johnston, Andy Jones, Jack-              graph-based QA systems with retrieval-augmented          789
+733     son Kernion, Liane Lovitt, and 7 others. 2022. In-              generation. Enterprise Information Systems. Pub-         790
+734     context learning and induction heads. arXiv preprint            lished online: 19 Nov 2025.                              791
+735     arXiv:2209.11895. Transformer Circuits Thread.
+                                                                       Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio,      792
+736   Stephen E. Robertson and Hugo Zaragoza. 2009. The                  William Cohen, Ruslan Salakhutdinov, and Christo-       793
+737      probabilistic relevance framework: BM25 and be-                 pher D. Manning. 2018. HotpotQA: A dataset for          794
+738     yond. Foundations and Trends in Information Re-                  diverse, explainable multi-hop question answering.      795
+739      trieval, 3(4):333–389.                                          In Proceedings of the 2018 Conference on Empiri-        796
+                                                                         cal Methods in Natural Language Processing, pages       797
+740   Keshav Santhanam, Omar Khattab, Jon Saad-Falcon,                   2369–2380, Brussels, Belgium. Association for Com-      798
+741     Christopher Potts, and Matei Zaharia. 2022. Col-                 putational Linguistics.                                 799
+742     BERTv2: Effective and efficient retrieval via
+743     lightweight late interaction. In Proceedings of the            Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak          800
+744     2022 Conference of the North American Chapter of                 Shafran, Karthik R. Narasimhan, and Yuan Cao. 2023.     801
+745     the Association for Computational Linguistics: Hu-               ReAct: Synergizing reasoning and acting in language     802
+746     man Language Technologies, pages 3715–3734, Seat-                models. In International Conference on Learning         803
+747     tle, United States. Association for Computational                Representations.                                        804
+748     Linguistics.
+                                                                       Qinan Yu, Jack Merullo, and Ellie Pavlick. 2023. Char-    805
+749   Ian Tenney, Dipanjan Das, and Ellie Pavlick. 2019.                 acterizing mechanisms for factual recall in language    806
+750      BERT rediscovers the classical NLP pipeline. In                 models. In Proceedings of the 2023 Conference on        807
+
+
+                                                                  10
+808     Empirical Methods in Natural Language Processing,
+809     pages 9924–9959, Singapore. Association for Com-
+810     putational Linguistics.
+811   Yanzhao Zhang, Mingxin Li, Dingkun Long, Xin Zhang,
+812     Huan Lin, Baosong Yang, Pengjun Xie, An Yang,
+813     Dayiheng Liu, Junyang Lin, Fei Huang, and Jingren
+814     Zhou. 2025. Qwen3 embedding: Advancing text
+815     embedding and reranking through foundation models.
+816     arXiv preprint arXiv:2506.05176.
+817   Yue Zhang, Yafu Li, Leyang Cui, Deng Cai, Lemao Liu,
+818     Tingchen Fu, Xinting Huang, Enbo Zhao, Yu Zhang,
+819     Chen Xu, Yulong Chen, Longyue Wang, Anh Tuan
+820     Luu, Wei Bi, Freda Shi, and Shuming Shi. 2023.
+821     Siren’s song in the AI ocean: A survey on hallu-
+822     cination in large language models. arXiv preprint
+823     arXiv:2309.01219.
+824   Chen Zhao, Chenyan Xiong, Jordan Boyd-Graber, and
+825     Hal Daumé III. 2021. Multi-step reasoning over un-
+826     structured text with beam dense retrieval. In Pro-
+827     ceedings of the 2021 Conference of the North Amer-
+828     ican Chapter of the Association for Computational
+829     Linguistics: Human Language Technologies, pages
+830     4635–4641, Online. Association for Computational
+831     Linguistics.
+
+
+
+
+                                                             11
+832   Appendix                                                      objective.                                              882
+
+833   A    Related Work                                                The third category of retrieval methods lever-       883
+                                                                    ages external explicit structures to provide reason-    884
+834   In this section, we review researches closely re-             ing constraints. For example, GraphRAG (Edge            885
+835   lated to our study. They are document retrieval               et al., 2024) constructs a global knowledge graph       886
+836   methods for multi-hop queries and some studies                offline and use explicit graph topology to ensure       887
+837   about attention heads in embedding method.                    the connectivity of retrieval paths. Following this     888
+
+838   Document Retrieval for Multi-Hop Queries.                     direction, recent studies have explored more so-        889
+
+839   RAG helps alleviate issues such as hallucination              phisticated graph structures to improve multi-hop       890
+
+840   and outdated information in LLMs. However, in                 reasoning. Yang et al. Yang et al. (2025) combine       891
+
+841   practical scenarios, complex multi-hop queries of-            hierarchical knowledge graphs with RAG through          892
+
+842   ten fail to require sufficient evidence documents             graph convolutions that aggregate local and global      893
+
+843   for generation. Existing document retrieval meth-             relations for complex queries. Chen et al. Chen         894
+
+844   ods for multi-hop queries within the RAG frame-               et al. (2026a) propose a Topic-Graph-based method       895
+
+845   work are broadly classified into three paradigms:             for long-document, enhancing cross-paragraph evi-       896
+
+846   (1) using dense retrieval to improve the recall of            dence association by activating relevant sentences      897
+
+847   multi-hop evidence; (2) explicitly generating in-             and their neighborhoods along the graph struc-          898
+
+848   termediate reasoning steps to plan subsequent re-             ture. Chen et al. Chen et al. (2026b) use rela-         899
+
+849   trieval paths; and (3) leveraging external explicit           tional paths as the basic unit and exploit explicit     900
+
+850   structures to guide reasoning.                                path constraints to guide multi-hop evidence selec-     901
+
+851      To improve the recall, early research mainly fo-           tion in domain-specific QA. Overall, these methods      902
+
+852   cused on dense retrieval-based methods. Classi-               provide clear logical and structural constraints for    903
+
+853   cal architectures, such as DPR (Karpukhin et al.,             multi-hop retrieval, but their practical use is often   904
+
+854   2020) and ANCE (Xiong et al., 2021a), employ                  limited by high construction and maintenance costs.     905
+
+855   dual encoders to map queries and documents into a             They are not only highly sensitive to the quality of    906
+
+856   shared latent space, attempting to capture semantic           upstream text preprocessing, but also incur substan-    907
+
+857   relevance through similarity matching. However,               tial update costs when external knowledge evolves       908
+
+858   compressing a long text into a dense representation           dynamically.                                            909
+
+859   makes it difficult to preserve complex semantic in-            The comparisons of the above methods are sum-          910
+860   formation (Ni et al., 2022; Santhanam et al., 2022),          marized in Table 2.                                     911
+861   often leading to retrieval results that exhibit super-
+862   ficial topical relevance with logical connections
+863   broken in the reasoning chain.
+864      To bridge the logical gap, recent works tend to            Attention Heads of Embedding Models. Re-                912
+865   explicitly generate intermediate reasoning steps              cently, studies in mechanistic interpretability try     913
+866   and then plan subsequent retrieval paths. For ex-             to open the black box of Transformer models. For        914
+867   ample, IRCoT (Trivedi et al., 2023) interleaves               example, study on induction heads Olsson et al.         915
+868   chain-of-thought (CoT) reasoning with retrieval               (2022) reveals that some attention heads can au-        916
+869   steps and generates reasoning plans using LLM.                tomatically locate previously observed patterns in      917
+870   ReAct (Yao et al., 2023) introduces an "action-               the context and copy the information that follows,      918
+871   observation" loop to dynamically adjust search                thereby supporting sequence-level pattern continu-      919
+872   strategies. Self-RAG (Asai et al., 2024) further              ation and information transfer. By contrast, ROME       920
+873   incorporates a self-reflection mechanism to assess            (Meng et al., 2022) uses causal interventions to        921
+874   retrieval quality. However, methods that rely on              show that MLP layers are key loci for storing fac-      922
+875   explicit generation for reasoning are subject to an           tual knowledge. These studies have successfully         923
+876   inherent risk of Cascade Semantic Drift (Zhang                identified components responsible for knowledge         924
+877   et al., 2023; Turpin et al., 2023). Once the model            storage, But they either treat internal model states    925
+878   generates an incorrect intermediate clue due to a             as objects of passive interpretation or attempt to      926
+879   minor deviation in the early stage. The deviation             edit static weights. No study has attempted to ex-      927
+880   will be amplified in subsequent retrieval steps, caus-        plore extracting in realtime and exploiting such        928
+881   ing the reasoning chain deviating from the original           signals during inference.                               929
+
+
+                                                               12
+                                Table 2: Comparison of representative multi-hop retrieval methods.
+
+                                 Representative            Non-          No External     Stepwise Retrieval Robust to Error
+          Paradigm
+                                 Methods                 Generative      Graph/Path          Guidance        Propagation
+
+          Dense Retrieval        DPR, ANCE,                  ✓                ✓                  ✗                   ✓
+                                 GTR-Large
+          Generative
+          Reasoning-Guided       IRCoT, ReAct,               ✗                ✓                  ✓                   ✗
+          Retrieval              Self-RAG
+
+                                 GraphRAG,
+          External-Structure-    Hierarchical KG-RAG,        ✓                 ✗                 ✓                   ✓
+          Guided Retrieval       Topic-Graph RAG
+
+                                 IN-Retriever                ✓                ✓                  ✓                   ✓
+
+
+
+930   B     Supplementary Experiments
+931   B.0.1 Stability of Elite Attention Heads
+932   To verify the stability of elite attention heads, we
+933   design an experiment to examine whether elite at-
+934   tention head remains consistent across different
+935   datasets. To this end, we construct evaluation sub-
+936   sets from 2Wiki and MuSiQue. For 2Wiki, we re-
+937   tain only samples labeled as compositional and con-
+938   taining complete evidence triples. For MuSiQue,
+939   we use question decomposition annotations to ex-
+                                                                        Figure 6: Overlap ratio with the elite attention heads as
+940   tract samples with explicit bridging dependencies.                the number of calibration samples increases on 2Wiki
+941   Finally, we select 2,000 high-confidence samples                  and MuSiQue.
+942   from each dataset.
+943      In the experiment, we extract the top-8 attention
+944   heads according to BFS score in layer L = 23,                     B.1   Beam Width Analysis                                   965
+945   denoted as H2Wiki and HMuSiQue , respectively. The                IN-Retriever adopts the beam search mechanism,              966
+946   Jaccard similarity coefficient is used as the evalua-             which allows it to maintain multiple potential              967
+947   tion metric, as defined in Formula 9.                             reasoning trajectories simultaneously, thereby en-          968
+
+                                       |Hds ∩ Helite |                  abling the model to tolerate local uncertainty. In          969
+948               J(Hds , Helite ) =                         (9)        practice, the number of candidate paths (beam               970
+                                       |Hds ∪ Helite |
+                                                                        width, denoted by B) may affect the final retrieval         971
+949   where ds ∈ {2Wiki, MuSiQue}.                                      results. In this subsection, we evaluate both re-           972
+950       The experiment results are shown in Figure 6.                 trieval effectiveness and the number of dedupli-            973
+951   The figure shows that, as the number of samples in-               cated documents in the final output under different         974
+952   creases, the top-H attention heads identified from                values of B, in order to guide the selection of B.          975
+953   partial data subsets eventually align perfectly with                 Figure 7 shows the curves between B and Re-              976
+954   the elite attention heads Helite . Specifically, on               call@20 on three datasets. The curves exhibit an            977
+955   2Wiki, complete overlap is achieved when the sam-                 evident elbow between B = 8 and B = 10, beyond              978
+956   ple size reaches 100. Even on MuSiQue, full over-                 which the marginal gains become very limited.               979
+957   lap is achieved once the sample size reaches 250.                 For example, Recall@20 on 2Wiki reaches 0.93                980
+958   The results indicate that elite attention heads are               at B = 8, and subsequent improvement slowed                 981
+959   consistent across different datasets, and exhibit a               down apparently. The result suggest that tracking           982
+960   certain degree of cross-task stability instead of over-           the top-B highest-confidence paths is sufficient to         983
+961   fitting to a specific dataset. Second, this overlap               cover the vast majority of critical evidence. Ac-           984
+962   converges rapidly even with only a small number of                cordingly, we set B = 8 in the experiments.                 985
+963   calibration samples, indicating that the calibration                 Figure 8 shows the relation between the number           986
+964   cost is relatively low.                                           of selected paths B and the number of deduplicated          987
+
+
+                                                                   13
+                                                                     metric is help for evaluating retrieval quality under   1010
+                                                                     path-aware evidence aggregation. Therefore, we          1011
+                                                                     use F 1 at B paths as an additional metric to further   1012
+                                                                     quantify the retrieval quality of IN-Retriever.         1013
+                                                                       For each query, the final retrieval documents         1014
+                                                                     are collected from B paths. Let the corre-              1015
+                                                                     sponding gold document set be Relevant, and             1016
+                                                                     the set of documents finally returned by IN-            1017
+                                                                     Retriever be Retrieved at B paths. The num-             1018
+                                                                     ber of correctly matched documents Hit@B,               1019
+
+       Figure 7: Curves of Recall@20 vs. beam widths B on            P recision@B, Recall@B, and F 1@B at B paths            1020
+       MuSiQue, 2Wiki, and HotpotQA                                  are defined as Formula 10, 11, 12, and 13, where        1021
+                                                                     B refers to B paths.                                    1022
+
+988    documents. As shown in the figure, although each                Hit@B = |Relevant ∩ Retrieved@B|. (10)                1023
+989    path may contain multiple documents, the aggre-                                                                       1024
+                                                                                                    Hit@B
+990    gate document count does not scale multiplicatively                    P recision@B =                         (11)    1025
+                                                                                                  |Retrieved|
+991    with B; instead, it exhibits an approximately 1:1                                                                     1026
+992    growth trend with B. The result indicates that even                                    Hit@B
+                                                                                 Recall@B =                          (12)    1027
+993    though IN-Retriever retains more paths during rea-                                   |Relevant|
+                                                                                                                             1028
+994    soning, the number of documents does not diverge                               P recision@B × Recall@B
+995    arbitrarily, but concentrates within a limited range.           F 1@B = 2×                                    (13)    1029
+                                                                                      P recision@B + Recall@B
+                                                                        Assuming that the top-B paths contain RB dedu-       1030
+                                                                     plicated documents, we extract the same number          1031
+                                                                     RB of documents from each baseline and compute          1032
+                                                                     document-level F 1 under this aligned document          1033
+                                                                     budget. This alignment ensures that all compared        1034
+                                                                     methods are evaluated under approximately com-          1035
+                                                                     parable reading length and downstream computa-          1036
+                                                                     tional budget, thereby reducing the possibility that    1037
+                                                                     performance differences arise merely from return-       1038
+                                                                     ing more documents. The experiment results are          1039
+                                                                     shown in Table 3.                                       1040
+       Figure 8: Average number of deduplicated documents               As shown in Table 3, IN-Retriever achieves the       1041
+       versus path number B on 2Wiki, MuSiQue, and Hot-              best F1 scores on MuSiQue and 2Wiki across all          1042
+       potQA.
+                                                                     evaluated values of B, indicating that the proposed     1043
+                                                                     method improves not only evidence recall but also       1044
+996       The relation between path number and the size of           the balance between retrieved evidence coverage         1045
+997    documents further supports the selection of B = 8.            and retrieval compactness. On HotpotQA, IN-             1046
+998    Real effective reasoning paths tend to converge               Retriever remains competitive but does not outper-      1047
+999    within the top-8 paths and point to the same correct          form SFR-Embedding-Mistral-7B, which is con-            1048
+1000   answer. Additional paths beyond this range mostly             sistent with the relatively weaker multi-hop depen-     1049
+1001   diverge into noisier regions. Therefore, limiting             dency of this dataset. These results further support    1050
+1002   the number of paths in IN-Retriever is not only               that IN-Retriever is more advantageous on datasets      1051
+1003   a matter of computational efficiency, but also an             where evidence must be connected through explicit       1052
+1004   effective way to filter out long-tail noise and reduce        bridging clues.                                         1053
+1005   reasoning drift.
+                                                                     B.3   Attention Patterns across Different               1054
+1006   B.2   Path-Level F1 under Path Budget B                             Embedding Models                                  1055
+
+1007   In contrast to fixed-document-budget retrieval, IN-           To examine whether the BFS distribution pattern         1056
+1008   Retriever returns a variable number of deduplicated           is specific to a particular backbone model, we re-      1057
+1009   documents for each query. A flexible evaluation               peat the experiment described in Section 3.2.1 on       1058
+
+
+                                                                14
+       Table 3: Comparison of retrieval methods in terms of document-level F 1 under different path budgets B. The
+       columns B = 5, 10, 15, 20 denote the number of selected reasoning paths used to construct the retrieved document
+       set. Each reported value is the average F 1 over all queries. The best performances are bolded, the second-best
+       performances are underlined, and IN-Retriever is highlighted in gray.
+
+                                             MuSiQue                              2Wiki                         HotpotQA
+       Retrieval Methods
+                                  B = 5 B = 10 B = 15 B = 20 B = 5 B = 10 B = 15 B = 20 B = 5 B = 10 B = 15 B = 20
+       Simple Baselines
+       BM25                        25.14   16.71   12.98   10.68   36.34      24.31   18.36   14.75   38.17   27.43   20.63   16.43
+       GTR (T5-Large)              27.70   18.84   14.58   12.12   37.01      24.43   18.33   14.76   39.30   26.33   19.62   15.64
+       Large Embedding Models
+       SFR-Embedding-Mistral-7B    33.94   22.92   17.73   14.45   41.82      27.79   20.82   16.72   45.55   29.82   21.83   17.21
+       Qwen3-Embedding-8B          33.81   22.88   17.73   14.37   41.81      27.44   20.69   16.62   44.55   29.25   21.55   17.02
+       Baseline RAG
+       Qwen3-Embedding-4B (Direct) 33.04   22.16   17.15   14.13   41.08      27.01   20.23   16.24   43.21   28.87   21.28   16.83
+       IN-Retriever                40.16   26.33   19.60   15.90   50.81      34.49   25.64   20.38   43.84   29.03   21.56   17.20
+
+
+
+1059   two other mainstream embedding models, namely                    der different architectures still requires further eval-      1094
+1060   Mistral and Llama. We keep the same instruction                  uation through experiments. In addition, differ-              1095
+1061   template, bridging clue annotation protocol, BFS                 ent architectures vary in their total number of lay-          1096
+1062   definition, and sampling procedure. Based on the                 ers, number of heads, and internal representation             1097
+1063   resulting BFS values, we visualize the results in                schemes; therefore, the absolute index of the opti-           1098
+1064   Figure 9.                                                        mal layer should not be compared directly across              1099
+
+1065      From Figure 9, we find that, consistent with the              architectures.                                                1100
+
+1066   results of Qwen3-Embedding-4B, attention heads
+1067   with high BFS values are mainly concentrated in                  B.4     Ablation Study                                        1101
+
+1068   the middle-to-late layers of each model, while such              To assess the contributions of each component, we             1102
+1069   heads are extremely sparse in the shallow layers. It             conduct an ablation study by removing the three               1103
+1070   suggests that the layer-wise sensitivity of bridging-            main modules one by one and report Recall@5 in                1104
+1071   clue-related attention signals is not unique to a sin-           Table 4.                                                      1105
+1072   gle backbone, but instead reflects a broader pattern
+                                                                           After removing internal-attention-based clue ex-           1106
+1073   across architectures. It also indicates that internal
+                                                                        traction (w/o Intrinsic Steering), the fine-grained           1107
+1074   signals relevant to next-hop clues are more likely to
+                                                                        bridging clue e is no longer available for resid-             1108
+1075   emerge in layers where a certain degree of semantic
+                                                                        ual calculation and cumulative scoring. To keep               1109
+1076   integration has already taken place.
+                                                                        the remaining modules executable, we replace e                1110
+1077      On the other hand, the figure shows that atten-               with a coarse document-level representation of the            1111
+1078   tion heads with high BFS values are not uniformly                previous-hop document. In this setting, the model             1112
+1079   distributed across the entire parameter space, but               expands the evidence chain based on the entire                1113
+1080   are concentrated in only a small number of layers                previous document rather than on the specific clue            1114
+1081   and heads. The observation is consistent with the                localized by internal attention. As shown in Table 4,         1115
+1082   sparse distribution of high-BFS heads in Qwen3-                  this variant leads to the largest performance drop            1116
+1083   Embedding-4B, indicating that this pattern is un-                across all datasets: Recall@5 decreases by 9.70%,             1117
+1084   likely to be an accidental property of a single                  18.00%, and 8.40% on MuSiQue, 2Wiki, and Hot-                 1118
+1085   model.                                                           potQA, respectively. These results indicate that              1119
+1086      Overall, these results show that the BFS distribu-            fine-grained bridging clues extracted from internal           1120
+1087   tion pattern, middle-to-late-layer concentration and             attention provide more targeted next-hop guidance             1121
+1088   head-level sparsity, remains consistent across dif-              than coarse document-level expansion, and consti-             1122
+1089   ferent architectures, thereby providing evidence for             tute the primary source of the performance gains              1123
+1090   the cross-architecture applicability of our method.              achieved by our method.                                       1124
+1091   Nevertheless, these findings are still primarily rep-               The cumulative scoring mechanism considers                 1125
+1092   resentational observations. The extent to which                  not only semantic relevance but also keyword                  1126
+1093   such signals affect final retrieval performance un-              matching. As shown in Table 4, removing the                   1127
+
+
+                                                                   15
+                            (a) Mistral.                                                  (b) Llama.
+
+          Figure 9: BFS heatmaps across all attention layers under two embedding backbones on the 2Wiki dataset.
+
+                  Table 4: Ablation study of IN-Retriever on three multi-hop datasets in terms of Recall@5.
+
+                                                      Components                           Datasets (Recall@5)
+        Method                             Steering   Residual       Cumulative      MuSiQue       2Wiki    HotpotQA
+                                              √          √              √
+        IN-Retriever (Full Model)                                                      76.45       89.10      86.35
+                                              √          √
+        w/o Cumulative Scoring                                             –           75.05       82.95      84.20
+                                              √                            √
+        w/o Residual-based Reranking                     –                             75.95       88.95      85.60
+                                                         √                 √
+        w/o Intrinsic Steering                –                                        66.75       71.10      77.95
+        Direct Retrieval (Baseline)           –           –                –           63.80       72.82      86.10
+
+
+1128   cumulative scoring mechanism (w/o Cumulative                 although the next-hop clue provides the main ex-         1151
+1129   Scoring) reduces Recall@5 by 1.40%, 6.15%, and               pansion direction, the residual step offers a useful     1152
+1130   2.15% on the three datasets. The reductions sug-             complementary constraint for selecting more ap-          1153
+1131   gest that relying solely on dense semantic similarity        propriate next-hop documents.                            1154
+1132   is insufficient to distinguish some key bridging en-            Overall, the ablation study verifies the indispens-   1155
+1133   tities in multi-hop retrieval. Explicit constraints          ability of three core modules: internal-attention-       1156
+1134   introduced by keyword matching effectively com-              based clue extraction, cumulative scoring mecha-         1157
+1135   plement this weakness and are helpful for the pre-           nism, and semantic residual-based reranking.             1158
+1136   cise assessment of key entities and clues.
+
+1137      Finally, when removing the semantic residual
+1138   step (w/o Residual Projection/Reranking), we dis-
+1139   able the projection-based residual computation and
+1140   remove its use in candidate reranking. In this vari-
+1141   ant, the model directly follows the documents re-
+1142   trieved by the next-hop clue, without using the un-
+1143   resolved part of the original query as an additional
+1144   constraint. As shown in Table 4, the Recall@5
+1145   of this variant consistently decreases across the
+1146   three datasets. This suggests that the residual sig-
+1147   nal helps refine clue-based retrieval by reducing
+1148   repeated focus on already covered evidence and
+1149   by keeping the search aligned with the remaining
+1150   information need of the original query. Therefore,
+
+                                                               16
+

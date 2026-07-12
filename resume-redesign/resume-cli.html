@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="宋林蔚｜大模型应用与 AI Agent 工程师简历">
+  <title>宋林蔚｜大模型应用 / AI Agent 工程师</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-panel: #f7f9fb;
+      --border: #e6eaf0;
+      --line: #d9dee7;
+      --text: #2a3038;
+      --text-strong: #141a22;
+      --muted: #5c6673;
+      --faint: #8b94a1;
+      --blue: #0b6bcb;
+      --blue-deep: #0a5cad;
+      --blue-soft: #eaf3fc;
+      --green: #0d7040;
+      --green-num: #0a7040;
+      --green-soft: #e9f6ef;
+      --amber: #8f5600;
+      --slate: #3a4658;
+      --sans: "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei UI", "Segoe UI", sans-serif;
+      --col-side: 40mm;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: #e6e9ee; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 8.5pt;
+      line-height: 1.42;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--blue-deep);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 8mm auto;
+      background: var(--bg);
+      border: 1px solid #c9d0da;
+      box-shadow: 0 10px 36px rgba(25, 35, 50, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.2mm 5mm;
+      background: linear-gradient(180deg, #f2f4f7 0%, #e8ebf0 100%);
+      border-bottom: 1px solid #d0d5dd;
+      font-size: 7.4pt;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+    .traffic {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .traffic i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: block;
+    }
+    .traffic .r { background: #ff5f57; }
+    .traffic .y { background: #febc2e; }
+    .traffic .g { background: #28c840; }
+    .titlebar-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .titlebar-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #4f5a68;
+      white-space: nowrap;
+    }
+
+    .body {
+      flex: 1;
+      padding: 4mm 8mm 3.5mm;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 24mm;
+      gap: 4mm;
+      align-items: center;
+      margin-bottom: 3mm;
+      padding-bottom: 2.5mm;
+      border-bottom: 1.5px solid var(--text-strong);
+    }
+
+    .identity h1 {
+      margin: 0 0 0.8mm;
+      font-size: 20pt;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: 0.14em;
+      color: var(--text-strong);
+    }
+
+    .role-line {
+      margin: 0 0 1.8mm;
+      font-size: 9pt;
+      font-weight: 600;
+      color: var(--blue-deep);
+      letter-spacing: 0.03em;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 8mm;
+      row-gap: 1.3mm;
+      max-width: 125mm;
+      font-size: 7.8pt;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .contact a { color: var(--blue-deep); font-weight: 600; }
+    .contact .item {
+      display: grid;
+      grid-template-columns: 12mm 1fr;
+      gap: 1.2mm;
+      align-items: baseline;
+      min-width: 0;
+    }
+    .contact .label {
+      color: var(--faint);
+      font-size: 7.2pt;
+      font-weight: 600;
+    }
+    .contact .value {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+    .contact .value a { font-weight: 600; }
+
+    .photo {
+      width: 24mm;
+      height: 32mm;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      background: #eef1f5;
+      justify-self: end;
+    }
+    .photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .section { margin: 0 0 2.6mm; }
+    .section:last-child { margin-bottom: 0; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      margin: 0 0 1.4mm;
+      min-height: 5.5mm;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--slate);
+      color: #fff;
+      font-size: 8pt;
+      font-weight: 700;
+      height: 5.8mm;
+      padding: 0 4.2mm;
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      line-height: 1;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    .pill.blue { background: #2a5f8f; }
+    .pill.green { background: #2a6b4f; }
+
+    .section-head::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+      margin-left: -0.8mm;
+      align-self: center;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6mm 2mm;
+    }
+    .skill-tags span {
+      display: inline-flex;
+      align-items: center;
+      padding: 1mm 2.4mm;
+      border: 1px solid #cfe0f2;
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+      font-size: 7.6pt;
+      font-weight: 700;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .entry { margin-bottom: 2mm; }
+    .entry:last-child { margin-bottom: 0; }
+
+    .entry-bar {
+      display: grid;
+      grid-template-columns: var(--col-side) minmax(0, 1fr) var(--col-side);
+      column-gap: 0;
+      align-items: center;
+      margin-bottom: 0.9mm;
+      padding-bottom: 0.7mm;
+      border-bottom: 1px solid #eceff3;
+    }
+
+    .entry-date {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: var(--amber);
+      white-space: nowrap;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .entry-mid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+      padding: 0 1mm 0 5mm;
+    }
+    .entry-mid-inner {
+      width: 100%;
+      max-width: 78mm;
+      text-align: center;
+      transform: translateX(3mm);
+    }
+
+    .entry-org {
+      margin: 0;
+      font-size: 8.8pt;
+      font-weight: 700;
+      color: var(--text-strong);
+      line-height: 1.25;
+      text-align: center;
+    }
+    .entry-org.paper-title {
+      font-size: 7.5pt;
+      line-height: 1.28;
+      letter-spacing: 0;
+      white-space: normal;
+    }
+    .entry-org .sub-hl {
+      display: inline-block;
+      margin-left: 1.6mm;
+      padding: 0.15mm 1.6mm;
+      font-size: 7pt;
+      font-weight: 700;
+      color: #0a5cad;
+      background: #e8f2fc;
+      border: 1px solid #b7d4f0;
+      border-radius: 2px;
+      vertical-align: 0.5px;
+      letter-spacing: 0.02em;
+    }
+
+    .entry-role {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: var(--blue-deep);
+      white-space: nowrap;
+      line-height: 1.3;
+      text-align: right;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      position: relative;
+      margin: 0 0 0.75mm;
+      padding-left: 3.4mm;
+      font-size: 7.4pt;
+      line-height: 1.38;
+      color: #3a4250;
+    }
+    li:last-child { margin-bottom: 0; }
+    li::before {
+      content: "·";
+      position: absolute;
+      left: 0.3mm;
+      top: 0;
+      font-weight: 800;
+      color: var(--slate);
+      font-size: 9pt;
+      line-height: 1.35;
+    }
+    li strong {
+      color: var(--text-strong);
+      font-weight: 700;
+    }
+    .hi {
+      font-weight: 700;
+      color: var(--green-num);
+    }
+
+    .repo {
+      margin: 1mm 0 0 3.4mm;
+      font-size: 7pt;
+      color: var(--muted);
+    }
+    .repo a { color: var(--blue-deep); font-weight: 600; }
+
+    .edu-item { margin-bottom: 1.6mm; }
+    .edu-item:last-child { margin-bottom: 0; }
+    .edu-note {
+      margin: 0;
+      font-size: 7.2pt;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .entry-bar.tight {
+      border-bottom: 0;
+      padding-bottom: 0;
+      margin-bottom: 0.3mm;
+    }
+    .entry-bar.subline {
+      border-bottom: 0;
+      padding-bottom: 0;
+      margin-bottom: 1.2mm;
+    }
+
+    .award-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5mm;
+    }
+    .award-card {
+      border: 1px solid var(--border);
+      background: var(--bg-panel);
+      border-radius: 2px;
+      padding: 2mm 2.4mm 1.8mm;
+    }
+    .award-card .rank {
+      margin: 0 0 0.6mm;
+      font-size: 7.6pt;
+      color: var(--amber);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .award-card .title {
+      margin: 0 0 0.8mm;
+      font-size: 7.2pt;
+      font-weight: 700;
+      color: var(--text-strong);
+      line-height: 1.35;
+    }
+    .award-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2mm 2.5mm;
+      font-size: 6.8pt;
+      font-weight: 600;
+    }
+    .award-links a { color: var(--blue-deep); }
+    .award-links a::before {
+      content: "↗ ";
+      font-weight: 700;
+    }
+
+    .scores-inline {
+      display: inline-flex;
+      gap: 1mm;
+      margin-left: 1.5mm;
+      vertical-align: middle;
+    }
+    .score {
+      display: inline-block;
+      font-size: 7.2pt;
+      font-weight: 700;
+      color: var(--green-num);
+      background: var(--green-soft);
+      border: 1px solid #c5e5d1;
+      padding: 0.2mm 1.4mm;
+      border-radius: 2px;
+      line-height: 1.3;
+    }
+
+    @page { size: A4; margin: 0; }
+
+    @media print {
+      html, body { background: #fff; }
+      body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 210mm;
+        min-height: 297mm;
+        height: 297mm;
+        max-height: 297mm;
+        border: none;
+        overflow: hidden;
+      }
+      a { text-decoration: none; }
+    }
+
+    @media screen and (max-width: 900px) {
+      .page { width: 100%; min-height: 100vh; margin: 0; border: none; }
+      .header { grid-template-columns: 1fr auto; }
+      .contact { grid-template-columns: 1fr; max-width: none; }
+      .award-list, .entry-bar { grid-template-columns: 1fr; }
+      .entry-mid { justify-content: flex-start; padding-left: 0; }
+      .entry-mid-inner { transform: none; text-align: left; max-width: none; }
+      .entry-org, .entry-org.paper-title { text-align: left; }
+      .entry-role { text-align: left; }
+      .titlebar-center { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="宋林蔚简历">
+    <div class="titlebar">
+      <div class="titlebar-wrap">
+        <div class="traffic" aria-hidden="true"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <div class="titlebar-center">个人简历 · PERSONAL RESUME</div>
+        <div style="width: 36px;"></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <header class="header" aria-label="基本信息">
+        <div class="identity">
+          <h1>宋林蔚</h1>
+          <p class="role-line">大模型应用 / AI Agent 工程师</p>
+          <div class="contact" aria-label="联系与基本信息">
+            <div class="item"><span class="label">电话</span><span class="value"><a href="tel:18059396679">18059396679</a></span></div>
+            <div class="item"><span class="label">邮箱</span><span class="value"><a href="mailto:1147214246@qq.com">1147214246@qq.com</a></span></div>
+            <div class="item"><span class="label">GitHub</span><span class="value"><a href="https://github.com/fjnuslw">github.com/fjnuslw</a></span></div>
+            <div class="item"><span class="label">主页</span><span class="value"><a href="https://fjnuslw.github.io">fjnuslw.github.io</a></span></div>
+            <div class="item"><span class="label">出生</span><span class="value">2001.09</span></div>
+            <div class="item"><span class="label">现居</span><span class="value">福建 · 福州</span></div>
+          </div>
+        </div>
+        <div class="photo">
+          <img src="photo.jpg" alt="宋林蔚证件照" width="98" height="128">
+        </div>
+      </header>
+
+      <section class="section" aria-labelledby="exp">
+        <div class="section-head"><span class="pill" id="exp">实习经验</span></div>
+
+        <article class="entry">
+          <div class="entry-bar">
+            <time class="entry-date">2026.07—2026.09</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="entry-org">友达光电<span class="sub-hl">卓越工程师计划</span></p>
+              </div>
+            </div>
+            <div class="entry-role">AI 专案实习生</div>
+          </div>
+          <ul>
+            <li>新 model 上线需按站点写 SOP/OI，依赖 key-in 与拍照贴图，规范不一致、审核慢，拖住 China Car 放量。</li>
+            <li>负责 <strong>FIDM 新产品 SOP 智撰 Agent</strong>：工序/关键画面理解 → 结构化草案 → 人工审校闭环，工作从「从零录入」改为「审校优化」。</li>
+            <li>目标：编写耗时约 <span class="hi">−50%</span>，OI 自动生成准确率 <span class="hi">≥90%</span>，支持 Lessons Learned 一键回写。</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-bar">
+            <time class="entry-date">2025.07—2026.02</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="entry-org">福建新意科技有限公司</p>
+              </div>
+            </div>
+            <div class="entry-role">大模型应用开发</div>
+          </div>
+          <ul>
+            <li>企业智能客服 RAG：业务知识梳理、Dify Workflow 编排、多模型接入，持续迭代 Prompt 与命中效果。</li>
+            <li>长文档层级深、版本更新快。设计<strong>树状切分 + 全文索引</strong>，以召回/命中/答案完整性对比普通分段与父子索引后定版。</li>
+            <li>部署 <strong>Qwen-32B（vLLM）</strong> 与 CPU 侧 Embedding/Rerank（Xinference）；接入 MCP 与多供应商 API 并排障。</li>
+            <li>自建 <strong>20 题</strong>业务评测集（准确性、证据相关性、完整性、稳定性），用失败 case 驱动知识库与选型。</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section" aria-labelledby="proj">
+        <div class="section-head"><span class="pill green" id="proj">项目经验</span></div>
+
+        <article class="entry">
+          <div class="entry-bar">
+            <time class="entry-date">2026.07—至今</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="entry-org">Local Window Copilot</p>
+              </div>
+            </div>
+            <div class="entry-role">独立开发 · 开源</div>
+          </div>
+          <ul>
+            <li>Windows 本地桌面 Agent（local-first）。观察线：截图 → MiniCPM-V 结构化卡片 → SQLite；对话线：ChatAgent 仅暴露 <strong>memory.search</strong>，FastAPI/SSE 流式输出并绑定证据 id。</li>
+            <li>小 VLM tool-call 不稳：拆 <strong>probe→stream</strong>（probe 判是否调工具，stream 出终答），确定性 FTS 替换 VLM ranker → 失败率 <span class="hi">46%→0%</span>，排名延迟 <span class="hi">~30s→10ms</span>。</li>
+            <li>上下文分层 system / profile / session / evidence；冻结 profile 稳 prefix cache，首 Token <span class="hi">−30%–60%</span>；收紧观察契约后 VLM 成功率 <span class="hi">54%→80%</span>。</li>
+            <li>请求前 token 预算拦截 + rolling compact；WebUI 回放观察 JSON / 截图 / tool trace；<strong>55</strong> 项单测覆盖主路径。</li>
+          </ul>
+          <p class="repo">项目链接：<a href="https://github.com/fjnuslw/local-window-copilot">https://github.com/fjnuslw/local-window-copilot</a></p>
+        </article>
+      </section>
+
+      <section class="section" aria-labelledby="awards">
+        <div class="section-head"><span class="pill" id="awards">竞赛获奖</span></div>
+        <div class="award-list" aria-label="蓝桥杯获奖">
+          <article class="award-card">
+            <p class="rank">全国总决赛 · 一等奖 · 全国第 5 名</p>
+            <p class="title">第十七届蓝桥杯全国大学生软件和信息技术大赛<br>人工智能赛 · 智能体开发大学组</p>
+            <div class="award-links">
+              <a href="https://fjnuslw.github.io/awards/lanqiao-17-national-agent-dev.pdf" target="_blank" rel="noopener noreferrer">国赛获奖名单</a>
+              <a href="https://dasai.lanqiao.cn/dasai-front/cert-search/" target="_blank" rel="noopener noreferrer">证书核验</a>
+            </div>
+          </article>
+          <article class="award-card">
+            <p class="rank">福建赛区省赛 · 一等奖 · 福建省第 1 名 · 晋级国赛</p>
+            <p class="title">第十七届蓝桥杯全国大学生软件和信息技术大赛<br>人工智能赛 · 智能体开发大学组</p>
+            <div class="award-links">
+              <a href="https://fjnuslw.github.io/awards/lanqiao-17-fujian-agent-dev.pdf" target="_blank" rel="noopener noreferrer">省赛获奖名单</a>
+              <a href="https://dasai.lanqiao.cn/dasai-front/cert-search/" target="_blank" rel="noopener noreferrer">证书核验</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="edu">
+        <div class="section-head"><span class="pill blue" id="edu">教育背景</span></div>
+
+        <div class="edu-item">
+          <div class="entry-bar tight">
+            <time class="entry-date">2025.09—至今</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="entry-org">福建师范大学</p>
+              </div>
+            </div>
+            <div class="entry-role">软件工程（硕士）</div>
+          </div>
+          <div class="entry-bar subline">
+            <div></div>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="edu-note">2025 年研究生一等奖学业奖学金</p>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="edu-item">
+          <div class="entry-bar tight">
+            <time class="entry-date">2020.09—2024.06</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="entry-org">福州大学至诚学院</p>
+              </div>
+            </div>
+            <div class="entry-role">计算机科学与技术（本科）</div>
+          </div>
+          <div class="entry-bar subline">
+            <div></div>
+            <div class="entry-mid">
+              <div class="entry-mid-inner">
+                <p class="edu-note">英语六级（CET-6）</p>
+              </div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="papers">
+        <div class="section-head"><span class="pill green" id="papers">论文</span></div>
+
+        <article class="entry">
+          <div class="entry-bar">
+            <time class="entry-date">2026 · CCF-B</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner" style="max-width: 94mm;">
+                <p class="entry-org paper-title">Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for Multi-Hop Queries</p>
+              </div>
+            </div>
+            <div class="entry-role">一作 · EMNLP 2026</div>
+          </div>
+          <ul>
+            <li>多跳 RAG 证据链断裂：单次稠密检索易停在问题语义邻域，显式生成中间推理又易误差放大。提出 training-free 非生成式检索，读 Embedding <strong>elite attention heads</strong> 抽 next-hop 桥接线索。</li>
+            <li>指令激活注意力头 → 线索召回 → <strong>语义残差重排</strong>（剥离已表达线索，residual 找未覆盖证据）→ beam 多路径；骨干 Qwen3-Embedding-4B。</li>
+            <li>HotpotQA / 2Wiki / MuSiQue 全面优于 BM25、GTR 与同规模 Direct；相对 4B Direct，MuSiQue / 2Wiki 主召回约 <span class="hi">+12.7 / +16.3</span>，常打平甚至反超 8B 直检。ARR
+              <span class="scores-inline"><span class="score">3.5</span><span class="score">3.0</span><span class="score">2.5</span></span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-bar">
+            <time class="entry-date">2026 · JCR Q1</time>
+            <div class="entry-mid">
+              <div class="entry-mid-inner" style="max-width: 94mm;">
+                <p class="entry-org paper-title">ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions</p>
+              </div>
+            </div>
+            <div class="entry-role">一作 · AI Open</div>
+          </div>
+          <ul>
+            <li>多跳 agentic RAG 难在<strong>中间判断写回</strong>：轨迹 / observation 管不住当前关系、分支归属、已接受证据与答案槽位，易漂移与跨分支混用。</li>
+            <li>PlanState 管路线/分支/答案目标；Search/Probe 将检索压成句/实体/答案候选；Workspace 存完整工具输出、模型只读分支 slim 视图；LLM 以 <strong>candidate commit</strong> 写回可执行状态。</li>
+            <li>2Wiki / HotpotQA / MuSiQue（各 500）超 Direct、Standard RAG、IR-CoT、MA-RAG；2Wiki EM/F1 <span class="hi">0.442/0.550 → 0.674/0.764</span>；bridge-comparison F1 <span class="hi">0.889 vs 0.674</span>；observation 约 <span class="hi">−90%</span>；去 Workspace 后 F1 <span class="hi">0.673→0.208</span>。</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section" aria-labelledby="skills">
+        <div class="section-head"><span class="pill blue" id="skills">技能特长</span></div>
+        <div class="skill-tags" aria-label="核心技能">
+          <span>RAG 工程</span>
+          <span>AI Agent</span>
+          <span>Tool Calling</span>
+          <span>Agent Workflow</span>
+          <span>LangGraph / LangChain</span>
+          <span>Dify</span>
+          <span>FastAPI</span>
+          <span>Python</span>
+          <span>本地模型部署</span>
+          <span>评测与迭代</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
