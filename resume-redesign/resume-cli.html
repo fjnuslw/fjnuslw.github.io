@@ -611,10 +611,10 @@
             <div class="entry-role">独立开发 · 开源</div>
           </div>
           <ul>
-            <li>Windows 本地桌面 Agent（local-first）。观察线：截图 → MiniCPM-V 结构化卡片 → SQLite；对话线：ChatAgent 仅暴露 <strong>memory.search</strong>，FastAPI/SSE 流式输出并绑定证据 id。</li>
-            <li>小 VLM tool-call 不稳：拆 <strong>probe→stream</strong>（probe 判是否调工具，stream 出终答），确定性 FTS 替换 VLM ranker → 失败率 <span class="hi">46%→0%</span>，排名延迟 <span class="hi">~30s→10ms</span>。</li>
-            <li>上下文分层 system / profile / session / evidence；冻结 profile 稳 prefix cache，首 Token <span class="hi">−30%–60%</span>；收紧观察契约后 VLM 成功率 <span class="hi">54%→80%</span>。</li>
-            <li>请求前 token 预算拦截 + rolling compact；WebUI 回放观察 JSON / 截图 / tool trace；<strong>55</strong> 项单测覆盖主路径。</li>
+            <li>独立实现 <strong>local-first Windows 桌面 Copilot</strong>：Win32 透明置顶悬浮窗（自动排除截屏）观察前台应用，MiniCPM-V 产出结构化证据，llama.cpp + FastAPI/SSE 完成本地流式对话。</li>
+            <li>将观察与对话解耦：后台只沉淀带 <strong>record_id / 截图</strong>的证据，不默认注入 prompt；模型仅通过 <strong>memory.search</strong> 按需检索，避免陈旧观察污染并让回答可追溯。</li>
+            <li>针对 MiniCPM-V function calling 不稳，设计 <strong>probe→stream(+tool loop)</strong>：probe 只认结构化 tool_calls，stream 保留二次取证机会；以 FTS5/BM25 + 中文 bigram 替换 VLM reranker，将证据排序从 <span class="hi">12–30s 降至毫秒级</span>。</li>
+            <li>构建本地长上下文治理：冻结 system/profile 前缀复用 llama.cpp KV cache，加入分段 token 账本、请求前拦截、工具结果预算与 rolling compact；WebUI 可回放证据/调用/压缩/日志，<strong>263/263</strong> 项测试通过。</li>
           </ul>
           <p class="repo">项目链接：<a href="https://github.com/fjnuslw/local-window-copilot">https://github.com/fjnuslw/local-window-copilot</a></p>
         </article>
