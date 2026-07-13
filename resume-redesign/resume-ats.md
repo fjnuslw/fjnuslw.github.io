@@ -63,7 +63,7 @@
 
 ### 2. ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions
 
-一作 · AI Open（JCR Q1）· 投稿
+AI Open（JCR Q1）· 投稿
 
 - 将多跳 Agent 的瓶颈定位为证据状态失控：自然语言轨迹无法约束当前关系、分支和答案槽，易状态漂移与跨分支串证据。
 - PlanState 定位 branch/step，Search/Probe 构造带来源候选，Workspace 保存完整输出、只显当前分支；经校验的 candidate commit 写回，并区分候选构建/提交错误。
