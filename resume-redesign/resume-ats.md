@@ -8,11 +8,11 @@
 
 ### 友达光电｜卓越工程师计划 · AI 专案实习生
 
-2026.07—2026.09
+2026.07—至今
 
-- 业务侧：新 model 上线要按站点写 SOP/OI，依赖 key-in 与拍照贴图，规范不一致、审核慢，拖住 China Car 放量。
-- 负责 FIDM 新产品 SOP 智撰 Agent：工序/关键画面理解 → 结构化草案 → 人工审校闭环，把工程师工作从「从零录入」改成「审校优化」。
-- 设计目标：编写耗时约 −50%，OI 自动生成准确率 ≥90%，并支持 Lessons Learned 一键回写修订。
+- 负责 FIDM 新产品 SOP 智撰方案：将跨站点 key-in、贴图与审核拆为 Model SOP 包和站点级 OI Draft，覆盖结构化 Step、参数、质量点、图片与来源追踪；业务目标为编写耗时约 −50%、OI 自动生成准确率 ≥90%。
+- 在不使用企业数据的前提下，独立重构 OpenSOP-Agent 开源验证原型：元数据过滤 → Dense/Lexical 混合检索 → RRF/重排 → 完整历史路线复用；规则锁定 Step 顺序、数值来源、引用白名单与图片确认，避免跨 SOP 拼接和无依据参数。
+- 以 LangGraph 编排需求理解、证据规划、Draft、校验/修复及工程/质量审核；构建 40 份历史 OI、324 条 Step、80 个媒体资产、24 条 Lesson 与 12 个隔离任务做回归，支持 Excel/ZIP 导出和 Lesson 回写。[GitHub ↗](https://github.com/fjnuslw/OpenSOP-Agent)
 
 ### 福建新意科技有限公司｜大模型应用开发实习生
 
@@ -55,15 +55,15 @@
 
 ### 1. Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for Multi-Hop Queries
 
-一作 · EMNLP 2026（CCF-B）· ARR 3.5 / 3.0 / 2.5
+一作 · EMNLP 2026（CCF-B）· 等待 Meta Review
 
 - 发现 Embedding 模型 elite attention heads 可稳定定位跨文档桥接线索，实现无需 CoT、训练或预构图的 next-hop 检索。
 - 指令激活桥接 clue；semantic residual 逐跳扣除已覆盖语义，beam 保留多路径，避免检索停留在原问题语义邻域。
-- Qwen3-Embedding-4B 在 2Wiki / MuSiQue 的 R@5 达 89.10 / 76.45，相对 Direct +16.28 / +12.65，并超过 8B 直检；移除 intrinsic steering 后分别下降 18.0 / 9.7 点。
+- Qwen3-Embedding-4B 在 2Wiki / MuSiQue 的 R@5 达 89.10 / 76.45，相对 Direct +16.28 / +12.65，并超过 8B 直检；移除 intrinsic steering 后分别下降 18.0 / 9.7 点。ARR 评分 3.5 / 3.0 / 2.5，当前等待 Meta Review。
 
 ### 2. ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions
 
-AI Open（JCR Q1）· 投稿
+AI Open（JCR Q1）· 在投
 
 - 将多跳 Agent 的瓶颈定位为证据状态失控：自然语言轨迹无法约束当前关系、分支和答案槽，易状态漂移与跨分支串证据。
 - PlanState 定位 branch/step，Search/Probe 构造带来源候选，Workspace 保存完整输出、只显当前分支；经校验的 candidate commit 写回，并区分候选构建/提交错误。
