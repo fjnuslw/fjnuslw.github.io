@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="宋林蔚的项目展示 — LLM、Agent、RAG 相关项目与在线 Demo">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="项目 — 宋林蔚">
+  <meta property="og:description" content="LLM、Agent、RAG 相关项目与在线 Demo。">
+  <meta property="og:url" content="https://fjnuslw.github.io/projects.html">
+  <meta name="twitter:card" content="summary">
   <title>项目 — 宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260711-home-redesign3">
+  <link rel="stylesheet" href="css/style.css?v=20260725-layout-unify">
 </head>
 <body>
 
@@ -28,20 +33,20 @@
 
   <div class="page-header">
     <div class="container">
+      <p class="page-eyebrow">Projects</p>
       <h1>项目</h1>
       <p>从想法到实现，记录每一个技术作品</p>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container page-body">
 
-    <!-- 项目列表 -->
-    <p class="section-title reveal" data-num="01"><span class="section-color-bar"></span>所有项目</p>
-    <div class="grid-2" style="margin-bottom: 3rem;">
+    <!-- 项目列表：进行中在前，规划中排尾 -->
+    <p class="section-title reveal"><span class="section-color-bar"></span>所有项目</p>
+    <div class="grid-2 section-block">
 
       <div class="card card-project reveal reveal-delay-1" style="--card-color: var(--c-blue); --card-color-2: var(--c-cyan);">
         <div class="card-cover cover-img">
-          <span class="badge badge-live">活跃开发</span>
           <img src="projects/local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot mascot">
         </div>
         <h3>Local Window Copilot</h3>
@@ -55,16 +60,30 @@
         </div>
         <div class="card-links">
           <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
-          <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank">GitHub ↗</a>
+          <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
           <a href="demos/local-window-copilot/index.html">体验 Demo ↗</a>
+          <span class="badge badge-live">活跃开发</span>
         </div>
       </div>
 
       <div class="card card-project reveal reveal-delay-2" style="--card-color: var(--c-violet); --card-color-2: var(--c-rose);">
-        <div class="card-cover">
-          <span class="badge badge-live">已上线</span>
-          <span class="card-cover-icon">🎬</span>
+        <div class="project-signal" aria-hidden="true"><span class="signal-label">Process</span><span class="signal-line"></span><span class="signal-label">Draft</span><span class="signal-line"></span><span class="signal-label">Review</span></div>
+        <h3>OpenSOP Agent · SOP 智撰</h3>
+        <p>从制造业 SOP 编写痛点出发独立重构的数据集与可交互原型：按工艺、平台和客户画像过滤历史 OI，经混合检索与可解释重排选择完整路线，生成保留 Step 级来源和图片绑定的结构化 Draft；支持人工审校、Excel 导出和 Lessons Learned 待复核回写。</p>
+        <div class="tags-group">
+          <span class="tag">Hybrid RAG</span>
+          <span class="tag">Rerank</span>
+          <span class="tag">Human-in-the-loop</span>
+          <span class="tag">OpenPyXL</span>
         </div>
+        <div class="card-links">
+          <a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer" class="btn-link">GitHub ↗</a>
+          <span class="badge badge-live">Demo 可用</span>
+        </div>
+      </div>
+
+      <div class="card card-project reveal reveal-delay-3" style="--card-color: var(--c-amber); --card-color-2: var(--c-rose);">
+        <div class="project-signal" aria-hidden="true"><span class="signal-label">Frames</span><span class="signal-line"></span><span class="signal-label">Script</span><span class="signal-line"></span><span class="signal-label">Voice</span></div>
         <h3>SilentDeck</h3>
         <p>开源 Codex Skill，将静音演示视频/短视频转为带讲解和字幕的 narrated MP4。基于 agent-first 工作流，结合关键帧抽取、VLM 视觉分析、LLM 讲稿生成、TTS 语音合成与 FFmpeg 视频合成。</p>
         <div class="tags-group">
@@ -75,30 +94,13 @@
           <span class="tag">开源</span>
         </div>
         <div class="card-links">
-          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" class="btn-link">查看 GitHub →</a>
+          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer" class="btn-link">查看 GitHub →</a>
+          <span class="badge badge-live">已上线</span>
         </div>
       </div>
 
-      <div class="card card-project reveal reveal-delay-3" style="--card-color: var(--c-emerald); --card-color-2: var(--c-cyan);">
-        <div class="card-cover">
-          <span class="badge badge-coming">开发中</span>
-          <span class="card-cover-icon">💬</span>
-        </div>
-        <h3>智能问答 Agent</h3>
-        <p>基于 RAG 的多轮问答系统，支持文档上传与知识库管理，通过 Embedding 检索 + Rerank 优化召回率，附可交互 Demo。</p>
-        <div class="tags-group">
-          <span class="tag">LangChain</span>
-          <span class="tag">RAG</span>
-          <span class="tag">Qdrant</span>
-          <span class="tag">Agent</span>
-        </div>
-      </div>
-
-      <div class="card card-project reveal reveal-delay-4" style="--card-color: var(--c-amber); --card-color-2: var(--c-rose);">
-        <div class="card-cover">
-          <span class="badge badge-wip">规划中</span>
-          <span class="card-cover-icon">📊</span>
-        </div>
+      <div class="card card-project reveal reveal-delay-4" style="--card-color: var(--c-emerald); --card-color-2: var(--c-cyan);">
+        <div class="project-signal" aria-hidden="true"><span class="signal-label">Query</span><span class="signal-line"></span><span class="signal-label">Analyze</span><span class="signal-line"></span><span class="signal-label">Chart</span></div>
         <h3>数据分析助手</h3>
         <p>自然语言驱动的数据分析工具。用户描述分析需求，AI 自动生成 SQL 查询、执行数据分析并输出可视化图表和报告。</p>
         <div class="tags-group">
@@ -106,15 +108,16 @@
           <span class="tag">LLM</span>
           <span class="tag">数据可视化</span>
         </div>
+        <div class="card-links">
+          <span class="badge badge-coming">规划中</span>
+        </div>
       </div>
 
     </div>
 
     <!-- Demo 区域 -->
-    <p class="section-title reveal" data-num="02"><span class="section-color-bar"></span>在线 Demo</p>
-    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem;" class="reveal">
-      项目完成后，可在此直接体验可交互 Demo，支持嵌入 HuggingFace Spaces 或独立页面。
-    </p>
+    <p class="section-title reveal"><span class="section-color-bar"></span>在线 Demo</p>
+    <p class="demo-note reveal">无需安装，直接在页面内体验 Local Window Copilot 的交互流程。</p>
 
     <div class="demo-embed reveal">
       <iframe
@@ -123,37 +126,35 @@
         loading="lazy">
       </iframe>
     </div>
-    <p style="margin-top: 0.75rem;" class="reveal">
+    <p class="demo-more reveal">
       <a href="demos/local-window-copilot/index.html" class="btn-link">打开完整 Demo →</a>
     </p>
-
-    <!-- 如何添加 Demo 说明 -->
-    <div class="card reveal" style="margin-top: 1.5rem; border-style: none; background: var(--bg-subtle); border-radius: var(--radius-lg); padding: 1.5rem;">
-      <h3 style="font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">如何添加 Demo？</h3>
-      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.8;">
-        将 Gradio/Streamlit 应用部署到 HuggingFace Spaces，然后用 iframe 嵌入此页面；
-        或在 <code style="font-family: var(--font-mono); font-size: 0.8em; padding: 1px 4px; background: white; border: 1px solid var(--border); border-radius: 3px;">demos/</code> 文件夹中创建独立 HTML 页面。
-        详细说明请查看 <a href="demos/README.md">Demo 集成指南</a>。
-      </p>
-    </div>
 
   </div>
 
   <footer class="footer">
     <div class="container-wide">
       <div class="footer-content">
-        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
-        <nav class="footer-links">
-          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
-          <a href="mailto:1147214246@qq.com">邮件</a>
+        <div class="footer-brand">
+          <p class="footer-left">&copy; 2026 宋林蔚</p>
+          <p class="footer-tagline">大模型应用与 Agent 工程</p>
+        </div>
+        <nav class="footer-nav" aria-label="站点导航">
+          <a href="index.html">首页</a>
           <a href="blog.html">博客</a>
+          <a href="projects.html">项目</a>
           <a href="resume.html">简历</a>
+          <a href="about.html">关于</a>
+        </nav>
+        <nav class="footer-links" aria-label="站外链接">
+          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="mailto:1147214246@qq.com">邮箱</a>
         </nav>
       </div>
     </div>
   </footer>
 
   <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260711-home-redesign"></script>
+  <script src="js/main.js?v=20260725-layout-unify"></script>
 </body>
 </html>

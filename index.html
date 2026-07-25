@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="宋林蔚的个人网站——软件工程硕士，专注大模型应用、RAG 与 AI Agent 工程。">
   <meta name="keywords" content="宋林蔚, fjnuslw, LLM, Agent, RAG, 大模型应用, AI">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="宋林蔚｜LLM 应用与 Agent 工程">
+  <meta property="og:description" content="软件工程硕士，专注大模型应用、RAG 与 AI Agent 工程。">
+  <meta property="og:url" content="https://fjnuslw.github.io/">
+  <meta name="twitter:card" content="summary">
   <title>宋林蔚｜LLM 应用与 Agent 工程</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260711-home-redesign3">
+  <link rel="stylesheet" href="css/style.css?v=20260725-layout-unify">
 </head>
 <body class="home-page">
 
@@ -56,7 +61,7 @@
           </div>
           <dl class="quick-status">
             <div class="quick-status-item"><dt>在读</dt><dd>福建师范大学<br>软件工程硕士</dd></div>
-            <div class="quick-status-item"><dt>研究</dt><dd>LLM 多跳信息检索<br>EMNLP 2026 一作在投</dd></div>
+            <div class="quick-status-item"><dt>研究</dt><dd>LLM 多跳信息检索<br>EMNLP 2026 等待 Meta Review</dd></div>
             <div class="quick-status-item"><dt>开发</dt><dd><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">Local Window Copilot ↗</a><br>Windows 本地桌面 Agent</dd></div>
             <div class="quick-status-item"><dt>方向</dt><dd>大模型应用与 Agent<br>寻找相关实习机会</dd></div>
           </dl>
@@ -84,6 +89,18 @@
           </article>
 
           <article class="card home-project-card reveal reveal-delay-2">
+            <div class="project-signal" aria-hidden="true"><span class="signal-label">Process</span><span class="signal-line"></span><span class="signal-label">Draft</span><span class="signal-line"></span><span class="signal-label">Review</span></div>
+            <div class="project-meta"><span class="project-status">Demo 可用</span><span>SOP Agent</span></div>
+            <h3>OpenSOP Agent · SOP 智撰</h3>
+            <p>制造业 SOP 智撰原型：混合检索完整历史路线，生成带 Step 级来源和图片绑定的结构化 Draft，支持人工审校与 Excel 导出。</p>
+            <div class="tags-group" aria-label="技术标签"><span class="tag">Hybrid RAG</span><span class="tag">Rerank</span><span class="tag">HITL</span><span class="tag">OpenPyXL</span></div>
+            <div class="project-actions">
+              <a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer" class="card-primary-link">GitHub ↗</a>
+              <div class="card-secondary-links"><span>可交互开源 Demo</span></div>
+            </div>
+          </article>
+
+          <article class="card home-project-card reveal reveal-delay-3">
             <div class="project-signal" aria-hidden="true"><span class="signal-label">Frames</span><span class="signal-line"></span><span class="signal-label">Script</span><span class="signal-line"></span><span class="signal-label">Voice</span></div>
             <div class="project-meta"><span class="project-status">已上线</span><span>Open-source Skill</span></div>
             <h3>SilentDeck</h3>
@@ -92,18 +109,6 @@
             <div class="project-actions">
               <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer" class="card-primary-link">查看开源项目 →</a>
               <div class="card-secondary-links"><span>完整 Agent-first 工作流</span></div>
-            </div>
-          </article>
-
-          <article class="card home-project-card reveal reveal-delay-3">
-            <div class="project-signal" aria-hidden="true"><span class="signal-label">Query</span><span class="signal-line"></span><span class="signal-label">Rerank</span><span class="signal-line"></span><span class="signal-label">Answer</span></div>
-            <div class="project-meta"><span class="project-status project-status-muted">开发中</span><span>RAG System</span></div>
-            <h3>智能问答 Agent</h3>
-            <p>面向文档知识库的多轮问答系统，覆盖上传、向量检索、Rerank、答案生成与可追踪引用链路。</p>
-            <div class="tags-group" aria-label="技术标签"><span class="tag">LangChain</span><span class="tag">RAG</span><span class="tag">Qdrant</span><span class="tag">Rerank</span></div>
-            <div class="project-actions">
-              <span class="card-primary-link card-primary-link-muted">项目整理中</span>
-              <div class="card-secondary-links"><span>即将开放在线 Demo</span></div>
             </div>
           </article>
         </div>
@@ -116,7 +121,9 @@
           <h2 class="section-title" id="posts-title"><span class="section-color-bar"></span>最新文章</h2>
           <a href="blog.html" class="section-more">查看全部文章 →</a>
         </div>
-        <div class="home-post-list" id="latest-posts" data-variant="compact" aria-live="polite"></div>
+        <div class="home-post-list" id="latest-posts" data-variant="compact" aria-live="polite">
+          <noscript><p class="demo-note">文章列表需要启用 JavaScript 加载，可直接访问 <a href="blog.html">博客页</a> 查看全部文章。</p></noscript>
+        </div>
       </div>
     </section>
 
@@ -158,17 +165,26 @@
   <footer class="footer">
     <div class="container-wide">
       <div class="footer-content">
-        <p class="footer-left">&copy; 2026 宋林蔚</p>
-        <nav class="footer-links" aria-label="页脚导航">
-          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="mailto:1147214246@qq.com">邮箱</a>
+        <div class="footer-brand">
+          <p class="footer-left">&copy; 2026 宋林蔚</p>
+          <p class="footer-tagline">大模型应用与 Agent 工程</p>
+        </div>
+        <nav class="footer-nav" aria-label="站点导航">
+          <a href="index.html">首页</a>
+          <a href="blog.html">博客</a>
+          <a href="projects.html">项目</a>
           <a href="resume.html">简历</a>
+          <a href="about.html">关于</a>
+        </nav>
+        <nav class="footer-links" aria-label="站外链接">
+          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="mailto:1147214246@qq.com">邮箱</a>
         </nav>
       </div>
     </div>
   </footer>
   <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260711-home-redesign"></script>
+  <script src="js/main.js?v=20260725-layout-unify"></script>
   <script>loadBlogPosts('latest-posts', 2);</script>
 </body>
 </html>

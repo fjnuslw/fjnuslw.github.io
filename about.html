@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="关于宋林蔚 — 软件工程硕士，专注 LLM/Agent 应用开发，蓝桥杯国赛一等奖">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="关于 — 宋林蔚">
+  <meta property="og:description" content="软件工程硕士，专注 LLM/Agent 应用开发，蓝桥杯国赛一等奖。">
+  <meta property="og:url" content="https://fjnuslw.github.io/about.html">
+  <meta name="twitter:card" content="summary">
   <title>关于 — 宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260711-home-redesign3">
+  <link rel="stylesheet" href="css/style.css?v=20260725-layout-unify">
 </head>
 <body>
 
@@ -28,27 +33,28 @@
 
   <div class="page-header">
     <div class="container">
+      <p class="page-eyebrow">About</p>
       <h1>关于我</h1>
       <p>福建师范大学 · 软件工程硕士 · 大模型应用方向</p>
     </div>
   </div>
 
-  <div class="container" style="padding-bottom: 4rem;">
+  <div class="container page-body">
 
     <!-- 自我介绍 -->
-    <div style="margin-bottom: 3rem;" class="reveal">
-      <p style="color: var(--text-secondary); line-height: 1.9; margin-bottom: 1rem;">
+    <div class="intro-block reveal">
+      <p class="intro-text">
         我是宋林蔚，福建师范大学软件工程硕士在读，研究方向聚焦
-        <strong style="color: var(--text-primary);">大模型应用、RAG 知识库问答与 AI Agent 工程化</strong>。
+        <strong>大模型应用、RAG 知识库问答与 AI Agent 工程化</strong>。
         曾在福建新意科技实习 8 个月，负责企业智能客服 RAG 系统的全链路搭建。
       </p>
-      <p style="color: var(--text-secondary); line-height: 1.9; margin-bottom: 1rem;">
+      <p class="intro-text">
         熟悉 LangChain / LangGraph / Dify 等大模型应用框架，具备 Agent Workflow、Tool Calling、
         结构化输出与多轮状态管理经验。了解 Redis 与 Qdrant 在 Agent 状态管理和 RAG 向量检索中的工程用法。
       </p>
-      <p style="color: var(--text-secondary); line-height: 1.9;">
-        第十七届蓝桥杯智能体开发赛道<strong style="color: var(--text-primary);">国赛一等奖·全国第五</strong>，
-        EMNLP 2026 一作论文在投（LLM 多跳信息检索）。
+      <p class="intro-text">
+        第十七届蓝桥杯智能体开发赛道<strong>国赛一等奖·全国第五</strong>，
+        EMNLP 2026 一作论文等待 Meta Review（LLM 多跳信息检索）。
         正在寻找大模型应用方向的实习或全职机会，欢迎联系。
       </p>
     </div>
@@ -65,13 +71,13 @@
       </div>
       <div class="stat-item">
         <span class="stat-number">EMNLP</span>
-        <span class="stat-label">CCF-B 论文一作在投</span>
+        <span class="stat-label">CCF-B 论文等待 Meta Review</span>
       </div>
     </div>
 
     <!-- 经历时间线 -->
     <p class="section-title reveal">经历</p>
-    <div class="timeline" style="margin-bottom: 3rem;">
+    <div class="timeline section-block">
 
       <div class="timeline-item reveal">
         <div class="timeline-date">2026.04 — 2026.05</div>
@@ -85,7 +91,7 @@
         <div class="timeline-date">2026</div>
         <div class="timeline-content">
           <h3>蓝桥杯国赛一等奖 · 全国第五</h3>
-          <p>第十七届蓝桥杯人工智能赛·智能体开发赛道，省赛一等奖福建省第一，国赛一等奖全国第五名。EMNLP 2026 一作论文在投。</p>
+          <p>第十七届蓝桥杯人工智能赛·智能体开发赛道，省赛一等奖福建省第一，国赛一等奖全国第五名。EMNLP 2026 一作论文等待 Meta Review。</p>
         </div>
       </div>
 
@@ -109,7 +115,7 @@
 
     <!-- 关注领域 -->
     <p class="section-title reveal">关注领域</p>
-    <div class="interests-grid" style="margin-bottom: 3rem;">
+    <div class="interests-grid section-block">
 
       <div class="interest-card reveal reveal-delay-1">
         <h3>AI Agent</h3>
@@ -135,7 +141,7 @@
       <h2>联系我</h2>
       <p>对大模型应用开发感兴趣，或有实习/工作机会，欢迎随时联系。</p>
       <div class="contact-links">
-        <a href="https://github.com/fjnuslw" target="_blank" class="btn btn-primary">GitHub</a>
+        <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a>
         <a href="mailto:1147214246@qq.com" class="btn btn-secondary">发送邮件</a>
         <a href="resume.html" class="btn btn-secondary">查看完整简历</a>
       </div>
@@ -146,18 +152,26 @@
   <footer class="footer">
     <div class="container-wide">
       <div class="footer-content">
-        <p class="footer-left">&copy; 2026 宋林蔚 · fjnuslw</p>
-        <nav class="footer-links">
-          <a href="https://github.com/fjnuslw" target="_blank">GitHub</a>
-          <a href="mailto:1147214246@qq.com">邮件</a>
+        <div class="footer-brand">
+          <p class="footer-left">&copy; 2026 宋林蔚</p>
+          <p class="footer-tagline">大模型应用与 Agent 工程</p>
+        </div>
+        <nav class="footer-nav" aria-label="站点导航">
+          <a href="index.html">首页</a>
           <a href="blog.html">博客</a>
+          <a href="projects.html">项目</a>
           <a href="resume.html">简历</a>
+          <a href="about.html">关于</a>
+        </nav>
+        <nav class="footer-links" aria-label="站外链接">
+          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="mailto:1147214246@qq.com">邮箱</a>
         </nav>
       </div>
     </div>
   </footer>
 
   <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260711-home-redesign"></script>
+  <script src="js/main.js?v=20260725-layout-unify"></script>
 </body>
 </html>
