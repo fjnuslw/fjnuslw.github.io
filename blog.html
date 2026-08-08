@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚的博客 — LLM、Agent、RAG 技术分享与学习心得">
+  <meta name="description" content="宋林蔚的技术文章：AI Agent、RAG、视觉上下文、模型调用与工程复盘。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://fjnuslw.github.io/blog.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="博客 — 宋林蔚">
-  <meta property="og:description" content="LLM、Agent、RAG 技术分享与学习心得。">
+  <meta property="og:description" content="AI Agent、RAG、视觉上下文、模型调用与工程复盘。">
   <meta property="og:url" content="https://fjnuslw.github.io/blog.html">
-  <meta name="twitter:card" content="summary">
-  <title>博客 — 宋林蔚</title>
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-portfolio.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>技术博客｜宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260725-layout-unify">
+  <link rel="stylesheet" href="css/style.css?v=20260808-profile-refresh">
 </head>
 <body>
 
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">宋林蔚</a>
-      <button class="nav-toggle" aria-label="切换菜单">
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-menu">
+      <ul class="nav-menu" id="primary-navigation">
         <li><a href="index.html"    class="nav-link">首页</a></li>
         <li><a href="blog.html"     class="nav-link">博客</a></li>
         <li><a href="projects.html" class="nav-link">项目</a></li>
@@ -35,7 +38,7 @@
     <div class="container">
       <p class="page-eyebrow">Blog</p>
       <h1>博客</h1>
-      <p>学习笔记、技术分享、实习心得</p>
+      <p>记录 Agent、RAG 与视觉上下文系统中的设计取舍、失败与验证方法。</p>
     </div>
   </div>
 
@@ -45,6 +48,7 @@
       <button class="filter-btn active" data-tag="all">全部</button>
       <button class="filter-btn" data-tag="Agent">Agent</button>
       <button class="filter-btn" data-tag="VLM">VLM</button>
+      <button class="filter-btn" data-tag="LLM">LLM</button>
       <button class="filter-btn" data-tag="Claude Code">Claude Code</button>
       <button class="filter-btn" data-tag="架构">架构</button>
       <button class="filter-btn" data-tag="思考">思考</button>
@@ -61,7 +65,7 @@
       <div class="footer-content">
         <div class="footer-brand">
           <p class="footer-left">&copy; 2026 宋林蔚</p>
-          <p class="footer-tagline">大模型应用与 Agent 工程</p>
+          <p class="footer-tagline">证据可追溯的 AI Agent 工程</p>
         </div>
         <nav class="footer-nav" aria-label="站点导航">
           <a href="index.html">首页</a>
@@ -78,8 +82,8 @@
     </div>
   </footer>
 
-  <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260725-layout-unify"></script>
+  <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
+  <script src="js/main.js?v=20260808-profile-refresh"></script>
   <script>
     loadBlogPosts('blog-posts');
     initBlogFilter();

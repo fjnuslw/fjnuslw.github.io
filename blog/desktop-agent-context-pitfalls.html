@@ -6,7 +6,7 @@
   <meta name="description" content="桌面 AI 伙伴真正困难的不是调用 VLM，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
   <title>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑 — 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260725-layout-unify">
+  <link rel="stylesheet" href="../css/style.css?v=20260808-profile-refresh">
   <style>
     /* 文章专属样式 */
     .article-svg {
@@ -89,10 +89,10 @@
   <nav class="navbar">
     <div class="nav-container">
       <a href="../index.html" class="nav-logo">宋林蔚</a>
-      <button class="nav-toggle" aria-label="切换菜单">
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-menu">
+      <ul class="nav-menu" id="primary-navigation">
         <li><a href="../index.html"    class="nav-link">首页</a></li>
         <li><a href="../blog.html"     class="nav-link active">博客</a></li>
         <li><a href="../projects.html" class="nav-link">项目</a></li>
@@ -124,6 +124,10 @@
   <article class="post-content">
 
     <div class="container">
+
+      <div class="callout">
+        <strong>2026-08 更新：</strong>本文保留项目原型期的失败复盘。当前实现已把“摘要索引”进一步重构为不可变 Observation、Occurrence 与可重建 Evidence Track，并在每轮回答前冻结证据快照；请参阅 <a href="../projects/local-window-copilot.html">最新项目说明</a>。
+      </div>
 
       <!-- 开头：一个看起来很蠢的对话 -->
       <p>
@@ -543,6 +547,6 @@
   </footer>
 
   <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="../js/main.js?v=20260725-layout-unify"></script>
+  <script src="../js/main.js?v=20260808-profile-refresh"></script>
 </body>
 </html>
