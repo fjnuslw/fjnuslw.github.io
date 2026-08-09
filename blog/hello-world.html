@@ -4,29 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="我的第一篇博客 — 为什么搭建这个网站，以及我对 LLM/Agent 方向的期待">
+  <link rel="canonical" href="https://fjnuslw.github.io/blog/hello-world.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="你好，世界！— 宋林蔚">
+  <meta property="og:description" content="我的第一篇博客 — 为什么搭建这个网站，以及我对 LLM/Agent 方向的期待">
+  <meta property="og:url" content="https://fjnuslw.github.io/blog/hello-world.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="你好，世界！— 宋林蔚">
+  <meta name="twitter:description" content="为什么搭建这个网站，以及我对 LLM / Agent 方向的期待。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>你好，世界！— 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260725-layout-unify">
+  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260809">
 </head>
-<body>
+<body class="ledger-page article-page">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
 
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="../index.html" class="nav-logo">宋林蔚</a>
-      <button class="nav-toggle" aria-label="切换菜单">
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-menu">
-        <li><a href="../index.html"    class="nav-link">首页</a></li>
-        <li><a href="../blog.html"     class="nav-link active">博客</a></li>
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+        <li><a href="../index.html" class="nav-link">首页</a></li>
         <li><a href="../projects.html" class="nav-link">项目</a></li>
-        <li><a href="../resume.html"   class="nav-link">简历</a></li>
-        <li><a href="../about.html"    class="nav-link">关于</a></li>
+        <li><a href="../resume.html" class="nav-link">履历</a></li>
+        <li><a href="../blog.html" class="nav-link active" aria-current="page">文章</a></li>
+        <li><a href="../about.html" class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
-  <div class="post-header">
+  <header class="post-header">
     <div class="container">
       <div class="tags-group" style="margin-bottom: 0.75rem">
         <span class="tag">随笔</span>
@@ -41,9 +54,9 @@
         <span>宋林蔚</span>
       </div>
     </div>
-  </div>
+  </header>
 
-  <article class="post-content">
+  <main class="post-content" id="main-content">
 
     <h2>为什么搭建这个网站？</h2>
     <p>
@@ -83,7 +96,7 @@
       <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
     </div>
 
-  </article>
+  </main>
 
   <footer class="footer">
     <div class="container-wide">
@@ -92,13 +105,7 @@
           <p class="footer-left">&copy; 2026 宋林蔚</p>
           <p class="footer-tagline">大模型应用与 Agent 工程</p>
         </div>
-        <nav class="footer-nav" aria-label="站点导航">
-          <a href="../index.html">首页</a>
-          <a href="../blog.html">博客</a>
-          <a href="../projects.html">项目</a>
-          <a href="../resume.html">简历</a>
-          <a href="../about.html">关于</a>
-        </nav>
+        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
         <nav class="footer-links" aria-label="站外链接">
           <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
           <a href="mailto:1147214246@qq.com">邮箱</a>
@@ -108,6 +115,6 @@
   </footer>
 
   <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="../js/main.js?v=20260725-layout-unify"></script>
+  <script src="../js/main.js?v=20260809"></script>
 </body>
 </html>

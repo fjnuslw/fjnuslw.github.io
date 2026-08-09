@@ -3,252 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚的个人网站：大模型应用与 AI Agent 工程实践，覆盖企业知识智能体、制造业 SOP、桌面视觉上下文与多跳检索研究。">
-  <meta name="keywords" content="宋林蔚, fjnuslw, AI Agent, LangGraph, RAG, 企业知识库, 大模型应用">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="宋林蔚的大模型应用与 AI Agent 工程作品集：企业知识智能体、本地桌面 Agent、制造业 SOP Agent 与多跳检索研究。">
+  <meta name="keywords" content="宋林蔚, fjnuslw, AI Agent, LangGraph, RAG, 企业知识智能体, 大模型应用实习">
+  <meta name="author" content="宋林蔚">
+  <meta name="theme-color" content="#0b0d0c">
   <link rel="canonical" href="https://fjnuslw.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="宋林蔚｜大模型应用与 AI Agent 工程">
-  <meta property="og:description" content="把 Agent 做成可恢复、可审核、证据可追溯的真实系统。">
+  <meta property="og:title" content="宋林蔚｜大模型应用 / AI Agent 工程实习">
+  <meta property="og:description" content="把大模型能力做成能进入真实流程、可恢复、可审核、证据可追溯的 Agent 系统。">
   <meta property="og:url" content="https://fjnuslw.github.io/">
-  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-portfolio.png">
+  <meta property="og:site_name" content="宋林蔚的 AI Agent 工程档案">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta property="og:image:alt" content="宋林蔚的大模型应用与 AI Agent 工程作品集">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="宋林蔚｜大模型应用与 AI Agent 工程">
-  <meta name="twitter:description" content="企业知识智能体、制造业 SOP、桌面视觉上下文与多跳检索研究。">
-  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-portfolio.png">
-  <title>宋林蔚｜大模型应用与 AI Agent 工程</title>
+  <meta name="twitter:title" content="宋林蔚｜大模型应用 / AI Agent 工程实习">
+  <meta name="twitter:description" content="企业知识智能体、本地桌面 Agent、制造业 SOP Agent 与多跳检索研究。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>宋林蔚｜大模型应用 / AI Agent 工程实习</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260808-profile-refresh">
+  <link rel="stylesheet" href="css/style.css?v=20260809">
+  <link rel="stylesheet" href="css/evidence-ledger.css?v=20260809">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "宋林蔚",
+    "alternateName": "Linwei Song",
     "url": "https://fjnuslw.github.io/",
-    "sameAs": ["https://github.com/fjnuslw"],
-    "jobTitle": "大模型应用 / AI Agent 工程实习",
-    "alumniOf": [
-      {"@type": "CollegeOrUniversity", "name": "福建师范大学"},
-      {"@type": "CollegeOrUniversity", "name": "福州大学至诚学院"}
+    "email": "mailto:1147214246@qq.com",
+    "sameAs": [
+      "https://github.com/fjnuslw"
     ],
-    "knowsAbout": ["AI Agent", "LangGraph", "Retrieval-Augmented Generation", "Large Language Models", "Enterprise Knowledge Systems"]
+    "jobTitle": "大模型应用 / AI Agent 工程实习生",
+    "description": "专注把大模型能力做成可恢复、可审核、证据可追溯的 Agent 系统。",
+    "alumniOf": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "福建师范大学"
+      },
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "福州大学至诚学院"
+      }
+    ],
+    "knowsAbout": [
+      "AI Agent",
+      "LangGraph",
+      "Retrieval-Augmented Generation",
+      "Hybrid RAG",
+      "Large Language Models",
+      "Enterprise Knowledge Systems"
+    ],
+    "award": [
+      "第十七届蓝桥杯人工智能赛智能体开发大学组全国一等奖、全国第 5 名",
+      "第十七届蓝桥杯人工智能赛智能体开发大学组福建省一等奖、福建省第 1 名"
+    ]
   }
   </script>
 </head>
-<body class="home-page">
+<body class="home-page ledger-page ledger-home">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
 
-  <nav class="navbar" aria-label="主导航">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">宋林蔚</a>
-      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-menu" id="primary-navigation">
-        <li><a href="index.html" class="nav-link active">首页</a></li>
-        <li><a href="blog.html" class="nav-link">博客</a></li>
-        <li><a href="projects.html" class="nav-link">项目</a></li>
-        <li><a href="resume.html" class="nav-link">简历</a></li>
-        <li><a href="about.html" class="nav-link">关于</a></li>
-      </ul>
-    </div>
-  </nav>
+  <header class="ledger-header">
+    <nav class="navbar ledger-nav" aria-label="主导航">
+      <div class="nav-container ledger-container">
+        <a href="index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页">
+          <span>SLW</span><small>Evidence Ledger</small>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+          <li><a href="index.html" class="nav-link active" aria-current="page">首页</a></li>
+          <li><a href="projects.html" class="nav-link">项目</a></li>
+          <li><a href="resume.html" class="nav-link">履历</a></li>
+          <li><a href="blog.html" class="nav-link">文章</a></li>
+          <li><a href="about.html" class="nav-link">关于</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 
   <main id="main-content">
-    <section class="hero home-hero" aria-labelledby="hero-title">
-      <div class="container-wide hero-layout">
-        <div class="hero-copy">
-          <p class="hero-eyebrow">Evidence-grounded AI · Enterprise Agents</p>
-          <h1 class="hero-name" id="hero-title">
-            <span class="hero-person">宋林蔚</span>
-            <span class="hero-role">大模型应用 / AI Agent 工程</span>
+    <section class="ledger-hero" aria-labelledby="hero-title">
+      <div class="container-wide ledger-container ledger-hero-grid">
+        <div class="ledger-hero-copy">
+          <p class="ledger-overline">AI Agent Engineer · 2028 届硕士</p>
+          <h1 id="hero-title" class="ledger-name">
+            <span>宋林蔚</span>
+            <small lang="en">LINWEI SONG</small>
           </h1>
-          <p class="hero-desc">我把大模型应用做成能进入真实流程的系统：<strong>证据先行、状态可恢复、权限可验证，人类保留最后确认</strong>。实践覆盖制造业 SOP、企业知识沉淀、本地桌面上下文与多跳检索。</p>
-          <div class="hero-actions" aria-label="主要入口">
-            <div class="hero-primary-actions">
-              <a href="projects.html" class="btn btn-primary">查看项目</a>
-              <a href="resume.html" class="btn btn-secondary">查看简历</a>
-            </div>
-            <div class="hero-text-links">
-              <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-              <a href="mailto:1147214246@qq.com">联系邮箱</a>
-            </div>
+          <p class="ledger-role">大模型应用 / AI Agent 工程实习</p>
+          <p class="ledger-thesis">把大模型能力做成能进入真实流程、<strong>可恢复、可审核、证据可追溯</strong>的 Agent 系统。</p>
+          <p class="ledger-availability"><span class="ledger-status-dot" aria-hidden="true"></span>预计 2028 年毕业 · 可连续实习 3 个月以上</p>
+          <div class="ledger-hero-actions" aria-label="主要入口">
+            <a href="#selected-systems" class="btn btn-primary ledger-button ledger-button-primary">看代表项目</a>
+            <a href="resume.html" class="btn btn-secondary ledger-button ledger-button-secondary">查看公开履历</a>
+          </div>
+          <div class="ledger-identity-links" aria-label="联系方式">
+            <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="mailto:1147214246@qq.com">1147214246@qq.com</a>
           </div>
         </div>
 
-        <aside class="status-panel" aria-label="当前近况">
-          <div class="status-panel-header">
-            <p>当前近况</p>
-            <span class="availability"><span aria-hidden="true"></span>开放实习机会</span>
+        <aside class="ledger-hero-visual" aria-labelledby="trace-title">
+          <div class="ledger-trace">
+            <div class="ledger-trace-heading">
+              <p>Agent trace / 04 steps</p>
+              <h2 id="trace-title">运行账本</h2>
+            </div>
+            <ol class="ledger-trace-list">
+              <li class="ledger-trace-step" tabindex="0">
+                <span class="ledger-trace-index">01</span>
+                <span class="ledger-trace-node" aria-hidden="true"></span>
+                <span class="ledger-trace-copy"><strong>Observe</strong><small>捕获现场与用户意图 · Local Window Copilot</small></span>
+              </li>
+              <li class="ledger-trace-step" tabindex="0">
+                <span class="ledger-trace-index">02</span>
+                <span class="ledger-trace-node" aria-hidden="true"></span>
+                <span class="ledger-trace-copy"><strong>Ground</strong><small>先按权限检索，再绑定可核验证据 · 星途知汇</small></span>
+              </li>
+              <li class="ledger-trace-step" tabindex="0">
+                <span class="ledger-trace-index">03</span>
+                <span class="ledger-trace-node" aria-hidden="true"></span>
+                <span class="ledger-trace-copy"><strong>Recover</strong><small>检查点与中断恢复，让流程继续运行 · LangGraph</small></span>
+              </li>
+              <li class="ledger-trace-step" tabindex="0">
+                <span class="ledger-trace-index">04</span>
+                <span class="ledger-trace-node" aria-hidden="true"></span>
+                <span class="ledger-trace-copy"><strong>Approve</strong><small>人负责最后确认与发布 · OpenSOP / 星途知汇</small></span>
+              </li>
+            </ol>
+            <figure class="ledger-portrait">
+              <img src="assets/song-linwei.jpg" width="305" height="421" alt="宋林蔚的个人照片" fetchpriority="high" decoding="async">
+              <figcaption>Human confirms the final state.</figcaption>
+            </figure>
           </div>
-          <dl class="quick-status">
-            <div class="quick-status-item"><dt>在做</dt><dd><a href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer">星途知汇 ↗</a><br>对话式企业知识智能体</dd></div>
-            <div class="quick-status-item"><dt>实践</dt><dd>友达光电 · AI 专案<br>福建新意 · 大模型应用</dd></div>
-            <div class="quick-status-item"><dt>研究</dt><dd>EMNLP 2026 多跳检索<br>AI Open Agentic RAG</dd></div>
-            <div class="quick-status-item"><dt>求职</dt><dd>2028 届软件工程硕士<br>可连续实习 3 个月以上</dd></div>
-          </dl>
         </aside>
       </div>
 
-      <div class="container-wide hero-proof-strip" aria-label="关键成果">
-        <div class="hero-proof-item"><strong>全国第 5</strong><span>蓝桥杯智能体开发</span></div>
-        <div class="hero-proof-item"><strong>10 部门 / 30 人</strong><span>企业组织真实同步</span></div>
-        <div class="hero-proof-item"><strong>2.64–3.26×</strong><span>OCR GPU 实测加速</span></div>
-        <div class="hero-proof-item"><strong>2 项研究</strong><span>多跳检索与 Agentic RAG</span></div>
+      <div class="container-wide ledger-container">
+        <dl class="ledger-proof-strip" aria-label="三项关键成果">
+          <div class="ledger-proof-item">
+            <dt>全国第 5</dt>
+            <dd>蓝桥杯智能体开发国赛一等奖</dd>
+          </div>
+          <div class="ledger-proof-item">
+            <dt>10 部门 / 30 人</dt>
+            <dd>企业通讯录同步真实验收</dd>
+          </div>
+          <div class="ledger-proof-item">
+            <dt>2.64–3.26×</dt>
+            <dd>OCR GPU 相对 CPU 实测加速</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
-    <section class="section" data-section="projects" aria-labelledby="projects-title">
-      <div class="container-wide">
-        <div class="section-heading reveal">
+    <section class="ledger-section ledger-systems" id="selected-systems" aria-labelledby="systems-title">
+      <div class="container-wide ledger-container">
+        <header class="ledger-section-heading reveal">
           <div>
-            <p class="section-kicker">Selected work</p>
-            <h2 class="section-title" id="projects-title"><span class="section-color-bar"></span>精选项目</h2>
+            <p class="ledger-section-index">01 / Selected systems</p>
+            <h2 id="systems-title">把 Agent 放进真实流程</h2>
           </div>
-          <a href="projects.html" class="section-more">查看全部项目 →</a>
-        </div>
-        <div class="project-grid">
-          <article class="card home-project-card reveal reveal-delay-1">
-            <div class="project-signal" aria-hidden="true"><span class="signal-label">Converse</span><span class="signal-line"></span><span class="signal-label">Confirm</span><span class="signal-line"></span><span class="signal-label">Reuse</span></div>
-            <div class="project-meta"><span class="project-status">活跃开发</span><span>Enterprise Agent</span></div>
-            <h3>星途知汇</h3>
-            <p>让员工通过持续对话沉淀事实、经验与规则候选，再经人工确认、审核发布与权限检索转化为可复用的组织知识。</p>
-            <div class="tags-group" aria-label="技术标签"><span class="tag">LangGraph</span><span class="tag">PostgreSQL</span><span class="tag">Feishu</span><span class="tag">Hybrid RAG</span></div>
-            <div class="project-actions">
-              <a href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer" class="card-primary-link">查看 GitHub →</a>
-              <div class="card-secondary-links"><span>企业落地 · 全栈 / Agent</span></div>
+          <p>从企业知识到桌面上下文：状态、权限和人工确认不是补丁，而是系统本身。</p>
+        </header>
+
+        <div class="ledger-system-list">
+          <article class="ledger-system ledger-system-featured reveal" id="xingtu">
+            <div class="ledger-system-meta">
+              <span class="ledger-system-number">SYS–01</span>
+              <span>2026.08—至今</span>
+              <span>企业落地 · 全栈 / Agent</span>
+              <span class="ledger-system-status">活跃开发</span>
+            </div>
+            <div class="ledger-system-body">
+              <div class="ledger-system-lead">
+                <p class="ledger-system-label">Enterprise Agent</p>
+                <h3>星途知汇</h3>
+                <p class="ledger-system-value">让一次员工对话，经确认、审核与权限检索，成为可复用的组织知识。</p>
+              </div>
+              <dl class="ledger-system-evidence">
+                <div><dt>问题</dt><dd>经验散落在对话中，来源、可见范围与发布责任难以追踪。</dd></div>
+                <div><dt>本人贡献</dt><dd>以 LangGraph.js + PostgreSQL Checkpointer 编排采访与发布状态；构建权限优先 Hybrid RAG，并接入飞书 OAuth 2.0 + PKCE 与通讯录事件同步。</dd></div>
+                <div><dt>结果</dt><dd>完成 10 个部门 / 30 名在职员工目录同步验收；支持来源白名单、证据不足拒答与检查点恢复。</dd></div>
+              </dl>
+            </div>
+            <ul class="ledger-tech-list" aria-label="星途知汇关键技术">
+              <li>LangGraph.js</li><li>PostgreSQL</li><li>Hybrid RAG</li><li>pgvector / pg_trgm</li><li>Feishu</li>
+            </ul>
+            <div class="ledger-system-actions">
+              <a href="projects.html#enterprise-agent" class="ledger-text-action">阅读项目案例 <span aria-hidden="true">→</span></a>
+              <a href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer">查看源码 <span aria-hidden="true">↗</span></a>
             </div>
           </article>
 
-          <article class="card home-project-card reveal reveal-delay-2">
-            <div class="project-signal" aria-hidden="true"><span class="signal-label">Observe</span><span class="signal-line"></span><span class="signal-label">Evidence</span><span class="signal-line"></span><span class="signal-label">Answer</span></div>
-            <div class="project-meta"><span class="project-status">活跃开发</span><span>Windows Agent</span></div>
-            <h3>Local Window Copilot</h3>
-            <p>只捕获指定窗口，将 OCR、视觉语义与每次真实出现组织成不可变证据；对话时冻结快照，避免错窗、迟到结果与上下文漂移。</p>
-            <div class="tags-group" aria-label="技术标签"><span class="tag">FastAPI</span><span class="tag">RapidOCR</span><span class="tag">MiniCPM-V</span><span class="tag">SQLite</span></div>
-            <div class="project-actions">
-              <a href="projects/local-window-copilot.html" class="card-primary-link">查看项目详情 →</a>
-              <div class="card-secondary-links"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="demos/local-window-copilot/index.html">Demo ↗</a></div>
+          <article class="ledger-system ledger-system-featured ledger-system-reverse reveal" id="local-window-copilot">
+            <div class="ledger-system-meta">
+              <span class="ledger-system-number">SYS–02</span>
+              <span>2026.07—2026.08</span>
+              <span>独立开发 · 开源</span>
+              <span class="ledger-system-status">已交付</span>
             </div>
-          </article>
-
-          <article class="card home-project-card reveal reveal-delay-3">
-            <div class="project-signal" aria-hidden="true"><span class="signal-label">Retrieve</span><span class="signal-line"></span><span class="signal-label">Lock</span><span class="signal-line"></span><span class="signal-label">Review</span></div>
-            <div class="project-meta"><span class="project-status">Demo 可用</span><span>Manufacturing Agent</span></div>
-            <h3>OpenSOP Agent</h3>
-            <p>复用完整历史工艺路线，以程序锁定步骤、参数来源、引用与图片确认；LangGraph 支持站点级暂停、重试及工程/质量双审核。</p>
-            <div class="tags-group" aria-label="技术标签"><span class="tag">LangGraph</span><span class="tag">Hybrid RAG</span><span class="tag">HITL</span><span class="tag">OpenPyXL</span></div>
-            <div class="project-actions">
-              <a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer" class="card-primary-link">查看 GitHub →</a>
-              <div class="card-secondary-links"><span>40 OI · 324 Steps · 12 隔离任务</span></div>
+            <div class="ledger-system-body">
+              <div class="ledger-system-lead">
+                <p class="ledger-system-label">Local Agent</p>
+                <h3>Local Window Copilot</h3>
+                <p class="ledger-system-value">为 1.3B 级本地多模态模型补齐观察、记忆、交互与恢复能力。</p>
+              </div>
+              <dl class="ledger-system-evidence">
+                <div><dt>问题</dt><dd>小模型既要理解窗口内容，又要维持长对话与原生桌面交互，且不能依赖云端 API。</dd></div>
+                <div><dt>本人贡献</dt><dd>构建 MiniCPM-V 4.6 Thinking 的完整 Agent Harness：OCR 负责文字、数字与位置，VLM 负责布局和行为；SQLite 持久化窗口观察、对话与长期记忆，并将 CLI 命令接入原生悬浮窗。</dd></div>
+                <div><dt>结果</dt><dd>GPU OCR 单图 0.347–0.487 s，较 CPU 加速 2.64–3.26×；支持流式回答、思考状态、取消与重启恢复。</dd></div>
+              </dl>
+            </div>
+            <ul class="ledger-tech-list" aria-label="Local Window Copilot 关键技术">
+              <li>Python</li><li>FastAPI</li><li>MiniCPM-V</li><li>RapidOCR</li><li>SQLite</li>
+            </ul>
+            <div class="ledger-system-actions">
+              <a href="projects/local-window-copilot.html" class="ledger-text-action">阅读项目详情 <span aria-hidden="true">→</span></a>
+              <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">查看源码 <span aria-hidden="true">↗</span></a>
+              <a href="demos/local-window-copilot/index.html">打开 Demo <span aria-hidden="true">↗</span></a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section section-tinted" aria-labelledby="research-title">
-      <div class="container-wide">
-        <div class="section-heading reveal">
+    <section class="ledger-section ledger-field" aria-labelledby="field-title">
+      <div class="container-wide ledger-container">
+        <header class="ledger-section-heading reveal">
           <div>
-            <p class="section-kicker">Research & recognition</p>
-            <h2 class="section-title" id="research-title"><span class="section-color-bar"></span>研究与荣誉</h2>
+            <p class="ledger-section-index">02 / Field system</p>
+            <h2 id="field-title">制造业现场：OpenSOP Agent</h2>
           </div>
-          <a href="resume.html#research" class="section-more">查看履历 →</a>
+          <p>来自友达光电卓越工程师计划的 SOP 智撰课题，明确结构化主数据、历史 OI 与人工审核边界。</p>
+        </header>
+
+        <article class="ledger-system ledger-field-system reveal" id="opensop">
+          <div class="ledger-system-meta">
+            <span class="ledger-system-number">SYS–03</span>
+            <span>2026.07—2026.08</span>
+            <span>AI 专案实习 · 独立重构</span>
+            <span class="ledger-system-status">开源原型</span>
+          </div>
+          <div class="ledger-field-grid">
+            <div class="ledger-system-lead">
+              <p class="ledger-system-label">Workflow Agent</p>
+              <h3>把“自动生成”收紧成可审核的辅助起草</h3>
+              <p class="ledger-system-value">混合 RAG 找到历史路线，代码约束 OI Draft，Qwen2.5-VL-7B 处理图片证据，LangGraph 在审核点中断并恢复。</p>
+            </div>
+            <dl class="ledger-field-metrics" aria-label="OpenSOP 验证集">
+              <div><dt>40</dt><dd>OI</dd></div>
+              <div><dt>324</dt><dd>Step</dd></div>
+              <div><dt>80</dt><dd>媒体证据</dd></div>
+              <div><dt>24</dt><dd>Lesson</dd></div>
+              <div><dt>12</dt><dd>隔离任务</dd></div>
+            </dl>
+          </div>
+          <p class="ledger-field-note">支持图片候选绑定、Lesson 审批沉淀、站点级审核恢复，以及 Excel / ZIP 导出。</p>
+          <ul class="ledger-tech-list" aria-label="OpenSOP Agent 关键技术">
+            <li>FastAPI</li><li>LangGraph</li><li>Hybrid RAG</li><li>Qwen2.5-VL-7B</li><li>Excel / ZIP</li>
+          </ul>
+          <div class="ledger-system-actions">
+            <a href="projects.html#workflow-agent" class="ledger-text-action">查看系统拆解 <span aria-hidden="true">→</span></a>
+            <a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer">查看源码 <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="ledger-section ledger-experience" aria-labelledby="experience-title">
+      <div class="container-wide ledger-container ledger-section-split">
+        <header class="ledger-section-heading reveal">
+          <div>
+            <p class="ledger-section-index">03 / Experience</p>
+            <h2 id="experience-title">实习现场</h2>
+          </div>
+          <a href="resume.html#experience" class="ledger-section-link">查看完整履历 <span aria-hidden="true">→</span></a>
+        </header>
+
+        <div class="ledger-experience-list reveal">
+          <article class="ledger-experience-row">
+            <p class="ledger-experience-date">2026.07—08</p>
+            <div>
+              <p class="ledger-experience-org">友达光电 · 卓越工程师计划</p>
+              <h3>AI 专案实习生</h3>
+              <p>参与 FIDM 新产品 SOP 智撰课题，建立 Model、站点 OI 与 Step 领域模型，并独立重构 OpenSOP Agent 原型。</p>
+            </div>
+          </article>
+          <article class="ledger-experience-row">
+            <p class="ledger-experience-date">2025.07—2026.02</p>
+            <div>
+              <p class="ledger-experience-org">福建新意科技有限公司</p>
+              <h3>大模型应用开发</h3>
+              <p>负责企业客服 / 运维 RAG 的 Dify 工作流、多模型接入、父子分块与全文索引，并以 20 个 Golden Cases 驱动回归。</p>
+            </div>
+          </article>
+          <p class="ledger-education-line"><strong>教育：</strong>福建师范大学软件工程硕士（2025.09—2028.06） · 福州大学至诚学院计算机科学与技术本科（2020.09—2024.06）</p>
         </div>
-        <div class="proof-layout">
-          <div class="research-list reveal">
-            <article class="research-row">
-              <div class="research-meta"><span>2026</span><strong>EMNLP · CCF-B</strong></div>
-              <div><h3>Intrinsic Attention as Navigator</h3><p>无需训练的非生成式多跳检索；2Wiki / MuSiQue 的 R@5 达到 89.10 / 76.45，较 Direct 提升 16.28 / 12.65 点。</p></div>
+      </div>
+    </section>
+
+    <section class="ledger-section ledger-recognition" aria-labelledby="recognition-title">
+      <div class="container-wide ledger-container">
+        <header class="ledger-section-heading reveal">
+          <div>
+            <p class="ledger-section-index">04 / Research & recognition</p>
+            <h2 id="recognition-title">研究问题，也交付工程证据</h2>
+          </div>
+        </header>
+
+        <div class="ledger-recognition-grid">
+          <div class="ledger-research-list reveal">
+            <article class="ledger-research-item">
+              <p class="ledger-research-meta">2026 · 一作 · EMNLP / CCF-B</p>
+              <h3>Intrinsic Attention as Navigator</h3>
+              <p>无需生成式推理的多跳 next-hop 检索方法；基于 Qwen3-Embedding-4B，在 MuSiQue 与 2Wiki 上超过两种 7B / 8B embedding 基线。</p>
             </article>
-            <article class="research-row">
-              <div class="research-meta"><span>2026</span><strong>AI Open · JCR Q1</strong></div>
-              <div><h3>ESRA: Explicit Evidence-State Transitions</h3><p>用证据索引显式维护计划、分支与句级归属；bridge-comparison F1 0.889，工具上下文减少 90.4%。</p></div>
+            <article class="ledger-research-item">
+              <p class="ledger-research-meta">2026 · 一作 · AI Open / JCR Q1 · 在审</p>
+              <h3>ESRA: Explicit Evidence-State Transitions</h3>
+              <p>以显式 PlanState、branch、Search / Probe → LLM Commit → State Write-back 与 EvidenceSpace 约束多跳 Agentic RAG。</p>
             </article>
           </div>
-          <aside class="award-feature reveal reveal-delay-1">
-            <p class="award-overline">第十七届蓝桥杯</p>
-            <strong>全国一等奖 · 第 5 名</strong>
-            <span>人工智能赛 · 智能体开发大学组</span>
-            <div class="award-divider"></div>
-            <strong>福建省一等奖 · 第 1 名</strong>
-            <span>福建赛区省赛</span>
+
+          <aside class="ledger-award reveal" aria-labelledby="award-title">
+            <p class="ledger-award-label">第十七届蓝桥杯 · 智能体开发大学组</p>
+            <h3 id="award-title">全国一等奖<br><strong>全国第 5 名</strong></h3>
+            <p>福建赛区省赛一等奖 · 福建省第 1 名</p>
+            <div class="ledger-award-links">
+              <a href="awards/lanqiao-17-national-agent-dev.pdf" target="_blank" rel="noopener noreferrer">国赛获奖证明 <span aria-hidden="true">↗</span></a>
+              <a href="awards/lanqiao-17-fujian-agent-dev.pdf" target="_blank" rel="noopener noreferrer">省赛获奖证明 <span aria-hidden="true">↗</span></a>
+            </div>
           </aside>
         </div>
       </div>
     </section>
 
-    <section class="section" data-section="tools" aria-labelledby="tools-title">
-      <div class="container-wide">
-        <div class="section-heading reveal">
+    <section class="ledger-section ledger-notes" aria-labelledby="notes-title">
+      <div class="container-wide ledger-container">
+        <header class="ledger-section-heading reveal">
           <div>
-            <p class="section-kicker">Open-source tools</p>
-            <h2 class="section-title" id="tools-title"><span class="section-color-bar"></span>开源工具与知识产品</h2>
+            <p class="ledger-section-index">05 / Open source & notes</p>
+            <h2 id="notes-title">把工作方法沉淀为可复用工具</h2>
           </div>
-          <a href="projects.html" class="section-more">浏览项目组合 →</a>
-        </div>
-        <div class="resource-grid">
-          <a href="https://github.com/fjnuslw/video-to-knowledge-skill" target="_blank" rel="noopener noreferrer" class="resource-card reveal reveal-delay-1">
-            <span class="resource-index" aria-hidden="true">01</span>
-            <span class="resource-content"><span class="resource-kicker">Multimodal Knowledge</span><strong>video-to-knowledge Skill</strong><span>联合语音、关键画面与时间关系，把无字幕教学视频转为可审核、可向量化的 JSONL / Markdown 知识。</span></span><span class="resource-arrow" aria-hidden="true">↗</span>
+          <a href="blog.html" class="ledger-section-link">全部文章 <span aria-hidden="true">→</span></a>
+        </header>
+
+        <div class="ledger-resource-list reveal">
+          <a class="ledger-resource-item" href="https://github.com/fjnuslw/video-to-knowledge-skill" target="_blank" rel="noopener noreferrer">
+            <span class="ledger-resource-type">Open source / Python</span>
+            <strong>video-to-knowledge Skill</strong>
+            <span>把无字幕教学视频转为可审核、可向量化的 JSONL / Markdown 知识。</span>
+            <span class="ledger-resource-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer" class="resource-card reveal reveal-delay-2">
-            <span class="resource-index" aria-hidden="true">02</span>
-            <span class="resource-content"><span class="resource-kicker">Video Agent Pipeline</span><strong>SilentDeck</strong><span>从静音演示 MP4 提取视觉时间线，生成讲稿、语音与字幕，并保留可复核的中间产物。</span></span><span class="resource-arrow" aria-hidden="true">↗</span>
+          <a class="ledger-resource-item" href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer">
+            <span class="ledger-resource-type">Open source / Python</span>
+            <strong>SilentDeck</strong>
+            <span>从静音演示视频提取时间线，生成讲稿、语音、字幕与可复核中间产物。</span>
+            <span class="ledger-resource-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="ai-prep/index.html" class="resource-card reveal reveal-delay-3">
-            <span class="resource-index" aria-hidden="true">03</span>
-            <span class="resource-content"><span class="resource-kicker">128 题 · 本地进度</span><strong>AI 工程学习与面试工具</strong><span>汇总岗位调研、面经与自测题库，支持搜索、随机抽题、错题回炉和本地进度记录。</span></span><span class="resource-arrow" aria-hidden="true">→</span>
+          <a class="ledger-resource-item" href="blog/semantic-terrain-context-engineering.html">
+            <span class="ledger-resource-type">Engineering note / 18 min</span>
+            <strong>语义地形工程：把上下文设计成可控系统</strong>
+            <span>把语义地形、长上下文、CoT、解码策略与 Agent 实践串成一套设计框架。</span>
+            <span class="ledger-resource-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="ledger-resource-item" href="blog/small-vlm-function-calling-instability.html">
+            <span class="ledger-resource-type">Engineering note / 15 min</span>
+            <strong>小 VLM 的 function calling 有多不稳定</strong>
+            <span>一次从 function calling 失败到 probe → stream 架构重构的工程复盘。</span>
+            <span class="ledger-resource-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
     </section>
 
-    <section class="section" data-section="posts" aria-labelledby="posts-title">
-      <div class="container-wide">
-        <div class="section-heading reveal">
-          <div>
-            <p class="section-kicker">Engineering notes</p>
-            <h2 class="section-title" id="posts-title"><span class="section-color-bar"></span>技术文章</h2>
+    <section class="ledger-contact" aria-labelledby="contact-title">
+      <div class="container-wide ledger-container ledger-contact-grid reveal">
+        <div>
+          <p class="ledger-section-index">06 / Contact</p>
+          <h2 id="contact-title">寻找能让 Agent<br>真正进入流程的团队。</h2>
+        </div>
+        <div class="ledger-contact-copy">
+          <p>目标方向：大模型应用 / AI Agent 工程实习。可连续实习 3 个月以上，欢迎交流企业知识、RAG、工作流 Agent 与本地多模态系统。</p>
+          <div class="ledger-contact-actions">
+            <a href="mailto:1147214246@qq.com" class="ledger-button ledger-button-signal">发邮件联系</a>
+            <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">查看 GitHub <span aria-hidden="true">↗</span></a>
           </div>
-          <a href="blog.html" class="section-more">查看全部文章 →</a>
-        </div>
-        <div class="home-post-list" id="latest-posts" data-variant="compact" aria-live="polite">
-          <noscript><p class="demo-note">文章列表需要启用 JavaScript 加载，可直接访问 <a href="blog.html">博客页</a> 查看全部文章。</p></noscript>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-tinted" data-section="stack" aria-labelledby="stack-title">
-      <div class="container-wide">
-        <div class="section-heading reveal">
-          <div>
-            <p class="section-kicker">Capabilities</p>
-            <h2 class="section-title" id="stack-title"><span class="section-color-bar"></span>能力与技术栈</h2>
-          </div>
-        </div>
-        <div class="capability-grid reveal">
-          <div class="capability-group"><h3>Agent 系统</h3><div class="tech-list"><span class="tech-item">LangGraph</span><span class="tech-item">Dify</span><span class="tech-item">Tool Calling</span><span class="tech-item">MCP</span><span class="tech-item">Human-in-the-loop</span></div></div>
-          <div class="capability-group"><h3>检索与知识</h3><div class="tech-list"><span class="tech-item">Hybrid RAG</span><span class="tech-item">Embedding</span><span class="tech-item">Rerank</span><span class="tech-item">pgvector</span><span class="tech-item">Qdrant</span><span class="tech-item">Evidence Traceability</span></div></div>
-          <div class="capability-group"><h3>服务与模型</h3><div class="tech-list"><span class="tech-item">Python</span><span class="tech-item">TypeScript</span><span class="tech-item">FastAPI</span><span class="tech-item">NestJS</span><span class="tech-item">vLLM</span><span class="tech-item">llama.cpp</span><span class="tech-item">Qwen</span></div></div>
-          <div class="capability-group"><h3>基础设施</h3><div class="tech-list"><span class="tech-item">PostgreSQL</span><span class="tech-item">Redis / BullMQ</span><span class="tech-item">MinIO</span><span class="tech-item">Docker Compose</span><span class="tech-item">OpenTelemetry</span></div></div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container-wide">
-      <div class="footer-content">
+  <footer class="footer ledger-footer">
+    <div class="container-wide ledger-container">
+      <div class="footer-content ledger-footer-grid">
         <div class="footer-brand">
           <p class="footer-left">&copy; 2026 宋林蔚</p>
-          <p class="footer-tagline">证据可追溯的 AI Agent 工程</p>
+          <p class="footer-tagline">Evidence Ledger：每一步有状态，每个结论有来源，每次发布有人确认。</p>
         </div>
         <nav class="footer-nav" aria-label="站点导航">
-          <a href="index.html">首页</a><a href="blog.html">博客</a><a href="projects.html">项目</a><a href="resume.html">简历</a><a href="about.html">关于</a>
+          <a href="index.html">首页</a><a href="projects.html">项目</a><a href="resume.html">履历</a><a href="blog.html">文章</a><a href="about.html">关于</a>
         </nav>
         <nav class="footer-links" aria-label="站外链接">
           <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a>
@@ -256,8 +415,8 @@
       </div>
     </div>
   </footer>
+
   <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260808-profile-refresh"></script>
-  <script>loadBlogPosts('latest-posts', 2);</script>
+  <script src="js/main.js?v=20260809"></script>
 </body>
 </html>

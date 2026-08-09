@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /blog/template.html
+Disallow: /tmp/
+Disallow: /.workbuddy/
+Disallow: /resume-redesign/tmp/
+Disallow: /resume-redesign/output/
+
+Sitemap: https://fjnuslw.github.io/sitemap.xml

@@ -3,163 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Local Window Copilot：面向本地小模型的 Windows Observation / Evidence Harness，严格捕获指定窗口并把真实观察组织为可追溯证据。">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Local Window Copilot：面向 MiniCPM-V 4.6 Thinking 的本地小模型 Agent Harness，以 OCR / VLM 分工、SQLite 记忆与原生悬浮窗 CLI 补齐桌面 Agent 工程能力。">
+  <meta name="theme-color" content="#0b0d0c">
   <link rel="canonical" href="https://fjnuslw.github.io/projects/local-window-copilot.html">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="Local Window Copilot｜宋林蔚">
-  <meta property="og:description" content="严格窗口捕获、不可变观察、Evidence Graph 与冻结对话快照。">
+  <meta property="og:title" content="Local Window Copilot｜小模型 Agent Harness">
+  <meta property="og:description" content="无需云端 API：OCR / VLM 分工理解窗口，SQLite 保存对话与长期记忆，CLI 集成原生悬浮聊天窗。">
   <meta property="og:url" content="https://fjnuslw.github.io/projects/local-window-copilot.html">
-  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-portfolio.png">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
-  <title>Local Window Copilot｜宋林蔚</title>
+  <meta name="twitter:title" content="Local Window Copilot｜小模型 Agent Harness">
+  <meta name="twitter:description" content="OCR / VLM 分工理解窗口，SQLite 保存对话与长期记忆，CLI 集成原生悬浮聊天窗。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>Local Window Copilot｜小模型 Agent Harness</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260808-profile-refresh">
+  <link rel="stylesheet" href="../css/style.css?v=20260809">
   <style>
-    .case-page { --case-line: #e3e8ef; --case-soft: #f6f8fb; --case-ink: #111827; --case-muted: #647084; }
+    .case-page { --case-line: var(--ledger-line, #c9c6bb); --case-soft: var(--ledger-paper-2, #e9e5da); --case-ink: var(--ledger-ink, #0b0d0c); --case-muted: var(--ledger-muted, #6e746f); background: var(--ledger-paper, #f3f0e8); color: var(--ledger-text, #171a18); }
     .case-shell { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
-    .back-link { display: inline-flex; margin-top: calc(var(--nav-height) + 24px); color: var(--text-muted); font-size: var(--text-sm); }
-    .case-hero { padding: 48px 0 56px; border-bottom: 1px solid var(--case-line); }
-    .case-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 64px; align-items: center; }
-    .case-eyebrow { margin-bottom: 18px; color: var(--accent); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-    .case-hero h1 { margin-bottom: 18px; font-size: clamp(2.4rem, 6vw, 4.5rem); line-height: 1.04; letter-spacing: -.05em; }
-    .case-lede { max-width: 720px; color: var(--case-muted); font-size: clamp(1rem, 1.6vw, 1.2rem); line-height: 1.9; }
+    .back-link { display: inline-flex; min-height: 44px; align-items: center; margin-top: calc(var(--nav-height) + 18px); color: var(--case-muted); font-family: var(--font-mono); font-size: var(--text-sm); }
+    .case-hero { padding: 40px 0 56px; border-bottom: 1px solid var(--case-line); color: var(--ledger-paper, #f3f0e8); background: var(--case-ink); }
+    .case-hero-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr); gap: 64px; align-items: center; }
+    .case-eyebrow { margin-bottom: 18px; color: var(--ledger-signal, #c9ff5a); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .case-hero h1 { margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.7rem); line-height: .98; letter-spacing: -.055em; }
+    .case-lede { max-width: 760px; color: #c9cec9; font-size: clamp(1rem, 1.6vw, 1.2rem); line-height: 1.85; }
     .case-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-    .case-visual { display: grid; min-height: 350px; place-items: center; border: 1px solid var(--case-line); border-radius: 18px; background: linear-gradient(rgba(37,99,235,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,.05) 1px, transparent 1px), #fbfdff; background-size: 28px 28px; }
-    .case-visual img { width: min(300px, 72%); }
-    .case-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 42px; padding-top: 24px; border-top: 1px solid var(--case-line); }
-    .case-fact { padding: 0 20px; border-right: 1px solid var(--case-line); }
+    .case-visual { display: grid; min-height: 350px; place-items: center; border: 1px solid rgba(243, 240, 232, .22); background: linear-gradient(rgba(201, 255, 90, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 255, 90, .08) 1px, transparent 1px), #131714; background-size: 28px 28px; }
+    .case-visual img { width: min(300px, 72%); height: auto; }
+    .case-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: 42px; padding-top: 24px; border-top: 1px solid rgba(243, 240, 232, .2); }
+    .case-fact { padding: 0 20px; border-right: 1px solid rgba(243, 240, 232, .2); }
     .case-fact:first-child { padding-left: 0; } .case-fact:last-child { padding-right: 0; border-right: 0; }
-    .case-fact strong, .case-fact span { display: block; } .case-fact strong { font-size: 1.1rem; } .case-fact span { margin-top: 3px; color: var(--text-muted); font-size: .76rem; }
-    .case-section { padding: 64px 0; border-bottom: 1px solid var(--case-line); }
-    .case-section-head { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 36px; margin-bottom: 30px; }
-    .case-kicker { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-    .case-section h2 { margin-bottom: 12px; font-size: clamp(1.5rem, 3vw, 2.35rem); line-height: 1.25; letter-spacing: -.03em; }
-    .case-section-copy { max-width: 790px; color: var(--case-muted); line-height: 1.9; }
-    .case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .case-card { padding: 22px; border: 1px solid var(--case-line); border-radius: 12px; background: #fff; }
-    .case-card-index { display: block; margin-bottom: 24px; color: var(--accent); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; }
-    .case-card h3 { margin-bottom: 8px; font-size: 1rem; }
-    .case-card p { color: var(--case-muted); font-size: .9rem; line-height: 1.75; }
-    .flow-line { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--case-line); border-radius: 12px; background: #fff; }
-    .flow-node { position: relative; padding: 22px 14px; border-right: 1px solid var(--case-line); text-align: center; }
+    .case-fact strong, .case-fact span { display: block; } .case-fact strong { color: var(--ledger-signal, #c9ff5a); font-size: 1.12rem; } .case-fact span { margin-top: 4px; color: #aab1ab; font-size: .76rem; line-height: 1.5; }
+    .case-section { padding: 68px 0; border-bottom: 1px solid var(--case-line); }
+    .case-section-head { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 36px; margin-bottom: 32px; }
+    .case-kicker { color: var(--ledger-coral, #ff6b4a); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .case-section h2 { margin-bottom: 12px; font-size: clamp(1.6rem, 3vw, 2.65rem); line-height: 1.2; letter-spacing: -.035em; }
+    .case-section-copy { max-width: 790px; color: var(--case-muted); line-height: 1.85; }
+    .case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--case-line); }
+    .case-card { min-height: 220px; padding: 24px; border-right: 1px solid var(--case-line); border-bottom: 1px solid var(--case-line); background: transparent; }
+    .case-card:nth-child(3n+1) { border-left: 1px solid var(--case-line); }
+    .case-card-index { display: block; margin-bottom: 36px; color: var(--ledger-coral, #ff6b4a); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; }
+    .case-card h3 { margin-bottom: 9px; font-size: 1.05rem; }
+    .case-card p { color: var(--case-muted); font-size: .92rem; line-height: 1.75; }
+    .flow-line { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--case-line); background: var(--ledger-paper, #f3f0e8); }
+    .flow-node { position: relative; padding: 24px 14px; border-right: 1px solid var(--case-line); text-align: center; }
     .flow-node:last-child { border-right: 0; } .flow-node span, .flow-node strong { display: block; }
-    .flow-node span { margin-bottom: 6px; color: var(--accent); font-family: var(--font-mono); font-size: .65rem; font-weight: 700; }
-    .flow-node strong { font-size: .85rem; line-height: 1.45; }
-    .data-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .data-column { padding: 24px; border: 1px solid var(--case-line); border-radius: 12px; background: var(--case-soft); }
-    .data-column h3 { margin-bottom: 14px; font-size: 1rem; }
-    .data-column code { display: block; margin-top: 7px; color: var(--case-muted); font-size: .78rem; overflow-wrap: anywhere; }
-    .stack-table { width: 100%; border-collapse: collapse; border: 1px solid var(--case-line); border-radius: 12px; overflow: hidden; }
-    .stack-table th, .stack-table td { padding: 14px 16px; border-bottom: 1px solid var(--case-line); text-align: left; font-size: .88rem; }
+    .flow-node span { margin-bottom: 8px; color: var(--ledger-coral, #ff6b4a); font-family: var(--font-mono); font-size: .65rem; font-weight: 700; }
+    .flow-node strong { font-size: .86rem; line-height: 1.45; }
+    .data-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--case-line); }
+    .data-column { min-height: 260px; padding: 26px; border-right: 1px solid var(--case-line); background: var(--case-soft); }
+    .data-column:last-child { border-right: 0; }
+    .data-column h3 { margin-bottom: 18px; font-size: 1.08rem; }
+    .data-column ul { margin: 0; padding-left: 1.1rem; color: var(--case-muted); font-size: .9rem; line-height: 1.75; }
+    .data-column li + li { margin-top: 7px; }
+    .stack-table { width: 100%; border-collapse: collapse; border: 1px solid var(--case-line); overflow: hidden; }
+    .stack-table th, .stack-table td { padding: 15px 16px; border-bottom: 1px solid var(--case-line); text-align: left; font-size: .9rem; }
     .stack-table tr:last-child th, .stack-table tr:last-child td { border-bottom: 0; }
-    .stack-table th { width: 180px; color: var(--text-muted); background: var(--case-soft); font-family: var(--font-mono); font-size: .72rem; }
-    .boundary-panel { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 24px; }
+    .stack-table th { width: 180px; color: var(--case-muted); background: var(--case-soft); font-family: var(--font-mono); font-size: .72rem; }
+    .boundary-panel { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 28px; }
     .boundary-list { border-top: 1px solid var(--case-line); }
-    .boundary-item { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--case-line); }
-    .boundary-item span { color: var(--accent); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; }
-    .boundary-item p { color: var(--case-muted); font-size: .9rem; line-height: 1.7; }
-    .metric-panel { padding: 28px; border-radius: 14px; color: #fff; background: #111827; }
-    .metric-panel strong, .metric-panel span { display: block; } .metric-panel strong { font-size: 2rem; } .metric-panel span { color: #cbd5e1; font-size: .86rem; }
-    .metric-panel hr { height: 1px; margin: 22px 0; border: 0; background: rgba(255,255,255,.15); }
-    .demo-frame { overflow: hidden; margin-top: 28px; border: 1px solid var(--case-line); border-radius: 12px; background: var(--case-soft); }
-    .demo-frame iframe { display: block; width: 100%; height: 620px; border: 0; }
-    .case-cta { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 32px; border: 1px solid var(--case-line); border-radius: 14px; background: var(--case-soft); }
-    .case-cta h2 { font-size: 1.35rem; } .case-cta p { max-width: 650px; margin-top: 6px; color: var(--case-muted); }
-    @media (max-width: 900px) { .case-hero-grid, .boundary-panel { grid-template-columns: 1fr; } .case-visual { min-height: 280px; } .case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .flow-line { grid-template-columns: repeat(3, minmax(0, 1fr)); } .flow-node:nth-child(3) { border-right: 0; } .flow-node:nth-child(-n+3) { border-bottom: 1px solid var(--case-line); } .data-board { grid-template-columns: 1fr; } }
-    @media (max-width: 640px) { .case-shell { width: min(100% - 32px, 1120px); } .case-hero { padding: 36px 0 42px; } .case-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; } .case-fact:nth-child(2) { border-right: 0; } .case-fact:nth-child(3) { padding-left: 0; } .case-section { padding: 44px 0; } .case-section-head { grid-template-columns: 1fr; gap: 8px; } .case-grid { grid-template-columns: 1fr; } .flow-line { grid-template-columns: 1fr; } .flow-node { border-right: 0; border-bottom: 1px solid var(--case-line); } .flow-node:last-child { border-bottom: 0; } .stack-table th { width: 110px; } .case-cta { align-items: flex-start; flex-direction: column; } .demo-frame iframe { height: 520px; } }
+    .boundary-item { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 19px 0; border-bottom: 1px solid var(--case-line); }
+    .boundary-item span { color: var(--ledger-coral, #ff6b4a); font-family: var(--font-mono); font-size: .72rem; font-weight: 700; }
+    .boundary-item p { color: var(--case-muted); font-size: .92rem; line-height: 1.7; }
+    .metric-panel { padding: 30px; color: var(--ledger-paper, #f3f0e8); background: var(--case-ink); }
+    .metric-panel strong, .metric-panel span { display: block; } .metric-panel strong { color: var(--ledger-signal, #c9ff5a); font-size: 2rem; } .metric-panel span { color: #b8beb9; font-size: .86rem; }
+    .metric-panel hr { height: 1px; margin: 22px 0; border: 0; background: rgba(255,255,255,.16); }
+    .case-demo-link { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 34px; border: 1px solid var(--case-line); background: var(--case-soft); }
+    .case-demo-link h3 { margin-bottom: 8px; font-size: 1.35rem; } .case-demo-link p { max-width: 700px; color: var(--case-muted); line-height: 1.75; }
+    .case-cta { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 34px; color: var(--ledger-paper, #f3f0e8); background: var(--case-ink); }
+    .case-cta h2 { font-size: 1.45rem; } .case-cta p { max-width: 650px; margin-top: 7px; color: #b8beb9; }
+    @media (max-width: 900px) { .case-hero-grid, .boundary-panel { grid-template-columns: 1fr; } .case-visual { min-height: 280px; } .case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .case-card:nth-child(3n+1) { border-left: 0; } .case-card:nth-child(2n+1) { border-left: 1px solid var(--case-line); } .flow-line { grid-template-columns: repeat(3, minmax(0, 1fr)); } .flow-node:nth-child(3) { border-right: 0; } .flow-node:nth-child(-n+3) { border-bottom: 1px solid var(--case-line); } .data-board { grid-template-columns: 1fr; } .data-column { min-height: 0; border-right: 0; border-bottom: 1px solid var(--case-line); } .data-column:last-child { border-bottom: 0; } }
+    @media (max-width: 640px) { .case-shell { width: min(100% - 32px, 1120px); } .case-hero { padding: 34px 0 44px; } .case-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; } .case-fact:nth-child(2) { border-right: 0; } .case-fact:nth-child(3) { padding-left: 0; } .case-section { padding: 48px 0; } .case-section-head { grid-template-columns: 1fr; gap: 8px; } .case-grid { grid-template-columns: 1fr; } .case-card, .case-card:nth-child(2n+1) { min-height: 0; border-left: 1px solid var(--case-line); } .flow-line { grid-template-columns: 1fr; } .flow-node { border-right: 0; border-bottom: 1px solid var(--case-line); } .flow-node:last-child { border-bottom: 0; } .stack-table th { width: 110px; } .case-demo-link, .case-cta { align-items: flex-start; flex-direction: column; padding: 26px; } }
   </style>
+  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260809">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Local Window Copilot",
+    "description": "面向本地小模型的 Windows 桌面 Agent Harness，包含 OCR / VLM 分工、SQLite 持久记忆与原生悬浮窗 CLI。",
+    "codeRepository": "https://github.com/fjnuslw/local-window-copilot",
+    "programmingLanguage": "Python",
+    "author": {"@type": "Person", "name": "宋林蔚", "url": "https://fjnuslw.github.io/"}
+  }
+  </script>
 </head>
-<body class="case-page">
+<body class="case-page ledger-page">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <nav class="navbar" aria-label="主导航">
-    <div class="nav-container">
-      <a href="../index.html" class="nav-logo">宋林蔚</a>
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
       <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span><span></span></button>
-      <ul class="nav-menu" id="primary-navigation">
-        <li><a href="../index.html" class="nav-link">首页</a></li><li><a href="../blog.html" class="nav-link">博客</a></li><li><a href="../projects.html" class="nav-link active">项目</a></li><li><a href="../resume.html" class="nav-link">简历</a></li><li><a href="../about.html" class="nav-link">关于</a></li>
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+        <li><a href="../index.html" class="nav-link">首页</a></li>
+        <li><a href="../projects.html" class="nav-link active" aria-current="page">项目</a></li>
+        <li><a href="../resume.html" class="nav-link">履历</a></li>
+        <li><a href="../blog.html" class="nav-link">文章</a></li>
+        <li><a href="../about.html" class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
   <main id="main-content">
-    <div class="case-shell"><a class="back-link" href="../projects.html">← 返回项目列表</a></div>
+    <div class="case-shell"><a class="back-link" href="../projects.html">← 返回项目账本</a></div>
     <header class="case-hero">
       <div class="case-shell case-hero-grid">
         <div>
-          <p class="case-eyebrow">Windows · Observation / Evidence Harness</p>
-          <h1>Local Window Copilot</h1>
-          <p class="case-lede">面向本地小模型的 Windows 视觉上下文引擎：严格捕获当前 HWND，把 OCR 与视觉理解保存为不可变事实，再把同一物理窗口中真正见过的内容投影成可追溯证据，供每轮对话读取。</p>
-          <div class="case-actions"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub 源码</a><a href="../demos/local-window-copilot/index.html" class="btn btn-secondary">体验 Demo</a><a href="../blog/desktop-agent-context-pitfalls.html" class="btn btn-secondary">设计复盘</a></div>
-          <div class="case-facts" aria-label="项目指标">
-            <div class="case-fact"><strong>严格 HWND</strong><span>不回退整屏 / 旧截图</span></div>
-            <div class="case-fact"><strong>0.347–0.487 s</strong><span>OCR CUDA 实测</span></div>
-            <div class="case-fact"><strong>2.64–3.26×</strong><span>较 CPU 加速</span></div>
-            <div class="case-fact"><strong>20 / 60 / 15</strong><span>边界 / 上下文 / 并发场景</span></div>
+          <p class="case-eyebrow">2026.07—2026.08 · Local small-model Agent Harness</p>
+          <h1>Local Window<br>Copilot</h1>
+          <p class="case-lede">面向 MiniCPM-V 4.6 Thinking（1.3B 总参数 / 0.8B LLM）的完整桌面 Agent Harness：不用云端 API，由 OCR 与 VLM 分工理解当前窗口，再用 SQLite、上下文装配和原生悬浮交互把小模型变成可持续使用的本地助手。</p>
+          <div class="case-actions"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn btn-primary ledger-button ledger-button-signal">GitHub 源码 ↗</a><a href="../demos/local-window-copilot/index.html" class="btn btn-secondary ledger-button ledger-button-secondary">打开 Demo</a><a href="../blog/desktop-agent-context-pitfalls.html" class="btn btn-secondary ledger-button ledger-button-secondary">设计复盘</a></div>
+          <div class="case-facts" aria-label="项目关键信息">
+            <div class="case-fact"><strong>1.3B / 0.8B</strong><span>总参数 / LLM 参数</span></div>
+            <div class="case-fact"><strong>本地运行</strong><span>无需云端 API</span></div>
+            <div class="case-fact"><strong>2.64–3.26×</strong><span>OCR GPU 较 CPU 加速</span></div>
+            <div class="case-fact"><strong>SQLite</strong><span>对话与长期记忆可恢复</span></div>
           </div>
         </div>
-        <div class="case-visual" aria-label="Local Window Copilot 吉祥物"><img src="local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot 吉祥物"></div>
+        <div class="case-visual" aria-label="Local Window Copilot 吉祥物"><img src="local-window-copilot/img/mascot_idle.png" width="628" height="462" alt="Local Window Copilot 吉祥物"></div>
       </div>
     </header>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>桌面 Agent 的难点不是“看屏幕”，而是证明自己看到了什么。</h2><p class="case-section-copy">窗口快速切换会引入错窗、迟到结果与时间错配；相同画面也可能在不同时间代表不同事件。项目因此把捕获、识别、出现时间和对话快照拆成可验证的事实链。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>小模型缺的不是另一个 Prompt，而是一套可靠 Harness。</h2><p class="case-section-copy">桌面助手要同时回答三个问题：眼前窗口到底写了什么、当前行为意味着什么、之前对话和长期偏好里哪些内容值得带入。把这些职责全推给 0.8B LLM，只会浪费上下文并放大误读。</p></div></div>
         <div class="case-grid">
-          <article class="case-card"><span class="case-card-index">01</span><h3>窗口身份必须严格</h3><p>截图绑定 PID/HWND；失败就显式返回，不使用整屏、同名窗口、旧截图或全局 latest 兜底。</p></article>
-          <article class="case-card"><span class="case-card-index">02</span><h3>内容与时间分离</h3><p>Observation 表示唯一识别画面，Occurrence 表示一次真实看见；相同内容可以复用识别，但不能丢掉新的时间证据。</p></article>
-          <article class="case-card"><span class="case-card-index">03</span><h3>迟到结果不能写回</h3><p>事实、布局与 PENDING 状态同事务提交，epoch / revision fencing 只允许当前上下文更新，过期任务自动失效。</p></article>
+          <article class="case-card"><span class="case-card-index">01 / READ</span><h3>文字与位置必须准确</h3><p>数字、字段和区域位置由 OCR 提供，不要求 VLM 猜测屏幕上可直接读取的几何事实。</p></article>
+          <article class="case-card"><span class="case-card-index">02 / UNDERSTAND</span><h3>页面和行为需要语义</h3><p>VLM 聚焦页面布局、视觉关系与用户正在做什么，把有限推理预算用在 OCR 不擅长的部分。</p></article>
+          <article class="case-card"><span class="case-card-index">03 / REMEMBER</span><h3>上下文不能每轮重来</h3><p>窗口观察、完整对话和确认后的长期记忆需要持久化；程序重启后仍应恢复，而不是重新认识用户。</p></article>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Pipeline</p><div><h2>从物理窗口到固定证据快照</h2><p class="case-section-copy">Watcher、手动观察和对话刷新共用同一个 HarnessRuntime。对话打开时冻结外部窗口，每一问重新观察同一 HWND，并在生成前固定 occurrence，单轮中不漂移。</p></div></div>
-        <div class="flow-line" aria-label="上下文处理流程">
-          <div class="flow-node"><span>01</span><strong>Strict HWND Capture</strong></div><div class="flow-node"><span>02</span><strong>Full-frame OCR</strong></div><div class="flow-node"><span>03</span><strong>ScreenMap + VLM</strong></div><div class="flow-node"><span>04</span><strong>Observation Ledger</strong></div><div class="flow-node"><span>05</span><strong>Evidence Track Graph</strong></div><div class="flow-node"><span>06</span><strong>Pinned Answer Context</strong></div>
+        <div class="case-section-head"><p class="case-kicker">Harness</p><div><h2>先整理感知与记忆，再把紧凑上下文交给模型。</h2><p class="case-section-copy">每轮固定当前截图，按当前窗口补充真正相关的历史，压缩更早对话，并保留用户确认过的稳定信息。模型不必自己在杂乱历史里找重点。</p></div></div>
+        <div class="flow-line" aria-label="Local Window Copilot 处理流程">
+          <div class="flow-node"><span>01</span><strong>选择当前窗口</strong></div><div class="flow-node"><span>02</span><strong>固定窗口截图</strong></div><div class="flow-node"><span>03</span><strong>OCR 文字 / 位置</strong></div><div class="flow-node"><span>04</span><strong>VLM 布局 / 行为</strong></div><div class="flow-node"><span>05</span><strong>装配对话 / 记忆</strong></div><div class="flow-node"><span>06</span><strong>流式回答 / 可取消</strong></div>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Data model</p><div><h2>事实不可变，证据可重建，语义视图可选。</h2><p class="case-section-copy">系统不把 Activity 或业务标签当作回答正确性的前置条件。当前页直接读取固定 Observation；离屏历史再通过 Track 与共同见证帧还原 Evidence Fragment。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Context</p><div><h2>三层上下文，各自承担一种确定性。</h2><p class="case-section-copy">当前场景保证回答针对眼前窗口，对话上下文保证交流连续，长期记忆只沉淀经用户确认的稳定事实。三者都由 SQLite 保存并可在重启后恢复。</p></div></div>
         <div class="data-board">
-          <article class="data-column"><h3>Immutable facts</h3><code>window_observations</code><code>observation_ocr_layouts</code><code>observation_occurrences</code></article>
-          <article class="data-column"><h3>Rebuildable evidence</h3><code>evidence_projection_state</code><code>evidence_tracks</code><code>evidence_track_sightings</code><code>evidence_order_edges</code></article>
-          <article class="data-column"><h3>Optional semantic view</h3><code>activity_boundaries</code><code>activity_episodes</code><code>activity_episode_evidence</code><code>activity_pulse_events</code></article>
+          <article class="data-column"><h3>01 · Current scene</h3><ul><li>固定的当前窗口截图</li><li>OCR 文字、数字与位置</li><li>VLM 对布局和行为的解释</li></ul></article>
+          <article class="data-column"><h3>02 · Dialogue context</h3><ul><li>完整对话持久化</li><li>按窗口补充相关历史观察</li><li>自动压缩更早对话，控制上下文长度</li></ul></article>
+          <article class="data-column"><h3>03 · Long-term memory</h3><ul><li>用户确认后才保存稳定信息</li><li>与窗口观察和对话一并存入 SQLite</li><li>应用重启后恢复，不依赖云端账户</li></ul></article>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Design</p><div><h2>关键工程决策</h2><p class="case-section-copy">每一层只承担可验证的职责，避免让 VLM 猜坐标、让摘要替代事实，或让语义增强层阻塞当前页回答。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Decisions</p><div><h2>六个决定，让 0.8B LLM 把算力花在回答上。</h2><p class="case-section-copy">Harness 主动承担识别、筛选、压缩、持久化与交互控制；模型只处理已经被组织好的页面语义、必要历史与用户问题。</p></div></div>
         <div class="case-grid">
-          <article class="case-card"><span class="case-card-index">OCR</span><h3>几何事实不交给 VLM</h3><p>RapidOCR 读取完整 HWND；ScreenMap 用分隔线、留白与阅读顺序组织主要内容区，VLM 只补充裁剪区域的视觉语义。</p></article>
-          <article class="case-card"><span class="case-card-index">GRAPH</span><h3>跨帧证据关联</h3><p>Evidence Graph 结合文字、归一化几何、多运动层与最近 track bank；不使用应用白名单、业务关键词或消息正则。</p></article>
-          <article class="case-card"><span class="case-card-index">GAP</span><h3>局部失败不拖垮时间线</h3><p>单条投影失败只留下 FAILED gap，后续 occurrence 仍可使用更早 READY 证据继续。</p></article>
-          <article class="case-card"><span class="case-card-index">PIN</span><h3>单轮证据冻结</h3><p>模型只看 Current Scene、历史 Evidence Timeline、真实 Dialogue Tail 与 Question；当前页 OCR 不重复装载。</p></article>
-          <article class="case-card"><span class="case-card-index">QUEUE</span><h3>统一模型调度</h3><p>INTERACTIVE、FOREGROUND、BACKGROUND 共用一个优先级模型调度器，OCR 独立运行，不占模型槽。</p></article>
-          <article class="case-card"><span class="case-card-index">LOCAL</span><h3>数据留在本机</h3><p>截图、OCR、SQLite 事实账本与 llama.cpp 推理均在本地完成，默认不引入云端连接器或自动桌面操作。</p></article>
+          <article class="case-card"><span class="case-card-index">OCR / VLM</span><h3>感知职责拆分</h3><p>RapidOCR 负责可读文本与坐标，MiniCPM-V 负责布局、视觉关系和行为理解，避免重复消耗模型上下文。</p></article>
+          <article class="case-card"><span class="case-card-index">PIN</span><h3>当前截图固定</h3><p>回答期间使用同一份当前场景，防止窗口切换后“提问时看到的内容”和“生成时使用的内容”不一致。</p></article>
+          <article class="case-card"><span class="case-card-index">WINDOW</span><h3>历史按窗口补充</h3><p>不把所有观察无差别塞进 Prompt，只选择当前物理窗口真正相关的历史信息。</p></article>
+          <article class="case-card"><span class="case-card-index">COMPRESS</span><h3>早期对话自动压缩</h3><p>完整记录保留在 SQLite；送给模型的早期内容压成摘要，把窗口留给当前任务。</p></article>
+          <article class="case-card"><span class="case-card-index">CONFIRM</span><h3>稳定信息先确认</h3><p>长期记忆不静默猜测；只有用户明确确认后才保存，降低错误偏好在后续对话中反复传播的风险。</p></article>
+          <article class="case-card"><span class="case-card-index">CLI / UI</span><h3>命令进入悬浮窗</h3><p>通过 <code>/</code> 管理对话、窗口、上下文与记忆，同时保留流式回答、思考状态和取消控制。</p></article>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Stack</p><div><h2>技术栈</h2></div></div>
+        <div class="case-section-head"><p class="case-kicker">Stack</p><div><h2>技术账本</h2></div></div>
         <table class="stack-table">
           <tbody>
-            <tr><th>平台</th><td>Windows 10/11 · Win32 · Windows Graphics Capture</td></tr>
-            <tr><th>后端</th><td>Python 3.13 · FastAPI · Pydantic v2</td></tr>
-            <tr><th>事实与并发</th><td>SQLite · foreign keys · short transactions · epoch/revision fencing</td></tr>
-            <tr><th>OCR</th><td>RapidOCR 3.9.2 · PP-OCRv6 Small · ONNX Runtime GPU 1.28</td></tr>
-            <tr><th>VLM / Chat</th><td>MiniCPM-V 4.6 Thinking GGUF · llama.cpp server</td></tr>
-            <tr><th>调度与界面</th><td>asyncio · thread · single-flight · priority scheduler · 原生 WebUI / Win32 悬浮窗</td></tr>
-            <tr><th>验证</th><td>pytest · 模型合同 corpus · 真实窗口实测</td></tr>
+            <tr><th scope="row">平台</th><td>Windows 10/11 · Win32 · Windows Graphics Capture</td></tr>
+            <tr><th scope="row">Harness</th><td>Python 3.13 · FastAPI · Pydantic v2 · asyncio</td></tr>
+            <tr><th scope="row">OCR</th><td>RapidOCR 3.9.2 · PP-OCRv6 Small · ONNX Runtime GPU 1.28</td></tr>
+            <tr><th scope="row">VLM / Chat</th><td>MiniCPM-V 4.6 Thinking GGUF（1.3B 总参数 / 0.8B LLM）· llama.cpp server</td></tr>
+            <tr><th scope="row">状态与记忆</th><td>SQLite · 窗口观察 · 完整对话 · 长期记忆 · 重启恢复</td></tr>
+            <tr><th scope="row">交互</th><td>CLI 命令 · 原生悬浮聊天窗 · 流式回答 · 思考状态 · 取消</td></tr>
+            <tr><th scope="row">验证</th><td>pytest · 真实窗口实测 · OCR CPU / GPU 对照</td></tr>
           </tbody>
         </table>
       </div>
@@ -167,33 +189,37 @@
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Boundaries</p><div><h2>当前边界与验证结果</h2><p class="case-section-copy">项目主动缩小承诺范围：先把事实账本与证据链做对，再讨论向量库、LangGraph、连接器或自动操作。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Evidence & boundaries</p><div><h2>速度经过实测，能力边界保持明确。</h2><p class="case-section-copy">项目验证的是“小模型 + 完整 Harness”在本地桌面场景的可用路径，不把参数规模、自动操作或云端服务包装成不存在的能力。</p></div></div>
         <div class="boundary-panel">
           <div class="boundary-list">
-            <div class="boundary-item"><span>01</span><p>只承诺单 FastAPI worker；多 worker 需要数据库 lease 与跨进程模型队列。</p></div>
-            <div class="boundary-item"><span>02</span><p>Ambient Memory 只保存屏幕真实展示过的内容，从未出现的聊天历史需要显式 Deep Read。</p></div>
-            <div class="boundary-item"><span>03</span><p>暂不引入向量库、LangGraph、应用连接器或自动桌面操作；它们不能替代正确的事实账本。</p></div>
-            <div class="boundary-item"><span>04</span><p>Activity 是体验增强，不是 Agent 正确回答当前页面的前置条件。</p></div>
+            <div class="boundary-item"><span>01</span><p>当前目标平台是 Windows 10/11；窗口捕获和原生悬浮交互依赖 Win32 能力。</p></div>
+            <div class="boundary-item"><span>02</span><p>OCR 负责准确读取文字与位置，VLM 负责视觉语义；任一层不确定时，不把猜测伪装成屏幕事实。</p></div>
+            <div class="boundary-item"><span>03</span><p>长期记忆只保存用户确认后的稳定信息，完整历史仍可审查和管理。</p></div>
+            <div class="boundary-item"><span>04</span><p>当前定位是本地 Copilot 与 Agent Harness，不承诺未经确认的自动桌面操作。</p></div>
           </div>
-          <aside class="metric-panel"><strong>20 条</strong><span>窗口与证据边界场景</span><hr><strong>60 条</strong><span>上下文正确性场景</span><hr><strong>15 条</strong><span>并发与迟到结果场景</span></aside>
+          <aside class="metric-panel" aria-label="OCR 性能实测">
+            <strong>0.347–0.487 s</strong><span>GPU OCR 单图实测</span><hr>
+            <strong>2.64–3.26×</strong><span>相较 CPU 加速</span><hr>
+            <strong>0</strong><span>必需的云端 API</span>
+          </aside>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Demo</p><div><h2>体验核心交互</h2><p class="case-section-copy">演示聚焦窗口选择、观察、上下文证据与对话流程，不上传真实窗口内容。</p></div></div>
-        <div class="demo-frame"><iframe src="../demos/local-window-copilot/index.html" title="Local Window Copilot 交互 Demo" loading="lazy"></iframe></div>
+        <div class="case-section-head"><p class="case-kicker">Demo</p><div><h2>完整交互在独立页面加载。</h2><p class="case-section-copy">Demo 聚焦窗口选择、观察、上下文装配与流式对话；从这里主动进入，不让大型 iframe 影响案例阅读。</p></div></div>
+        <div class="case-demo-link"><div><h3>Local Window Copilot · Interactive Demo</h3><p>无需安装即可理解核心交互路径，演示数据留在浏览器本地。</p></div><a href="../demos/local-window-copilot/index.html" class="btn btn-primary ledger-button ledger-button-primary">打开 Demo</a></div>
       </div>
     </section>
 
     <section class="case-section">
-      <div class="case-shell case-cta"><div><h2>查看完整架构、合同与测试</h2><p>公开仓库包含当前架构、Harness 合同、开发指南、学习路线与验证命令。</p></div><div class="case-actions"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn btn-primary">打开 GitHub</a><a href="../projects.html" class="btn btn-secondary">返回项目</a></div></div>
+      <div class="case-shell case-cta"><div><h2>查看实现、运行方式与验证记录</h2><p>公开仓库包含完整 Harness、安装与开发文档，以及本地运行和测试入口。</p></div><div class="case-actions"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn btn-primary ledger-button ledger-button-signal">打开 GitHub ↗</a><a href="../projects.html" class="btn btn-secondary ledger-button ledger-button-secondary">返回项目账本</a></div></div>
     </section>
   </main>
 
-  <footer class="footer"><div class="container-wide"><div class="footer-content"><div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">证据可追溯的 AI Agent 工程</p></div><nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../blog.html">博客</a><a href="../projects.html">项目</a><a href="../resume.html">简历</a><a href="../about.html">关于</a></nav><nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav></div></div></footer>
+  <footer class="footer"><div class="container-wide"><div class="footer-content"><div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">Evidence Ledger · AI Agent 工程档案</p></div><nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav><nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav></div></div></footer>
   <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
-  <script src="../js/main.js?v=20260808-profile-refresh"></script>
+  <script src="../js/main.js?v=20260809"></script>
 </body>
 </html>

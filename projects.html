@@ -3,149 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚的项目组合：企业知识智能体、Windows 视觉上下文、制造业 SOP、多模态视频知识与自动讲解工具。">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="宋林蔚的 AI Agent 工程项目：企业知识智能体、本地小模型桌面 Copilot、制造业 SOP Agent，以及两项知识流水线开源工具。">
+  <meta name="theme-color" content="#0b0d0c">
   <link rel="canonical" href="https://fjnuslw.github.io/projects.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="项目组合｜宋林蔚">
-  <meta property="og:description" content="从证据、状态、权限和人工确认出发，构建可进入真实流程的 AI Agent。">
+  <meta property="og:title" content="AI Agent 工程项目｜宋林蔚">
+  <meta property="og:description" content="三条 Agent 工程证明链：企业知识、本地桌面与制造业工作流。每项案例都给出问题、本人贡献、结果和证据入口。">
   <meta property="og:url" content="https://fjnuslw.github.io/projects.html">
-  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-portfolio.png">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
-  <title>项目组合｜宋林蔚</title>
+  <meta name="twitter:title" content="AI Agent 工程项目｜宋林蔚">
+  <meta name="twitter:description" content="三条 Agent 工程证明链：企业知识、本地桌面与制造业工作流。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>AI Agent 工程项目｜宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=20260808-profile-refresh">
+  <link rel="stylesheet" href="css/style.css?v=20260809">
+  <link rel="stylesheet" href="css/evidence-ledger.css?v=20260809">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "宋林蔚的 AI Agent 工程项目",
+    "url": "https://fjnuslw.github.io/projects.html",
+    "description": "企业知识、本地桌面与制造业工作流三条 AI Agent 工程证明链。",
+    "hasPart": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "星途知汇",
+        "applicationCategory": "BusinessApplication",
+        "url": "https://github.com/fjnuslw/xingtu-knowledge-platform"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Local Window Copilot",
+        "applicationCategory": "DeveloperApplication",
+        "url": "https://fjnuslw.github.io/projects/local-window-copilot.html"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "OpenSOP Agent",
+        "applicationCategory": "BusinessApplication",
+        "url": "https://github.com/fjnuslw/OpenSOP-Agent"
+      }
+    ]
+  }
+  </script>
 </head>
-<body class="project-page">
+<body class="project-page ledger-page">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
 
-  <nav class="navbar" aria-label="主导航">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">宋林蔚</a>
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
       <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-menu" id="primary-navigation">
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
         <li><a href="index.html" class="nav-link">首页</a></li>
-        <li><a href="blog.html" class="nav-link">博客</a></li>
-        <li><a href="projects.html" class="nav-link active">项目</a></li>
-        <li><a href="resume.html" class="nav-link">简历</a></li>
+        <li><a href="projects.html" class="nav-link active" aria-current="page">项目</a></li>
+        <li><a href="resume.html" class="nav-link">履历</a></li>
+        <li><a href="blog.html" class="nav-link">文章</a></li>
         <li><a href="about.html" class="nav-link">关于</a></li>
       </ul>
     </div>
   </nav>
 
-  <header class="page-header">
-    <div class="container-wide">
-      <p class="page-eyebrow">Projects · Updated 2026.08</p>
-      <h1>项目组合</h1>
-      <p>从可演示原型到企业落地，重点记录系统如何处理证据、状态、权限与失败边界。</p>
+  <header class="portfolio-hero">
+    <div class="container-wide ledger-shell">
+      <p class="ledger-kicker ledger-overline">Project ledger · Updated 2026.08</p>
+      <div class="portfolio-hero-grid">
+        <div>
+          <h1>三条 Agent<span class="project-title-break" aria-hidden="true"><br></span> 工程证明链。</h1>
+          <p class="portfolio-lede">同一个工程命题，落在企业知识、个人桌面与制造业 SOP 三种真实现场：把模型放进可恢复、可审核、证据可追溯的系统。</p>
+        </div>
+        <aside class="portfolio-summary" aria-label="项目组合摘要">
+          <strong>3</strong><span>Flagship systems</span>
+          <strong>2</strong><span>Knowledge tools</span>
+          <strong>6</strong><span>Public repositories</span>
+        </aside>
+      </div>
+      <nav class="portfolio-index" aria-label="项目分类索引">
+        <a href="#enterprise-agent"><span>01</span><strong>Enterprise Agent</strong><small>企业知识</small></a>
+        <a href="#local-agent"><span>02</span><strong>Local Agent</strong><small>本地桌面</small></a>
+        <a href="#workflow-agent"><span>03</span><strong>Workflow Agent</strong><small>制造流程</small></a>
+        <a href="#knowledge-tools"><span>04</span><strong>Tools</strong><small>知识流水线</small></a>
+      </nav>
     </div>
   </header>
 
-  <main class="container-wide page-body" id="main-content">
-    <section aria-labelledby="project-list-title">
-      <div class="section-heading reveal">
-        <div>
-          <p class="section-kicker">Public repositories</p>
-          <h2 class="section-title" id="project-list-title"><span class="section-color-bar"></span>公开项目</h2>
+  <main id="main-content">
+    <section class="ledger-section project-ledger" aria-labelledby="flagship-title">
+      <div class="container-wide ledger-shell">
+        <div class="ledger-section-head ledger-section-heading reveal">
+          <div>
+            <p class="ledger-kicker">01—03 / Flagship systems</p>
+            <h2 id="flagship-title">先看约束，再看技术。</h2>
+          </div>
+          <p>每项旗舰都按同一账本展开：问题、本人贡献、可核验结果与公开证据。</p>
         </div>
-        <a href="https://github.com/fjnuslw?tab=repositories" target="_blank" rel="noopener noreferrer" class="section-more">GitHub 仓库 →</a>
-      </div>
 
-      <div class="grid-2 section-block">
-        <article class="card card-project reveal reveal-delay-1" style="--card-color: var(--c-blue); --card-color-2: var(--c-cyan);">
-          <div class="card-cover project-cover-image"><img src="assets/xingtu-knowledge-platform.png" alt="星途知汇企业经验操作系统视觉封面"></div>
-          <div class="project-meta"><span class="project-status">活跃开发</span><span>2026.08 — 至今</span></div>
-          <h3>星途知汇｜对话式企业知识智能体</h3>
-          <p>面向企业隐性经验难沉淀的问题，将“填写文档”改造成 Agent 持续复盘：员工自然讲述经历，系统动态追问并同步提炼事实、经验、适用边界和证据。基于 LangGraph + PostgreSQL 实现可恢复访谈、知识版本和证据追溯；权限优先的混合检索只用已授权、已发布经验回答。飞书侧完整落地 OAuth 2.0 + PKCE、身份绑定、通讯录差异同步与事件订阅，真实同步 10 个部门 / 30 名员工。</p>
-          <div class="tags-group"><span class="tag">LangGraph</span><span class="tag">Next.js</span><span class="tag">NestJS</span><span class="tag">PostgreSQL</span><span class="tag">pgvector</span><span class="tag">Feishu</span></div>
-          <div class="card-links">
-            <a href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer" class="btn-link">查看 GitHub →</a>
-            <span class="badge badge-live">企业落地 · 全栈 / Agent</span>
+        <article class="evidence-case reveal" id="enterprise-agent" data-system="enterprise">
+          <header class="evidence-case-head">
+            <p class="evidence-case-index" aria-hidden="true">01</p>
+            <div class="evidence-case-title">
+              <p class="evidence-case-meta"><span>活跃开发</span><span>2026.08—至今</span><span>企业落地 · 全栈 / Agent</span></p>
+              <h3>星途知汇</h3>
+              <p class="evidence-case-value">把员工口中的经验变成经过确认、审核和权限控制的企业知识。</p>
+            </div>
+            <figure class="evidence-case-visual evidence-case-visual--cover">
+              <img src="assets/xingtu-knowledge-platform.png" width="1200" height="630" loading="lazy" alt="星途知汇对话式企业知识智能体项目封面">
+            </figure>
+          </header>
+          <div class="evidence-case-grid">
+            <div><p class="evidence-label">Problem</p><p>隐性经验散落在口头交流与个人记忆里；传统填表阻力高，知识发布还必须经过本人确认、业务审核与权限校验。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>设计对话采访与经验卡片；用 LangGraph.js + PostgreSQL Checkpointer 编排可恢复状态；实现权限优先 Hybrid RAG、飞书 OAuth 2.0 + PKCE 与通讯录事件同步。</p></div>
+            <div class="evidence-result"><p class="evidence-label">Result</p><p><strong>10 部门 / 30 人</strong>真实完成在职员工目录同步验收；打通“员工原话 → 确认 → 业务审核 → 版本发布 → 权限内复用”链路。</p></div>
           </div>
+          <footer class="evidence-case-foot">
+            <ul class="evidence-tech" aria-label="星途知汇关键技术"><li>LangGraph.js</li><li>PostgreSQL</li><li>Hybrid RAG</li><li>Qwen</li><li>Feishu</li></ul>
+            <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer">查看源码与架构 ↗</a></div>
+          </footer>
         </article>
 
-        <article class="card card-project reveal reveal-delay-2" style="--card-color: var(--c-emerald); --card-color-2: var(--c-cyan);">
-          <div class="card-cover cover-img">
-            <img src="projects/local-window-copilot/img/mascot_idle.png" alt="Local Window Copilot 吉祥物">
+        <article class="evidence-case reveal" id="local-agent" data-system="local">
+          <header class="evidence-case-head">
+            <p class="evidence-case-index" aria-hidden="true">02</p>
+            <div class="evidence-case-title">
+              <p class="evidence-case-meta"><span>已开源</span><span>2026.07—2026.08</span><span>独立开发 · Agent Harness</span></p>
+              <h3>Local Window Copilot</h3>
+              <p class="evidence-case-value">为本地小模型补齐屏幕感知、上下文装配、长期记忆与原生交互。</p>
+            </div>
+            <figure class="evidence-case-visual evidence-case-visual--mascot">
+              <img src="projects/local-window-copilot/img/mascot_idle.png" width="628" height="462" loading="lazy" alt="Local Window Copilot 吉祥物">
+            </figure>
+          </header>
+          <div class="evidence-case-grid">
+            <div><p class="evidence-label">Problem</p><p>1.3B 级本地模型不应被要求同时完成可靠读屏、历史筛选和记忆维护；不使用云端 API 时，更需要 Harness 先整理模型真正需要的上下文。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>让 OCR 负责文字、数字与位置，VLM 负责布局和用户行为理解；以 SQLite 持久化窗口观察、完整对话与长期记忆，并把 CLI 命令集成进原生悬浮聊天窗。</p></div>
+            <div class="evidence-result"><p class="evidence-label">Result</p><p>GPU OCR 单图 <strong>0.347–0.487 s</strong>，较 CPU 加速 <strong>2.64–3.26×</strong>；对话和确认后的稳定信息可在重启后恢复。</p></div>
           </div>
-          <div class="project-meta"><span class="project-status">活跃开发</span><span>2026.07 — 至今</span></div>
-          <h3>Local Window Copilot</h3>
-          <p>本地 Windows Observation / Evidence Harness。截图严格绑定 PID/HWND，不退回整屏或旧画面；RapidOCR 与 MiniCPM-V 并行形成不可变 Observation，再以 Occurrence 保留每次真实出现的时间证据。单序列装配与版本校验阻止迟到任务写回；对话打开时冻结窗口与证据快照，确保“看到的证据”与回答使用的证据一致。3 组 OCR 实测中 GPU 为 0.347–0.487 秒，较 CPU 加速 2.64–3.26×。</p>
-          <div class="tags-group"><span class="tag">Python 3.13</span><span class="tag">FastAPI</span><span class="tag">SQLite</span><span class="tag">RapidOCR</span><span class="tag">MiniCPM-V</span><span class="tag">llama.cpp</span></div>
-          <div class="card-links">
-            <a href="projects/local-window-copilot.html" class="btn-link">查看详情 →</a>
-            <a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-            <a href="demos/local-window-copilot/index.html">体验 Demo ↗</a>
-          </div>
+          <footer class="evidence-case-foot">
+            <ul class="evidence-tech" aria-label="Local Window Copilot 关键技术"><li>Python</li><li>MiniCPM-V</li><li>RapidOCR</li><li>SQLite</li><li>Win32</li></ul>
+            <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="projects/local-window-copilot.html">阅读完整案例</a><a class="btn btn-secondary ledger-button ledger-button-ghost" href="demos/local-window-copilot/index.html">打开交互 Demo</a><a class="ledger-text-link" href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+          </footer>
         </article>
 
-        <article class="card card-project reveal reveal-delay-3" style="--card-color: var(--c-violet); --card-color-2: var(--c-rose);">
-          <div class="project-signal" aria-hidden="true"><span class="signal-label">Retrieve</span><span class="signal-line"></span><span class="signal-label">Ground</span><span class="signal-line"></span><span class="signal-label">Review</span></div>
-          <div class="project-meta"><span class="project-status">Demo 可用</span><span>Manufacturing Agent</span></div>
-          <h3>OpenSOP Agent</h3>
-          <p>把新 Model 需求转成可审核的多站点 SOP 包。混合检索选择最匹配的完整历史路线，程序固定 Step 顺序、参数来源、引用和图片确认，LLM 只在证据边界内改写；LangGraph 将站点拆为可独立暂停、恢复、重试的任务并嵌入工程 / 质量双审核。OpenSOP-MFG v0.2 含 40 份历史 OI、324 条 Step、80 个媒体与 12 个隔离任务，支持 Excel / ZIP 交付。</p>
-          <div class="tags-group"><span class="tag">LangGraph</span><span class="tag">Hybrid RAG</span><span class="tag">Qdrant</span><span class="tag">Human-in-the-loop</span><span class="tag">OpenPyXL</span></div>
-          <div class="card-links">
-            <a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer" class="btn-link">查看 GitHub →</a>
-            <span class="badge badge-live">开源验证原型</span>
+        <article class="evidence-case reveal" id="workflow-agent" data-system="workflow">
+          <header class="evidence-case-head">
+            <p class="evidence-case-index" aria-hidden="true">03</p>
+            <div class="evidence-case-title">
+              <p class="evidence-case-meta"><span>开源验证原型</span><span>2026.07—2026.08</span><span>独立重构 · Agent / RAG</span></p>
+              <h3>OpenSOP Agent</h3>
+              <p class="evidence-case-value">把跨站点人工编排的 SOP，改造成有证据、有约束、可审核恢复的生成流程。</p>
+            </div>
+            <div class="evidence-case-visual evidence-trace-mini" aria-label="OpenSOP Agent 工作流">
+              <span>Retrieve</span><i aria-hidden="true"></i><span>Draft</span><i aria-hidden="true"></i><span>Approve</span><i aria-hidden="true"></i><span>Export</span>
+            </div>
+          </header>
+          <div class="evidence-case-grid">
+            <div><p class="evidence-label">Problem</p><p>新 Model 的多站点 OI 依赖人工录入、图片编排和逐级审核；历史路线、参数来源与媒体证据一旦脱节，生成结果就无法交付。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>建立 Model 包 / 站点 OI / 作业 Step 领域模型；以混合 RAG 和受约束 Draft 生成内容，Qwen2.5-VL-7B 处理图片候选绑定，LangGraph 支持审核中断与恢复。</p></div>
+            <div class="evidence-result"><p class="evidence-label">Result</p><p>验证 <strong>40 OI / 324 Step / 80 媒体证据 / 24 Lesson / 12 隔离任务</strong>，支持 Lesson 审批沉淀与 Excel / ZIP 导出。</p></div>
           </div>
-        </article>
-
-        <article class="card card-project reveal reveal-delay-4" style="--card-color: var(--c-amber); --card-color-2: var(--c-rose);">
-          <div class="project-signal" aria-hidden="true"><span class="signal-label">Speech</span><span class="signal-line"></span><span class="signal-label">Frames</span><span class="signal-line"></span><span class="signal-label">Knowledge</span></div>
-          <div class="project-meta"><span class="project-status">已开源</span><span>2026.07</span></div>
-          <h3>video-to-knowledge Skill</h3>
-          <p>把没有可用字幕的教学视频转成可导入向量知识库的结构化知识。使用包内 faster-whisper-small 做本地转写，按画面变化稀疏抽取关键帧，再按完整概念、步骤或操作划分知识点，而非固定字数切块。每条记录包含真实时间范围、代表截图、关键词、学生问题和 embedding_text，同时输出 JSONL 与供人工复核的 Markdown。</p>
-          <div class="tags-group"><span class="tag">faster-whisper</span><span class="tag">Multimodal</span><span class="tag">JSONL</span><span class="tag">Knowledge Base</span><span class="tag">WorkBuddy Skill</span></div>
-          <div class="card-links">
-            <a href="https://github.com/fjnuslw/video-to-knowledge-skill" target="_blank" rel="noopener noreferrer" class="btn-link">查看 GitHub →</a>
-            <span class="badge badge-live">MIT License</span>
-          </div>
-        </article>
-
-        <article class="card card-project reveal reveal-delay-1" style="--card-color: var(--c-cyan); --card-color-2: var(--c-blue);">
-          <div class="project-signal" aria-hidden="true"><span class="signal-label">Frames</span><span class="signal-line"></span><span class="signal-label">Script</span><span class="signal-line"></span><span class="signal-label">Voice</span></div>
-          <div class="project-meta"><span class="project-status">已开源</span><span>Codex Skill</span></div>
-          <h3>SilentDeck</h3>
-          <p>将静音幻灯片、屏幕录制与课程视频转换为带讲解和字幕的 MP4。流程先提取视觉时间线与关键帧，再由 Agent 审核并生成对齐讲稿，随后分段合成 TTS、SRT 与最终视频。`timeline.json`、`transcript.md`、`script.md` 和 manifest 全程保留，使失败可定位、单阶段可重跑。</p>
-          <div class="tags-group"><span class="tag">Codex Skill</span><span class="tag">VLM</span><span class="tag">TTS</span><span class="tag">FFmpeg</span><span class="tag">Subtitles</span></div>
-          <div class="card-links">
-            <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer" class="btn-link">查看 GitHub →</a>
-            <span class="badge badge-live">MIT License</span>
-          </div>
+          <footer class="evidence-case-foot">
+            <ul class="evidence-tech" aria-label="OpenSOP Agent 关键技术"><li>FastAPI</li><li>LangGraph</li><li>Qwen2.5-VL-7B</li><li>Hybrid RAG</li><li>OpenPyXL</li></ul>
+            <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer">查看公开原型 ↗</a></div>
+          </footer>
         </article>
       </div>
     </section>
 
-    <section class="project-demo-section" aria-labelledby="demo-title">
-      <div class="section-heading reveal">
-        <div>
-          <p class="section-kicker">Interactive demo</p>
-          <h2 class="section-title" id="demo-title"><span class="section-color-bar"></span>Local Window Copilot 交互演示</h2>
+    <section class="ledger-section knowledge-tools" id="knowledge-tools" aria-labelledby="tools-title">
+      <div class="container-wide ledger-shell">
+        <div class="ledger-section-head ledger-section-heading reveal">
+          <div><p class="ledger-kicker">04 / Tools · Knowledge pipeline</p><h2 id="tools-title">把重复加工封装成可复用工具。</h2></div>
+          <a class="ledger-text-link" href="https://github.com/fjnuslw?tab=repositories" target="_blank" rel="noopener noreferrer">全部 6 个公开仓库 ↗</a>
+        </div>
+        <div class="tool-ledger">
+          <article class="tool-row reveal">
+            <div class="tool-row-index" aria-hidden="true">T01</div>
+            <div><p class="tool-row-meta">MIT · Python · Multimodal</p><h3>video-to-knowledge Skill</h3><p>本地转写教学视频，稀疏抽取关键帧，再按完整概念与步骤切成带时间、截图和 embedding_text 的 JSONL / Markdown 知识记录。</p></div>
+            <a href="https://github.com/fjnuslw/video-to-knowledge-skill" target="_blank" rel="noopener noreferrer" aria-label="打开 video-to-knowledge Skill GitHub 仓库">GitHub ↗</a>
+          </article>
+          <article class="tool-row reveal">
+            <div class="tool-row-index" aria-hidden="true">T02</div>
+            <div><p class="tool-row-meta">MIT · Codex Skill · Media pipeline</p><h3>SilentDeck</h3><p>把静音幻灯片或屏幕录制变成视觉时间线、可审核讲稿、TTS、字幕与最终讲解视频；中间产物完整保留，失败阶段可单独重跑。</p></div>
+            <a href="https://github.com/fjnuslw/silentdeck-codex-skill" target="_blank" rel="noopener noreferrer" aria-label="打开 SilentDeck GitHub 仓库">GitHub ↗</a>
+          </article>
         </div>
       </div>
-      <p class="demo-note reveal">无需安装即可体验窗口选择、观察、上下文证据与对话的核心流程；演示数据留在浏览器本地。</p>
-      <div class="demo-embed reveal">
-        <iframe src="demos/local-window-copilot/index.html" title="Local Window Copilot 交互 Demo" loading="lazy"></iframe>
+    </section>
+
+    <section class="ledger-section demo-gateway" aria-labelledby="demo-gateway-title">
+      <div class="container-wide ledger-shell demo-gateway-inner reveal">
+        <div><p class="ledger-kicker">Try the interaction</p><h2 id="demo-gateway-title">Local Window Copilot，单独打开再体验。</h2><p>总览页不自动加载大型 iframe。进入独立 Demo 后，可体验窗口选择、观察、上下文与流式对话的核心路径。</p></div>
+        <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="demos/local-window-copilot/index.html">打开交互 Demo</a><a class="btn btn-secondary ledger-button ledger-button-ghost" href="projects/local-window-copilot.html">先读案例</a></div>
       </div>
-      <p class="demo-more reveal"><a href="demos/local-window-copilot/index.html" class="btn-link">在新页面打开 Demo →</a></p>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container-wide">
       <div class="footer-content">
-        <div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">证据可追溯的 AI Agent 工程</p></div>
-        <nav class="footer-nav" aria-label="站点导航"><a href="index.html">首页</a><a href="blog.html">博客</a><a href="projects.html">项目</a><a href="resume.html">简历</a><a href="about.html">关于</a></nav>
+        <div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">Evidence Ledger · AI Agent 工程档案</p></div>
+        <nav class="footer-nav" aria-label="站点导航"><a href="index.html">首页</a><a href="projects.html">项目</a><a href="resume.html">履历</a><a href="blog.html">文章</a><a href="about.html">关于</a></nav>
         <nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav>
       </div>
     </div>
   </footer>
 
   <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
-  <script src="js/main.js?v=20260808-profile-refresh"></script>
+  <script src="js/main.js?v=20260809"></script>
 </body>
 </html>
