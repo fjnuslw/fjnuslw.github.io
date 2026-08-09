@@ -67,36 +67,98 @@
         <button class="filter-btn" type="button" data-tag="思考">思考</button>
       </div>
 
-      <div class="ledger-article-list" id="blog-posts">
-        <a class="card-blog ledger-article-row reveal" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html">
-          <span class="article-index">01</span>
-          <span class="article-date"><time datetime="2026-07-08">2026.07.08</time><span>18 min</span></span>
-          <span class="article-copy"><strong>语义地形工程：把上下文设计成可控系统</strong><span>把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套可迁移的上下文设计框架。</span></span>
-          <span class="article-arrow" aria-hidden="true">↗</span>
+      <div class="article-gallery" id="blog-posts">
+        <a class="card-blog article-featured reveal" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html" aria-label="阅读主推文章：语义地形工程，把上下文设计成可控系统，18 分钟">
+          <span class="article-card-visual preview-terrain" aria-hidden="true">
+            <span class="terrain-axis terrain-axis-x">context →</span>
+            <span class="terrain-axis terrain-axis-y">signal ↑</span>
+            <span class="terrain-contour terrain-contour-1"></span>
+            <span class="terrain-contour terrain-contour-2"></span>
+            <span class="terrain-contour terrain-contour-3"></span>
+            <span class="terrain-marker terrain-marker-query"></span>
+            <span class="terrain-marker terrain-marker-answer"></span>
+            <span class="terrain-route"></span>
+            <span class="preview-caption">SEMANTIC TERRAIN / CONTROL SURFACE</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>FEATURED / 01</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-07-08">2026.07.08</time><span>18 min</span></span>
+            <strong class="article-card-title">语义地形工程：把上下文设计成可控系统</strong>
+            <span class="article-card-summary">把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套可迁移的上下文设计框架。</span>
+            <span class="article-card-tags" aria-label="标签"><span>LLM</span><span>Agent</span><span>思考</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 一张从输入采样到解码验收的上下文设计检查表。</span>
+          </span>
         </a>
-        <a class="card-blog ledger-article-row reveal" data-tags="agent,claude code,可视化" href="blog/claude-code-visuals.html">
-          <span class="article-index">02</span>
-          <span class="article-date"><time datetime="2026-07-06">2026.07.06</time><span>4 min</span></span>
-          <span class="article-copy"><strong>推荐阅读：Claude Code 工作原理可视化合集</strong><span>从请求结构、缓存、工具调用、权限、Skills 到压缩，用可交互材料理解编码 Agent 的内部机制。</span></span>
-          <span class="article-arrow" aria-hidden="true">↗</span>
+
+        <a class="card-blog article-card reveal" data-tags="agent,claude code,可视化" href="blog/claude-code-visuals.html" aria-label="阅读文章：Claude Code 工作原理可视化合集，4 分钟">
+          <span class="article-card-visual preview-pipeline" aria-hidden="true">
+            <span class="pipeline-line"></span>
+            <span class="pipeline-node pipeline-node-request"><b>01</b><i>REQUEST</i></span>
+            <span class="pipeline-node pipeline-node-cache"><b>02</b><i>CACHE</i></span>
+            <span class="pipeline-node pipeline-node-tools"><b>03</b><i>TOOLS</i></span>
+            <span class="pipeline-node pipeline-node-context"><b>04</b><i>COMPACT</i></span>
+            <span class="preview-caption">CODING AGENT / PIPELINE</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>02 / VISUAL GUIDE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-07-06">2026.07.06</time><span>4 min</span></span>
+            <strong class="article-card-title">Claude Code 工作原理可视化合集</strong>
+            <span class="article-card-summary">从请求结构、缓存、工具调用、权限、Skills 到压缩，用可交互材料理解编码 Agent 的内部机制。</span>
+            <span class="article-card-tags" aria-label="标签"><span>Agent</span><span>Claude Code</span><span>可视化</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 一条按请求、缓存、工具、权限和压缩拆解编码 Agent 的学习路线。</span>
+          </span>
         </a>
-        <a class="card-blog ledger-article-row reveal" data-tags="agent,vlm,架构" href="blog/small-vlm-function-calling-instability.html">
-          <span class="article-index">03</span>
-          <span class="article-date"><time datetime="2026-07-05">2026.07.05</time><span>15 min</span></span>
-          <span class="article-copy"><strong>小 VLM 的 function calling 有多不稳定</strong><span>一次 probe → stream 职责拆分的失败复盘；文首已补充 2026.08 小模型 Agent Harness 当前主线。</span></span>
-          <span class="article-arrow" aria-hidden="true">↗</span>
+
+        <a class="card-blog article-card reveal" data-tags="agent,vlm,架构" href="blog/small-vlm-function-calling-instability.html" aria-label="阅读文章：小 VLM 的 function calling 有多不稳定，15 分钟">
+          <span class="article-card-visual preview-probe" aria-hidden="true">
+            <span class="probe-pane probe-pane-input"><b>PROBE</b><i>intent?</i><i>tool?</i><i>args?</i></span>
+            <span class="probe-transfer">→</span>
+            <span class="probe-pane probe-pane-output"><b>STREAM</b><i class="probe-pass">01 PASS</i><i class="probe-fail">02 FAIL</i><i class="probe-fail">03 DRIFT</i></span>
+            <span class="preview-caption">FUNCTION CALL / STABILITY PROBE</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>03 / FAILURE REPORT</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-07-05">2026.07.05</time><span>15 min</span></span>
+            <strong class="article-card-title">小 VLM 的 function calling 有多不稳定</strong>
+            <span class="article-card-summary">一次 probe → stream 职责拆分的失败复盘；文首已补充 2026.08 小模型 Agent Harness 当前主线。</span>
+            <span class="article-card-tags" aria-label="标签"><span>Agent</span><span>VLM</span><span>架构</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 判断小模型是否适合直接承担工具调用，以及如何拆分职责的边界清单。</span>
+          </span>
         </a>
-        <a class="card-blog ledger-article-row reveal" data-tags="agent,vlm,思考" href="blog/desktop-agent-context-pitfalls.html">
-          <span class="article-index">04</span>
-          <span class="article-date"><time datetime="2026-07-04">2026.07.04</time><span>12 min</span></span>
-          <span class="article-copy"><strong>为什么“看见屏幕”还不够</strong><span>桌面 Agent 原型期的上下文管理踩坑；当前实现已转向窗口观察、持久对话、长期记忆与按需检索。</span></span>
-          <span class="article-arrow" aria-hidden="true">↗</span>
+
+        <a class="card-blog article-card reveal" data-tags="agent,vlm,思考" href="blog/desktop-agent-context-pitfalls.html" aria-label="阅读文章：为什么看见屏幕还不够，12 分钟">
+          <span class="article-card-visual preview-window" aria-hidden="true">
+            <span class="window-frame window-frame-back"><i></i><i></i><i></i></span>
+            <span class="window-frame window-frame-front"><i></i><i></i><i></i><b>ACTIVE WINDOW</b></span>
+            <span class="window-memory"><i>OBSERVE</i><i>RECALL</i><i>GROUND</i></span>
+            <span class="preview-caption">DESKTOP CONTEXT / MEMORY</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>04 / CONTEXT NOTE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-07-04">2026.07.04</time><span>12 min</span></span>
+            <strong class="article-card-title">为什么“看见屏幕”还不够</strong>
+            <span class="article-card-summary">桌面 Agent 原型期的上下文管理踩坑；当前实现已转向窗口观察、持久对话、长期记忆与按需检索。</span>
+            <span class="article-card-tags" aria-label="标签"><span>Agent</span><span>VLM</span><span>思考</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 从截图堆叠迁移到窗口观察、记忆检索的桌面 Agent 上下文方案。</span>
+          </span>
         </a>
-        <a class="card-blog ledger-article-row reveal" data-tags="随笔,起点" href="blog/hello-world.html">
-          <span class="article-index">05</span>
-          <span class="article-date"><time datetime="2026-06-24">2026.06.24</time><span>3 min</span></span>
-          <span class="article-copy"><strong>你好，世界！我的第一篇博客</strong><span>为什么建立这个站，以及接下来会怎样记录 LLM、Agent、工程与实习实践。</span></span>
-          <span class="article-arrow" aria-hidden="true">↗</span>
+
+        <a class="card-blog article-card reveal" data-tags="随笔,起点" href="blog/hello-world.html" aria-label="阅读文章：你好，世界，我的第一篇博客，3 分钟">
+          <span class="article-card-visual preview-terminal" aria-hidden="true">
+            <span class="terminal-bar"><i></i><i></i><i></i><b>slw@evidence-ledger</b></span>
+            <span class="terminal-line"><i>$</i> init personal-log</span>
+            <span class="terminal-line"><i>✓</i> agent / llm / engineering</span>
+            <span class="terminal-line terminal-cursor"><i>›</i> write what failed<span></span></span>
+            <span class="preview-caption">LOG 000 / ORIGIN</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>05 / ORIGIN LOG</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-06-24">2026.06.24</time><span>3 min</span></span>
+            <strong class="article-card-title">你好，世界！我的第一篇博客</strong>
+            <span class="article-card-summary">为什么建立这个站，以及接下来会怎样记录 LLM、Agent、工程与实习实践。</span>
+            <span class="article-card-tags" aria-label="标签"><span>随笔</span><span>起点</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 快速了解这个站关注什么，以及后续内容如何组织。</span>
+          </span>
         </a>
       </div>
     </section>
