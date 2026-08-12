@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="桌面 AI 伙伴真正困难的不是调用 VLM，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
+  <meta name="description" content="桌面 AI 伙伴的难点，在于让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
   <link rel="canonical" href="https://fjnuslw.github.io/blog/desktop-agent-context-pitfalls.html">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:title" content="为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑 — 宋林蔚">
-  <meta property="og:description" content="桌面 AI 伙伴真正困难的不是调用 VLM，而是让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
+  <meta property="og:description" content="桌面 AI 伙伴的难点，在于让模型在正确时刻拿到正确上下文。一次桌面 Agent 原型的失败复盘。">
   <meta property="og:url" content="https://fjnuslw.github.io/blog/desktop-agent-context-pitfalls.html">
   <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑 — 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
   <style>
     /* 文章专属样式 */
     .article-svg {
@@ -29,6 +29,22 @@
       border-radius: var(--radius-lg, 12px);
       background: var(--bg-card, #fff);
       padding: 1rem;
+    }
+    .figure-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 2rem auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .figure-scroll .article-svg {
+      width: 100%;
+      min-width: 640px;
+      max-width: none;
+      margin: 0;
+    }
+    @media (min-width: 769px) {
+      .figure-scroll { overflow: visible; }
+      .figure-scroll .article-svg { min-width: 0; }
     }
     .svg-caption {
       text-align: center;
@@ -66,7 +82,7 @@
       margin: 1.5rem 0;
       font-size: 0.95rem;
     }
-    .callout strong { color: #1a73e8; }
+    .callout strong { color: #0b57d0; }
     main.post-content h2 {
       margin-top: 2.5rem;
       margin-bottom: 1rem;
@@ -159,12 +175,13 @@
       </p>
 
       <p>
-        这件事让我意识到，桌面 AI 伙伴真正难的，不是能不能截图、能不能调 VLM、能不能存历史。
-        难的是<strong>让模型在正确时刻拿到正确上下文</strong>，并且承认自己看不清、记不住、没证据。
-        这篇文章是我这个原型一路踩坑的复盘——不是为了证明我做出了什么，而是为了记录一个原型如何暴露出桌面 Agent 的核心矛盾。
+        这件事让我意识到，截图、VLM 和历史存储只是起点。
+        桌面 AI 伙伴更难的部分，是<strong>让模型在正确时刻拿到正确上下文</strong>，并且承认自己看不清、记不住、没证据。
+        这篇文章记录这个原型一路踩过的坑，以及它如何逐步暴露桌面 Agent 的核心矛盾。
       </p>
 
       <!-- 图1：错误链路图 -->
+      <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
       <svg class="article-svg" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="摘要链路太短导致信息丢失">
         <defs>
           <marker id="arr1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -190,6 +207,7 @@
 
         <text x="340" y="150" text-anchor="middle" font-family="system-ui" font-size="12" fill="#6b7785">链路越短，看似越优雅，但细节和用户意图一路在丢</text>
       </svg>
+      </div>
       <p class="svg-caption">图 1：早期"截图 → 摘要 → 回答"链路，看似优雅，实则在每一步都在丢信息</p>
 
       <!-- 第一部分 -->
@@ -239,13 +257,13 @@
 
       <p>
         我学到的最重要的一点是：<strong>多模态模型的"视觉理解"其实同时包含 OCR、布局理解和语义理解，
-        而这些能力都会受分辨率、裁剪、遮挡和 prompt 影响</strong>。它不是一个"能不能看"的开关，
-        而是一个"在什么条件下能看清多少"的连续谱。如果要回答细节，系统应该先选图、选区域、再细看，
-        而不是把整张屏幕丢给模型指望它什么都认得出来。
+        而这些能力都会受分辨率、裁剪、遮挡和 prompt 影响</strong>。这项能力呈现一条连续谱：
+        条件变化会决定模型能看清多少。如果要回答细节，系统应该先选图、选区域、再细看；
+        把整张屏幕一次性交给模型，通常会丢掉关键小字和局部关系。
       </p>
 
       <p>
-        这期间也 tempted 想加一层 OCR fallback——VLM 说不出来就用 OCR 兜底。
+        这期间我也动过加一层 OCR fallback 的念头——VLM 说不出来就用 OCR 兜底。
         但我后来克制住了：OCR fallback 会掩盖主链路的问题，让"看不清"变成"看起来看清了"，
         而这种假性成功比直接承认看不清更危险。主链路不行就应该暴露出来、修它，而不是用兜底糊过去。
       </p>
@@ -267,8 +285,8 @@
 
       <p>
         我加了一个叫 <code>dialogue bridge</code> 的机制：当用户短回复时，
-        系统检测到这是承接型回复，把上一轮助手的提议拼回上下文。这不是硬编码回答，
-        而是恢复对话状态——告诉模型"用户在回应你刚才那句话"。
+        系统检测到这是承接型回复，把上一轮助手的提议拼回上下文，恢复对话状态——
+        明确告诉模型“用户正在回应你刚才那句话”。
         加上之后，那种复读式的失败基本消失了。
       </p>
 
@@ -287,6 +305,7 @@
       </p>
 
       <!-- 图3：双线架构图 -->
+      <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
       <svg class="article-svg" viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="观察线和对话线分离">
         <defs>
           <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -332,6 +351,7 @@
 
         <text x="340" y="232" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7785">观察线 ≠ 回答线，用户邀请时才把视觉证据带入对话</text>
       </svg>
+      </div>
       <p class="svg-caption">图 2：观察线和对话线分离，后台建立索引但不直接打扰用户</p>
 
       <p>
@@ -350,7 +370,7 @@
       </p>
 
       <p>
-        不是因为这些技术不好，而是因为它们解决的不是我当前阶段的问题。
+        这些技术各有价值，只是没有解决我当前阶段的问题。
         Redis 解决的是缓存和并发，PostgreSQL 解决的是结构化数据持久化，
         Docker 解决的是部署一致性——这些是规模和团队问题。
         但<strong>桌宠第一阶段要面对的不是规模问题，是"该记什么、何时取出、如何注入"</strong>。
@@ -359,7 +379,7 @@
 
       <p>
         我最终留的是 SQLite + markdown profile + runtime store。
-        真正重要的不是存储介质，而是把记忆分成四类、分别管理：
+        把记忆分成四类、分别管理，比纠结存储介质更重要：
       </p>
 
       <ul>
@@ -397,6 +417,7 @@
       </p>
 
       <!-- 图2：上下文分层图 -->
+      <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
       <svg class="article-svg" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上下文分层与工具结果注入">
         <defs>
           <marker id="arr3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -435,6 +456,7 @@
 
         <text x="340" y="316" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7785">稳定前缀 → 低频 profile → 对话状态 → 动态工具结果 → 回答</text>
       </svg>
+      </div>
       <p class="svg-caption">图 3：上下文分层，稳定部分靠前保护 KV cache，动态部分作为工具结果注入</p>
 
       <p>
@@ -451,7 +473,7 @@
       <p>
         后端 provider 可以很复杂——要管截图索引、窗口 metadata、局部裁剪、VLM 分层 messages——
         但<strong>模型可见的工具要少、要稳定、要可审计</strong>。
-        Hermes-like 思想给我的启发不是"工具越多越 Agent"，而是"工具边界要清楚、可审计、可调试"。
+        Hermes-like 思想让我把注意力放到工具边界：边界要清楚，过程要能审计、能调试。
         工具调用日志也应该暴露给高级调试，否则系统会越来越像黑盒，出了问题根本定位不到。
       </p>
 
@@ -493,7 +515,7 @@
       <h2>八、失败给出的架构原则</h2>
 
       <p>
-        回头看这一路，真正有价值的不是任何一个具体修复，而是几次失败之后慢慢沉淀下来的几条判断：
+        回头看这一路，几次失败之后慢慢沉淀的判断更值得记录：
       </p>
 
       <div class="principle-card">
@@ -522,14 +544,13 @@
       </p>
 
       <blockquote style="border-left:4px solid var(--accent,#1a73e8); padding:0.75rem 1.25rem; margin:2rem 0; color:var(--text-secondary,#666); font-style:italic;">
-        后来我意识到，一个桌面 AI 伙伴的核心不是每秒总结屏幕，
-        而是在用户需要它的时候，知道该看哪里、该记起什么、该承认什么不知道，
+        后来我意识到，一个桌面 AI 伙伴要在用户需要它的时候，知道该看哪里、该记起什么、该承认什么不知道，
         以及该怎样像一个在场的伙伴那样回应。
       </blockquote>
 
       <p>— 宋林蔚</p>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+      <div class="article-footer-nav">
         <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
         <a href="../projects/local-window-copilot.html" class="btn">查看相关项目 →</a>
       </div>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+  <title id="title">为什么缓存键和值</title>
+  <desc id="desc">当前 token 生成查询向量，与前文 token 的键向量计算相关度，再按权重读取值向量。未来 token 会用到旧键和值，不再需要旧查询。</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7f3e9"/><stop offset="1" stop-color="#ece8dc"/></linearGradient>
+    <marker id="inkArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#1b241d"/></marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#78b900"/></marker>
+  </defs>
+  <rect width="1000" height="600" rx="28" fill="url(#paper)"/>
+  <path d="M0 108H1000M0 492H1000" stroke="#d3d0c5"/>
+  <text x="50" y="58" fill="#151b16" font-size="26" font-weight="800" font-family="system-ui, sans-serif">每个新 token 都带着一个临时问题</text>
+  <text x="50" y="87" fill="#687068" font-size="16" font-family="system-ui, sans-serif">Q 负责提问，K 负责匹配，V 提供被取回的内容</text>
+
+  <g transform="translate(50 146)" font-family="system-ui, sans-serif">
+    <rect width="218" height="288" rx="22" fill="#111812"/>
+    <text x="24" y="42" fill="#b7ff3c" font-size="14" font-weight="800">QUERY / Q</text>
+    <circle cx="109" cy="126" r="58" fill="#b7ff3c"/>
+    <text x="109" y="118" text-anchor="middle" fill="#142015" font-size="15">当前词</text>
+    <text x="109" y="151" text-anchor="middle" fill="#142015" font-size="27" font-weight="900">“怎么样”</text>
+    <text x="24" y="224" fill="#f5f1e8" font-size="15" font-weight="700">它在找：</text>
+    <text x="24" y="251" fill="#aab3aa" font-size="14">前文里哪些信息</text>
+    <text x="24" y="275" fill="#aab3aa" font-size="14">能帮助我继续生成？</text>
+  </g>
+
+  <path d="M286 290H346" stroke="#1b241d" stroke-width="2.5" marker-end="url(#inkArrow)"/>
+
+  <g transform="translate(366 146)" font-family="system-ui, sans-serif">
+    <rect width="252" height="288" rx="22" fill="#ffffff" stroke="#c8c9bf"/>
+    <text x="24" y="42" fill="#151b16" font-size="14" font-weight="800">KEYS / K · 可匹配的标签</text>
+    <g transform="translate(24 72)" font-size="15">
+      <rect width="204" height="46" rx="10" fill="#e7ebe2"/><text x="18" y="29" fill="#384238">北京</text><text x="181" y="29" text-anchor="end" fill="#778078">0.35</text>
+      <rect y="58" width="204" height="46" rx="10" fill="#d9e9c9" stroke="#78b900"/><text x="18" y="87" fill="#253322" font-weight="800">天气</text><text x="181" y="87" text-anchor="end" fill="#4e7b00" font-weight="800">0.55</text>
+      <rect y="116" width="204" height="46" rx="10" fill="#eef0eb"/><text x="18" y="145" fill="#667066">的</text><text x="181" y="145" text-anchor="end" fill="#929a92">0.05</text>
+      <rect y="174" width="204" height="46" rx="10" fill="#eef0eb"/><text x="18" y="203" fill="#667066">今天</text><text x="181" y="203" text-anchor="end" fill="#929a92">0.05</text>
+    </g>
+  </g>
+
+  <path d="M636 290H696" stroke="#78b900" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+
+  <g transform="translate(716 146)" font-family="system-ui, sans-serif">
+    <rect width="234" height="288" rx="22" fill="#fff" stroke="#c8c9bf"/>
+    <text x="24" y="42" fill="#151b16" font-size="14" font-weight="800">VALUES / V · 可取回的内容</text>
+    <rect x="24" y="72" width="186" height="140" rx="14" fill="#e5f5ca"/>
+    <text x="42" y="107" fill="#315000" font-size="14" font-weight="800">天气相关内容</text>
+    <text x="42" y="136" fill="#536053" font-size="14">气温、晴雨、湿度…</text>
+    <text x="42" y="165" fill="#536053" font-size="14">按 0.55 的权重</text>
+    <text x="42" y="194" fill="#536053" font-size="14">进入当前表示</text>
+    <text x="24" y="250" fill="#687068" font-size="13">权重较小的内容</text>
+    <text x="24" y="273" fill="#687068" font-size="13">仍会贡献少量信息</text>
+  </g>
+
+  <g transform="translate(50 520)" font-family="system-ui, sans-serif">
+    <circle cx="12" cy="12" r="8" fill="#b7ff3c"/><text x="32" y="17" fill="#202820" font-size="15" font-weight="800">旧 K / V 会被未来 token 继续读取，所以保留。</text>
+    <circle cx="520" cy="12" r="8" fill="#b8beb6"/><text x="540" y="17" fill="#4d564d" font-size="15">旧 Q 完成本轮匹配后就结束使命。</text>
+  </g>
+</svg>

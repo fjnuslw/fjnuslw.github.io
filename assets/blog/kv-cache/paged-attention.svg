@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
+  <title id="title">PagedAttention 的分页式缓存管理</title>
+  <desc id="desc">连续的逻辑 token 被拆成固定大小的缓存块，映射到不连续的物理显存块。两个生成分支可以共享提示词块，只在分叉后分配自己的块。</desc>
+  <defs>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7f3e9"/><stop offset="1" stop-color="#ebe7dc"/></linearGradient>
+    <marker id="mapArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#667066"/></marker>
+  </defs>
+  <rect width="1000" height="620" rx="28" fill="url(#p)"/>
+  <text x="52" y="58" fill="#151b16" font-size="26" font-weight="800" font-family="system-ui, sans-serif">把一条长缓存拆成固定大小的“页”</text>
+  <text x="52" y="88" fill="#687068" font-size="16" font-family="system-ui, sans-serif">逻辑顺序连续，物理显存可以分散；共享前缀也有了清晰边界</text>
+
+  <g transform="translate(52 126)" font-family="system-ui, sans-serif">
+    <text x="0" y="20" fill="#151b16" font-size="15" font-weight="800">逻辑序列</text>
+    <g transform="translate(0 38)" font-size="13" font-weight="700">
+      <rect width="102" height="56" rx="10" fill="#dce4d7"/><text x="51" y="34" text-anchor="middle" fill="#303a31">P0 · 系统</text>
+      <rect x="112" width="102" height="56" rx="10" fill="#dce4d7"/><text x="163" y="34" text-anchor="middle" fill="#303a31">P1 · 工具</text>
+      <rect x="224" width="102" height="56" rx="10" fill="#dce4d7"/><text x="275" y="34" text-anchor="middle" fill="#303a31">P2 · 历史</text>
+      <rect x="336" width="102" height="56" rx="10" fill="#e7f7ca" stroke="#78b900"/><text x="387" y="34" text-anchor="middle" fill="#315000">P3 · 问题</text>
+      <rect x="448" width="102" height="56" rx="10" fill="#b7ff3c"/><text x="499" y="34" text-anchor="middle" fill="#1b2a13">P4 · 回答</text>
+      <rect x="560" width="102" height="56" rx="10" fill="#b7ff3c"/><text x="611" y="34" text-anchor="middle" fill="#1b2a13">P5 · 回答</text>
+      <rect x="672" width="102" height="56" rx="10" fill="none" stroke="#879087" stroke-dasharray="6 5"/><text x="723" y="34" text-anchor="middle" fill="#687068">下一页</text>
+    </g>
+  </g>
+
+  <g stroke="#667066" stroke-width="1.8" fill="none" marker-end="url(#mapArrow)" opacity=".8">
+    <path d="M103 224C103 260 122 270 122 304"/>
+    <path d="M215 224C215 250 362 274 362 304"/>
+    <path d="M327 224C327 250 602 274 602 304"/>
+    <path d="M439 224C439 270 242 270 242 304"/>
+    <path d="M551 224C551 266 842 268 842 304"/>
+    <path d="M663 224C663 268 482 268 482 304"/>
+  </g>
+
+  <g transform="translate(52 304)" font-family="system-ui, sans-serif">
+    <text x="0" y="20" fill="#151b16" font-size="15" font-weight="800">物理显存块</text>
+    <g transform="translate(0 40)" font-size="14" font-weight="800">
+      <rect width="140" height="70" rx="12" fill="#172018"/><text x="70" y="42" text-anchor="middle" fill="#f5f1e8">BLOCK 0 · P0</text>
+      <rect x="160" width="140" height="70" rx="12" fill="#253028"/><text x="230" y="42" text-anchor="middle" fill="#f5f1e8">BLOCK 1 · P3</text>
+      <rect x="320" width="140" height="70" rx="12" fill="#172018"/><text x="390" y="42" text-anchor="middle" fill="#f5f1e8">BLOCK 2 · P1</text>
+      <rect x="480" width="140" height="70" rx="12" fill="#253028"/><text x="550" y="42" text-anchor="middle" fill="#f5f1e8">BLOCK 3 · P5</text>
+      <rect x="640" width="140" height="70" rx="12" fill="#172018"/><text x="710" y="42" text-anchor="middle" fill="#f5f1e8">BLOCK 4 · P2</text>
+      <rect x="800" width="96" height="70" rx="12" fill="#b7ff3c"/><text x="848" y="42" text-anchor="middle" fill="#172018">P4</text>
+    </g>
+  </g>
+
+  <g transform="translate(52 460)" font-family="system-ui, sans-serif">
+    <rect width="896" height="114" rx="18" fill="#fff" stroke="#c8c9bf"/>
+    <text x="22" y="33" fill="#151b16" font-size="14" font-weight="800">共享前缀 + 写时复制</text>
+    <g transform="translate(22 50)" font-size="12" font-weight="700">
+      <rect width="62" height="34" rx="7" fill="#dce4d7"/><text x="31" y="22" text-anchor="middle" fill="#374038">P0</text>
+      <rect x="70" width="62" height="34" rx="7" fill="#dce4d7"/><text x="101" y="22" text-anchor="middle" fill="#374038">P1</text>
+      <rect x="140" width="62" height="34" rx="7" fill="#dce4d7"/><text x="171" y="22" text-anchor="middle" fill="#374038">P2</text>
+      <text x="224" y="22" fill="#687068">→ 分支 A</text><rect x="288" width="62" height="34" rx="7" fill="#b7ff3c"/><text x="319" y="22" text-anchor="middle" fill="#1b2a13">A3</text>
+      <text x="382" y="22" fill="#687068">分支 B →</text><rect x="452" width="62" height="34" rx="7" fill="#ffd2b3"/><text x="483" y="22" text-anchor="middle" fill="#6d3212">B3</text>
+      <text x="548" y="22" fill="#4f584f" font-size="13" font-weight="500">P0–P2 只存一份；分叉后的内容各自申请新块。</text>
+    </g>
+  </g>
+</svg>

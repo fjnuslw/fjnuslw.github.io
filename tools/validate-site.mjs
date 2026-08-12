@@ -73,8 +73,16 @@ const files = await walk(root);
 const htmlFiles = files.filter(file => file.endsWith('.html'));
 await Promise.all(htmlFiles.map(validateHtml));
 
+let posts = [];
 try {
-  const posts = JSON.parse(await readFile(path.join(root, 'blog', 'posts.json'), 'utf8'));
+  posts = JSON.parse(await readFile(path.join(root, 'blog', 'posts.json'), 'utf8'));
+  const ids = posts.map(post => post.id);
+  const urls = posts.map(post => post.url);
+  const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
+  const duplicateUrls = [...new Set(urls.filter((url, index) => urls.indexOf(url) !== index))];
+  if (duplicateIds.length) errors.push(`blog/posts.json: 重复 id：${duplicateIds.join(', ')}`);
+  if (duplicateUrls.length) errors.push(`blog/posts.json: 重复 URL：${duplicateUrls.join(', ')}`);
+
   for (const post of posts) {
     if (!post.id || !post.title || !post.date || !post.url) errors.push('blog/posts.json: 文章记录字段不完整');
     const target = path.join(root, post.url);
@@ -88,17 +96,40 @@ try {
   errors.push(`blog/posts.json: ${error.message}`);
 }
 
-const cssFile = path.join(root, 'css', 'style.css');
-const css = (await readFile(cssFile, 'utf8'))
-  .replace(/\/\*[\s\S]*?\*\//g, '')
-  .replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, '');
-let braceDepth = 0;
-for (const character of css) {
-  if (character === '{') braceDepth += 1;
-  if (character === '}') braceDepth -= 1;
-  if (braceDepth < 0) break;
+try {
+  const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8');
+  const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1].trim());
+  const duplicateSitemapUrls = [...new Set(sitemapUrls.filter((url, index) => sitemapUrls.indexOf(url) !== index))];
+  if (duplicateSitemapUrls.length) errors.push(`sitemap.xml: 重复 URL：${duplicateSitemapUrls.join(', ')}`);
+
+  const origin = 'https://fjnuslw.github.io/';
+  for (const post of posts) {
+    const expected = new URL(post.url, origin).href;
+    if (!sitemapUrls.includes(expected)) errors.push(`sitemap.xml: 缺少文章：${post.url}`);
+  }
+} catch (error) {
+  errors.push(`sitemap.xml: ${error.message}`);
 }
-if (braceDepth !== 0) errors.push('css/style.css: 花括号不平衡');
+
+const listedPosts = new Set(posts.map(post => post.url));
+for (const file of htmlFiles) {
+  const filePath = relative(file);
+  if (!/^blog\/[^/]+\.html$/.test(filePath) || filePath === 'blog/template.html') continue;
+  if (!listedPosts.has(filePath)) errors.push(`blog/posts.json: 未收录文章：${filePath}`);
+}
+
+for (const cssFile of files.filter(file => file.endsWith('.css'))) {
+  const css = (await readFile(cssFile, 'utf8'))
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, '');
+  let braceDepth = 0;
+  for (const character of css) {
+    if (character === '{') braceDepth += 1;
+    if (character === '}') braceDepth -= 1;
+    if (braceDepth < 0) break;
+  }
+  if (braceDepth !== 0) errors.push(`${relative(cssFile)}: 花括号不平衡`);
+}
 
 if (errors.length) {
   console.error(`站点校验失败（${errors.length} 项）：`);

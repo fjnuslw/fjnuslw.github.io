@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构 — 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
   <style>
     .article-svg {
       display: block;
@@ -28,6 +28,22 @@
       border-radius: var(--radius-lg, 12px);
       background: var(--bg-card, #fff);
       padding: 1rem;
+    }
+    .figure-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 2rem auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .figure-scroll .article-svg {
+      width: 100%;
+      min-width: 640px;
+      max-width: none;
+      margin: 0;
+    }
+    @media (min-width: 769px) {
+      .figure-scroll { overflow: visible; }
+      .figure-scroll .article-svg { min-width: 0; }
     }
     .svg-caption {
       text-align: center;
@@ -65,7 +81,7 @@
       margin: 1.5rem 0;
       font-size: 0.95rem;
     }
-    .callout strong { color: #1a73e8; }
+    .callout strong { color: #0b57d0; }
     .callout-warn {
       background: #fff8e1;
       border: 1px solid #ffe082;
@@ -74,7 +90,7 @@
       margin: 1.5rem 0;
       font-size: 0.95rem;
     }
-    .callout-warn strong { color: #e65100; }
+    .callout-warn strong { color: #9a3412; }
     main.post-content h2 {
       margin-top: 2.5rem;
       margin-bottom: 1rem;
@@ -102,7 +118,11 @@
       color: inherit;
     }
     .data-table {
+      display: block;
       width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       border-collapse: collapse;
       margin: 1.5rem 0;
       font-size: 0.9rem;
@@ -238,8 +258,8 @@
       </p>
 
       <p>
-        这篇文章记录我是怎么一步步定位这两个问题的根因的，以及为什么最终的修复方式不是"加 fallback"
-        而是"重构职责边界"。
+        这篇文章记录我是怎么一步步定位这两个问题的根因，并把修复方向从“继续加 fallback”
+        调整到“重构职责边界”。
       </p>
 
       <div class="key-findings">
@@ -249,7 +269,7 @@
           <li>排名器复用同一 VLM → 连锁失败，换成 FTS5 BM25 后零失败毫秒级</li>
           <li>小 VLM 的 function calling 不稳定：有时把调用意图写成自然语言而非结构化 tool_calls</li>
           <li>probe 阶段的 content 不可信，一律丢弃，最终答案由 stream 阶段生成</li>
-          <li>保证 system+profile 前缀字节级一致，llama.cpp 的 KV cache 能稳定命中</li>
+          <li>固定 system + profile 的 token 前缀，并结合 slot、sequence 与日志验证 llama.cpp 的缓存复用</li>
         </ul>
       </div>
 
@@ -292,7 +312,7 @@
       </table>
 
       <p>
-        失败模式不是"token 不够"，而是<strong>模型退化重复</strong>——它在一个短语上无限循环，
+        失败时 token 预算还有剩余，模型却已经<strong>退化为重复输出</strong>——它在一个短语上无限循环，
         直到打满 <code>max_tokens</code> 才停。增大 <code>max_tokens</code> 不仅没用，反而让单次失败从 30 秒拖到 110 秒。
       </p>
 
@@ -318,7 +338,7 @@
 
       <div class="callout">
         <strong>核心认知：</strong>小模型的 prompt 契约不能照搬大模型的字段密度。
-        prompt 要求的字段数量必须匹配模型的稳定输出能力，否则不是"少输出几个字段"，而是"整体退化"。
+        prompt 要求的字段数量必须匹配模型的稳定输出能力。字段过多时，模型常会整体退化，很少只漏掉几个字段。
       </div>
 
       <hr class="section-divider">
@@ -336,6 +356,7 @@
         于是形成了<strong>连锁失败</strong>：
       </p>
 
+      <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
       <svg class="article-svg" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="连锁失败链路">
         <defs>
           <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -359,6 +380,7 @@
         <line x1="340" y1="60" x2="375" y2="60" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
         <line x1="520" y1="60" x2="555" y2="60" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
       </svg>
+      </div>
 
       <p>
         修复方式是<strong>用确定性算法替代 LLM ranker</strong>。
@@ -442,9 +464,8 @@
       </p>
 
       <div class="callout">
-        <strong>设计原则：</strong>当模型的某种输出格式不稳定时，不要试图"修好"它，
-        而是让架构<strong>不依赖那个不稳定的输出</strong>。probe 的 content 不可信，
-        就不让它承担产出答案的职责。这不是 fallback，是职责边界。
+        <strong>设计原则：</strong>当模型的某种输出格式不稳定时，让架构<strong>不依赖那个输出</strong>。
+        probe 的 content 不可信，就只让 probe 做工具决策，最终答案交给 stream 阶段。这是一条职责边界。
       </div>
 
       <hr class="section-divider">
@@ -518,13 +539,14 @@
 
       <p>
         我的项目用 llama.cpp 本地模型，虽然没有 Anthropic 那种 API 级 <code>cache_control</code> 断点，
-        但 llama.cpp 自己有 KV cache——如果两次请求的 prompt 前缀<strong>字节级完全一致</strong>，
-        它会直接复用上次算好的 KV 矩阵，不重算。
+        但 llama.cpp 会保留当前序列的 KV cache。在模型、模板、位置和缓存状态兼容时，
+        两次请求只要拥有相同的<strong>开头 token 序列</strong>，已有前缀就有机会复用。
       </p>
 
       <p>
         问题在于，原代码每次 <code>ask</code> 都调 <code>profile_packet()</code> 重新读文件拼接。
-        虽然拼接结果大概率一致，但任何细微差异（空格、换行）都会导致整个前缀 KV 重算。
+        拼接过程只要引入能改变分词结果的差异，复用就会停在第一个不同的 token；
+        共同前缀仍可保留，变化点之后的内容需要重新计算。
       </p>
 
       <p>
@@ -541,21 +563,22 @@
         return self._frozen_profile_packet</code></pre>
 
       <p>
-        第一次 <code>ask</code> 时冻结，整个会话内复用同一字符串对象。
-        system + profile 前缀（约 1373 字符 ≈ 700 tokens）字节级不变，
-        llama.cpp 的 KV cache 稳定命中。连续对话时，第二、三次请求的前缀计算量从 700 tokens 降到 0，
-        首 token 延迟显著降低。
+        第一次 <code>ask</code> 时冻结，整个会话都使用同一份序列化结果。Python 字符串是否为同一个对象并不影响缓存；
+        最终送进模型的 token 序列才是匹配依据。这样可以让 system + profile 的公共前缀
+        （当时约 1373 字符、约 700 tokens）保持稳定，并在 llama.cpp 的序列缓存仍然有效时减少重复 prefill。
       </p>
 
       <p>
-        对桌宠式陪伴场景特别重要——用户问一句话要等 8-11 秒才出第一个字，
-        前缀命中能省到 4-6 秒，体感完全不同。
+        这对桌宠式陪伴场景尤其重要。项目迭代时，我曾观察到首字等待约 8–11 秒，
+        前缀复用后个别回合缩短约 4–6 秒。这组数值来自当时的本机调试记录，
+        没有统一硬件、采样次数和缓存日志，适合说明优化方向，不能当作 llama.cpp 的通用基准。
       </p>
 
       <div class="callout">
-        <strong>为什么说这是"核心创新"：</strong>Hermes 的 <code>cache_control</code> 面向云模型 API（按断点收费）。
-        本地 llama.cpp 没有 API 断点，靠的是 prompt 前缀的天然稳定性命中 KV cache。
-        这意味着优化方式更底层、更优雅——不是靠 API 特性，而是靠保证 prompt 结构的字节级一致性。
+        <strong>这里真正能迁移的做法：</strong>Hermes 的 <code>cache_control</code> 由云模型 API 管理缓存断点；
+        本地 llama.cpp 则要结合 slot、sequence 和实际日志判断复用情况。两者都受益于稳定前缀，
+        具体命中条件与生命周期各不相同。关于 KV、Prefix Cache 和 Prompt Cache 的边界，可继续阅读
+        <a href="kv-cache-reuse.html">《KV Cache 如何让大模型复用已经读过的内容》</a>。
       </div>
 
       <hr class="section-divider">
@@ -568,7 +591,7 @@
           <li><strong>当某种输出格式不稳定时，让架构不依赖它。</strong>probe 的 content 不稳定，就不让 content 承担产出职责。这不是 fallback，是职责边界。</li>
           <li><strong>确定性算法优先于 LLM。</strong>30-40 条候选集的排名，BM25 零失败毫秒级，LLM ranker 46% 失败 12-30 秒。小规模排名不需要语义理解。</li>
           <li><strong>profile 指令要消除内部矛盾。</strong>"能短则短"和"给出具体分析"矛盾时，模型会选更短的那条。写 profile 要主动消除张力。</li>
-          <li><strong>prefix cache 是本地模型的关键优化点。</strong>保证 system+profile 前缀字节级一致，llama.cpp 的 KV cache 能稳定命中，首 token 延迟降低 30-60%。</li>
+          <li><strong>prefix cache 值得用日志验证。</strong>固定 system + profile 的 token 前缀，并确认 slot、sequence 和缓存生命周期兼容；本文当时观察到首 token 延迟下降，幅度会随硬件、前缀长度和实现变化。</li>
         </ol>
       </div>
 
@@ -589,13 +612,13 @@
       </table>
 
       <blockquote style="border-left:4px solid var(--accent,#1a73e8); padding:0.75rem 1.25rem; margin:2rem 0; color:var(--text-secondary,#666); font-style:italic;">
-        小模型不是大模型的降级版，它有自己独特的不稳定性。
-        架构设计的任务不是消除这些不稳定性，而是让系统的正确性不依赖于那些不稳定的部分。
+        小模型有自己独特的不稳定性。
+        架构设计应当隔离这些波动，让系统的正确性不依赖于不稳定的输出。
       </blockquote>
 
       <p>— 宋林蔚</p>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+      <div class="article-footer-nav">
         <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
         <a href="desktop-agent-context-pitfalls.html" class="btn">上一篇：上下文管理踩坑 →</a>
       </div>

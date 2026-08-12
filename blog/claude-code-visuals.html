@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>推荐阅读：Claude Code 工作原理可视化合集 - 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
   <style>
     .source-note {
       border: 1px solid var(--border);
@@ -173,7 +173,7 @@
 
     <h2>我觉得值得看的点</h2>
     <p>
-      它有意思的地方不只是“做了图”，而是把 Agent 运行时里那些平时藏在日志、请求体和客户端协议里的东西拆开了。对正在做桌面 Agent、工具调用、上下文压缩或缓存优化的人来说，这类材料比抽象概念更容易建立直觉。
+      它的价值远超“做了图”：Agent 运行时里平时藏在日志、请求体和客户端协议里的东西，被逐层拆开了。对正在做桌面 Agent、工具调用、上下文压缩或缓存优化的人来说，这类材料比抽象概念更容易建立直觉。
     </p>
 
     <ul class="topic-list">
@@ -187,10 +187,10 @@
 
     <h2>留给自己的提醒</h2>
     <p>
-      读这类系统拆解时，我最想带走的是“工程边界感”：模型能提出意图，客户端要负责执行、记录、审计和兜底。真正稳定的 Agent 不是把所有内容塞进 prompt，而是把状态、权限、工具和证据组织成模型能可靠使用的结构。
+      读这类系统拆解时，我最想带走的是“工程边界感”：模型能提出意图，客户端要负责执行、记录、审计和兜底。稳定的 Agent 会把状态、权限、工具和证据组织成模型能可靠使用的结构，单纯扩充 prompt 无法替代这层工程设计。
     </p>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+    <div class="article-footer-nav">
       <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
     </div>
   </main>

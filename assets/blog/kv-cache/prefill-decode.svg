@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc">
+  <title id="title">预填充与逐词生成流程</title>
+  <desc id="desc">提示词在预填充阶段并行处理并写入每层键值缓存，随后模型在逐词生成阶段一次读取一个新词并追加新的键和值。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090d0b"/>
+      <stop offset="1" stop-color="#172018"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#b9c2b8" stroke-opacity=".1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6 0 12Z" fill="#b7ff3c"/>
+    </marker>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1000" height="560" rx="28" fill="url(#bg)"/>
+  <rect width="1000" height="560" rx="28" fill="url(#grid)"/>
+
+  <text x="54" y="62" fill="#f5f1e8" font-size="26" font-weight="800" font-family="system-ui, sans-serif">一次回答有两个阶段</text>
+  <text x="54" y="92" fill="#98a298" font-size="16" font-family="system-ui, sans-serif">先把输入读完，再沿着缓存逐个生成新 token</text>
+
+  <g transform="translate(54 132)">
+    <rect width="426" height="364" rx="22" fill="#f5f1e8"/>
+    <text x="28" y="44" fill="#101510" font-size="18" font-weight="800" font-family="system-ui, sans-serif">01 / PREFILL 预填充</text>
+    <text x="28" y="72" fill="#667066" font-size="14" font-family="system-ui, sans-serif">整段提示词可以并行进入模型</text>
+
+    <g transform="translate(28 104)" font-family="ui-monospace, monospace" font-size="14" font-weight="700">
+      <rect width="66" height="42" rx="8" fill="#dfe7da"/><text x="33" y="27" text-anchor="middle" fill="#182018">系统</text>
+      <rect x="76" width="66" height="42" rx="8" fill="#dfe7da"/><text x="109" y="27" text-anchor="middle" fill="#182018">工具</text>
+      <rect x="152" width="66" height="42" rx="8" fill="#dfe7da"/><text x="185" y="27" text-anchor="middle" fill="#182018">历史</text>
+      <rect x="228" width="66" height="42" rx="8" fill="#dfe7da"/><text x="261" y="27" text-anchor="middle" fill="#182018">问题</text>
+      <rect x="304" width="66" height="42" rx="8" fill="#b7ff3c"/><text x="337" y="27" text-anchor="middle" fill="#101510">?</text>
+    </g>
+
+    <path d="M213 160V198" stroke="#181e18" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="213" y="186" text-anchor="middle" fill="#667066" font-size="13" font-family="system-ui, sans-serif">每一层都写入</text>
+
+    <g transform="translate(48 208)" font-family="system-ui, sans-serif">
+      <rect width="330" height="42" rx="9" fill="#162018"/>
+      <text x="16" y="26" fill="#b7ff3c" font-size="13" font-weight="800">LAYER 01</text>
+      <text x="154" y="26" fill="#f5f1e8" font-size="13">K₁…Kₙ</text>
+      <text x="246" y="26" fill="#f5f1e8" font-size="13">V₁…Vₙ</text>
+      <rect y="50" width="330" height="42" rx="9" fill="#1e2920"/>
+      <text x="16" y="76" fill="#b7ff3c" font-size="13" font-weight="800">LAYER 02</text>
+      <text x="154" y="76" fill="#f5f1e8" font-size="13">K₁…Kₙ</text>
+      <text x="246" y="76" fill="#f5f1e8" font-size="13">V₁…Vₙ</text>
+      <rect y="100" width="330" height="42" rx="9" fill="#263329"/>
+      <text x="16" y="126" fill="#b7ff3c" font-size="13" font-weight="800">LAYER …</text>
+      <text x="154" y="126" fill="#f5f1e8" font-size="13">K₁…Kₙ</text>
+      <text x="246" y="126" fill="#f5f1e8" font-size="13">V₁…Vₙ</text>
+    </g>
+  </g>
+
+  <g transform="translate(520 132)">
+    <rect width="426" height="364" rx="22" fill="#121913" stroke="#394339"/>
+    <text x="28" y="44" fill="#f5f1e8" font-size="18" font-weight="800" font-family="system-ui, sans-serif">02 / DECODE 逐词生成</text>
+    <text x="28" y="72" fill="#98a298" font-size="14" font-family="system-ui, sans-serif">每轮只为新 token 计算一组 K、V</text>
+
+    <g transform="translate(32 108)" font-family="system-ui, sans-serif">
+      <rect width="152" height="78" rx="14" fill="#222d24" stroke="#536052"/>
+      <text x="76" y="30" text-anchor="middle" fill="#98a298" font-size="13">当前 token</text>
+      <text x="76" y="58" text-anchor="middle" fill="#f5f1e8" font-size="24" font-weight="800">新</text>
+      <path d="M164 39H214" stroke="#b7ff3c" stroke-width="3" marker-end="url(#arrow)"/>
+      <rect x="224" width="134" height="78" rx="14" fill="#b7ff3c"/>
+      <text x="291" y="31" text-anchor="middle" fill="#162018" font-size="13">读取旧 K / V</text>
+      <text x="291" y="58" text-anchor="middle" fill="#162018" font-size="17" font-weight="800">算下一个词</text>
+    </g>
+
+    <g transform="translate(32 220)" font-family="system-ui, sans-serif">
+      <rect width="362" height="88" rx="14" fill="#1b251d" stroke="#536052"/>
+      <text x="18" y="29" fill="#98a298" font-size="13">缓存继续增长</text>
+      <g transform="translate(18 44)">
+        <rect width="48" height="24" rx="5" fill="#687467"/><rect x="56" width="48" height="24" rx="5" fill="#687467"/>
+        <rect x="112" width="48" height="24" rx="5" fill="#687467"/><rect x="168" width="48" height="24" rx="5" fill="#687467"/>
+        <rect x="224" width="48" height="24" rx="5" fill="#b7ff3c" filter="url(#glow)"/>
+        <rect x="280" width="48" height="24" rx="5" fill="none" stroke="#687467" stroke-dasharray="5 4"/>
+      </g>
+    </g>
+    <text x="213" y="334" text-anchor="middle" fill="#b7ff3c" font-size="14" font-weight="700" font-family="system-ui, sans-serif">读取缓存 → 生成 → 追加 → 重复</text>
+  </g>
+</svg>

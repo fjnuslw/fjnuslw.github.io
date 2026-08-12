@@ -1,5 +1,16 @@
 [
   {
+    "id": "kv-cache-reuse",
+    "title": "KV Cache 如何让大模型复用已经读过的内容",
+    "date": "2026-08-12",
+    "readTime": "16 min",
+    "excerpt": "从一次逐 token 生成出发，讲清缓存了什么、为什么只存 K/V、显存怎样增长，以及稳定前缀怎样影响 Agent 架构。",
+    "tags": ["LLM", "推理", "Agent"],
+    "color": "emerald",
+    "icon": "KV",
+    "url": "blog/kv-cache-reuse.html"
+  },
+  {
     "id": "semantic-terrain-context-engineering",
     "title": "语义地形工程：把上下文设计成可控系统",
     "date": "2026-07-08",
@@ -42,16 +53,5 @@
     "color": "rose",
     "icon": "💭",
     "url": "blog/desktop-agent-context-pitfalls.html"
-  },
-  {
-    "id": "hello-world",
-    "title": "你好，世界！我的第一篇博客",
-    "date": "2026-06-24",
-    "readTime": "3 min",
-    "excerpt": "这是我个人网站的第一篇文章。在这里，我会分享我在 LLM 和 Agent 方向的学习笔记、技术思考和实习经历。欢迎来到我的小世界！",
-    "tags": ["随笔", "起点"],
-    "color": "emerald",
-    "icon": "🌱",
-    "url": "blog/hello-world.html"
   }
 ]

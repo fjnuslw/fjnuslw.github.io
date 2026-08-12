@@ -826,7 +826,7 @@ a.card-blog:hover h3 {
   align-items: center;
   gap: var(--space-3);
   font-size: var(--text-sm);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
 }
 
@@ -835,6 +835,14 @@ a.card-blog:hover h3 {
   max-width: calc(720px + 2 * var(--space-6));
   margin: 0 auto;
   padding: 0 var(--space-6) var(--space-16);
+}
+
+/* 旧文章曾在正文容器里再次嵌套全站 .container，手机端会被重复扣除留白。 */
+.post-content > .container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 .post-content h2 {
@@ -915,6 +923,24 @@ a.card-blog:hover h3 {
   text-underline-offset: 3px;
 }
 .post-content a:hover { text-decoration-color: var(--accent); }
+
+.article-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 480px) {
+  .article-footer-nav .btn {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+}
 
 /* ===== 联系区块 ===== */
 .contact-box {

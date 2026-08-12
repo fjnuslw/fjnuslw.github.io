@@ -127,11 +127,11 @@
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>小模型缺的不是另一个 Prompt，而是一套可靠 Harness。</h2><p class="case-section-copy">桌面助手要同时回答三个问题：眼前窗口到底写了什么、当前行为意味着什么、之前对话和长期偏好里哪些内容值得带入。把这些职责全推给 0.8B LLM，只会浪费上下文并放大误读。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>小模型需要一套可靠 Harness，单靠多写一个 Prompt 还不够。</h2><p class="case-section-copy">桌面助手要同时回答三个问题：眼前窗口到底写了什么、当前行为意味着什么、之前对话和长期偏好里哪些内容值得带入。把这些职责全推给 0.8B LLM，只会浪费上下文并放大误读。</p></div></div>
         <div class="case-grid">
           <article class="case-card"><span class="case-card-index">01 / READ</span><h3>文字与位置必须准确</h3><p>数字、字段和区域位置由 OCR 提供，不要求 VLM 猜测屏幕上可直接读取的几何事实。</p></article>
           <article class="case-card"><span class="case-card-index">02 / UNDERSTAND</span><h3>页面和行为需要语义</h3><p>VLM 聚焦页面布局、视觉关系与用户正在做什么，把有限推理预算用在 OCR 不擅长的部分。</p></article>
-          <article class="case-card"><span class="case-card-index">03 / REMEMBER</span><h3>上下文不能每轮重来</h3><p>窗口观察、完整对话和确认后的长期记忆需要持久化；程序重启后仍应恢复，而不是重新认识用户。</p></article>
+          <article class="case-card"><span class="case-card-index">03 / REMEMBER</span><h3>上下文不能每轮重来</h3><p>窗口观察、完整对话和确认后的长期记忆需要持久化；程序重启后应从已有状态继续。</p></article>
         </div>
       </div>
     </section>

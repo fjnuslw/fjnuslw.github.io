@@ -19,7 +19,7 @@
   <title>工程笔记｜宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css?v=20260809">
-  <link rel="stylesheet" href="css/evidence-ledger.css?v=20260811">
+  <link rel="stylesheet" href="css/evidence-ledger.css?v=20260812">
 </head>
 <body class="ledger-page writing-page">
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -45,8 +45,8 @@
       <p class="ledger-overline">04 / ENGINEERING NOTES</p>
       <h1>把失败写成<br><em>下一次的检查项。</em></h1>
       <div class="ledger-page-intro">
-        <p>这里不整理“正确答案”，而是记录 Agent、RAG 和本地模型系统在真实实现中怎样失效、怎样被定位，以及哪些设计后来被替换。</p>
-        <p class="ledger-update">5 篇公开笔记 · 最近更新 2026.08</p>
+        <p>这里记录 Agent、RAG 和本地模型系统在真实实现中怎样失效、怎样被定位，以及哪些设计后来被替换。重点放在可复用的检查项。</p>
+        <p class="ledger-update">5 篇公开笔记 · 最近更新 2026.08.12</p>
       </div>
     </div>
   </header>
@@ -63,12 +63,28 @@
         <button class="filter-btn" type="button" data-tag="Agent">Agent</button>
         <button class="filter-btn" type="button" data-tag="VLM">VLM</button>
         <button class="filter-btn" type="button" data-tag="LLM">LLM</button>
+        <button class="filter-btn" type="button" data-tag="推理">推理</button>
         <button class="filter-btn" type="button" data-tag="架构">架构</button>
         <button class="filter-btn" type="button" data-tag="思考">思考</button>
       </div>
 
       <div class="article-gallery" id="blog-posts">
-        <a class="card-blog article-featured reveal" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html" aria-label="阅读主推文章：语义地形工程，把上下文设计成可控系统，18 分钟">
+        <a class="card-blog article-featured reveal" data-tags="llm,推理,agent" href="blog/kv-cache-reuse.html" aria-label="阅读主推文章：KV Cache 如何让大模型复用已经读过的内容，16 分钟">
+          <span class="article-card-visual preview-kv" aria-hidden="true">
+            <img src="assets/blog/kv-cache/prefill-decode.svg" width="1000" height="560" alt="">
+            <span class="preview-caption">KV CACHE / PREFILL → DECODE</span>
+          </span>
+          <span class="article-card-body">
+            <span class="article-card-topline"><span>FEATURED / 01</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-meta"><time datetime="2026-08-12">2026.08.12</time><span>16 min</span></span>
+            <strong class="article-card-title">KV Cache 如何让大模型复用已经读过的内容</strong>
+            <span class="article-card-summary">从一次逐 token 生成出发，讲清缓存了什么、为什么只存 K/V、显存怎样增长，以及稳定前缀怎样影响 Agent 架构。</span>
+            <span class="article-card-tags" aria-label="标签"><span>LLM</span><span>推理</span><span>Agent</span></span>
+            <span class="article-card-payoff"><b>读完你会获得</b> 一张从注意力计算、显存账单到 Prompt Cache 与上下文布局的完整地图。</span>
+          </span>
+        </a>
+
+        <a class="card-blog article-card reveal" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html" aria-label="阅读文章：语义地形工程，把上下文设计成可控系统，18 分钟">
           <span class="article-card-visual preview-terrain" aria-hidden="true">
             <span class="terrain-axis terrain-axis-x">context →</span>
             <span class="terrain-axis terrain-axis-y">signal ↑</span>
@@ -81,7 +97,7 @@
             <span class="preview-caption">SEMANTIC TERRAIN / CONTROL SURFACE</span>
           </span>
           <span class="article-card-body">
-            <span class="article-card-topline"><span>FEATURED / 01</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-topline"><span>02 / CONTEXT SYSTEM</span><span class="article-arrow" aria-hidden="true">↗</span></span>
             <span class="article-card-meta"><time datetime="2026-07-08">2026.07.08</time><span>18 min</span></span>
             <strong class="article-card-title">语义地形工程：把上下文设计成可控系统</strong>
             <span class="article-card-summary">把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套可迁移的上下文设计框架。</span>
@@ -100,7 +116,7 @@
             <span class="preview-caption">CODING AGENT / PIPELINE</span>
           </span>
           <span class="article-card-body">
-            <span class="article-card-topline"><span>02 / VISUAL GUIDE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-topline"><span>03 / VISUAL GUIDE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
             <span class="article-card-meta"><time datetime="2026-07-06">2026.07.06</time><span>4 min</span></span>
             <strong class="article-card-title">Claude Code 工作原理可视化合集</strong>
             <span class="article-card-summary">从请求结构、缓存、工具调用、权限、Skills 到压缩，用可交互材料理解编码 Agent 的内部机制。</span>
@@ -117,7 +133,7 @@
             <span class="preview-caption">FUNCTION CALL / STABILITY PROBE</span>
           </span>
           <span class="article-card-body">
-            <span class="article-card-topline"><span>03 / FAILURE REPORT</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-topline"><span>04 / FAILURE REPORT</span><span class="article-arrow" aria-hidden="true">↗</span></span>
             <span class="article-card-meta"><time datetime="2026-07-05">2026.07.05</time><span>15 min</span></span>
             <strong class="article-card-title">小 VLM 的 function calling 有多不稳定</strong>
             <span class="article-card-summary">一次 probe → stream 职责拆分的失败复盘；文首已补充 2026.08 小模型 Agent Harness 当前主线。</span>
@@ -134,7 +150,7 @@
             <span class="preview-caption">DESKTOP CONTEXT / MEMORY</span>
           </span>
           <span class="article-card-body">
-            <span class="article-card-topline"><span>04 / CONTEXT NOTE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
+            <span class="article-card-topline"><span>05 / CONTEXT NOTE</span><span class="article-arrow" aria-hidden="true">↗</span></span>
             <span class="article-card-meta"><time datetime="2026-07-04">2026.07.04</time><span>12 min</span></span>
             <strong class="article-card-title">为什么“看见屏幕”还不够</strong>
             <span class="article-card-summary">桌面 Agent 原型期的上下文管理踩坑；当前实现已转向窗口观察、持久对话、长期记忆与按需检索。</span>
@@ -143,23 +159,6 @@
           </span>
         </a>
 
-        <a class="card-blog article-card reveal" data-tags="随笔,起点" href="blog/hello-world.html" aria-label="阅读文章：你好，世界，我的第一篇博客，3 分钟">
-          <span class="article-card-visual preview-terminal" aria-hidden="true">
-            <span class="terminal-bar"><i></i><i></i><i></i><b>slw@evidence-ledger</b></span>
-            <span class="terminal-line"><i>$</i> init personal-log</span>
-            <span class="terminal-line"><i>✓</i> agent / llm / engineering</span>
-            <span class="terminal-line terminal-cursor"><i>›</i> write what failed<span></span></span>
-            <span class="preview-caption">LOG 000 / ORIGIN</span>
-          </span>
-          <span class="article-card-body">
-            <span class="article-card-topline"><span>05 / ORIGIN LOG</span><span class="article-arrow" aria-hidden="true">↗</span></span>
-            <span class="article-card-meta"><time datetime="2026-06-24">2026.06.24</time><span>3 min</span></span>
-            <strong class="article-card-title">你好，世界！我的第一篇博客</strong>
-            <span class="article-card-summary">为什么建立这个站，以及接下来会怎样记录 LLM、Agent、工程与实习实践。</span>
-            <span class="article-card-tags" aria-label="标签"><span>随笔</span><span>起点</span></span>
-            <span class="article-card-payoff"><b>读完你会获得</b> 快速了解这个站关注什么，以及后续内容如何组织。</span>
-          </span>
-        </a>
       </div>
     </section>
 

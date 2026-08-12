@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="从一次逐 token 生成出发，讲清 KV Cache 缓存了什么、为什么只存 K/V、显存怎样增长、Prompt Cache 怎样命中，以及 Agent 上下文该如何布局。">
+  <link rel="canonical" href="https://fjnuslw.github.io/blog/kv-cache-reuse.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="KV Cache 如何让大模型复用已经读过的内容 - 宋林蔚">
+  <meta property="og:description" content="把 KV Cache 从注意力公式讲到显存账单、前缀复用与 Agent 上下文布局。">
+  <meta property="og:url" content="https://fjnuslw.github.io/blog/kv-cache-reuse.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta property="article:published_time" content="2026-08-12">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KV Cache 如何让大模型复用已经读过的内容 - 宋林蔚">
+  <meta name="twitter:description" content="从逐 token 生成、Q/K/V 到 Prompt Cache 与 PagedAttention，一次讲清缓存的收益和边界。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>KV Cache 如何让大模型复用已经读过的内容 - 宋林蔚</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
+  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260812">
+  <link rel="stylesheet" href="../css/article-kv-cache.css?v=20260812-1">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "KV Cache 如何让大模型复用已经读过的内容",
+    "description": "从一次逐 token 生成出发，讲清 KV Cache、Prompt Cache、显存成本与 Agent 上下文布局。",
+    "datePublished": "2026-08-12",
+    "dateModified": "2026-08-12",
+    "author": {"@type": "Person", "name": "宋林蔚"},
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": "https://fjnuslw.github.io/blog/kv-cache-reuse.html"
+  }
+  </script>
+</head>
+<body class="ledger-page article-page kv-article">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+        <li><a href="../index.html" class="nav-link">首页</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html" class="nav-link">履历</a></li>
+        <li><a href="../blog.html" class="nav-link active" aria-current="page">文章</a></li>
+        <li><a href="../about.html" class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="post-header">
+    <div class="container">
+      <div class="tags-group">
+        <span class="tag">LLM</span>
+        <span class="tag">推理</span>
+        <span class="tag">Agent</span>
+      </div>
+      <h1><span>KV Cache</span><br><em>如何让大模型复用已经读过的内容</em></h1>
+      <p class="post-deck">一条消息已经传给模型，下一轮 API 调用为什么还要再传一次？既然又传了一遍，服务端怎样避免把相同前文全部重算？答案藏在每一层注意力留下的 K 和 V 里。</p>
+      <div class="post-meta">
+        <time datetime="2026-08-12">2026-08-12</time>
+        <span>·</span>
+        <span>16 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="post-content" id="main-content">
+    <div class="kv-lead article-narrow">
+      <p>我是在读李博杰的《深入理解 AI Agent》第二章时，第一次把 Agent 的消息列表和模型底层缓存连在一起。API 本身没有一段会自动延续的“对话记忆”。Agent 每轮都会重新组织系统规则、工具定义、历史消息和当前问题，然后把它们送给模型。消息会重复发送，已经算出的前缀却有机会被复用。</p>
+      <p>这个区别很重要。它解释了系统提示词里一处靠前的动态时间戳为什么会拖慢首字返回，也解释了长对话为何会持续吃显存，还能指导工具列表、状态信息和压缩机制该放在上下文的哪个位置。</p>
+    </div>
+
+    <div class="kv-thesis">
+      <strong>先记住一句话</strong>
+      <p>KV Cache 是模型读过前文后，在每一层留下的一组数值记录。生成下一个 token 时，模型读取这些记录，给新增 token 补上一组 K 和 V，然后继续向后生成。</p>
+    </div>
+
+    <figure class="kv-figure">
+      <div class="kv-figure-scroll" role="region" aria-label="图 1，可横向滚动查看细节" tabindex="0">
+      <img src="../assets/blog/kv-cache/prefill-decode.svg" width="1000" height="560" alt="提示词先经过预填充写入各层 KV Cache，随后模型逐 token 读取缓存、生成并追加新 K/V">
+      </div>
+      <figcaption>图 1：一次回答可以拆成预填充和逐词生成。两个阶段处理的数据形状不同，性能瓶颈也不同。</figcaption>
+    </figure>
+
+    <h2 id="two-phases"><span class="section-no">01 / TWO PHASES</span>模型先读完输入，再逐个写出答案</h2>
+
+    <p>假设输入是“我喜欢吃”，模型准备续写“苹果”。它先处理输入里的全部 token。这个阶段通常叫 <strong>prefill</strong>，中文常译作预填充。GPU 可以同时处理许多输入位置，并在模型的每一层算出对应的 Key 和 Value，随后把它们保存下来。</p>
+
+    <div class="cache-timeline" aria-label="逐 token 生成时间线">
+      <div>prefill&nbsp; <span class="cached-token">[我] [喜欢] [吃]</span>　　　　　 → 写入三组 K / V</div>
+      <div>decode 1 <span class="cached-token">[我] [喜欢] [吃]</span> <span class="new-token">[苹果]</span>　 → 读取前三组，追加一组</div>
+      <div>decode 2 <span class="cached-token">[我] [喜欢] [吃] [苹果]</span> <span class="new-token">[。]</span> → 读取前四组，追加一组</div>
+    </div>
+
+    <p>从第一个输出 token 开始，过程进入 <strong>decode</strong>，也就是逐词生成。后一个 token 依赖前一个 token，所以这些步骤有明确先后顺序。每一步只新增一个 token 的计算，同时要读取此前所有可见 token 的缓存。</p>
+
+    <div class="fact-grid" aria-label="预填充和逐词生成的差异">
+      <div class="fact-card"><b>预填充：一次读一段</b><p>大批输入 token 可以并行计算，长提示词会带来明显的首字等待时间。</p></div>
+      <div class="fact-card"><b>逐词生成：一次写一个</b><p>每轮新增的数据很少，却要反复读取越来越长的历史 K/V，常受到显存带宽影响。</p></div>
+    </div>
+
+    <p>因此，“模型已经读过”包含两层含义。对同一次生成来说，前文 K/V 留在当前序列的缓存里；对下一次 API 请求来说，还需要推理服务保留并识别相同前缀，才有机会跳过重复的预填充。</p>
+
+    <h2 id="qkv"><span class="section-no">02 / Q · K · V</span>为什么长期保存 K 和 V，没有保存旧 Q</h2>
+
+    <p>注意力计算里，每个 token 会产生 Query、Key 和 Value 三类向量。可以先把它们理解成一次资料检索：</p>
+
+    <div class="term-grid">
+      <div class="term-card"><b><span class="letter">Q</span> · 当前问题</b><p>这个位置此刻想从前文找什么。它会与每个可见位置的 K 做匹配。</p></div>
+      <div class="term-card"><b><span class="letter">K</span> · 匹配标签</b><p>这个位置适合在什么情况下被关注。匹配分数决定读取权重。</p></div>
+      <div class="term-card"><b><span class="letter">V</span> · 可取内容</b><p>匹配完成后真正进入加权汇总的信息。它会影响当前 token 的新表示。</p></div>
+    </div>
+
+    <figure class="kv-figure">
+      <div class="kv-figure-scroll" role="region" aria-label="图 2，可横向滚动查看细节" tabindex="0">
+      <img src="../assets/blog/kv-cache/qkv-search.svg" width="1000" height="600" alt="当前 token 的 Q 与前文 K 计算权重，再按权重读取 V；旧 K/V 会继续被使用，旧 Q 不再参与后续查询">
+      </div>
+      <figcaption>图 2：Q、K、V 是数值向量。图里的中文标签只用于建立直觉，缓存里没有可直接阅读的卡片文字。</figcaption>
+    </figure>
+
+    <p>新 token 到来时，它会生成新的 Q，用这个 Q 查询从第一个 token 到当前位置的全部 K，再按权重汇总对应的 V。下一步继续生成时，需要另一个新的 Q，历史 K 和 V 还会再次被读取。</p>
+
+    <p>旧 Q 也能确定下来，只是它已经完成了当时那次查询。未来 token 不会拿旧 Q 重新提问，保存它不会减少下一步必须做的计算。历史 K/V 有持续的消费者，旧 Q 没有，这就是 KV Cache 名字里只有 K 和 V 的原因。</p>
+
+    <div class="boundary-note">因果遮罩让旧 token 看不到未来内容。模型权重、旧 token 和它们的位置保持不变时，旧位置在各层形成的 K/V 也能保持不变。这个前提支撑了缓存复用。</div>
+
+    <h2 id="cost"><span class="section-no">03 / THE BILL</span>省下重复计算，也接手一笔显存账单</h2>
+
+    <p>没有缓存的朴素实现，会在每个生成步骤重新处理整段序列。写到第 1001 个 token 时，前 1000 个位置又走一遍模型；写第 1002 个时，它们还要再走一次。KV Cache 留住旧位置各层的 K/V，下一步只需要为新增 token 计算一组新的 Q、K、V。</p>
+
+    <p>缓存没有让注意力读取历史的工作消失。当前 Q 仍要和全部可见 K 比较，再读取对应 V。对单个解码步骤，历史越长，需要扫描的 K/V 越多；对一段完整输出，还要把每一步累加起来。长上下文在开启缓存后依然可能变慢。</p>
+
+    <div class="formula-panel">
+      <p>忽略块对齐和管理元数据时，单个请求可以用下面的式子估算：</p>
+      <div class="formula">KV bytes ≈ 2 × 层数 × token 数 × KV 头数 × 每头维度 × 数值字节数 × 并发序列数</div>
+
+      <form class="kv-calculator" id="kv-calculator">
+        <h3>把你的模型参数放进来算一遍</h3>
+        <div class="calculator-grid">
+          <div class="calculator-field"><label for="kv-layers">模型层数</label><input id="kv-layers" name="layers" type="number" min="1" max="256" step="1" value="32"></div>
+          <div class="calculator-field"><label for="kv-heads">KV 头数</label><input id="kv-heads" name="heads" type="number" min="1" max="256" step="1" value="32"></div>
+          <div class="calculator-field"><label for="kv-dim">每头维度</label><input id="kv-dim" name="headDim" type="number" min="1" max="1024" step="1" value="128"></div>
+          <div class="calculator-field"><label for="kv-tokens">总 token 数</label><input id="kv-tokens" name="tokens" type="number" min="1" max="2000000" step="1" value="10000"></div>
+          <div class="calculator-field"><label for="kv-bytes">每个数值</label><select id="kv-bytes" name="bytes"><option value="2" selected>FP16 / BF16 · 2 bytes</option><option value="1">INT8 / FP8 · 1 byte</option><option value="0.5">INT4 · 0.5 byte</option><option value="4">FP32 · 4 bytes</option></select></div>
+          <div class="calculator-field"><label for="kv-batch">并发序列数</label><input id="kv-batch" name="batch" type="number" min="1" max="10000" step="1" value="1"></div>
+        </div>
+        <div class="calculator-result" aria-live="polite"><span>估算 KV 数据区</span><output id="kv-result" for="kv-layers kv-heads kv-dim kv-tokens kv-bytes kv-batch">4.88 GiB</output></div>
+        <p class="calculator-note">默认值对应 32 层、32 个 KV 头、头维 128、10K token、FP16 的示例。实际引擎还会受块大小、对齐、张量并行、共享与预留策略影响。</p>
+      </form>
+    </div>
+
+    <p>这也说明了为什么 MQA 和 GQA 会影响推理显存。传统多头注意力里，查询头和 KV 头数量常常相同；MQA 让多个查询头共用一组 K/V，GQA 则分组共享。公式里的“KV 头数”下降，缓存随之缩小。模型结构已经确定时，还可以通过缓存量化、滑动窗口或把部分缓存移到 CPU 来换取空间，每种方案都会引入速度、质量或传输上的新代价。</p>
+
+    <h2 id="two-caches"><span class="section-no">04 / TWO LEVELS</span>KV Cache 与 Prompt Cache 处在不同边界</h2>
+
+    <p>这两个名字经常混在一起。普通 KV Cache 关注一条活跃序列怎样继续生成；Prefix Cache 或 Prompt Cache 关注多次请求怎样复用相同前缀。后者通常保存或重新挂接前一次预填充产生的 KV 块。</p>
+
+    <div class="comparison-wrap" role="region" aria-label="缓存概念对比" tabindex="0">
+      <table class="comparison-table">
+        <thead><tr><th>机制</th><th>复用范围</th><th>主要收益</th><th>仍要做的事</th></tr></thead>
+        <tbody>
+          <tr><td>KV Cache</td><td>同一条正在生成的序列</td><td>避免每一步重算旧位置</td><td>新 token 继续读取历史 K/V</td></tr>
+          <tr><td>Prefix / Prompt Cache</td><td>多个拥有相同 token 前缀的请求</td><td>跳过命中部分的重复预填充</td><td>未命中的输入与后续输出照常计算</td></tr>
+          <tr><td>Agent 消息历史</td><td>应用保存的结构化消息</td><td>让下一轮请求拥有足够语境</td><td>框架仍需构造并发送请求</td></tr>
+          <tr><td>长期记忆 / RAG</td><td>数据库、文件或检索系统</td><td>跨任务保存和找回可读信息</td><td>检索结果需要重新进入模型上下文</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="kv-figure">
+      <div class="kv-figure-scroll" role="region" aria-label="图 3，可横向滚动查看细节" tabindex="0">
+      <img src="../assets/blog/kv-cache/prefix-hit-miss.svg" width="1000" height="640" alt="稳定的系统规则、工具定义和历史消息形成可复用前缀；把变化的时间戳放到开头会让后续缓存失效">
+      </div>
+      <figcaption>图 3：前缀复用从第一个 token 开始连续匹配。变化越靠前，需要重算的后缀通常越长。</figcaption>
+    </figure>
+
+    <p>举个 Agent 里的例子。系统规则有 3000 token，工具定义有 5000 token，历史对话有 2000 token。本轮只多了一条“当前页面是设置页”。如果前面的 10000 token 保持完全一致，新状态追加在末尾，推理服务可能直接复用这一长段前缀。如果系统规则开头每秒写入一次当前时间，差异会很早出现，后面的大部分缓存都失去命中机会。</p>
+
+    <p>缓存识别的是 token 序列。两段文字含义相近，token 不同，也无法当作同一个前缀。工具定义的顺序随机变化、JSON 序列化时空格不稳定、聊天模板更换，都可能改变最终 token。不同服务商还会设置最小前缀长度、块大小、保留时间、路由和租户隔离规则，应用需要查看自己所用平台的实时文档。</p>
+
+    <div class="boundary-note">vLLM 的自动前缀缓存文档给出了一条容易漏掉的边界：它减少预填充时间，不会缩短新 token 的逐步生成。当答案很长，或者请求之间没有共同前缀，收益会很小。</div>
+
+    <h2 id="paged"><span class="section-no">05 / SERVING</span>缓存很大，还要解决它怎样住进显存</h2>
+
+    <p>线上服务同时处理许多长度不同的请求。若每个请求都按最大输出长度预留一整段连续显存，短请求会留下大片空位，长度变化也会产生碎片。KV Cache 已经省下计算，低效的内存布局又可能把可并发的请求数压下来。</p>
+
+    <p>PagedAttention 借用了操作系统分页的思路：把一条序列的 KV 拆成固定大小的块，用块表维护逻辑顺序，物理块可以散落在显存的不同位置。空间按需分配，请求结束后也能按块回收。多个采样分支拥有同一段提示词时，还可以指向相同的前缀块；分叉后再给各自的新 token 分配新块。</p>
+
+    <figure class="kv-figure">
+      <div class="kv-figure-scroll" role="region" aria-label="图 4，可横向滚动查看细节" tabindex="0">
+      <img src="../assets/blog/kv-cache/paged-attention.svg" width="1000" height="620" alt="连续的逻辑 KV 块映射到不连续的物理显存块，两个分支共享前缀块并在分叉后各自写入">
+      </div>
+      <figcaption>图 4：分页管理调整缓存的物理布局与共享方式。token 的逻辑顺序仍然连续。</figcaption>
+    </figure>
+
+    <p>PagedAttention 和连续批处理经常一起出现，两者各自处理一类问题。分页回答“缓存块放在哪里”；连续批处理回答“这一轮让哪些请求一起运行”。某条短请求生成完毕后，调度器可以立刻让等待中的新请求进入下一轮，释放出来的 KV 块也能重新分配。</p>
+
+    <div class="fact-grid">
+      <div class="fact-card"><b>PagedAttention · 管空间</b><p>按块分配、减少预留与碎片、支持前缀共享和写时复制。</p></div>
+      <div class="fact-card"><b>连续批处理 · 管时间</b><p>每个生成步更新批内请求，让完成的序列及时离场，让等待请求及时加入。</p></div>
+    </div>
+
+    <h2 id="limits"><span class="section-no">06 / LIMITS</span>四个容易混淆的边界</h2>
+
+    <div class="myth-grid">
+      <div class="myth-card"><b>缓存没有保存可读摘要</b><p>K/V 是每层的数值张量，和模型结构、位置及当前前缀绑定。它很难像一段 Markdown 那样查看、修改和长期归档。</p></div>
+      <div class="myth-card"><b>缓存没有扩大上下文窗口</b><p>它降低重复计算。模型能看到多长仍受架构、位置编码、服务配置和可用内存限制。</p></div>
+      <div class="myth-card"><b>命中没有让生成瞬间完成</b><p>Prompt Cache 主要跳过重复预填充。新答案仍要逐 token 生成，每步仍会读取历史 K/V。</p></div>
+      <div class="myth-card"><b>显存不足时需要主动取舍</b><p>滑动窗口会丢弃较远位置，量化会降低精度，CPU 卸载会增加传输。它们都应通过真实负载测试。</p></div>
+    </div>
+
+    <p>缓存淘汰也值得单独关注。服务端显存有限，旧块可能按最近最少使用等策略回收；同一个请求稍后再来，前缀相同也不保证仍在缓存里。多实例部署还会遇到路由问题：新请求到达另一台没有对应 KV 的机器，命中自然消失。应用侧应该观察缓存 token 数、首 token 延迟和吞吐，少依赖“我觉得它应该命中”。</p>
+
+    <h2 id="agent-layout"><span class="section-no">07 / AGENT LAYOUT</span>把缓存规律变成上下文布局</h2>
+
+    <p>Agent 的上下文通常由系统规则、工具定义、项目说明、历史消息、工具结果、当前状态和本轮问题组成。把这些材料按照变化频率排列，可以同时改善可读性和前缀复用：</p>
+
+    <div class="agent-layout" aria-label="Agent 上下文建议布局">
+      <div class="layout-row"><b>稳定规则</b><span>身份、长期边界、固定输出约定</span><em>放前面</em></div>
+      <div class="layout-row"><b>核心工具</b><span>名称、描述、参数结构；保证序列化顺序稳定</span><em>放前面</em></div>
+      <div class="layout-row"><b>共享知识</b><span>长期不变且每轮都会使用的项目背景</span><em>靠前</em></div>
+      <div class="layout-row dynamic"><b>对话轨迹</b><span>用户、助手和工具结果随任务向后追加</span><em>持续增长</em></div>
+      <div class="layout-row dynamic"><b>当前状态</b><span>时间、页面、进度、临时权限、短期检索结果</span><em>放末尾</em></div>
+      <div class="layout-row dynamic"><b>本轮请求</b><span>现在要做什么、交付物和验收条件</span><em>最后进入</em></div>
+    </div>
+
+    <p>布局仍要先服务任务语义。如果一条实时风险提示必须处在高优先级位置，就应放在能被模型正确执行的位置。缓存收益属于优化指标，不能覆盖安全和正确性。</p>
+
+    <ol class="checklist">
+      <li>记录最终 token 序列的稳定性，避免工具顺序、空格和序列化格式随机变化。</li>
+      <li>把时间戳、页面状态、用户临时信息追加到稳定前缀之后。</li>
+      <li>上下文接近预算时成批压缩旧工具结果，减少每轮改写中段造成的反复失效。</li>
+      <li>分别测量首 token 延迟和后续 token 速度，确认瓶颈位于预填充还是逐词生成。</li>
+      <li>监控缓存命中 token、淘汰量、显存占用和并发数，用数据确认布局改动的收益。</li>
+      <li>处理敏感前缀时开启租户隔离或 cache salt，避免跨用户共享带来的侧信道风险。</li>
+    </ol>
+
+    <h2 id="frontier"><span class="section-no">08 / RESEARCH FRONTIER</span>“前缀一改，后面重算”会一直成立吗</h2>
+
+    <p>当前生产引擎通常把精确前缀匹配当作安全规则：从首个不同 token 开始，后续缓存重新计算。2026 年的一篇预印本提出了更激进的观察：模型在预填充时会把某个字段造成的结论传播到后续位置，KV 状态像一页页带结论的笔记。只替换字段自身的 K/V，模型仍可能沿用旧结论，因为后面的“笔记”已经写好了。</p>
+
+    <div class="research-note">
+      <span class="status">预印本 / 实验阶段</span>
+      <h3>可编辑、可组合的 KV “笔记”</h3>
+      <p>论文探索了两条路径：在末尾追加醒目的更正，让显式推理把新事实传播到结论；以及对位置编码做重定位，把预先计算的缓存片段接到新上下文中。</p>
+      <p>作者报告的结果覆盖多种模型和缓存形式，也给出了在线 vLLM 实验。编辑依赖显式思考链等条件，工程实现仍处在研究阶段。今天设计生产系统时，精确前缀匹配仍是稳妥默认值。</p>
+    </div>
+
+    <p>这个方向让我重新理解 KV Cache。它携带的内容比“每个 token 的独立标签”更丰富，层层传播后的状态包含了模型对前文的加工结果。也正因如此，随意拼接或局部替换缓存很危险：张量形状对上了，语义未必跟着对上。未来的缓存编辑如果成熟，需要连同位置、注意力依赖和结论传播一起处理。</p>
+
+    <h2 id="conclusion"><span class="section-no">09 / TAKEAWAY</span>从“缓存加速”走到“缓存约束架构”</h2>
+
+    <p>KV Cache 的基本动作很朴素：旧 token 的 K/V 留下来，新 token 只补自己的一份。沿着这条线继续推，就会看到完整的系统问题：缓存随上下文和并发增长，显存需要分页管理，请求需要连续调度，跨请求复用要求前缀稳定，Agent 的动态状态最好向尾部追加。</p>
+
+    <p>我从这部分得到的最大收获，是把上下文从一串“写给模型看的文字”改看成一段有计算成本、有复用边界、有生命周期的数据结构。以后设计 Agent，我会同时问三个问题：模型现在需要看到什么，哪些 token 能长期稳定，任何改动会让多少缓存重新计算。</p>
+
+    <div class="source-box">
+      <h2>参考资料</h2>
+      <ol>
+        <li><a href="https://bojieli.github.io/ai-agent-book/book/chapter2/#_7" target="_blank" rel="noopener noreferrer">李博杰：《深入理解 AI Agent》第二章 · KV Cache 友好的上下文设计</a><small>本文的阅读起点；用于连接 API 消息结构、稳定前缀和 Agent 上下文布局。</small></li>
+        <li><a href="https://huggingface.co/docs/transformers/cache_explanation" target="_blank" rel="noopener noreferrer">Hugging Face Transformers：Caching</a><small>注意力公式、逐层缓存、因果遮罩与缓存张量形状。</small></li>
+        <li><a href="https://huggingface.co/docs/transformers/kv_cache" target="_blank" rel="noopener noreferrer">Hugging Face Transformers：Cache strategies</a><small>动态、静态、滑动窗口、量化与 CPU 卸载的工程取舍。</small></li>
+        <li><a href="https://arxiv.org/abs/2305.13245" target="_blank" rel="noopener noreferrer">Ainslie et al.：GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints</a><small>GQA 的模型结构与推理效率背景。</small></li>
+        <li><a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener noreferrer">Kwon et al.：Efficient Memory Management for Large Language Model Serving with PagedAttention</a><small>PagedAttention、块式显存管理、共享与写时复制。</small></li>
+        <li><a href="https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/" target="_blank" rel="noopener noreferrer">vLLM：Automatic Prefix Caching</a><small>跨请求前缀复用的适用负载与 decode 阶段边界。</small></li>
+        <li><a href="https://arxiv.org/abs/2606.17107" target="_blank" rel="noopener noreferrer">Bojie Li：Models Take Notes at Prefill: KV Cache Can Be Editable and Composable</a><small>2026 年预印本；缓存编辑与组合的研究前沿。</small></li>
+      </ol>
+    </div>
+
+    <div class="article-footer-nav">
+      <a href="../blog.html" class="btn btn-secondary">← 返回文章</a>
+      <a href="#main-content">回到正文开头 ↑</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">大模型应用与 Agent 工程</p></div>
+        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
+        <nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js?v=20260812"></script>
+  <script>
+    (() => {
+      const form = document.getElementById('kv-calculator');
+      const result = document.getElementById('kv-result');
+      if (!form || !result) return;
+
+      const update = () => {
+        const data = new FormData(form);
+        const value = name => Math.max(0, Number(data.get(name)) || 0);
+        const bytes = 2 * value('layers') * value('heads') * value('headDim') * value('tokens') * value('bytes') * value('batch');
+        const gib = bytes / (1024 ** 3);
+        result.value = gib < 0.01 ? `${(bytes / (1024 ** 2)).toFixed(2)} MiB` : `${gib.toFixed(2)} GiB`;
+        result.textContent = result.value;
+      };
+
+      form.addEventListener('input', update);
+      update();
+    })();
+  </script>
+</body>
+</html>

@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>语义地形工程：把上下文设计成可控系统 - 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
   <style>
     .lead-panel {
       border: 1px solid var(--border);
@@ -175,6 +175,19 @@
       background: var(--bg);
     }
 
+    .figure-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      margin: var(--space-7) auto var(--space-3);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .figure-scroll .article-svg {
+      min-width: 680px;
+      max-width: none;
+      margin: 0;
+    }
+
     .svg-caption {
       color: var(--text-muted);
       font-size: var(--text-sm);
@@ -201,6 +214,11 @@
         display: block;
         overflow-x: auto;
       }
+    }
+
+    @media (min-width: 769px) {
+      .figure-scroll { overflow: visible; }
+      .figure-scroll .article-svg { min-width: 0; }
     }
   </style>
   <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260811">
@@ -255,6 +273,7 @@
         这篇文章把这个隐喻扩展成一套我能在 Agent、桌面助手和长程任务里使用的方法：先设计地形，再释放采样；先控制上下文结构，再期待模型能力。
       </p>
     </div>
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="语义地形工程总览图">
       <defs>
         <linearGradient id="terrainGrad" x1="0" x2="1" y1="0" y2="1">
@@ -283,6 +302,7 @@
       <text x="64" y="58" class="svg-label" font-size="18" fill="#0f172a" font-weight="800">语义地形工程</text>
       <text x="64" y="82" class="svg-label" font-size="13" fill="#475569">权重是基础地貌，上下文塑造局部坡度，采样沿着概率路径前进。</text>
     </svg>
+    </div>
     <p class="svg-caption">图 1：把一次模型调用看成地形设计，目标是让采样更容易走向正确答案区域。</p>
 
     <h2>一、上下文在塑造分布</h2>
@@ -293,6 +313,7 @@
     <p>
       prompt 的目标，是构造一片能引导模型工作的语义地形。稳定协议放在前面，任务目标保持清晰，关键证据短而准，例子只给最能代表模式的部分，临时噪声及时移出上下文。
     </p>
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上下文改变候选答案概率分布">
       <rect x="18" y="18" width="724" height="264" rx="18" fill="#ffffff"/>
       <text x="56" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">上下文改变候选答案的相对概率</text>
@@ -321,6 +342,7 @@
       <rect x="476" y="54" width="96" height="26" rx="13" fill="#fff7ed" stroke="#fed7aa"/>
       <text x="524" y="72" text-anchor="middle" class="svg-label" font-size="12" fill="#c2410c">松散上下文</text>
     </svg>
+    </div>
     <p class="svg-caption">图 2：上下文结构会重新分配候选答案的权重，清晰证据会把概率质量推向目标路径。</p>
     <div class="example-grid">
       <div class="example-card example-wide">
@@ -338,8 +360,9 @@
       </div>
     </div>
 
-    <h2>二、五种常见地形问题</h2>
-    <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五种语义地形问题示意图">
+    <h2>二、六种常见地形问题</h2>
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
+    <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="六种语义地形问题示意图">
       <rect x="18" y="18" width="724" height="294" rx="18" fill="#f8fafc"/>
       <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">常见地形问题的可视化提示</text>
       <g class="svg-label" font-size="12" fill="#334155">
@@ -373,6 +396,7 @@
         <text x="658" y="294" text-anchor="middle" fill="#64748b">越过阈值换路</text>
       </g>
     </svg>
+    </div>
     <p class="svg-caption">图 3：把问题画出来之后，调 prompt 更像调系统参数，减少凭感觉补词。</p>
     <div class="framework-grid">
       <div class="framework-item">
@@ -461,6 +485,7 @@ C. 复盘一次工具调用失败。
     </p>
 
 
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="prompt 分层系统图">
       <defs>
         <marker id="arrowLayer" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -481,6 +506,7 @@ C. 复盘一次工具调用失败。
       <line x1="690" y1="112" x2="690" y2="332" stroke="#64748b" stroke-width="2" marker-end="url(#arrowLayer)"/>
       <text x="704" y="138" class="svg-label" font-size="12" fill="#475569" writing-mode="tb">稳定到动态</text>
     </svg>
+    </div>
     <p class="svg-caption">图 4：分层之后，偏差可以定位到具体层级，调试成本会明显下降。</p>
     <table class="signal-table">
       <thead>
@@ -535,6 +561,7 @@ C. 复盘一次工具调用失败。
     </p>
 
 
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="长任务上下文工作流">
       <defs>
         <marker id="arrowFlow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -567,6 +594,7 @@ C. 复盘一次工具调用失败。
       <path d="M652 122 C620 64, 454 58, 392 116" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowFlow)"/>
       <text x="506" y="76" class="svg-label" font-size="12" fill="#64748b">校验失败时回到 spec，避免继续堆上下文</text>
     </svg>
+    </div>
     <p class="svg-caption">图 5：长任务要设置压缩点，把探索过程沉淀为新的干净上下文。</p>
     <div class="practice-box">
       <h3>我会采用的长任务流程</h3>
@@ -656,6 +684,7 @@ ss -lntp | grep :80</code></pre>
 
     <h2>五、Agent 的上下文边界</h2>
 
+    <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent 上下文边界与证据隔离">
       <defs>
         <marker id="arrowAgent" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
@@ -687,6 +716,7 @@ ss -lntp | grep :80</code></pre>
       <path d="M446 248 C488 244, 510 224, 540 210" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrowAgent)"/>
       <text x="490" y="268" class="svg-label" font-size="12" fill="#b91c1c">过滤、标注来源、禁止改写协议</text>
     </svg>
+    </div>
     <p class="svg-caption">图 6：Agent 的重点是把来源和用途分清，让证据进入回答，让外部指令留在隔离区。</p>
     <p>
       Agent 系统里，上下文工程比单轮 prompt 更重要。工具结果、终端输出、网页内容、文件 diff、历史摘要都可能进入模型视野。每一种输入都应该带来源、时效和用途。网页内容尤其需要当作不可信材料处理，只提取事实和观点，不能让页面里的指令改变系统行为。
@@ -751,7 +781,7 @@ blog/semantic-terrain-context-engineering.html 当前内容。
       </ol>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+    <div class="article-footer-nav">
       <a href="../blog.html" class="btn btn-secondary">← 返回博客</a>
     </div>
   </main>
