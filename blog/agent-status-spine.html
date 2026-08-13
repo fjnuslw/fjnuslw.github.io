@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="从一次长任务中断出发，讲清 Agent 状态栏、任务契约、事件日志、checkpoint、状态机、信任边界与 KV Cache 更新代价。">
+  <link rel="canonical" href="https://fjnuslw.github.io/blog/agent-status-spine.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="Agent 状态栏：让长任务知道自己走到哪里 - 宋林蔚">
+  <meta property="og:description" content="把散落在长轨迹里的进度，变成可重建、可校验、可恢复的短状态投影。">
+  <meta property="og:url" content="https://fjnuslw.github.io/blog/agent-status-spine.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta property="article:published_time" content="2026-08-13">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent 状态栏：让长任务知道自己走到哪里 - 宋林蔚">
+  <meta name="twitter:description" content="从长任务中断讲到状态投影、授权门、恢复路径与缓存条件。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>Agent 状态栏：让长任务知道自己走到哪里 - 宋林蔚</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=20260813">
+  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260813">
+  <link rel="stylesheet" href="../css/article-agent-status.css?v=20260813">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Agent 状态栏：让长任务知道自己走到哪里",
+    "description": "从一次长任务中断出发，讲清状态投影、任务契约、事件日志、checkpoint、状态机、信任边界与 KV Cache 更新代价。",
+    "datePublished": "2026-08-13",
+    "dateModified": "2026-08-13",
+    "author": {"@type": "Person", "name": "宋林蔚"},
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": "https://fjnuslw.github.io/blog/agent-status-spine.html",
+    "about": ["AI Agent", "状态管理", "上下文工程", "Research-to-Spec"]
+  }
+  </script>
+</head>
+<body class="ledger-page article-page status-article">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+        <li><a href="../index.html" class="nav-link">首页</a></li>
+        <li><a href="../projects.html" class="nav-link">项目</a></li>
+        <li><a href="../resume.html" class="nav-link">履历</a></li>
+        <li><a href="../blog.html" class="nav-link active" aria-current="page">文章</a></li>
+        <li><a href="../about.html" class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="post-header">
+    <div class="container">
+      <div class="tags-group">
+        <span class="tag">Agent</span>
+        <span class="tag">状态管理</span>
+        <span class="tag">Skill</span>
+      </div>
+      <h1><span>Agent 状态栏</span><br><em>让长任务知道自己走到哪里</em></h1>
+      <p class="post-deck">一次研究任务跨过几十次工具调用后，目标、进度、授权和验证结果散落在整段轨迹里。怎样让下一轮模型快速找到当前位置，又保留回查原始证据的能力？</p>
+      <div class="post-meta">
+        <time datetime="2026-08-13">2026-08-13</time>
+        <span>·</span>
+        <span>17 min read</span>
+        <span>·</span>
+        <span>宋林蔚</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="post-content" id="main-content">
+    <div class="status-lead article-narrow">
+      <p>设想这样一段工作：我请 Agent 调研“研究型任务怎样保存状态”，要求它先读论文和官方文档，再修改一个 Skill，接着写文章、检查手机排版、提交两个仓库。它已经找完资料，Skill 也改到一半，此时进程中断。新会话打开后，聊天记录仍在，磁盘文件也在，可接手者先要回答一串很具体的问题：哪些来源已经核过？实施授权是否存在？哪几个测试通过了？当前该补文章，还是该继续改脚本？</p>
+      <p>只把完整对话重新塞给模型，等于把一本流水账交给新同事，让他从第一页寻找书签。状态栏提供这枚书签：运行时从持久材料中计算一份短视图，集中显示阶段、进度、阻塞项、授权边界和下一道关口。</p>
+    </div>
+
+    <aside class="status-thesis" aria-label="文章主结论">
+      <strong>先记住这条分工</strong>
+      <p>完整记录负责保真，状态栏负责定位，状态机负责约束，checkpoint 负责恢复执行。四者共享编号和来源，各自解决不同问题。</p>
+    </aside>
+
+    <div class="live-strip" aria-label="状态栏示例">
+      <div><span>PHASE</span><b>specified</b></div>
+      <div><span>AUTHORIZATION</span><b>research-only</b></div>
+      <div class="live-strip-wide"><span>NEXT GATE</span><b>等待明确的实施授权</b></div>
+    </div>
+
+    <h2 id="four-layers"><span class="section-no">01 / FOUR LAYERS</span>先把四种“状态”分开</h2>
+
+    <p>长任务里常见的混乱，来自同一段自由文本同时承担目标、历史、恢复点和当前摘要。任务开始时写一句“先调研再实现”，执行到后半段仍要靠模型猜“调研是否已经够了”。一次工具调用返回成功，又可能被误写成“交付完成”。先分开四层，很多含糊会自然消失。</p>
+
+    <div class="layer-grid" aria-label="长任务状态的四层分工">
+      <article class="layer-card">
+        <span>01</span><h3>任务契约</h3>
+        <p>记录目标、范围、交付物、禁区、授权和完成条件。它回答“这次工作答应了什么”。用户改变范围时，契约应留下版本。</p>
+      </article>
+      <article class="layer-card">
+        <span>02</span><h3>事件日志</h3>
+        <p>追加工具结果、文件变化、审批、错误和人工输入。它回答“刚才发生了什么”，也为之后重算当前状态保留依据。</p>
+      </article>
+      <article class="layer-card">
+        <span>03</span><h3>Checkpoint</h3>
+        <p>保存恢复执行所需的精确快照，例如当前调用、审批记录和序列化运行对象。它回答“执行器从哪里接着跑”。</p>
+      </article>
+      <article class="layer-card accent">
+        <span>04</span><h3>状态投影</h3>
+        <p>从前面几层挑出本轮决策需要的字段，形成模型可读的短状态栏。它回答“此刻最该看到什么”。</p>
+      </article>
+    </div>
+
+    <p>这里的“投影”可以用日常例子理解。外卖系统保存了下单、商家接单、骑手取餐、到达小区等事件；用户页面只显示“骑手距你 1.2 公里”。页面上的一句话方便阅读，订单事件仍是追责和重建的依据。Agent 状态栏也采用这类分工。</p>
+
+    <figure class="status-figure">
+      <div class="status-figure-scroll" role="region" aria-label="图 1，可横向滚动查看细节" tabindex="0">
+        <img src="../assets/blog/agent-status-spine/status-projection.svg" width="1000" height="560" alt="任务清单、研究问题、来源记录和追踪表经过确定性归约，生成包含阶段、授权、进度和下一关的短状态投影">
+      </div>
+      <figcaption>图 1：状态栏是持久状态的读取视图。视图损坏时可以丢弃，再从原始文件生成。</figcaption>
+    </figure>
+
+    <p>用两个函数就能表达这条链路：</p>
+
+    <div class="equation-panel" role="region" aria-label="状态归约公式" tabindex="0">
+      <code>X<sub>t</sub> = reduce(X<sub>t-1</sub>, e<sub>t</sub>)</code>
+      <code>V<sub>t</sub> = project(X<sub>t</sub>)</code>
+      <p>事件 <i>e</i> 推进精确状态 <i>X</i>，projector 再生成模型可见视图 <i>V</i>。同一组输入应得到同一份结果。</p>
+    </div>
+
+    <p>Microsoft 的 Event Sourcing 指南讨论了通过追加事件重建状态、用物化视图服务查询、用快照缩短重放距离；CQRS 指南进一步区分写入模型和读取模型。把这些架构思想映射到 Agent，是本文采用的工程方法。它会增加 schema、迁移和一致性成本，单轮小任务直接维护普通对象更省事。</p>
+
+    <h2 id="fields"><span class="section-no">02 / FIELDS</span>一份状态栏至少回答七个问题</h2>
+
+    <p>状态栏的长度没有统一答案。实用的判断方法是：删掉某个字段后，下一轮 Agent 会不会因此选错动作？以调研并发布一篇文章为例，“共打开 27 个网页”帮助不大；“还有 2 条结论缺少一级来源”会直接改变下一步。</p>
+
+    <div class="field-board">
+      <div class="field-row"><b>case / goal</b><span>我正在处理哪件事，交付物是什么</span><em>来自任务契约</em></div>
+      <div class="field-row"><b>phase</b><span>当前处于研究、综合、规格、实施或验证中的哪一段</span><em>由状态机维护</em></div>
+      <div class="field-row"><b>authorization</b><span>用户允许调研、写规格，还是已经允许改产品代码</span><em>来自显式授权</em></div>
+      <div class="field-row"><b>progress</b><span>问题、来源、任务和验证各完成多少；每种对象分别计数</span><em>从文件计算</em></div>
+      <div class="field-row"><b>verified</b><span>哪些结论或产物已有可观察的检查结果</span><em>来自验证记录</em></div>
+      <div class="field-row"><b>blockers</b><span>在等谁、等什么条件，缺失项会怎样改变结果</span><em>来自阻塞事件</em></div>
+      <div class="field-row"><b>next_gate</b><span>跨到下一阶段前，哪一个可检查条件仍未满足</span><em>由规则计算</em></div>
+      <div class="field-row"><b>case_updated_at / derived_from</b><span>case 最近何时更新，可以沿哪些文件回查</span><em>用于识别陈旧</em></div>
+    </div>
+
+    <p>字段语义需要足够严格。<code>planned</code> 表示准备执行，<code>attempted</code> 表示已经尝试，<code>verified</code> 表示观察结果符合验收条件，<code>completed</code> 表示该交付物的全部完成门槛通过。运行了一条测试命令，只能证明进程结束；退出码、断言、产物内容和页面排版仍要分别记录。</p>
+
+    <div class="boundary-note"><b>时间戳只说明新旧。</b> <code>updated_at</code> 很新，无法单独证明内容正确。关键字段还需要来源、revision 和最后覆盖的事件编号；多个写入者提交时应检查期望 revision，避免静默覆盖。</div>
+
+    <h2 id="state-machine"><span class="section-no">03 / STATE MACHINE</span>状态机约束道路，状态栏展示路牌</h2>
+
+    <p>如果状态栏写着 <code>phase: implementing</code>，模型仍可能直接宣布完成。可靠系统还需要一组运行时规则：什么事件允许发生，什么条件满足后可以转移。状态机解决的是这部分约束。Harel 在 1987 年提出的 Statecharts 还提供了层级、并发和通信表达，可以让“研究中”包含多个并行问题 lane，再在汇合点检查证据是否齐全。</p>
+
+    <p>状态应保持粗粒度。读取一个网页、执行一次命令属于动作或事件；<code>researching</code>、<code>specified</code>、<code>implementing</code> 代表拥有不同许可和完成门槛的阶段。把每次点击都做成状态，会让转移图迅速膨胀。</p>
+
+    <figure class="status-figure">
+      <div class="status-figure-scroll" role="region" aria-label="图 2，可横向滚动查看细节" tabindex="0">
+        <img src="../assets/blog/agent-status-spine/specscout-state-flow.svg" width="1000" height="620" alt="Research-to-Spec 从接收需求、研究、规格、计划走到实施；research-only 授权在实施门前停止流程">
+      </div>
+      <figcaption>图 2：阶段描述材料走到哪里，授权描述用户允许走到哪里。两条轴分开后，<code>specified + research-only</code> 就很清楚。</figcaption>
+    </figure>
+
+    <div class="gate-table-wrap" role="region" aria-label="状态转移门槛示例" tabindex="0">
+      <table class="gate-table">
+        <thead><tr><th>转移</th><th>最低门槛</th><th>谁来检查</th></tr></thead>
+        <tbody>
+          <tr><td>intake → researching</td><td>目标、范围、问题和来源策略已记录</td><td>schema validator</td></tr>
+          <tr><td>researching → specified</td><td>关键结论有来源，冲突与空白已标出</td><td>evidence audit</td></tr>
+          <tr><td>specified → planned</td><td>需求已经拆成带路径与检查方法的任务</td><td>plan validator</td></tr>
+          <tr><td>planned → implementing</td><td>实施授权已明确记录</td><td>authorization gate</td></tr>
+          <tr><td>implementing → verified</td><td>声明的检查已运行，观察值和结果已保存</td><td>independent validator</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>StateFlow 预印本用状态驱动工作流组织多轮任务，在 InterCode SQL 和 ALFWorld 的特定实验中报告了相对 ReAct 的成功率与成本改进。这是完整工作流与基线的比较，状态由任务专家设计，增益无法单独归给一小段状态文本。ReAct 则说明了问题环境：thought、action、observation 持续累积，当前决定依赖很长的轨迹。</p>
+
+    <h2 id="placement"><span class="section-no">04 / PLACEMENT</span>状态放在哪里，多久更新一次</h2>
+
+    <p>系统规则、固定工具定义和长期项目约定变化很慢；当前阶段、剩余预算和最新验证变化很快。把稳定内容放在前部，把动态状态靠近最新观察和本轮请求，可以同时照顾两件事：前缀更稳定，模型在决策前也更容易看见当前位置。</p>
+
+    <figure class="status-figure">
+      <div class="status-figure-scroll" role="region" aria-label="图 3，可横向滚动查看细节" tabindex="0">
+        <img src="../assets/blog/agent-status-spine/context-placement.svg" width="1000" height="540" alt="稳定系统规则和工具定义位于上下文前部，历史轨迹居中，当前状态与本轮请求靠近末尾">
+      </div>
+      <figcaption>图 3：这是需要按模型和 API 实测的布局建议。安全规则的优先级永远先于缓存收益。</figcaption>
+    </figure>
+
+    <p><i>Lost in the Middle</i> 在多文档问答和合成键值检索中发现，多个模型对长上下文的利用具有位置敏感性，相关材料位于中间时常有下降。它没有测试工具型 Agent，也没有证明尾部在所有任务里占优。这里能得到的稳妥结论很窄：重要状态不适合长期埋在大量旧工具输出中，位置需要通过目标模型的评测确认。</p>
+
+    <p>更新频率也需要门槛。每次工具调用都重写整份状态，容易制造大量无意义变化；只在任务结束时更新，又失去定位作用。我会在以下事件后刷新：</p>
+
+    <ol class="status-checklist">
+      <li>case 初始化，任务契约和授权第一次落盘；</li>
+      <li>阶段变化，或某个问题进入 answered、blocked、stale；</li>
+      <li>用户扩大或收回实施授权；</li>
+      <li>验证出现 pass、fail，或完成条件被重新打开；</li>
+      <li>会话交接、上下文压缩、提交和发布之前。</li>
+    </ol>
+
+    <p>李博杰的章节示例把状态作为一条靠近尾部的 user-role 元消息。这个写法展示了一种落点，各家 API 对角色、优先级、缓存和消息模板的处理并不相同。实现时要把状态放入运行时明确支持的模型输入通道，并保留更高优先级的稳定安全规则。</p>
+
+    <h2 id="research-to-spec"><span class="section-no">05 / RESEARCH-TO-SPEC</span>把任务起点和当前位置接起来</h2>
+
+    <p>我正在维护的 <a href="https://github.com/fjnuslw/research-to-spec" target="_blank" rel="noopener noreferrer">Research-to-Spec Skill</a>，原来已经会在任务开始时创建研究问题、来源账本、综合结论、规格、任务和验证文件。它很擅长保存“为什么这样决定”，短板是接手者仍要打开多份文件，才能拼出“现在走到哪里”。</p>
+
+    <p>这次我先把授权写入初始契约。创建 case 时，调用者明确传入 <code>research-only</code> 或 <code>implementation-approved</code>；默认值保持只调研。接着增加一个只读脚本 <code>render_status.py</code>，它读取 <code>manifest.json</code>、每条问题 lane 的 <code>sources.jsonl</code>、<code>traceability.csv</code> 和 <code>TASKS.md</code>，然后输出 XML 或 JSON。它不改 case 文件，也不把状态栏变成新的事实来源。</p>
+
+    <div class="code-window">
+      <div class="code-window-label">初始化一份只调研的 case</div>
+      <pre tabindex="0"><code>python skills/research-to-spec/scripts/init_case.py agent-state \
+  --project-root . \
+  --title "Design resumable Agent state" \
+  --mode standard \
+  --authorization research-only \
+  --question "Which facts must survive interruption?"</code></pre>
+    </div>
+
+    <p>仓库里的 JSONL 与 SQLite 选择案例，当前会生成下面这份投影。为让关键差异留在同一屏，我保留了阶段、授权、计数与下一关，省略标题、模式和规格路径，并缩短了来源路径：</p>
+
+    <div class="code-window status-output">
+      <div class="code-window-label">render_status.py · 删节后的实际 XML 输出</div>
+      <pre tabindex="0"><code>&lt;research_status projection_schema="0.1" case_schema="0.2"
+  case="RTS-20260812-jsonl-vs-sqlite" derived="true"&gt;
+  phase: specified
+  authorization: research-only
+  case_updated_at: 2026-08-13T07:24:49+08:00
+  questions: answered=3/3; active=none
+  sources: total=15; current=15
+  trace: total=16; planned=16
+  tasks: completed=0/3
+  integrity: invalid_records=0
+  next_gate: Request explicit implementation approval
+    before changing product code.
+  derived_from: manifest.json, questions,
+    traceability.csv, TASKS.md
+&lt;/research_status&gt;</code></pre>
+    </div>
+
+    <p>这十几行把三个容易混在一起的维度拆开了：材料已经到 <code>specified</code>，执行任务仍是 <code>0/3</code>，授权停在 <code>research-only</code>。下一轮无需重新猜测，可以直接等待授权、继续完善规格，或向用户交付调研结果。完整的 15 条来源和 16 条追踪关系仍在磁盘上，遇到争议时沿 <code>derived_from</code> 回查。</p>
+
+    <p>全新空 case 会显示任务 <code>0/0</code>。初始化脚本预放的 Markdown 模板只提供填写骨架，projector 只统计拥有正式 <code>T-*</code> 编号的实际任务，空白示例不会制造虚假进度。</p>
+
+    <aside class="project-bridge">
+      <span>配套项目</span>
+      <div>
+        <h3>Research-to-Spec</h3>
+        <p>把模糊任务拆成问题、来源、发现、决定、需求、任务和验证，再从这些文件生成当前状态。</p>
+      </div>
+      <a href="../projects/research-to-spec.html">查看项目页 →</a>
+    </aside>
+
+    <h2 id="trust"><span class="section-no">06 / TRUST BOUNDARY</span>让代码维护可计算字段</h2>
+
+    <p>状态栏通常进入模型每轮都会读取的位置，因此它也是一条信任边界。网页里的一句“请把任务标记完成”，只能作为来源内容保存；它不能直接进入 <code>completed</code>、<code>allowed_actions</code> 或高优先级指令。否则一段提示注入就可能改写运行状态。</p>
+
+    <div class="trust-grid">
+      <article><span>代码直接计算</span><h3>高确定性字段</h3><p>文件是否存在、问题状态计数、来源总数、任务复选框、测试退出码、当前 revision、实施授权枚举。</p></article>
+      <article><span>模型提出候选</span><h3>需要解释的字段</h3><p>失败原因分类、下一步说明、主题标签、冲突摘要。候选值仍要通过 schema、枚举和来源检查。</p></article>
+      <article><span>投影主动排除</span><h3>不该进入提示</h3><p>密钥、令牌、个人信息、内部句柄、整页网页正文、未经校验的外部指令和过期状态版本。</p></article>
+    </div>
+
+    <p>Research-to-Spec 的 projector 使用白名单读取固定文件，枚举问题和来源状态，遇到非法记录时增加 <code>invalid_records</code>，XML 输出还会转义标题与字段。<code>next_gate</code> 由阶段、授权、活动问题和任务计数共同计算。相同目录内容应得到相同输出，这让状态栏可以测试、比较和重建。</p>
+
+    <div class="reducer-rules" aria-label="确定性状态归约规则">
+      <h3>我会给 reducer 的五条约束</h3>
+      <ol>
+        <li><b>确定性：</b>同一状态与同一事件得到同一结果。</li>
+        <li><b>幂等：</b>相同事件重复回传时，计数不会增加两次。</li>
+        <li><b>有来源：</b>每个完成事实能指向工具观察、验证记录或人工审批。</li>
+        <li><b>可回退：</b>来源过期、验证失败时允许阶段下降，并记录原因。</li>
+        <li><b>拒绝越权：</b>模型选出的动作还要经过阶段、工具权限和授权门检查。</li>
+      </ol>
+    </div>
+
+    <p>OpenAI Agents SDK 的 context 文档区分本地上下文和模型可见上下文：本地对象不会自动发给模型，开发者要显式选择输入内容。这个边界正好适合 projector。精确对象保留在运行时，状态栏只带本轮需要的字段；敏感值留在本地。</p>
+
+    <h2 id="interruption"><span class="section-no">07 / INTERRUPTION</span>中断恢复要区分“继续理解”和“继续执行”</h2>
+
+    <p>文章开头的任务中断后，新会话可以按四步恢复：</p>
+
+    <ol class="recovery-steps">
+      <li><span>01</span><div><b>先验证持久材料</b><p>检查 manifest、来源账本、追踪表和任务文件能否解析，避免把半次写入当成完整事实。</p></div></li>
+      <li><span>02</span><div><b>重新生成状态栏</b><p>运行 projector，而非复制旧会话最后一段自由文本。此时能发现授权、计数或阶段已经变化。</p></div></li>
+      <li><span>03</span><div><b>只打开当前 focus</b><p>先读状态栏和索引，再打开下一关对应的问题、需求或任务；发生冲突时继续沿编号回查来源。</p></div></li>
+      <li><span>04</span><div><b>经过运行时门槛再行动</b><p>实施授权、外部副作用和完成判定继续由代码或人工审批检查。</p></div></li>
+    </ol>
+
+    <figure class="status-figure">
+      <div class="status-figure-scroll" role="region" aria-label="图 4，可横向滚动查看细节" tabindex="0">
+        <img src="../assets/blog/agent-status-spine/interruption-recovery.svg" width="1000" height="590" alt="Agent 中断前把来源、决定和任务进度写入磁盘；新会话读取文件、重新归约状态并继续下一道关口">
+      </div>
+      <figcaption>图 4：持久文件帮助新 Agent 恢复任务语义；需要恢复到某个工具审批或图节点时，还要精确 checkpoint。</figcaption>
+    </figure>
+
+    <p>LangGraph 的 Persistence 文档把 thread、checkpoint、state snapshot 和跨 thread store 分开；OpenAI Agents SDK 的 RunState 与 human-in-the-loop 指南也展示了序列化运行状态、暂停审批、随后恢复的路径。这些机制保存的内容比状态栏深：当前 item、调用关联、审批和执行器内部状态都可能需要序列化。</p>
+
+    <p>Research-to-Spec 目前能让新会话恢复“研究已经走到哪里”，却不能恢复一个中途断开的浏览器连接、半次网络写入或模型内部生成状态。遇到这类中断，系统应根据事件与幂等键重新执行安全步骤，或从框架 checkpoint 恢复。状态栏只告诉执行器应该恢复哪一类工作。</p>
+
+    <h2 id="cache"><span class="section-no">08 / CACHE TRADE-OFF</span>替换旧状态，还是持续追加</h2>
+
+    <p>状态栏每次更新都会改变提示 token。OpenAI 对 Codex agent loop 的工程说明提出一条实用原则：保持已有前缀逐 token 一致，把静态内容放前面、动态内容放后面。工具顺序、沙箱配置、工作目录或序列化细节改变，都可能让后续前缀重新计算。</p>
+
+    <div class="strategy-grid">
+      <article><span>A / REPLACE</span><h3>只保留当前状态</h3><p>提示长度稳定，旧版本不会误导模型。旧状态之后若还有轨迹，替换会让那段后缀失去连续前缀命中。</p></article>
+      <article><span>B / APPEND</span><h3>每次追加新状态</h3><p>既有 token 前缀保持一致，更新次数一多，过期状态会堆积，输入长度随轮次加速增长。</p></article>
+      <article class="recommended"><span>C / PROJECT</span><h3>外部事件追加，提示保留当前投影</h3><p>磁盘保存完整事件和证据，提示只携带一份紧凑视图。工程组件更多，审计与上下文长度更容易控制。</p></article>
+    </div>
+
+    <p>可以用一组简化变量判断方向。设每份状态栏有 <code>S</code> 个 token，任务更新 <code>N</code> 次；替换后平均有 <code>R</code> 个后缀 token 需要重新预填充；缓存输入相对未缓存输入的加权比例是 <code>α</code>。</p>
+
+    <div class="equation-panel cache-equation" role="region" aria-label="状态追加和替换的简化成本公式" tabindex="0">
+      <code>C<sub>replace</sub> ≈ (N − 1) × (1 − α) × R</code>
+      <code>C<sub>append</sub> ≈ α × S × N × (N − 1) / 2</code>
+      <p>追加较有利的近似条件：α × S × N / 2 &lt; (1 − α) × R</p>
+    </div>
+
+    <p>举两个纯假设例子。若 <code>α=0.1</code>、<code>S=200</code>、<code>N=10</code>、<code>R=800</code>，追加的加权成本约为 900 token-equivalent，替换导致的额外未缓存后缀约为 6480。若改成 <code>α=0.5</code>、<code>S=300</code>、<code>N=50</code>、<code>R=100</code>，追加约为 183750，替换约为 2450。频繁更新会快速改变结果。</p>
+
+    <p>这组公式没有包含公共输入、缓存最小块、TTL、路由漂移、写入费用、显存淘汰、上下文上限和过期状态造成的质量损失。<code>α</code> 也必须来自所用模型与供应商当期规则。vLLM 的 Automatic Prefix Caching 文档还明确指出，前缀缓存主要减少 prefill；新输出 token 的 decode 计算仍会发生。想进一步理解这段边界，可以接着读我前一篇 <a href="kv-cache-reuse.html">《KV Cache 如何让大模型复用已经读过的内容》</a>。</p>
+
+    <h2 id="limits"><span class="section-no">09 / LIMITS</span>状态栏能减少定位负担，仍有四条边界</h2>
+
+    <div class="limit-list">
+      <article><span>01</span><div><h3>压缩会漏掉未知需求</h3><p>projector 只会保留设计者预先选择的字段。计划外问题出现时，Agent 必须能回查事件、工具输出和原始证据。</p></div></article>
+      <article><span>02</span><div><h3>短状态不会自动变成真相</h3><p>模型生成的“已完成”仍可能出错。完成条件需要工具观察、schema、测试或人工验收来支撑。</p></div></article>
+      <article><span>03</span><div><h3>并行写入需要冲突协议</h3><p>多 Agent 同时更新同一 lane 时，需要事件 ID、幂等键、revision 或锁。Research-to-Spec 当前要求一条 lane 同时只有一个逻辑写入者。</p></div></article>
+      <article><span>04</span><div><h3>状态机要付维护成本</h3><p>阶段、迁移和 schema 会演进。事件版本、投影兼容和旧 case 迁移都需要测试；简单任务可以跳过整套材料树。</p></div></article>
+    </div>
+
+    <div class="research-caveat">
+      <span>相邻研究 / 尚待复现</span>
+      <h3>ContextDistill 给出的提醒</h3>
+      <p>ContextDistill 作者团队页面自报覆盖 11 个模型和 23,996 次评估，并给出若干大幅收益；同一页面也展示摘要边界漏掉后来所需信息后，hard-tier hint-only 设置下 Claude 4 Sonnet 从 100% 降到 7.6% 的案例。</p>
+      <p>截至 2026-08-13，本次调研未找到可核对的 arXiv 论文，页面所列 GitHub 仓库返回 404，也没有独立复现可供检查。因此这些数字只用于说明“压缩边界值得做失败测试”，不能当作状态栏效果证明。</p>
+    </div>
+
+      <p>公开研究目前也没有一条通用结论，能回答“加入状态栏后成功率提高多少”。StateFlow 测的是完整状态工作流，Lost in the Middle 测的是问答与键值检索，Manus 的 <code>todo.md</code> 复述来自团队工程经验。我的判断是先测量更贴近系统的问题：恢复后是否选对下一项任务，越权动作是否被拦截，完成事实能否追溯，状态 token 多长，刷新造成多少缓存未命中。</p>
+
+    <h2 id="conclusion"><span class="section-no">10 / TAKEAWAY</span>让每一轮先知道自己站在哪里</h2>
+
+    <p>任务契约给出目的地，事件日志保留脚印，checkpoint 保存可恢复的执行位置，状态栏把当前位置画成一张短地图。状态机再检查下一步是否允许通过。它们组合起来，长任务才能在压缩上下文、切换会话或移交给另一个 Agent 后继续推进。</p>
+
+    <p>这次把状态投影加入 Research-to-Spec，我最看重的是“摘要能重建”。<code>phase</code>、<code>authorization</code>、计数和下一关都能沿文件回查；投影写错时可以重新生成；出现新问题时仍能打开原始来源。长任务需要的记忆由此拥有了清楚的读写边界。</p>
+
+    <div class="closing-questions" aria-label="设计 Agent 状态栏时要回答的问题">
+      <h3>设计下一份状态栏时，我会先问</h3>
+      <ol>
+        <li>哪些字段会改变下一轮动作？</li>
+        <li>每个字段由事件、代码、模型还是人工维护？</li>
+        <li>“完成”对应哪条可观察验证？</li>
+        <li>中断后需要状态投影，还是还需要框架 checkpoint？</li>
+        <li>状态变化会改动多少缓存前缀，真实负载数据怎样说？</li>
+      </ol>
+    </div>
+
+    <section class="source-box" aria-labelledby="sources-title">
+      <h2 id="sources-title">参考资料</h2>
+      <ol>
+        <li><a href="https://bojieli.github.io/ai-agent-book/book/chapter2/#agent-agent" target="_blank" rel="noopener noreferrer">李博杰：《AI Agent 原理与实践》第二章 · Agent 状态栏</a><small>本文的阅读起点；状态栏定义、更新方式、代码维护字段与缓存讨论。</small></li>
+        <li><a href="https://arxiv.org/abs/2403.11322" target="_blank" rel="noopener noreferrer">Wu et al.：StateFlow: Enhancing LLM Task-Solving through State-Driven Workflows</a><small>arXiv 预印本；状态驱动工作流与状态内求解。</small></li>
+        <li><a href="https://openreview.net/forum?id=WE_vluYUL-X" target="_blank" rel="noopener noreferrer">Yao et al.：ReAct: Synergizing Reasoning and Acting in Language Models</a><small>ICLR 2023；推理、动作和观察交错形成的 Agent 轨迹。</small></li>
+        <li><a href="https://aclanthology.org/2024.tacl-1.9/" target="_blank" rel="noopener noreferrer">Liu et al.：Lost in the Middle: How Language Models Use Long Contexts</a><small>TACL 2024；长上下文利用的位置敏感性及实验边界。</small></li>
+        <li><a href="https://doi.org/10.1016/0167-6423(87)90035-9" target="_blank" rel="noopener noreferrer">David Harel：Statecharts: A Visual Formalism for Complex Systems</a><small>状态层级、并发和通信的理论背景。</small></li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing" target="_blank" rel="noopener noreferrer">Microsoft Azure Architecture Center：Event Sourcing pattern</a><small>追加事件、状态重建、物化视图、快照和版本治理。</small></li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs" target="_blank" rel="noopener noreferrer">Microsoft Azure Architecture Center：CQRS pattern</a><small>写入模型与读取投影的分工。</small></li>
+        <li><a href="https://docs.langchain.com/oss/python/langgraph/persistence" target="_blank" rel="noopener noreferrer">LangGraph：Persistence</a><small>thread、checkpoint、state snapshot 与 store 的边界。</small></li>
+        <li><a href="https://openai.github.io/openai-agents-python/context/" target="_blank" rel="noopener noreferrer">OpenAI Agents SDK：Context management</a><small>本地上下文与模型可见上下文的分层。</small></li>
+        <li><a href="https://openai.github.io/openai-agents-js/guides/human-in-the-loop/" target="_blank" rel="noopener noreferrer">OpenAI Agents SDK：Human-in-the-loop</a><small>暂停、序列化 RunState、审批与恢复执行。</small></li>
+        <li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener noreferrer">OpenAI：Unrolling the Codex agent loop</a><small>稳定前缀、动态后缀和 prompt caching 的工程约束。</small></li>
+        <li><a href="https://docs.vllm.ai/en/v0.22.1/features/automatic_prefix_caching/" target="_blank" rel="noopener noreferrer">vLLM：Automatic Prefix Caching</a><small>相同前缀的 KV block 复用，以及 prefill 与 decode 的边界。</small></li>
+        <li><a href="https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus" target="_blank" rel="noopener noreferrer">Manus：Context Engineering for AI Agents</a><small>持续改写 todo.md、让目标回到近期上下文的团队工程经验。</small></li>
+        <li><a href="https://01.me/research/context-distillation" target="_blank" rel="noopener noreferrer">19PINE：Distill, Don’t Retrieve</a><small>作者团队研究页；本文仅引用其自报结果与信息被摘要遗漏的失败案例，尚无独立复现。</small></li>
+      </ol>
+    </section>
+
+    <div class="article-footer-nav">
+      <a href="../blog.html" class="btn btn-secondary">← 返回文章</a>
+      <a href="#main-content">回到正文开头 ↑</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">大模型应用与 Agent 工程</p></div>
+        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
+        <nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js?v=20260813"></script>
+</body>
+</html>

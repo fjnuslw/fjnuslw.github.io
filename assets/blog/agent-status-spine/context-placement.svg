@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" role="img" aria-labelledby="title desc">
+  <title id="title">稳定规则、历史轨迹与动态状态的上下文布局</title>
+  <desc id="desc">稳定规则和工具定义放在上下文前部，历史轨迹接在中间，频繁变化的当前状态与本轮请求靠近末尾。稳定前缀更容易复用，模型也能在作答前看到最新位置。</desc>
+  <defs>
+    <pattern id="paperGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#0b0d0c" stroke-opacity=".055"/>
+    </pattern>
+    <marker id="arrowInk" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#0b0d0c"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="540" rx="28" fill="#f3f0e8"/>
+  <rect width="1000" height="540" rx="28" fill="url(#paperGrid)"/>
+  <text x="48" y="58" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="31" font-weight="800">让稳定内容在前，让当前状态靠近问题</text>
+  <text x="48" y="91" fill="#555b55" font-family="system-ui, sans-serif" font-size="18">从左到右是一轮模型调用看到的 token 顺序</text>
+
+  <g transform="translate(48 138)" font-family="system-ui, sans-serif">
+    <text x="0" y="0" fill="#0b0d0c" font-size="17" font-weight="800" letter-spacing="1.2">STABLE PREFIX / 多轮保持一致</text>
+    <path d="M0 18H510" stroke="#0b0d0c" stroke-width="3"/>
+    <text x="904" y="0" text-anchor="end" fill="#96371f" font-size="17" font-weight="800" letter-spacing="1.2">DYNAMIC TAIL / 本轮更新</text>
+    <path d="M590 18H904" stroke="#ff6b4a" stroke-width="3"/>
+
+    <g transform="translate(0 48)">
+      <rect width="188" height="132" rx="16" fill="#c9ff5a" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="94" y="57" text-anchor="middle" fill="#0b0d0c" font-size="22" font-weight="800">系统规则</text>
+      <text x="94" y="87" text-anchor="middle" fill="#343a34" font-size="16">边界与写作约定</text>
+
+      <rect x="198" width="188" height="132" rx="16" fill="#dce6c4" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="292" y="57" text-anchor="middle" fill="#0b0d0c" font-size="22" font-weight="800">工具定义</text>
+      <text x="292" y="87" text-anchor="middle" fill="#343a34" font-size="16">参数与调用约束</text>
+
+      <rect x="396" width="212" height="132" rx="16" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="502" y="57" text-anchor="middle" fill="#0b0d0c" font-size="22" font-weight="800">历史轨迹</text>
+      <text x="502" y="87" text-anchor="middle" fill="#555b55" font-size="16">消息、证据、决策</text>
+
+      <rect x="618" width="188" height="132" rx="16" fill="#ff6b4a" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="712" y="50" text-anchor="middle" fill="#0b0d0c" font-size="22" font-weight="850">当前状态</text>
+      <text x="712" y="80" text-anchor="middle" fill="#0b0d0c" font-size="16">阶段 / 进度</text>
+      <text x="712" y="105" text-anchor="middle" fill="#0b0d0c" font-size="16">阻塞 / 下一步</text>
+
+      <rect x="816" width="88" height="132" rx="16" fill="#0b0d0c"/>
+      <text x="860" y="54" text-anchor="middle" fill="#f3f0e8" font-size="19" font-weight="800">本轮</text>
+      <text x="860" y="84" text-anchor="middle" fill="#f3f0e8" font-size="19" font-weight="800">请求</text>
+    </g>
+
+    <path d="M618 206V248" stroke="#ff6b4a" stroke-width="3" marker-end="url(#arrowInk)"/>
+    <rect x="522" y="260" width="382" height="76" rx="14" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+    <text x="713" y="291" text-anchor="middle" fill="#0b0d0c" font-size="19" font-weight="800">频繁更新停留在末尾</text>
+    <text x="713" y="318" text-anchor="middle" fill="#555b55" font-size="16">最新状态离下一次决策很近</text>
+
+    <path d="M0 224H492" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+    <text x="0" y="254" fill="#0b0d0c" font-size="18" font-weight="750">长而稳定的前缀可争取缓存复用</text>
+  </g>
+
+  <rect x="48" y="490" width="904" height="2" fill="#0b0d0c"/>
+  <text x="48" y="519" fill="#555b55" font-family="system-ui, sans-serif" font-size="16">先保证语义完整，再安排顺序；缓存收益取决于模型服务与前缀是否逐 token 相同。</text>
+</svg>

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const origin = 'https://fjnuslw.github.io/';
 const excludedDirectories = new Set(['.git', '.workbuddy', 'node_modules', 'resume-redesign', 'tmp']);
 const errors = [];
 let checkedLinks = 0;
@@ -46,9 +47,43 @@ function localTarget(fromFile, rawUrl) {
 
 async function validateHtml(file) {
   const html = await readFile(file, 'utf8');
+  const filePath = relative(file);
   if (!/<html\b[^>]*\blang=["']zh-CN["']/i.test(html)) errors.push(`${relative(file)}: 缺少 lang="zh-CN"`);
   if (!/<meta\b[^>]*\bname=["']viewport["']/i.test(html)) errors.push(`${relative(file)}: 缺少 viewport`);
   if (!/<title>[^<]+<\/title>/i.test(html)) errors.push(`${relative(file)}: 缺少标题`);
+
+  const requiresCanonical = filePath !== 'blog/template.html' && (
+    /^[^/]+\.html$/.test(filePath)
+    || /^blog\/[^/]+\.html$/.test(filePath)
+    || /^projects\/[^/]+\.html$/.test(filePath)
+    || filePath === 'demos/local-window-copilot/index.html'
+  );
+  if (requiresCanonical) {
+    const canonical = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["']/i)?.[1];
+    const publicPath = filePath === 'index.html'
+      ? ''
+      : filePath.endsWith('/index.html')
+        ? filePath.slice(0, -'index.html'.length)
+        : filePath;
+    const expectedCanonical = new URL(publicPath, origin).href;
+    if (!canonical) errors.push(`${filePath}: 缺少 canonical`);
+    else if (canonical !== expectedCanonical) errors.push(`${filePath}: canonical 应为 ${expectedCanonical}`);
+
+    const ogUrl = html.match(/<meta\b[^>]*\bproperty=["']og:url["'][^>]*\bcontent=["']([^"']+)["']/i)?.[1];
+    if (ogUrl && canonical && ogUrl !== canonical) errors.push(`${filePath}: og:url 与 canonical 不一致`);
+  }
+
+  for (const match of html.matchAll(/<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      JSON.parse(match[1]);
+    } catch (error) {
+      errors.push(`${filePath}: JSON-LD 无效：${error.message}`);
+    }
+  }
+
+  for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+    if (!/\balt=["'][^"']*["']/i.test(tag)) errors.push(`${filePath}: img 缺少 alt`);
+  }
 
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/gi)].map(match => match[1]);
   const duplicates = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
@@ -102,10 +137,15 @@ try {
   const duplicateSitemapUrls = [...new Set(sitemapUrls.filter((url, index) => sitemapUrls.indexOf(url) !== index))];
   if (duplicateSitemapUrls.length) errors.push(`sitemap.xml: 重复 URL：${duplicateSitemapUrls.join(', ')}`);
 
-  const origin = 'https://fjnuslw.github.io/';
   for (const post of posts) {
     const expected = new URL(post.url, origin).href;
     if (!sitemapUrls.includes(expected)) errors.push(`sitemap.xml: 缺少文章：${post.url}`);
+  }
+  for (const file of htmlFiles) {
+    const filePath = relative(file);
+    if (!/^projects\/[^/]+\.html$/.test(filePath)) continue;
+    const expected = new URL(filePath, origin).href;
+    if (!sitemapUrls.includes(expected)) errors.push(`sitemap.xml: 缺少项目详情：${filePath}`);
   }
 } catch (error) {
   errors.push(`sitemap.xml: ${error.message}`);
@@ -116,6 +156,24 @@ for (const file of htmlFiles) {
   const filePath = relative(file);
   if (!/^blog\/[^/]+\.html$/.test(filePath) || filePath === 'blog/template.html') continue;
   if (!listedPosts.has(filePath)) errors.push(`blog/posts.json: 未收录文章：${filePath}`);
+}
+
+try {
+  const blogIndex = await readFile(path.join(root, 'blog.html'), 'utf8');
+  if (!blogIndex.includes(`${posts.length} 篇公开笔记`)) {
+    errors.push(`blog.html: 硬编码篇数与 posts.json 的 ${posts.length} 篇不一致`);
+  }
+  for (const post of posts) {
+    if (!blogIndex.includes(`href="${post.url}"`)) errors.push(`blog.html: 缺少文章卡片：${post.url}`);
+  }
+} catch (error) {
+  errors.push(`blog.html: ${error.message}`);
+}
+
+for (const svgFile of files.filter(file => file.endsWith('.svg') && relative(file).startsWith('assets/blog/'))) {
+  const svg = await readFile(svgFile, 'utf8');
+  if (!/<title\b[^>]*>[^<]+<\/title>/i.test(svg)) errors.push(`${relative(svgFile)}: 缺少 SVG title`);
+  if (!/<desc\b[^>]*>[^<]+<\/desc>/i.test(svg)) errors.push(`${relative(svgFile)}: 缺少 SVG desc`);
 }
 
 for (const cssFile of files.filter(file => file.endsWith('.css'))) {

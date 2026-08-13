@@ -1,5 +1,16 @@
 [
   {
+    "id": "agent-status-spine",
+    "title": "Agent 状态栏：让长任务知道自己走到哪里",
+    "date": "2026-08-13",
+    "readTime": "17 min",
+    "excerpt": "从一次中断的研究任务出发，拆开任务契约、事件记录、检查点与状态投影，并用 Research-to-Spec 演示怎样安全恢复。",
+    "tags": ["Agent", "状态管理", "Skill"],
+    "color": "coral",
+    "icon": "ST",
+    "url": "blog/agent-status-spine.html"
+  },
+  {
     "id": "kv-cache-reuse",
     "title": "KV Cache 如何让大模型复用已经读过的内容",
     "date": "2026-08-12",

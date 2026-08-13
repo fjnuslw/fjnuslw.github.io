@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 590" role="img" aria-labelledby="title desc">
+  <title id="title">任务中断前写入磁盘，恢复时重新生成状态</title>
+  <desc id="desc">运行中的 Agent 把来源、决策和任务进度持续写入磁盘。进程中断后，新会话读取同一组文件，通过归约器重新生成阶段、进度、阻塞项和下一步。</desc>
+  <defs>
+    <pattern id="paperGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#0b0d0c" stroke-opacity=".055"/>
+    </pattern>
+    <marker id="arrowInk" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#0b0d0c"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#c9ff5a"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="590" rx="28" fill="#f3f0e8"/>
+  <rect width="1000" height="590" rx="28" fill="url(#paperGrid)"/>
+  <text x="48" y="58" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="31" font-weight="800">恢复靠磁盘记录重建，不靠会话记忆猜测</text>
+  <text x="48" y="91" fill="#555b55" font-family="system-ui, sans-serif" font-size="18">进程可以消失；来源、决策和任务进度继续留在项目目录</text>
+
+  <line x1="500" y1="124" x2="500" y2="538" stroke="#ff6b4a" stroke-width="3" stroke-dasharray="9 9"/>
+  <rect x="443" y="112" width="114" height="36" rx="18" fill="#ff6b4a"/>
+  <text x="500" y="136" text-anchor="middle" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="17" font-weight="850">INTERRUPT</text>
+
+  <g transform="translate(48 166)" font-family="system-ui, sans-serif">
+    <text x="0" y="0" fill="#0b0d0c" font-size="18" font-weight="850" letter-spacing="1.4">中断前 / 持续落盘</text>
+    <rect x="0" y="30" width="170" height="112" rx="18" fill="#0b0d0c"/>
+    <text x="85" y="76" text-anchor="middle" fill="#c9ff5a" font-size="22" font-weight="850">Agent</text>
+    <text x="85" y="106" text-anchor="middle" fill="#f3f0e8" font-size="16">搜索 · 判断 · 计划</text>
+
+    <path d="M182 86H238" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+    <text x="210" y="70" text-anchor="middle" fill="#555b55" font-size="15">append</text>
+
+    <g transform="translate(250 30)">
+      <rect width="184" height="226" rx="18" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+      <rect x="18" y="20" width="148" height="46" rx="9" fill="#c9ff5a"/>
+      <text x="92" y="50" text-anchor="middle" fill="#0b0d0c" font-size="18" font-weight="800">sources.jsonl</text>
+      <rect x="18" y="78" width="148" height="46" rx="9" fill="#e3e0d7"/>
+      <text x="92" y="108" text-anchor="middle" fill="#0b0d0c" font-size="17" font-weight="800">traceability.csv</text>
+      <rect x="18" y="136" width="148" height="46" rx="9" fill="#e3e0d7"/>
+      <text x="92" y="166" text-anchor="middle" fill="#0b0d0c" font-size="18" font-weight="800">TASKS.md</text>
+      <text x="92" y="207" text-anchor="middle" fill="#555b55" font-size="15">durable state</text>
+    </g>
+
+    <rect x="0" y="288" width="434" height="92" rx="15" fill="#ff6b4a"/>
+    <text x="22" y="326" fill="#0b0d0c" font-size="20" font-weight="850">进程在 14:32 中断</text>
+    <text x="22" y="355" fill="#0b0d0c" font-size="17">最后一次成功写入已经留痕</text>
+  </g>
+
+  <g transform="translate(548 166)" font-family="system-ui, sans-serif">
+    <text x="0" y="0" fill="#0b0d0c" font-size="18" font-weight="850" letter-spacing="1.4">恢复时 / 读取并重算</text>
+    <rect x="0" y="30" width="178" height="112" rx="18" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+    <text x="89" y="75" text-anchor="middle" fill="#0b0d0c" font-size="21" font-weight="850">新会话</text>
+    <text x="89" y="105" text-anchor="middle" fill="#555b55" font-size="16">打开同一目录</text>
+
+    <path d="M190 86H238" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+
+    <rect x="250" y="30" width="154" height="112" rx="56" fill="#0b0d0c"/>
+    <text x="327" y="77" text-anchor="middle" fill="#c9ff5a" font-size="20" font-weight="850">REDUCE</text>
+    <text x="327" y="105" text-anchor="middle" fill="#f3f0e8" font-size="15">读取全部记录</text>
+
+    <path d="M327 154V190" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+
+    <rect x="0" y="202" width="404" height="178" rx="18" fill="#0b0d0c"/>
+    <rect x="20" y="222" width="364" height="42" rx="8" fill="#c9ff5a"/>
+    <text x="36" y="250" fill="#0b0d0c" font-size="19" font-weight="850">phase  planned</text>
+    <text x="22" y="297" fill="#f3f0e8" font-size="18">进度　3 个任务待执行</text>
+    <text x="22" y="329" fill="#f3f0e8" font-size="18">阻塞　等待实施授权</text>
+    <text x="22" y="361" fill="#ff6b4a" font-size="18" font-weight="800">NEXT / 请求确认授权</text>
+  </g>
+
+  <path d="M772 558H932" stroke="#c9ff5a" stroke-width="4" marker-end="url(#arrowGreen)"/>
+  <text x="548" y="565" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="17" font-weight="750">从可核对的位置继续</text>
+</svg>

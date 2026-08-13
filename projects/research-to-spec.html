@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Research-to-Spec：把复杂任务拆成研究问题，保存来源、决定、规格、任务与验证，再从文件派生可恢复的 Agent 当前状态。">
+  <meta name="theme-color" content="#0b0d0c">
+  <link rel="canonical" href="https://fjnuslw.github.io/projects/research-to-spec.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="Research-to-Spec｜把调研变成可追溯规格">
+  <meta property="og:description" content="一套文件化 Agent Skill：从问题与来源走到决定、规格、任务和验证，并用确定性状态投影支持中断恢复。">
+  <meta property="og:url" content="https://fjnuslw.github.io/projects/research-to-spec.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Research-to-Spec｜把调研变成可追溯规格">
+  <meta name="twitter:description" content="保存从资料到验证的完整连接，并把当前阶段、授权边界和下一关投影给 Agent。">
+  <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <title>Research-to-Spec｜把调研变成可追溯规格</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=20260809">
+  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260811">
+  <link rel="stylesheet" href="../css/project-research-to-spec.css?v=20260813">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Research-to-Spec",
+    "description": "面向编程智能体的文件化研究与规格工作流，保存从研究问题、来源、发现和决定到需求、任务与验证的可追溯关系，并生成只读运行状态投影。",
+    "codeRepository": "https://github.com/fjnuslw/research-to-spec",
+    "url": "https://fjnuslw.github.io/projects/research-to-spec.html",
+    "license": "https://opensource.org/license/mit",
+    "programmingLanguage": "Python",
+    "softwareVersion": "0.1.0-alpha.2",
+    "isAccessibleForFree": true,
+    "author": {
+      "@type": "Person",
+      "name": "宋林蔚",
+      "url": "https://fjnuslw.github.io/"
+    },
+    "subjectOf": {
+      "@type": "Article",
+      "name": "Agent 状态栏：让长任务知道自己走到哪里",
+      "url": "https://fjnuslw.github.io/blog/agent-status-spine.html"
+    }
+  }
+  </script>
+</head>
+<body class="rts-page ledger-page">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <nav class="navbar ledger-nav" aria-label="主导航">
+    <div class="nav-container ledger-container">
+      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span><span></span></button>
+      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
+        <li><a href="../index.html" class="nav-link">首页</a></li>
+        <li><a href="../projects.html" class="nav-link active" aria-current="page">项目</a></li>
+        <li><a href="../resume.html" class="nav-link">履历</a></li>
+        <li><a href="../blog.html" class="nav-link">文章</a></li>
+        <li><a href="../about.html" class="nav-link">关于</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <div class="rts-shell"><a class="rts-back" href="../projects.html">← 返回项目账本</a></div>
+
+    <header class="rts-hero">
+      <div class="rts-shell">
+        <div class="rts-hero-grid">
+          <div class="rts-hero-copy">
+            <p class="rts-eyebrow">2026.08 · Agent Skill · Knowledge pipeline</p>
+            <h1>Research-<br>to-Spec</h1>
+            <p class="rts-lede">复杂任务会把旧代码、外部资料和多个决定塞进同一段长对话。Research-to-Spec 先把问题、证据、决定、规格、任务与验证留在 Git 中，再从这些文件派生一段当前状态，让中断后的下一轮能看到授权边界、已完成内容和下一道关卡。</p>
+            <p class="rts-local-name"><strong>Agent Skill</strong> 是一组可复用的说明、脚本和模板，编程智能体加载后可以按同一套流程工作。</p>
+            <p class="rts-local-name">本地工作区沿用 <strong>SpecScout</strong> 这个开发名；公开项目与 Skill 名称统一为 <strong>Research-to-Spec</strong>。</p>
+            <div class="rts-actions">
+              <a href="https://github.com/fjnuslw/research-to-spec" target="_blank" rel="noopener noreferrer" class="btn btn-primary ledger-button ledger-button-signal">GitHub 源码 ↗</a>
+              <a href="../blog/agent-status-spine.html" class="btn btn-secondary ledger-button ledger-button-secondary">阅读状态栏文章</a>
+            </div>
+          </div>
+          <figure class="rts-hero-figure">
+            <div class="rts-visual-scroll" role="region" tabindex="0" aria-label="可横向滚动查看完整流程图">
+              <img src="../assets/blog/agent-status-spine/specscout-state-flow.svg" width="1000" height="620" alt="Research-to-Spec 从任务契约、研究问题、来源和决定推进到规格、任务与验证，并生成当前状态投影的流程图">
+            </div>
+            <figcaption>完整材料解释为什么这样决定；短状态说明现在走到哪里。</figcaption>
+          </figure>
+        </div>
+
+        <div class="rts-facts" aria-label="项目关键信息">
+          <div class="rts-fact"><strong>3 modes</strong><span>Lite · Standard · Deep</span></div>
+          <div class="rts-fact"><strong>4 scripts</strong><span>初始化、记录、投影、校验</span></div>
+          <div class="rts-fact"><strong>15 sources</strong><span>仓库内 JSONL / SQLite 自用案例</span></div>
+          <div class="rts-fact"><strong>16 trace rows</strong><span>同一 case 的追踪表记录</span></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="rts-section" aria-labelledby="problem-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">01 / Problem</p>
+          <div>
+            <h2 id="problem-title">一次存储选型，为什么会在“specified”之后仍停在原地？</h2>
+            <p>仓库内的真实案例要为证据账本选择逐行文本 JSONL 或单文件数据库 SQLite。三个研究问题已经回答，15 条来源已经登记，需求和任务也已写好。用户当时只授权调研与规格制定，所以三项实施任务仍等待批准。只看到“材料已形成规格”，下一位 Agent 可能误把它理解成“可以开始改代码”。</p>
+          </div>
+        </div>
+
+        <div class="rts-problem-grid">
+          <article class="rts-card">
+            <span class="rts-card-index">A / MATERIAL</span>
+            <h3>材料成熟度</h3>
+            <p>问题是否回答、来源是否登记、决定能否追到依据、规格是否带验收条件。</p>
+            <strong class="rts-card-state">phase: specified</strong>
+          </article>
+          <article class="rts-card">
+            <span class="rts-card-index">B / EXECUTION</span>
+            <h3>执行进度</h3>
+            <p>任务是否开始、文件是否改变、声明的检查有没有运行、观察结果是否记录。</p>
+            <strong class="rts-card-state">tasks: 0 / 3 completed</strong>
+          </article>
+          <article class="rts-card">
+            <span class="rts-card-index">C / AUTHORITY</span>
+            <h3>用户授权</h3>
+            <p>当前请求允许调研、制定规格，还是已经明确允许修改产品代码。</p>
+            <strong class="rts-card-state">authorization: research-only</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="rts-section rts-section-soft" aria-labelledby="model-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">02 / Contract & status</p>
+          <div>
+            <h2 id="model-title">任务开始时固定边界，执行过程中持续投影当前位置。</h2>
+            <p>任务契约记录目标、范围、交付物、禁止项和完成条件。状态投影读取当前文件，压缩成下一轮决策需要的少量字段。两者共享稳定编号，各自回答不同时间尺度的问题。</p>
+          </div>
+        </div>
+
+        <div class="rts-model-grid">
+          <article class="rts-model-card rts-model-contract">
+            <p class="rts-model-label">TASK CONTRACT · T0</p>
+            <h3>先写清楚允许做到哪里</h3>
+            <dl>
+              <div><dt>Goal</dt><dd>这次要解决的具体问题</dd></div>
+              <div><dt>Scope</dt><dd>仓库、系统和资料边界</dd></div>
+              <div><dt>Deliverables</dt><dd>需要交付的文件与决定</dd></div>
+              <div><dt>Authorization</dt><dd>调研范围或实施许可</dd></div>
+              <div><dt>Done</dt><dd>可以观察的完成条件</dd></div>
+            </dl>
+          </article>
+
+          <article class="rts-model-card rts-model-status">
+            <p class="rts-model-label">STATUS PROJECTION · Tn</p>
+            <h3>每次恢复时重新计算</h3>
+            <dl>
+              <div><dt>Phase</dt><dd>材料推进到哪个阶段</dd></div>
+              <div><dt>Progress</dt><dd>问题、来源、任务与追踪计数</dd></div>
+              <div><dt>Active</dt><dd>当前研究分支或正在处理的任务</dd></div>
+              <div><dt>Integrity</dt><dd>格式错误与失效记录计数</dd></div>
+              <div><dt>Next gate</dt><dd>继续前必须满足的条件</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <div class="rts-layer-table-wrap" role="region" tabindex="0" aria-label="可横向滚动查看状态分层表格">
+          <table class="rts-table rts-layer-table">
+            <thead><tr><th scope="col">层</th><th scope="col">保存什么</th><th scope="col">由谁维护</th><th scope="col">中断后用途</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">任务契约</th><td>目标、范围、交付物、授权</td><td>用户指令与初始化流程</td><td>恢复任务边界</td></tr>
+              <tr><th scope="row">材料树</th><td>来源、发现、决定、规格、任务、验证</td><td>Agent 与确定性脚本</td><td>解释依据并继续编辑</td></tr>
+              <tr><th scope="row">状态投影</th><td>阶段、计数、活动项、完整性、下一关</td><td><code>render_status.py</code></td><td>快速找到当前位置</td></tr>
+              <tr><th scope="row">运行快照</th><td>恢复执行器所需的完整序列化数据</td><td>宿主运行时</td><td>精确恢复暂停的执行</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="rts-note">状态投影带有 <code>derived="true"</code>。完整事实继续留在材料树中；执行器需要精确暂停恢复时，还要使用宿主提供的 checkpoint 或 run state。</p>
+      </div>
+    </section>
+
+    <section class="rts-section" aria-labelledby="workflow-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">03 / Workflow</p>
+          <div>
+            <h2 id="workflow-title">从一个模糊需求，走到可以验收的任务。</h2>
+            <p>流程先检查当前仓库，再扩大到官方资料、源码、Issue 与社区案例。外部内容作为证据保存，不会直接改写允许动作、完成状态或用户授权。</p>
+          </div>
+        </div>
+
+        <ol class="rts-flow" aria-label="Research-to-Spec 八步工作流">
+          <li><span>01</span><strong>Inspect</strong><p>读取仓库约定、代码与已有决定。</p></li>
+          <li><span>02</span><strong>Route</strong><p>按不确定性选择 Lite、Standard 或 Deep。</p></li>
+          <li><span>03</span><strong>Question</strong><p>把关键未知拆成带停止条件的问题。</p></li>
+          <li><span>04</span><strong>Source</strong><p>登记来源类型、时间、版本与适用范围。</p></li>
+          <li><span>05</span><strong>Synthesize</strong><p>比较证据，保留冲突、限制和备选方案。</p></li>
+          <li><span>06</span><strong>Specify</strong><p>写出可验收需求、任务路径与检查方法。</p></li>
+          <li><span>07</span><strong>Authorize</strong><p>收到明确实施请求后更新授权字段。</p></li>
+          <li><span>08</span><strong>Verify</strong><p>记录实际命令、观察结果和残余限制。</p></li>
+        </ol>
+
+        <div class="rts-status-board">
+          <div class="rts-status-copy">
+            <p class="rts-model-label">CURRENT SELF-TEST STATUS</p>
+            <h3>短状态直接指出下一关</h3>
+            <p>下面的 XML 由当前案例文件读取生成。为突出决策字段，示例省略标题、规格路径和来源路径，并缩短下一关文字；完整输出可用页面下方的命令重新生成。</p>
+          </div>
+          <pre tabindex="0" aria-label="Research-to-Spec 自用案例删节后的当前状态"><code>&lt;research_status projection_schema="0.1"
+  case_schema="0.2" derived="true"&gt;
+  mode: standard
+  phase: specified
+  authorization: research-only
+  case_updated_at: 2026-08-13T07:24:49+08:00
+  questions: answered=3/3
+  sources: total=15; current=15
+  trace: total=16; planned=16
+  tasks: completed=0/3
+  integrity: invalid_records=0
+  next_gate: request implementation approval
+&lt;/research_status&gt;</code></pre>
+        </div>
+        <p class="rts-note">一次独立空 case 前向测试曾发现模板示例被计成 1 个任务。示例现已改成注释，复验结果为任务 <code>0/0</code>、finding / decision / requirement / verification 均为 0；模板只提供写法，不再制造假进度。</p>
+      </div>
+    </section>
+
+    <section class="rts-section rts-section-dark" aria-labelledby="artifacts-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">04 / Artifacts</p>
+          <div>
+            <h2 id="artifacts-title">两棵目录，一条从来源到验证的连接。</h2>
+            <p>研究材料放在 <code>search/</code>，工作定义放在 <code>specs/</code>。文本、JSONL、CSV 与 Markdown 都能进入普通 Git 审查；完整网页、私人材料和许可证不清楚的源码副本留在提交之外。</p>
+          </div>
+        </div>
+
+        <div class="rts-artifact-grid">
+          <div class="rts-tree-wrap">
+            <p class="rts-model-label">REPOSITORY TREE</p>
+            <pre tabindex="0" aria-label="Research-to-Spec 生成的目录结构"><code>search/&lt;case&gt;/
+├── INDEX.md
+├── manifest.json
+├── synthesis.md
+├── traceability.csv
+└── questions/q-001-.../
+    ├── question.md
+    ├── sources.jsonl
+    ├── findings.md
+    └── artifacts/
+
+specs/&lt;case&gt;/
+├── SPEC.md
+├── PLAN.md
+├── TASKS.md
+└── VERIFICATION.md</code></pre>
+          </div>
+          <div class="rts-trace-wrap">
+            <p class="rts-model-label">STABLE TRACE</p>
+            <ol class="rts-trace" aria-label="从问题到验证的稳定编号">
+              <li><span>Q</span><p><strong>Question</strong>会影响选择的问题</p></li>
+              <li><span>S</span><p><strong>Source</strong>来源或本地实验</p></li>
+              <li><span>F</span><p><strong>Finding</strong>证据能够支持的发现</p></li>
+              <li><span>D</span><p><strong>Decision</strong>项目接受或拒绝的选择</p></li>
+              <li><span>R</span><p><strong>Requirement</strong>带验收条件的需求</p></li>
+              <li><span>T</span><p><strong>Task</strong>有路径与检查方法的任务</p></li>
+              <li><span>V</span><p><strong>Verification</strong>实际观察和结果</p></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rts-section" aria-labelledby="recovery-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">05 / Recovery & audit</p>
+          <div>
+            <h2 id="recovery-title">中断之后，先定位，再沿编号核对。</h2>
+            <p>新会话无需重新阅读全部搜索历史。它先生成状态投影，确认授权与下一关，再打开当前焦点对应的材料；遇到结论争议时，沿稳定编号回到来源和限制。</p>
+          </div>
+        </div>
+
+        <figure class="rts-recovery-figure">
+            <div class="rts-visual-scroll" role="region" tabindex="0" aria-label="可横向滚动查看中断恢复流程图">
+            <img src="../assets/blog/agent-status-spine/interruption-recovery.svg" width="1000" height="590" alt="长任务中断后，新 Agent 先读取确定性状态投影，再打开当前焦点材料并沿追踪编号恢复工作的流程图">
+          </div>
+          <figcaption>状态负责导航，材料负责举证，验证记录负责确认结果。</figcaption>
+        </figure>
+
+        <div class="rts-audit-grid">
+          <article><span>01</span><h3>重新派生</h3><p><code>render_status.py</code> 只读 case 文件，每次都可重算计数、阶段和下一关。</p></article>
+          <article><span>02</span><h3>聚焦加载</h3><p>先读状态、索引与综合决定，再打开当前问题、需求或任务，控制上下文负担。</p></article>
+          <article><span>03</span><h3>沿链核对</h3><p>发现、决定、需求、任务和验证都保留上游编号，推理跳跃能被定位。</p></article>
+          <article><span>04</span><h3>门槛校验</h3><p><code>validate_case.py</code> 检查结构和关系；规划关系完整不等于实施完成。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="rts-section rts-section-soft" aria-labelledby="start-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">06 / Quick start</p>
+          <div>
+            <h2 id="start-title">先安装，再明确说出本轮停在哪里。</h2>
+            <p>Alpha 阶段推荐显式调用 Skill，并把调研范围与实施边界写进请求。四个辅助脚本只使用 Python 标准库，也不会主动下载或执行来源内容。</p>
+          </div>
+        </div>
+
+        <div class="rts-quick-grid">
+          <article class="rts-command-card">
+            <p class="rts-model-label">INSTALL</p>
+            <pre tabindex="0"><code>npx skills add fjnuslw/research-to-spec</code></pre>
+            <p class="rts-command-note">仓库同时提供 Codex 手动复制说明；其他 Agent Skills 宿主仍需按各自安装方式验证。</p>
+          </article>
+          <article class="rts-command-card">
+            <p class="rts-model-label">CALL</p>
+            <pre tabindex="0"><code>使用 $research-to-spec 调研这个功能。
+先读当前仓库，再查可靠资料和失败案例。
+保存证据并生成规格，本轮停在实施之前。</code></pre>
+          </article>
+        </div>
+
+        <div class="rts-code-block">
+          <div class="rts-code-head"><span>POWERSHELL · FOUR DETERMINISTIC HELPERS</span><span>scroll →</span></div>
+            <pre tabindex="0"><code>python skills/research-to-spec/scripts/init_case.py local-search --project-root . --mode standard --authorization research-only --title "Local search" --question "Which engine fits this repository?"
+python skills/research-to-spec/scripts/add_source.py search/local-search --question Q-001 --type official-docs --authority primary --title "Upstream documentation" --url "https://example.com/docs" --summary "Supported storage model."
+python skills/research-to-spec/scripts/render_status.py search/local-search --project-root .
+python skills/research-to-spec/scripts/validate_case.py search/local-search --project-root . --strict</code></pre>
+        </div>
+
+          <div class="rts-layer-table-wrap" role="region" tabindex="0" aria-label="可横向滚动查看技术栈表格">
+          <table class="rts-table rts-stack-table">
+            <tbody>
+              <tr><th scope="row">Package</th><td>开放格式 Agent Skill · <code>SKILL.md</code> · <code>agents/openai.yaml</code></td></tr>
+              <tr><th scope="row">Helpers</th><td>Python 标准库 · init · add source · render status · validate</td></tr>
+              <tr><th scope="row">Artifacts</th><td>Markdown · JSON · JSONL · CSV · 许可证允许的必要附件</td></tr>
+              <tr><th scope="row">自动验证</th><td>当前配置：Ubuntu latest · Python 3.11 · unittest · 自用案例严格校验</td></tr>
+              <tr><th scope="row">License</th><td>MIT</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="rts-section" aria-labelledby="evidence-title">
+      <div class="rts-shell">
+        <div class="rts-section-head">
+          <p class="rts-kicker">07 / Evidence & boundaries</p>
+          <div>
+            <h2 id="evidence-title">公开一个完整案例，也公开它还证明不了什么。</h2>
+            <p>下面的计数来自仓库内 <code>examples/jsonl-vs-sqlite</code> 自用案例在 2026-08-13 的严格校验。它证明默认文件契约和追踪关系能够通过当前验证器；它没有提供生产力、正确率或跨宿主兼容性的对照结论。</p>
+          </div>
+        </div>
+
+        <div class="rts-evidence-layout">
+          <aside class="rts-metric-panel" aria-label="自用案例严格校验计数">
+            <div><strong>3</strong><span>research questions</span></div>
+            <div><strong>3</strong><span>requirements</span></div>
+            <div><strong>3</strong><span>planned tasks</span></div>
+            <div><strong>3</strong><span>verification entries</span></div>
+            <p>同一案例另含 15 条来源与 16 条追踪记录；三项任务保持未完成，符合当时的 research-only 授权。</p>
+          </aside>
+
+          <div class="rts-boundaries">
+            <article><span>ALPHA</span><h3>文件格式仍可能变化</h3><p>当前版本为 <code>0.1.0-alpha.2</code>，适合试用、审查和反馈。</p></article>
+            <article><span>EVAL</span><h3>尚无成组对照结果</h3><p>评估协议已经记录耗时、返工、追踪完整度和盲审指标；同条件基线结果仍待补齐。</p></article>
+            <article><span>ADAPTERS</span><h3>自动校验覆盖默认布局</h3><p>Spec Kit、OpenSpec、Kiro 等现有布局目前需要人工核对稳定编号连接。</p></article>
+            <article><span>WRITES</span><h3>同一问题目录只安排一个写入者</h3><p>不同研究问题可以并行；同一问题目录并发追加来源仍缺少互斥保护。</p></article>
+            <article><span>RECOVERY</span><h3>状态投影服务下一步决策</h3><p>执行器的精确恢复继续依赖宿主 checkpoint；投影可从文件重建，无法替代完整运行快照。</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rts-section">
+      <div class="rts-shell rts-cta">
+        <div>
+          <p class="rts-kicker">Open source · MIT</p>
+          <h2>拿一个有真实不确定性的任务来检验它。</h2>
+          <p>仓库包含中英文说明、完整自用案例、安全边界、评估协议和四个确定性辅助脚本。状态栏的设计推导与缓存代价放在配套文章中。</p>
+        </div>
+        <div class="rts-actions">
+          <a href="https://github.com/fjnuslw/research-to-spec" target="_blank" rel="noopener noreferrer" class="btn btn-primary ledger-button ledger-button-signal">查看仓库 ↗</a>
+          <a href="../blog/agent-status-spine.html" class="btn btn-secondary ledger-button ledger-button-secondary">阅读设计文章</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container-wide">
+      <div class="footer-content">
+        <div class="footer-brand"><p class="footer-left">&copy; 2026 宋林蔚</p><p class="footer-tagline">Evidence Ledger · AI Agent 工程档案</p></div>
+        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
+        <nav class="footer-links" aria-label="站外链接"><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:1147214246@qq.com">邮箱</a></nav>
+      </div>
+    </div>
+  </footer>
+  <button class="back-to-top" type="button" aria-label="返回顶部">↑</button>
+  <script src="../js/main.js?v=20260809"></script>
+</body>
+</html>

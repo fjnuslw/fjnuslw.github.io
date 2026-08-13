@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc">
+  <title id="title">Research-to-Spec 的阶段流转与授权门</title>
+  <desc id="desc">任务依次经过需求接收、研究、规格、计划四个阶段。清单中的 research-only 授权会把流程停在实施门前，只有记录 implementation-approved 后才能进入实施阶段。</desc>
+  <defs>
+    <pattern id="paperGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#0b0d0c" stroke-opacity=".055"/>
+    </pattern>
+    <marker id="arrowInk" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#0b0d0c"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#ff6b4a"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="620" rx="28" fill="#f3f0e8"/>
+  <rect width="1000" height="620" rx="28" fill="url(#paperGrid)"/>
+  <text x="48" y="58" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="31" font-weight="800">阶段告诉 Agent 该做哪类动作</text>
+  <text x="48" y="91" fill="#555b55" font-family="system-ui, sans-serif" font-size="18">授权字段给实施动作加一道可以验证的门</text>
+
+  <g transform="translate(48 146)" font-family="system-ui, sans-serif">
+    <g fill="none" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)">
+      <path d="M150 64H184"/>
+      <path d="M334 64H368"/>
+      <path d="M518 64H552"/>
+      <path d="M702 64H738"/>
+    </g>
+
+    <g font-size="20" font-weight="800" text-anchor="middle">
+      <rect width="150" height="128" rx="18" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="75" y="58" fill="#0b0d0c">INTAKE</text>
+      <text x="75" y="88" fill="#555b55" font-size="16" font-weight="600">问题与边界</text>
+
+      <rect x="184" width="150" height="128" rx="18" fill="#dce6c4" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="259" y="58" fill="#0b0d0c">RESEARCH</text>
+      <text x="259" y="88" fill="#555b55" font-size="16" font-weight="600">来源与证据</text>
+
+      <rect x="368" width="150" height="128" rx="18" fill="#c9ff5a" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="443" y="58" fill="#0b0d0c">SPECIFIED</text>
+      <text x="443" y="88" fill="#343a34" font-size="16" font-weight="600">结论到需求</text>
+
+      <rect x="552" width="150" height="128" rx="18" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+      <text x="627" y="58" fill="#0b0d0c">PLANNED</text>
+      <text x="627" y="88" fill="#555b55" font-size="16" font-weight="600">任务与验收</text>
+    </g>
+
+    <g transform="translate(738 0)">
+      <path d="M64 0L128 64 64 128 0 64Z" fill="#0b0d0c"/>
+      <text x="64" y="50" text-anchor="middle" fill="#f3f0e8" font-size="16" font-weight="800">授权</text>
+      <text x="64" y="73" text-anchor="middle" fill="#f3f0e8" font-size="16" font-weight="800">已记录？</text>
+      <text x="64" y="98" text-anchor="middle" fill="#c9ff5a" font-size="14" font-weight="800">GATE</text>
+    </g>
+
+    <path d="M802 128V190" fill="none" stroke="#ff6b4a" stroke-width="3" marker-end="url(#arrowOrange)"/>
+    <text x="820" y="168" fill="#96371f" font-size="17" font-weight="800">否</text>
+    <rect x="610" y="202" width="384" height="98" rx="16" fill="#ff6b4a" stroke="#0b0d0c" stroke-width="2"/>
+    <text x="802" y="239" text-anchor="middle" fill="#0b0d0c" font-size="21" font-weight="850">research-only</text>
+    <text x="802" y="270" text-anchor="middle" fill="#0b0d0c" font-size="17" font-weight="650">交付证据与计划，等待明确授权</text>
+
+    <path d="M866 64H900V340H788" fill="none" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+    <text x="885" y="46" fill="#0b0d0c" font-size="17" font-weight="800">是</text>
+    <rect x="570" y="326" width="218" height="106" rx="18" fill="#c9ff5a" stroke="#0b0d0c" stroke-width="2"/>
+    <text x="679" y="372" text-anchor="middle" fill="#0b0d0c" font-size="21" font-weight="850">IMPLEMENTATION</text>
+    <text x="679" y="403" text-anchor="middle" fill="#343a34" font-size="16" font-weight="650">按规格实施并验证</text>
+
+    <rect x="0" y="326" width="500" height="106" rx="18" fill="#0b0d0c"/>
+    <text x="24" y="365" fill="#c9ff5a" font-size="18" font-weight="800">manifest.json</text>
+    <text x="24" y="399" fill="#f3f0e8" font-size="20" font-family="ui-monospace, SFMono-Regular, monospace">authorization: research-only</text>
+  </g>
+
+  <text x="48" y="592" fill="#555b55" font-family="system-ui, sans-serif" font-size="16">状态机限制合法流转；状态栏把当前阶段、授权和下一道关口压缩给模型。</text>
+</svg>

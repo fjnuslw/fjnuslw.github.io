@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc">
+  <title id="title">持久状态经过归约器生成短状态投影</title>
+  <desc id="desc">任务清单、研究问题、来源记录和追踪表保存在磁盘中。确定性的归约器读取这些记录，生成包含阶段、授权、进度和下一道关口的短状态投影。</desc>
+  <defs>
+    <pattern id="paperGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#0b0d0c" stroke-opacity=".055"/>
+    </pattern>
+    <marker id="arrowInk" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5 0 10Z" fill="#0b0d0c"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="560" rx="28" fill="#f3f0e8"/>
+  <rect width="1000" height="560" rx="28" fill="url(#paperGrid)"/>
+  <text x="48" y="58" fill="#0b0d0c" font-family="system-ui, sans-serif" font-size="31" font-weight="800">状态栏是一张可以随时重建的短视图</text>
+  <text x="48" y="91" fill="#555b55" font-family="system-ui, sans-serif" font-size="18">记录留在磁盘；代码按固定规则压缩出“现在走到哪里”</text>
+
+  <g transform="translate(48 132)" font-family="system-ui, sans-serif">
+    <text x="0" y="0" fill="#0b0d0c" font-size="18" font-weight="800" letter-spacing="1.4">01 / 持久状态</text>
+    <rect x="0" y="24" width="260" height="274" rx="18" fill="#fffef8" stroke="#0b0d0c" stroke-width="2"/>
+    <g font-size="20" font-weight="700" fill="#0b0d0c">
+      <rect x="20" y="47" width="220" height="44" rx="9" fill="#c9ff5a"/>
+      <text x="36" y="76">manifest.json</text>
+      <rect x="20" y="103" width="220" height="44" rx="9" fill="#e3e0d7"/>
+      <text x="36" y="132">sources.jsonl</text>
+      <rect x="20" y="159" width="220" height="44" rx="9" fill="#e3e0d7"/>
+      <text x="36" y="188">traceability.csv</text>
+      <rect x="20" y="215" width="220" height="44" rx="9" fill="#e3e0d7"/>
+      <text x="36" y="244">TASKS.md</text>
+    </g>
+    <text x="20" y="282" fill="#555b55" font-size="16">可审计 · 可版本化 · 可恢复</text>
+  </g>
+
+  <path d="M330 286H412" fill="none" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+
+  <g transform="translate(424 190)" font-family="system-ui, sans-serif">
+    <text x="76" y="-58" text-anchor="middle" fill="#0b0d0c" font-size="18" font-weight="800" letter-spacing="1.4">02 / 归约</text>
+    <rect width="152" height="190" rx="76" fill="#0b0d0c"/>
+    <text x="76" y="75" text-anchor="middle" fill="#c9ff5a" font-size="23" font-weight="800">REDUCE</text>
+    <text x="76" y="106" text-anchor="middle" fill="#f3f0e8" font-size="18">计数</text>
+    <text x="76" y="132" text-anchor="middle" fill="#f3f0e8" font-size="18">校验</text>
+    <text x="76" y="158" text-anchor="middle" fill="#f3f0e8" font-size="18">选下一关</text>
+  </g>
+
+  <path d="M588 286H660" fill="none" stroke="#0b0d0c" stroke-width="3" marker-end="url(#arrowInk)"/>
+
+  <g transform="translate(672 132)" font-family="system-ui, sans-serif">
+    <text x="0" y="0" fill="#0b0d0c" font-size="18" font-weight="800" letter-spacing="1.4">03 / 当前投影</text>
+    <rect x="0" y="24" width="280" height="274" rx="18" fill="#0b0d0c"/>
+    <rect x="20" y="47" width="240" height="42" rx="8" fill="#c9ff5a"/>
+    <text x="36" y="75" fill="#0b0d0c" font-size="19" font-weight="800">phase  researching</text>
+    <g fill="#f3f0e8" font-size="18">
+      <text x="24" y="124">授权　research-only</text>
+      <text x="24" y="158">问题　3 / 5 已关闭</text>
+      <text x="24" y="192">来源　15 条已记录</text>
+      <text x="24" y="226">任务　0 / 3 已执行</text>
+    </g>
+    <line x1="24" y1="244" x2="256" y2="244" stroke="#f3f0e8" stroke-opacity=".35"/>
+    <text x="24" y="275" fill="#ff6b4a" font-size="17" font-weight="800">NEXT / 补齐开放问题</text>
+  </g>
+
+  <g transform="translate(48 482)" font-family="system-ui, sans-serif">
+    <rect width="904" height="48" rx="12" fill="#c9ff5a" stroke="#0b0d0c" stroke-width="2"/>
+    <text x="452" y="31" text-anchor="middle" fill="#0b0d0c" font-size="20" font-weight="750">状态投影可以丢弃；持久记录仍能生成同一份结果。</text>
+  </g>
+</svg>
