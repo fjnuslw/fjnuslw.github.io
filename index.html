@@ -96,7 +96,7 @@
           </h1>
           <p class="ledger-role">大模型应用 / AI Agent 工程实习</p>
           <p class="ledger-thesis">把大模型能力做成能进入真实流程、<strong>可恢复、可审核、证据可追溯</strong>的 Agent 系统。</p>
-          <p class="ledger-availability"><span class="ledger-status-dot" aria-hidden="true"></span>预计 2028 年毕业 · 可连续实习 3 个月以上</p>
+          <p class="ledger-availability"><span class="ledger-status-dot" aria-hidden="true"></span>预计 2028 年毕业 · 可连续实习 6 个月以上</p>
           <div class="ledger-hero-actions" aria-label="主要入口">
             <a href="#selected-systems" class="btn btn-primary ledger-button ledger-button-primary">看代表项目</a>
             <a href="resume.html" class="btn btn-secondary ledger-button ledger-button-secondary">查看公开履历</a>
@@ -121,7 +121,7 @@
               <span class="hero-featured-number">CASE / 01</span>
               <h2 id="featured-case-title">星途知汇</h2>
               <span class="hero-featured-copy">把员工叙述变成经确认、审核与权限控制的企业知识。</span>
-              <span class="hero-featured-proof"><b>10 部门 / 30 人</b> 通讯录同步真实验收</span>
+              <span class="hero-featured-proof"><b>6 类知识库 / 42 篇知识 / 6 个 Skill</b> 当前实例已发布</span>
               <span class="hero-featured-arrow" aria-hidden="true">查看案例 →</span>
             </div>
           </a>
@@ -133,8 +133,8 @@
           <a class="hero-pin" href="projects/local-window-copilot.html">
             <span class="hero-pin-kind">SYS–02 / Local Agent</span>
             <strong class="hero-pin-title">Local Window Copilot</strong>
-            <span class="hero-pin-copy">让 1.3B 本地小模型理解当前窗口、延续对话并恢复记忆。</span>
-            <span class="hero-pin-proof"><b>2.64–3.26×</b> OCR GPU 实测加速</span>
+            <span class="hero-pin-copy">锁定真实物理窗口，用跨帧证据与双账本延续追问和记忆。</span>
+            <span class="hero-pin-proof"><b>PID / HWND</b> 锁窗 · Evidence Graph 跨帧追踪</span>
             <span class="hero-pin-arrow" aria-hidden="true">→</span>
           </a>
           <a class="hero-pin" href="projects.html#workflow-agent">
@@ -181,8 +181,8 @@
               </div>
               <dl class="ledger-system-evidence">
                 <div><dt>问题</dt><dd>经验散落在对话中，来源、可见范围与发布责任难以追踪。</dd></div>
-                <div><dt>本人贡献</dt><dd>以 LangGraph.js + PostgreSQL Checkpointer 编排采访与发布状态；构建权限优先 Hybrid RAG，并接入飞书 OAuth 2.0 + PKCE 与通讯录事件同步。</dd></div>
-                <div><dt>结果</dt><dd>完成 10 个部门 / 30 名在职员工目录同步验收；支持来源白名单、证据不足拒答与检查点恢复。</dd></div>
+                <div><dt>本人贡献</dt><dd>把飞书私聊与白名单内部群接成销售工作台；贯通身份、组织目录、人员变更与“员工确认 → 主管审核 → 版本发布 / 撤回”，并以 Agent + 版本化 Skill + 受控 Tool 约束调用。</dd></div>
+                <div><dt>结果</dt><dd>实机同步 10 个部门、30 名在职员工；当前实例形成 6 类知识库、42 篇发布知识和 6 个发布 Skill。</dd></div>
               </dl>
             </div>
             <ul class="ledger-tech-list" aria-label="星途知汇关键技术">
@@ -205,16 +205,16 @@
               <div class="ledger-system-lead">
                 <p class="ledger-system-label">Local Agent</p>
                 <h3>Local Window Copilot</h3>
-                <p class="ledger-system-value">为 1.3B 级本地多模态模型补齐观察、记忆、交互与恢复能力。</p>
+                <p class="ledger-system-value">为本地视觉模型补齐锁窗、跨帧证据、连续记忆与异步隔离能力。</p>
               </div>
               <dl class="ledger-system-evidence">
-                <div><dt>问题</dt><dd>小模型既要理解窗口内容，又要维持长对话与原生桌面交互，且不能依赖云端 API。</dd></div>
-                <div><dt>本人贡献</dt><dd>构建 MiniCPM-V 4.6 Thinking 的完整 Agent Harness：OCR 负责文字、数字与位置，VLM 负责布局和行为；SQLite 持久化窗口观察、对话与长期记忆，并将 CLI 命令接入原生悬浮窗。</dd></div>
-                <div><dt>结果</dt><dd>GPU OCR 单图 0.347–0.487 s，较 CPU 加速 2.64–3.26×；支持流式回答、思考状态、取消与重启恢复。</dd></div>
+                <div><dt>问题</dt><dd>悬浮窗会抢走焦点，页面滚动会让证据离开视口，异步观察还可能把上一轮结果写进当前对话。</dd></div>
+                <div><dt>本人贡献</dt><dd>在抢焦点前锁定 PID / HWND，以 PinnedScene 和 ownership / epoch fencing 固定物理窗口；构建“全帧 OCR → ScreenMap → VLM”观测链路及 SQLite WAL 双账本。</dd></div>
+                <div><dt>结果</dt><dd>Evidence Graph 支持滚动后的跨帧追问；版本化 Capsule 保留完整对话来源，有界 Notebook 仅写入用户确认的长期记忆，并可在重启后恢复。</dd></div>
               </dl>
             </div>
             <ul class="ledger-tech-list" aria-label="Local Window Copilot 关键技术">
-              <li>Python</li><li>FastAPI</li><li>MiniCPM-V</li><li>RapidOCR</li><li>SQLite</li>
+              <li>Python</li><li>llama.cpp</li><li>MiniCPM-V 4.6</li><li>PP-OCRv6</li><li>SQLite WAL</li>
             </ul>
             <div class="ledger-system-actions">
               <a href="projects/local-window-copilot.html" class="ledger-text-action">阅读项目详情 <span aria-hidden="true">→</span></a>
@@ -247,7 +247,7 @@
             <div class="ledger-system-lead">
               <p class="ledger-system-label">Workflow Agent</p>
               <h3>把“自动生成”收紧成可审核的辅助起草</h3>
-              <p class="ledger-system-value">混合 RAG 找到历史路线，代码约束 OI Draft，Qwen2.5-VL-7B 处理图片证据，LangGraph 在审核点中断并恢复。</p>
+              <p class="ledger-system-value">混合 RAG 选取完整历史主路线，Pydantic Schema 与来源白名单约束 OI Draft，LangGraph 在双级审核点中断并恢复。</p>
             </div>
             <dl class="ledger-field-metrics" aria-label="OpenSOP 验证集">
               <div><dt>40</dt><dd>OI</dd></div>
@@ -257,9 +257,9 @@
               <div><dt>12</dt><dd>隔离任务</dd></div>
             </dl>
           </div>
-          <p class="ledger-field-note">支持图片候选绑定、Lesson 审批沉淀、站点级审核恢复，以及 Excel / ZIP 导出。</p>
+          <p class="ledger-field-note">以人工图片确认约束媒体证据，验证数据来自公开 / 合成样本，并支持 Excel / ZIP 导出。</p>
           <ul class="ledger-tech-list" aria-label="OpenSOP Agent 关键技术">
-            <li>FastAPI</li><li>LangGraph</li><li>Hybrid RAG</li><li>Qwen2.5-VL-7B</li><li>Excel / ZIP</li>
+            <li>FastAPI / SSE</li><li>LangGraph</li><li>Hybrid RAG</li><li>Pydantic</li><li>Excel / ZIP</li>
           </ul>
           <div class="ledger-system-actions">
             <a href="projects.html#workflow-agent" class="ledger-text-action">查看系统拆解 <span aria-hidden="true">→</span></a>
@@ -310,13 +310,13 @@
             </div>
             <div class="experience-record-main">
               <p class="experience-record-org"><strong>福建新意科技有限公司</strong></p>
-              <h3>大模型应用开发实习生</h3>
+              <h3>大模型应用开发</h3>
               <p class="experience-record-value">为企业客服与运维场景搭建可回归验证的 RAG 工作流，覆盖多模型接入、父子分块与全文检索。</p>
             </div>
             <div class="experience-record-proof">
               <dl class="experience-record-facts" aria-label="福建新意科技实习交付证据">
                 <div><dt>检索</dt><dd>父子分块 · 全文索引</dd></div>
-                <div><dt>评测</dt><dd>20 个 Golden Cases</dd></div>
+                <div><dt>评测</dt><dd>小规模 Golden Cases</dd></div>
               </dl>
             </div>
           </article>
@@ -340,12 +340,12 @@
         <div class="ledger-recognition-grid">
           <div class="ledger-research-list reveal">
             <article class="ledger-research-item">
-              <p class="ledger-research-meta">2026 · 一作 · EMNLP / CCF-B</p>
+              <p class="ledger-research-meta">2026 · EMNLP 正式录用 · 一作</p>
               <h3>Intrinsic Attention as Navigator</h3>
-              <p>无需生成式推理的多跳 next-hop 检索方法；基于 Qwen3-Embedding-4B，在 MuSiQue 与 2Wiki 上超过两种 7B / 8B embedding 基线。</p>
+              <p>IN-Retriever 直接读取 Qwen3-Embedding-4B 内部注意力导航下一跳，以 Bridge Focus Score 定位桥接线索、正交投影剔除已覆盖语义；4B 骨干超过两种 7B / 8B 强嵌入基线。</p>
             </article>
             <article class="ledger-research-item">
-              <p class="ledger-research-meta">2026 · 一作 · AI Open / JCR Q1 · 在审</p>
+              <p class="ledger-research-meta">2026 · AI Open / JCR Q1 · 在审 · 与导师共同一作</p>
               <h3>ESRA: Explicit Evidence-State Transitions</h3>
               <p>以显式 PlanState、branch、Search / Probe → LLM Commit → State Write-back 与 EvidenceSpace 约束多跳 Agentic RAG。</p>
             </article>
@@ -422,7 +422,7 @@
           <h2 id="contact-title">寻找能让 Agent<br>真正进入流程的团队。</h2>
         </div>
         <div class="ledger-contact-copy">
-          <p>目标方向：大模型应用 / AI Agent 工程实习。可连续实习 3 个月以上，欢迎交流企业知识、RAG、工作流 Agent 与本地多模态系统。</p>
+          <p>目标方向：大模型应用 / AI Agent 工程实习。可连续实习 6 个月以上，欢迎交流企业知识、RAG、工作流 Agent 与本地多模态系统。</p>
           <div class="ledger-contact-actions">
             <a href="mailto:1147214246@qq.com" class="ledger-button ledger-button-signal">发邮件联系</a>
             <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">查看 GitHub <span aria-hidden="true">↗</span></a>

@@ -240,10 +240,10 @@
 
   <main class="post-content" id="main-content">
 
-    <div class="container">
+    <div class="post-body">
 
       <div class="callout">
-        <strong>2026-08 更新：</strong>本文记录的是项目 7 月早期的 probe→stream 迭代。当前主线已重构为面向 MiniCPM-V 4.6 Thinking 的桌面 Agent Harness，并把窗口观察、完整对话与长期记忆持久化到 SQLite；原生悬浮聊天窗通过 `/` 管理上下文与记忆。请以 <a href="../projects/local-window-copilot.html">最新项目说明</a> 和 GitHub 主分支为准。
+        <strong>2026-08-24 更新：</strong>本文记录的是项目 7 月早期的 probe → stream 迭代。当前主线基于 llama.cpp 部署 MiniCPM-V 4.6 Thinking；Harness 先锁定 PID / HWND，再用 PP-OCRv6、确定性 ScreenMap 与 VLM 构建跨帧 Evidence Graph。SQLite WAL 保存 Observation / OcrLayout / Occurrence 和完整 Thread / Generation，长期记忆只在用户接受或编辑后进入有界 Notebook。请以 <a href="../projects/local-window-copilot.html">最新项目说明</a> 和 GitHub 主分支为准。
       </div>
 
       <p>

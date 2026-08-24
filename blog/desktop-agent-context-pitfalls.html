@@ -152,10 +152,10 @@
 
   <main class="post-content" id="main-content">
 
-    <div class="container">
+    <div class="post-body">
 
       <div class="callout">
-        <strong>2026-08 更新：</strong>本文保留项目原型期的失败复盘。当前实现面向 MiniCPM-V 4.6 Thinking 重构为完整桌面 Agent Harness：OCR 与 VLM 分工，SQLite 持久化窗口观察、对话与长期记忆，并按当前窗口补充历史；请参阅 <a href="../projects/local-window-copilot.html">最新项目说明</a>。
+        <strong>2026-08-24 更新：</strong>本文保留项目原型期的失败复盘。当前实现会在悬浮窗抢焦点前锁定 PID / HWND，以 PinnedScene 和 ownership / epoch fencing 固定物理窗口；“全帧 OCR → ScreenMap → VLM”观测链路通过跨帧 Evidence Graph 保留已经离开视口的证据，SQLite WAL 分别持久化观察、完整对话、Capsule 与用户确认的 Notebook。请参阅 <a href="../projects/local-window-copilot.html">最新项目说明</a>。
       </div>
 
       <!-- 开头：一个看起来很蠢的对话 -->

@@ -1,7 +1,7 @@
 # fjnuslw.github.io 2026 改版 SPEC
 
-版本：1.1
-日期：2026-08-11
+版本：1.2
+日期：2026-08-24
 代号：**Evidence Ledger / AI Agent 工程档案**
 
 ## 0. 目标
@@ -11,7 +11,7 @@
 新访客应在：
 
 - **5 秒内**知道：宋林蔚、目标是大模型应用 / AI Agent 工程实习、当前开放实习；
-- **15 秒内**看到：星途知汇、Local Window Copilot、蓝桥杯全国第 5、企业 10 部门 / 30 人同步、OCR GPU 2.64–3.26×；
+- **15 秒内**看到：星途知汇、Local Window Copilot、蓝桥杯全国第 5、企业 10 部门 / 30 人同步、6 类知识库 / 42 篇发布知识 / 6 个发布 Skill，以及 Local Window Copilot 的跨帧 Evidence Graph；
 - **60 秒内**理解：两段实习、三项旗舰工程、两项研究工作的逻辑关系，并能一跳进入案例、源码、公开履历或联系。
 
 ## 1. 研究依据
@@ -69,8 +69,8 @@
 
 ### 3.2 三条证明链
 
-1. **Enterprise Agent**：星途知汇——对话沉淀、人工确认、审核发布、权限内复用。
-2. **Local Agent**：Local Window Copilot——本地小模型、OCR / VLM 分工、持久记忆、原生悬浮交互。
+1. **Enterprise Agent**：星途知汇——飞书销售工作台、员工确认、主管审核、版本发布与权限内复用。
+2. **Local Agent**：Local Window Copilot——物理窗口锁定、分层观测、跨帧证据与 SQLite WAL 双账本。
 3. **Workflow Agent**：OpenSOP Agent——混合 RAG、受约束 OI Draft、图片证据、审核中断恢复。
 
 ### 3.3 个人工程签名
@@ -92,7 +92,7 @@
 ### 4.2 首页
 
 1. Hero：左侧为姓名、目标角色、价值主张、状态与主 CTA；右侧为一项可直接进入的旗舰案例，首屏不展示真人头像。
-2. Pinned Entrances：Local Window Copilot、OpenSOP Agent、工程复盘 3 个上下文化入口；结果数字必须和项目名称、用途绑定，不单独悬浮。
+2. Pinned Entrances：Local Window Copilot、OpenSOP Agent、工程复盘 3 个上下文化入口；数字或架构证据必须和项目名称、用途绑定，不单独悬浮。
 3. Selected Systems：星途知汇、Local Window Copilot 两项旗舰项目。
 4. Field System：OpenSOP Agent，以实习课题 / 制造业 Agent 形式突出。
 5. Experience Snapshot：两张并列的工作档案，呈现公司、时间、角色、职责与结果；首页不重复教育信息。
@@ -174,7 +174,7 @@
 - `宋林蔚 / LINWEI SONG`
 - `大模型应用 / AI Agent 工程实习`
 - 一句话定位（最多约 46 个汉字）
-- 状态：`2028 届硕士 · 可连续实习 3 个月以上`
+- 状态：`2028 届硕士 · 可连续实习 6 个月以上`
 - 主 CTA：`看代表项目`
 - 次 CTA：`查看公开履历`
 - 辅助链接：GitHub、邮箱
@@ -193,9 +193,9 @@
 
 底部只保留三个可直接导航的上下文化入口：
 
-1. `Local Window Copilot`｜`2.64–3.26× OCR GPU 实测加速`
+1. `Local Window Copilot`｜`PID / HWND 锁窗 · Evidence Graph 跨帧追踪`
 2. `OpenSOP Agent`｜`40 OI / 324 Step 验证语料`
-3. `工程复盘`｜`5 篇公开笔记 · 最近更新 2026.08`
+3. `工程复盘`｜`6 篇公开笔记 · 最近更新 2026.08`
 
 每项必须同时显示类型、名称、用途说明和证据，不再使用意义脱离上下文的纯数字证明条。
 
@@ -220,9 +220,10 @@
 
 ### 7.2 项目事实要求
 
-- 星途知汇必须出现 `LangGraph.js + PostgreSQL Checkpointer`、权限优先 Hybrid RAG、飞书同步、`10 部门 / 30 人`。
-- Local Window Copilot 必须使用最新版的“小模型 Agent Harness”表述，时间为 `2026.07—2026.08`，出现 OCR / VLM 分工、SQLite 记忆、CLI 悬浮窗与 `2.64–3.26×`。
-- OpenSOP 必须出现 `Qwen2.5-VL-7B`、`40 OI / 324 Step / 80 媒体证据 / 24 Lesson / 12 隔离任务`、图片候选绑定、审核恢复、Excel / ZIP。
+- 星途知汇必须出现飞书销售工作台、身份与组织目录、员工确认 / 主管审核 / 版本发布、Agent + 版本化 Skill + 受控 Tool，以及 `10 部门 / 30 人 / 6 类知识库 / 42 篇发布知识 / 6 个发布 Skill`。
+- Local Window Copilot 必须使用最新版的“Windows 本地视觉上下文与连续记忆 Agent Harness”表述，时间为 `2026.07—2026.08`，出现 PID / HWND、PinnedScene、ownership / epoch fencing、PP-OCRv6、ScreenMap、跨帧 Evidence Graph、SQLite WAL 双账本、Capsule 与 Notebook；正式项目页面不再以旧 OCR 倍速作为当前主证据。
+- OpenSOP 必须出现 Dense + 字符级 Lexical、RRF / 可插拔 Reranker、Pydantic Schema、来源白名单、人工图片确认、双级审核恢复，以及 `40 OI / 324 Step / 80 媒体证据 / 24 Lesson / 12 隔离任务`与 Excel / ZIP。
+- IN-Retriever 标记为 `EMNLP 正式录用 · 一作`；ESRA 标记为 `AI Open / JCR Q1 · 在审 · 与导师共同一作`，不展示最新版简历未保留的评审分数或旧实验数据集名称。
 - 论文不显示最新版简历未保留的精确 R@5、F1 或上下文压缩比例。
 
 ## 8. 交互规范

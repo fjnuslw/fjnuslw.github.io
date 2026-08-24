@@ -9,12 +9,12 @@
   <meta property="og:type" content="profile">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:title" content="公开履历｜宋林蔚">
-  <meta property="og:description" content="大模型应用 / AI Agent 工程实习 · 预计 2028 年毕业 · 可连续实习 3 个月以上。">
+  <meta property="og:description" content="大模型应用 / AI Agent 工程实习 · 预计 2028 年毕业 · 可连续实习 6 个月以上。">
   <meta property="og:url" content="https://fjnuslw.github.io/resume.html">
   <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="公开履历｜宋林蔚">
-  <meta name="twitter:description" content="大模型应用 / AI Agent 工程实习 · 预计 2028 年毕业 · 可连续实习 3 个月以上。">
+  <meta name="twitter:description" content="大模型应用 / AI Agent 工程实习 · 预计 2028 年毕业 · 可连续实习 6 个月以上。">
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>公开履历｜宋林蔚</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -45,7 +45,7 @@
   <header class="page-header ledger-page-hero resume-page-header">
     <div class="container-wide ledger-container ledger-page-hero-grid">
       <div>
-        <p class="page-eyebrow">Public resume · Updated 2026.08</p>
+        <p class="page-eyebrow">Public resume · Updated 2026.08.24</p>
         <h1>公开履历</h1>
       </div>
       <p class="ledger-page-deck">从企业知识、制造业 SOP 到本地桌面 Agent：把证据、状态与人工确认写进系统边界。</p>
@@ -57,7 +57,7 @@
       <div class="resume-identity-copy">
         <p class="resume-header-name">宋林蔚 <span>LINWEI SONG</span></p>
         <p class="resume-header-role">大模型应用 / AI Agent 工程实习</p>
-        <p class="resume-identity-summary">预计 2028 年毕业，可连续实习 3 个月以上。关注可恢复的 Agent 工作流、权限优先检索与证据可追溯的人机协作。</p>
+        <p class="resume-identity-summary">预计 2028 年毕业，可连续实习 6 个月以上。关注可恢复的 Agent 工作流、权限优先检索与证据可追溯的人机协作。</p>
         <div class="resume-header-contact" aria-label="公开联系信息">
           <a href="mailto:1147214246@qq.com">1147214246@qq.com</a>
           <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">github.com/fjnuslw ↗</a>
@@ -98,9 +98,10 @@
               <span class="resume-date">2026.07 — 2026.08</span>
             </div>
             <ul>
-              <li>参与 FIDM 新产品 SOP 智撰课题，梳理新 Model 跨站点人工录入、图片编排与审核流程；建立“Model 级 SOP 包、站点级 OI、作业 Step”领域模型，明确结构化主数据、历史 OI 与人工审核边界。</li>
-              <li>基于实习课题独立重构 <strong>OpenSOP Agent</strong> 原型：使用 FastAPI、LangGraph 编排混合 RAG、受约束 OI Draft 生成及审核中断恢复，接入 Qwen2.5-VL-7B 生成草稿并理解图片；通过结构化主数据与策略规则约束步骤路线、数字参数、引用和图片绑定。</li>
-              <li>基于公开 / 合成样本构建验证集：<strong>40 份 OI、324 个 Step、80 项媒体证据、24 条 Lesson、12 个隔离任务</strong>；实现图片候选绑定、Lesson 审批沉淀及 Excel / ZIP 导出。</li>
+              <li>参与 FIDM 新产品 SOP 智撰课题，梳理新 Model 跨站点人工录入、历史 OI 复用、操作图片编排及工艺 / 质量审核流程；将需求抽象为“Model 级 SOP 包、站点级 OI Draft、有序作业 Step”，明确结构化主数据、历史文档与人工决策边界。</li>
+              <li>使用公开 / 合成数据独立设计并实现 <strong>OpenSOP Agent</strong> 工程原型；以 FastAPI 提供异步任务与 SSE 进度，使用 LangGraph 编排生成、校验及双级审核工作流，并以 interrupt / resume 支持审核中断恢复。</li>
+              <li>实现 OI 文档级混合检索，融合 Dense 与字符级 Lexical 召回结果，经 RRF、可插拔 Reranker 及元数据排序，选取当前版本 OI 作为完整主路线。</li>
+              <li>通过 Pydantic Schema、来源白名单和人工图片确认约束 Draft；构建含 <strong>40 份历史 OI、324 个 Step、80 个媒体证据、24 条 Lesson、12 个合成隔离检索任务</strong>的公开 / 合成数据集，并支持 Excel / ZIP 导出。</li>
             </ul>
             <div class="resume-item-links"><a href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer" class="btn-link">OpenSOP Agent GitHub ↗</a></div>
           </article>
@@ -111,10 +112,10 @@
               <span class="resume-date">2025.07 — 2026.02</span>
             </div>
             <ul>
-              <li>参与企业客服 / 运维知识问答系统，负责 Dify 工作流、多模型接入及知识库 / Prompt 迭代，持续定位召回与生成失败。</li>
-              <li>针对长文档切分后章节关系丢失，设计<strong>父子分块 + 全文索引</strong>：父块保留语境、子块负责命中，以证据相关性和答案完整性对照普通分块。</li>
-              <li>部署 Qwen-32B 推理服务及 CPU Embedding / Rerank，打通 MCP 与多供应商 API，统一模型调用和故障排查。</li>
-              <li>建立 20 个 Golden Cases，将联调失败样本转为回归用例，从准确性、证据相关性、完整性和稳定性驱动迭代。</li>
+              <li>参与企业客服 / 运维知识问答 RAG 原型建设，负责复杂文档索引、检索评测与模型服务联调，打通“文档解析与切分 → 向量 / 全文召回 → Rerank → 上下文组装 → Qwen-32B 生成”的完整链路。</li>
+              <li>针对问答型文档采用细粒度 child 精确召回、回溯 parent 补全语义；大型技术文档按章节结构 + 字符窗口切分，并以 document_id、section_path、source、version 等 Metadata 保留来源与上下文。</li>
+              <li>建立小规模 Golden Cases，对比 Embedding / Rerank 组合及普通 Chunk / 层级索引，从召回命中、证据相关性、回答准确性、完整性与稳定性定位失败环节，并据此迭代检索策略、Prompt 与模型选型。</li>
+              <li>基于 Xinference 在 CPU 侧部署 Embedding / Rerank，使用 vLLM 部署 Qwen-32B，完成模型接入、接口联调及部署 / 推理故障排查。</li>
             </ul>
           </article>
         </section>
@@ -127,14 +128,14 @@
 
           <article class="resume-item">
             <div class="resume-item-header">
-              <div><h3>星途知汇｜对话式企业知识智能体</h3><p class="resume-item-role">企业落地 · 全栈 / Agent</p></div>
+              <div><h3>星途知汇｜飞书原生企业知识与销售 Agent 平台</h3><p class="resume-item-role">企业落地 / Agent</p></div>
               <span class="resume-date">2026.08 — 至今</span>
             </div>
             <ul>
-              <li>设计并实现对话式知识采访 Agent，将员工叙述转化为动态追问与可编辑经验卡片，覆盖事实、个人经验和适用边界；关联员工原话来源，经员工确认、业务审核和版本发布后进入知识库。</li>
-              <li>基于 <strong>LangGraph.js + PostgreSQL Checkpointer</strong>，将会话执行链建模为 Session、Run、Message、Projection；结合幂等请求、事务锁与唯一约束，保证原话先落库，并支持投影失败后从检查点恢复且不重复生成回复。</li>
-              <li>构建权限优先的 Hybrid RAG：SQL 可见范围过滤后，通过 Qwen Embedding、pgvector / pg_trgm 双路召回、RRF 融合及 Qwen Reranker 精排，以候选来源白名单和证据不足拒答约束输出。</li>
-              <li>接入飞书 OAuth 2.0 + PKCE、身份绑定及通讯录事件同步，通过差异预览和事务应用处理多部门关系、调岗、离职与会话撤销；在企业租户完成 <strong>10 个部门 / 30 名在职员工</strong>的目录同步验收。</li>
+              <li>面向职业教育 / IT 培训企业咨询销售团队，针对客户沟通、课程材料与复盘记录分散，价格、退款、资质口径易冲突，以及资深咨询经验难复制的问题，负责从 0 到 1 建设“组织知识沉淀 → 一线销售调用”闭环。</li>
+              <li>将飞书作为员工销售工作台：支持私聊及白名单内部群提交文字、PDF、云文档与妙记；多份材料按员工显式选择的会话归并，先持久化并异步解析，全部就绪后再触发分析，完整结果通过私聊流式交付。</li>
+              <li>打通飞书身份、组织目录与人员变更，将入职、调岗、离职映射为账号及知识权限；建立“动态采访 / 销售复盘 → 员工确认 → 主管审核 → 版本发布 / 撤回”流程，权限在知识召回前执行。</li>
+              <li>采用 Agent + 版本化 Skill + 受控 Tool，输出销售判断、可发送话术与下一步动作；实机同步 <strong>10 个部门、30 名在职员工</strong>，当前实例形成 <strong>6 类知识库、42 篇发布知识和 6 个发布 Skill</strong>。</li>
             </ul>
             <div class="resume-item-links"><a href="https://github.com/fjnuslw/xingtu-knowledge-platform" target="_blank" rel="noopener noreferrer" class="btn-link">星途知汇 GitHub ↗</a></div>
           </article>
@@ -145,10 +146,9 @@
               <span class="resume-date">2026.07 — 2026.08</span>
             </div>
             <ul>
-              <li>面向 MiniCPM-V 4.6 Thinking（1.3B 总参数 / 0.8B LLM）设计完整桌面 <strong>Agent Harness</strong>；通过精简输入、固定当前画面和分层装载历史，让模型无需云端 API 也能理解当前窗口、连续追问并回忆用户信息。</li>
-              <li>明确 OCR / VLM 分工：OCR 负责读取文字、数字和位置，VLM 负责理解页面布局及用户正在做什么；GPU OCR 单图实测 0.347–0.487 s，较 CPU 加速 <strong>2.64–3.26×</strong>。</li>
-              <li>基于 SQLite 持久化窗口观察、完整对话与长期记忆；每轮锁定当前截图，只补充同一窗口的相关历史，较早对话自动压缩，稳定信息经用户确认后保存，服务重启仍可恢复。</li>
-              <li>将 CLI 命令能力集成进原生悬浮聊天窗，可直接通过 <code>/</code> 管理对话、窗口、上下文和记忆；控制命令不占用模型上下文，支持流式回答、思考状态和取消。</li>
+              <li>独立设计并开源 Windows 本地视觉上下文与连续记忆 <strong>Agent Harness</strong>，基于 llama.cpp 部署 MiniCPM-V 4.6 Thinking；在悬浮窗抢占焦点前锁定 PID / HWND，每轮刷新同一物理窗口并固定 PinnedScene，以 ownership / epoch fencing 避免错窗、画面漂移和异步结果串线。</li>
+              <li>构建“全帧 OCR → 确定性 ScreenMap → VLM 语义”分层观测链路：PP-OCRv6 保留文本、置信度与 Bounding Box，VLM 补充布局、图像及页面状态；结合 Unicode / 几何特征与 Hungarian 匹配构建跨帧 Evidence Graph，支持滚动后继续追问已经离开视口的真实可见内容。</li>
+              <li>基于 SQLite WAL 实现观察与对话双账本：持久化 Observation / OcrLayout / Occurrence 和完整 Thread / Generation，以版本化 Capsule 压缩长对话且不删除原始记录；长期记忆候选仅来源于用户原话，经用户接受或编辑后写入有界 Notebook，并支持替换、软删除及服务重启恢复。</li>
             </ul>
             <div class="resume-item-links"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn-link">Local Window Copilot GitHub ↗</a></div>
           </article>
@@ -164,7 +164,7 @@
               <p class="resume-item-role">第十七届蓝桥杯人工智能赛 · 智能体开发大学组</p>
               <h3>全国总决赛一等奖 · 全国第 5 名</h3>
             </div>
-            <p><strong>福建赛区省赛一等奖</strong><br>福建省第 1 名</p>
+            <p><strong>福建赛区省赛一等奖 · 福建省第 1 名</strong><br>智慧政务：政策审计 / 代码测算 / 多维表格读写<br>智慧伯乐：简历解析 / 四维评分 / 人才画像入库</p>
           </article>
         </section>
 
@@ -190,14 +190,14 @@
           </div>
           <article class="resume-item paper-item">
             <div class="resume-item-header">
-              <div><h3>Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for Multi-Hop Queries</h3><p class="resume-item-role">EMNLP 2026 · CCF-B · 一作 · OA / AC 均 3.0</p></div>
+              <div><h3>Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for Multi-Hop Queries</h3><p class="resume-item-role">EMNLP 2026 · 正式录用 · 一作</p></div>
               <span class="resume-date">2026</span>
             </div>
-            <p>提出 IN-Retriever，从 embedding 模型内部注意力中提取下一跳桥接线索，并从查询向量中扣除已覆盖语义，以剩余意图重排候选并逐步扩展证据链。方法无需额外训练或生成中间推理文本；基于 Qwen3-Embedding-4B，在 MuSiQue 和 2Wiki 上超过两种 7B / 8B embedding 基线。</p>
+            <p>提出免训练、非生成式多跳检索框架 IN-Retriever，直接读取 Qwen3-Embedding-4B 内部注意力作为下一跳导航信号。Bridge Focus Score 定位任务相关注意力头，经句子筛选、Token 峰值聚合与边界扩展提取桥接线索；正交投影剔除查询向量中已覆盖语义，再融合原始相关性、残差意图与词面匹配重排候选。基于 ChromaDB / HNSW、优先队列与 Beam Search 实现多路径证据搜索，4B 骨干超过两种 7B / 8B 强嵌入基线。</p>
           </article>
           <article class="resume-item paper-item">
             <div class="resume-item-header">
-              <div><h3>ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions</h3><p class="resume-item-role">AI Open · JCR Q1 · 一作 · 在审</p></div>
+              <div><h3>ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions</h3><p class="resume-item-role">AI Open · JCR Q1 · 与导师共同一作 · 在审</p></div>
               <span class="resume-date">2026</span>
             </div>
             <p>提出 ESRA，将多跳查询拆解为“检索起点—关系需求—步骤结果”的可执行步骤，并以 branch 组织多对象查询的独立执行路径。PlanState 维护当前分支、活动步骤、中间结果与答案目标；Search / Probe → LLM Commit → State Write-back 流程将接受的结果写回状态，并把来源文档与证据句按步骤写入 EvidenceSpace。</p>
@@ -212,11 +212,11 @@
           <p class="resume-section-note">以下仅索引上述经历与项目中实际使用的技术，不作百分比或熟练度自评。</p>
           <dl class="skill-matrix">
             <dt class="skill-matrix-label">Agent / RAG</dt>
-            <dd class="tech-list"><span class="tech-item">LangGraph</span><span class="tech-item">LangGraph.js</span><span class="tech-item">Dify</span><span class="tech-item">MCP</span><span class="tech-item">Hybrid RAG</span><span class="tech-item">RRF</span></dd>
+            <dd class="tech-list"><span class="tech-item">LangGraph</span><span class="tech-item">Agent</span><span class="tech-item">版本化 Skill</span><span class="tech-item">受控 Tool</span><span class="tech-item">Hybrid RAG</span><span class="tech-item">RRF</span></dd>
             <dt class="skill-matrix-label">服务 / 状态</dt>
-            <dd class="tech-list"><span class="tech-item">FastAPI</span><span class="tech-item">PostgreSQL Checkpointer</span><span class="tech-item">SQLite</span><span class="tech-item">OAuth 2.0 + PKCE</span></dd>
+            <dd class="tech-list"><span class="tech-item">FastAPI / SSE</span><span class="tech-item">SQLite WAL</span><span class="tech-item">llama.cpp</span><span class="tech-item">Xinference</span><span class="tech-item">vLLM</span></dd>
             <dt class="skill-matrix-label">检索 / 模型</dt>
-            <dd class="tech-list"><span class="tech-item">Qwen Embedding</span><span class="tech-item">Qwen Reranker</span><span class="tech-item">pgvector</span><span class="tech-item">pg_trgm</span><span class="tech-item">Qwen2.5-VL-7B</span><span class="tech-item">MiniCPM-V 4.6</span></dd>
+            <dd class="tech-list"><span class="tech-item">Qwen3-Embedding-4B</span><span class="tech-item">ChromaDB / HNSW</span><span class="tech-item">PP-OCRv6</span><span class="tech-item">MiniCPM-V 4.6</span><span class="tech-item">Qwen-32B</span><span class="tech-item">Pydantic</span></dd>
           </dl>
         </section>
       </div>

@@ -77,7 +77,7 @@
 
   <header class="portfolio-hero">
     <div class="container-wide ledger-shell">
-      <p class="ledger-kicker ledger-overline">Project ledger · Updated 2026.08</p>
+      <p class="ledger-kicker ledger-overline">Project ledger · Updated 2026.08.24</p>
       <div class="portfolio-hero-grid">
         <div>
           <h1>三条 Agent<span class="project-title-break" aria-hidden="true"><br></span> 工程证明链。</h1>
@@ -123,8 +123,8 @@
           </header>
           <div class="evidence-case-grid">
             <div><p class="evidence-label">Problem</p><p>隐性经验散落在口头交流与个人记忆里；传统填表阻力高，知识发布还必须经过本人确认、业务审核与权限校验。</p></div>
-            <div><p class="evidence-label">My contribution</p><p>设计对话采访与经验卡片；用 LangGraph.js + PostgreSQL Checkpointer 编排可恢复状态；实现权限优先 Hybrid RAG、飞书 OAuth 2.0 + PKCE 与通讯录事件同步。</p></div>
-            <div class="evidence-result"><p class="evidence-label">Result</p><p><strong>10 部门 / 30 人</strong>真实完成在职员工目录同步验收；打通“员工原话 → 确认 → 业务审核 → 版本发布 → 权限内复用”链路。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>将飞书私聊与白名单内部群接成销售工作台，贯通身份、组织目录、人员变更和“动态采访 / 销售复盘 → 员工确认 → 主管审核 → 版本发布 / 撤回”；使用 Agent + 版本化 Skill + 受控 Tool 按需核对事实与材料。</p></div>
+            <div class="evidence-result"><p class="evidence-label">Result</p><p>实机同步 <strong>10 部门 / 30 名在职员工</strong>；当前实例形成 <strong>6 类知识库 / 42 篇发布知识 / 6 个发布 Skill</strong>。</p></div>
           </div>
           <footer class="evidence-case-foot">
             <ul class="evidence-tech" aria-label="星途知汇关键技术"><li>LangGraph.js</li><li>PostgreSQL</li><li>Hybrid RAG</li><li>Qwen</li><li>Feishu</li></ul>
@@ -138,19 +138,19 @@
             <div class="evidence-case-title">
               <p class="evidence-case-meta"><span>已开源</span><span>2026.07—2026.08</span><span>独立开发 · Agent Harness</span></p>
               <h3>Local Window Copilot</h3>
-              <p class="evidence-case-value">为本地小模型补齐屏幕感知、上下文装配、长期记忆与原生交互。</p>
+              <p class="evidence-case-value">为本地视觉模型补齐物理窗口锁定、跨帧证据、连续记忆与异步隔离。</p>
             </div>
             <figure class="evidence-case-visual evidence-case-visual--mascot">
               <img src="projects/local-window-copilot/img/mascot_idle.png" width="628" height="462" loading="lazy" alt="Local Window Copilot 吉祥物">
             </figure>
           </header>
           <div class="evidence-case-grid">
-            <div><p class="evidence-label">Problem</p><p>1.3B 级本地模型不应被要求同时完成可靠读屏、历史筛选和记忆维护；不使用云端 API 时，更需要 Harness 先整理模型真正需要的上下文。</p></div>
-            <div><p class="evidence-label">My contribution</p><p>让 OCR 负责文字、数字与位置，VLM 负责布局和用户行为理解；以 SQLite 持久化窗口观察、完整对话与长期记忆，并把 CLI 命令集成进原生悬浮聊天窗。</p></div>
-            <div class="evidence-result"><p class="evidence-label">Result</p><p>GPU OCR 单图 <strong>0.347–0.487 s</strong>，较 CPU 加速 <strong>2.64–3.26×</strong>；对话和确认后的稳定信息可在重启后恢复。</p></div>
+            <div><p class="evidence-label">Problem</p><p>悬浮窗抢焦点、页面滚动和异步返回会造成错窗、画面漂移、证据离开视口及结果串线；只保存截图也无法支撑连续追问。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>在抢焦点前锁定 PID / HWND，以 PinnedScene 和 ownership / epoch fencing 固定物理窗口；构建“全帧 OCR → ScreenMap → VLM”观测链路、跨帧 Evidence Graph 及 SQLite WAL 双账本。</p></div>
+            <div class="evidence-result"><p class="evidence-label">Result</p><p>支持滚动后继续追问离开视口的真实可见内容；完整 Thread / Generation、版本化 Capsule 与用户确认的有界 Notebook 均可持久化和恢复。</p></div>
           </div>
           <footer class="evidence-case-foot">
-            <ul class="evidence-tech" aria-label="Local Window Copilot 关键技术"><li>Python</li><li>MiniCPM-V</li><li>RapidOCR</li><li>SQLite</li><li>Win32</li></ul>
+            <ul class="evidence-tech" aria-label="Local Window Copilot 关键技术"><li>Python</li><li>MiniCPM-V 4.6</li><li>PP-OCRv6</li><li>SQLite WAL</li><li>Win32</li></ul>
             <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="projects/local-window-copilot.html">阅读完整案例</a><a class="btn btn-secondary ledger-button ledger-button-ghost" href="demos/local-window-copilot/index.html">打开交互 Demo</a><a class="ledger-text-link" href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
           </footer>
         </article>
@@ -169,11 +169,11 @@
           </header>
           <div class="evidence-case-grid">
             <div><p class="evidence-label">Problem</p><p>新 Model 的多站点 OI 依赖人工录入、图片编排和逐级审核；历史路线、参数来源与媒体证据一旦脱节，生成结果就无法交付。</p></div>
-            <div><p class="evidence-label">My contribution</p><p>建立 Model 包 / 站点 OI / 作业 Step 领域模型；以混合 RAG 和受约束 Draft 生成内容，Qwen2.5-VL-7B 处理图片候选绑定，LangGraph 支持审核中断与恢复。</p></div>
+            <div><p class="evidence-label">My contribution</p><p>建立 Model 级 SOP 包 / 站点级 OI Draft / 有序作业 Step 领域模型；以 Dense + 字符级 Lexical、RRF、可插拔 Reranker 和元数据排序选取完整主路线，通过 Pydantic Schema、来源白名单与人工图片确认约束 Draft。</p></div>
             <div class="evidence-result"><p class="evidence-label">Result</p><p>验证 <strong>40 OI / 324 Step / 80 媒体证据 / 24 Lesson / 12 隔离任务</strong>，支持 Lesson 审批沉淀与 Excel / ZIP 导出。</p></div>
           </div>
           <footer class="evidence-case-foot">
-            <ul class="evidence-tech" aria-label="OpenSOP Agent 关键技术"><li>FastAPI</li><li>LangGraph</li><li>Qwen2.5-VL-7B</li><li>Hybrid RAG</li><li>OpenPyXL</li></ul>
+            <ul class="evidence-tech" aria-label="OpenSOP Agent 关键技术"><li>FastAPI / SSE</li><li>LangGraph</li><li>Pydantic</li><li>Hybrid RAG</li><li>OpenPyXL</li></ul>
             <div class="ledger-actions"><a class="btn btn-primary ledger-button ledger-button-primary" href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer">查看公开原型 ↗</a></div>
           </footer>
         </article>

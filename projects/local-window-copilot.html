@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Local Window Copilot：面向 MiniCPM-V 4.6 Thinking 的本地小模型 Agent Harness，以 OCR / VLM 分工、SQLite 记忆与原生悬浮窗 CLI 补齐桌面 Agent 工程能力。">
+  <meta name="description" content="Local Window Copilot：基于 MiniCPM-V 4.6 Thinking 的 Windows 本地视觉上下文与连续记忆 Agent Harness，以窗口锁定、跨帧 Evidence Graph 和 SQLite WAL 双账本保证可追踪与可恢复。">
   <meta name="theme-color" content="#0b0d0c">
   <link rel="canonical" href="https://fjnuslw.github.io/projects/local-window-copilot.html">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:title" content="Local Window Copilot｜小模型 Agent Harness">
-  <meta property="og:description" content="无需云端 API：OCR / VLM 分工理解窗口，SQLite 保存对话与长期记忆，CLI 集成原生悬浮聊天窗。">
+  <meta property="og:description" content="锁定 PID / HWND，以全帧 OCR、ScreenMap、VLM、跨帧 Evidence Graph 与 SQLite WAL 双账本组织桌面上下文。">
   <meta property="og:url" content="https://fjnuslw.github.io/projects/local-window-copilot.html">
   <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Local Window Copilot｜小模型 Agent Harness">
-  <meta name="twitter:description" content="OCR / VLM 分工理解窗口，SQLite 保存对话与长期记忆，CLI 集成原生悬浮聊天窗。">
+  <meta name="twitter:description" content="窗口锁定、分层观测、跨帧证据与连续记忆组成可恢复的本地桌面 Agent Harness。">
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>Local Window Copilot｜小模型 Agent Harness</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -57,8 +57,8 @@
     .data-column h3 { margin-bottom: 18px; font-size: 1.08rem; }
     .data-column ul { margin: 0; padding-left: 1.1rem; color: var(--case-muted); font-size: .9rem; line-height: 1.75; }
     .data-column li + li { margin-top: 7px; }
-    .stack-table { width: 100%; border-collapse: collapse; border: 1px solid var(--case-line); overflow: hidden; }
-    .stack-table th, .stack-table td { padding: 15px 16px; border-bottom: 1px solid var(--case-line); text-align: left; font-size: .9rem; }
+    .stack-table { width: 100%; table-layout: fixed; border-collapse: collapse; border: 1px solid var(--case-line); overflow: hidden; }
+    .stack-table th, .stack-table td { padding: 15px 16px; border-bottom: 1px solid var(--case-line); overflow-wrap: anywhere; text-align: left; font-size: .9rem; }
     .stack-table tr:last-child th, .stack-table tr:last-child td { border-bottom: 0; }
     .stack-table th { width: 180px; color: var(--case-muted); background: var(--case-soft); font-family: var(--font-mono); font-size: .72rem; }
     .boundary-panel { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 28px; }
@@ -82,7 +82,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     "name": "Local Window Copilot",
-    "description": "面向本地小模型的 Windows 桌面 Agent Harness，包含 OCR / VLM 分工、SQLite 持久记忆与原生悬浮窗 CLI。",
+    "description": "面向 MiniCPM-V 4.6 Thinking 的 Windows 本地视觉上下文与连续记忆 Agent Harness，包含物理窗口锁定、跨帧 Evidence Graph 与 SQLite WAL 双账本。",
     "codeRepository": "https://github.com/fjnuslw/local-window-copilot",
     "programmingLanguage": "Python",
     "author": {"@type": "Person", "name": "宋林蔚", "url": "https://fjnuslw.github.io/"}
@@ -112,13 +112,13 @@
         <div>
           <p class="case-eyebrow">2026.07—2026.08 · Local small-model Agent Harness</p>
           <h1>Local Window<br>Copilot</h1>
-          <p class="case-lede">面向 MiniCPM-V 4.6 Thinking（1.3B 总参数 / 0.8B LLM）的完整桌面 Agent Harness：不用云端 API，由 OCR 与 VLM 分工理解当前窗口，再用 SQLite、上下文装配和原生悬浮交互把小模型变成可持续使用的本地助手。</p>
+          <p class="case-lede">基于 llama.cpp 部署 MiniCPM-V 4.6 Thinking：在悬浮窗抢占焦点前锁定物理窗口，用全帧 OCR、确定性 ScreenMap 与 VLM 语义形成可追踪观察，再以跨帧 Evidence Graph 和 SQLite WAL 双账本延续追问与记忆。</p>
           <div class="case-actions"><a href="https://github.com/fjnuslw/local-window-copilot" target="_blank" rel="noopener noreferrer" class="btn btn-primary ledger-button ledger-button-signal">GitHub 源码 ↗</a><a href="../demos/local-window-copilot/index.html" class="btn btn-secondary ledger-button ledger-button-secondary">打开 Demo</a><a href="../blog/desktop-agent-context-pitfalls.html" class="btn btn-secondary ledger-button ledger-button-secondary">设计复盘</a></div>
           <div class="case-facts" aria-label="项目关键信息">
-            <div class="case-fact"><strong>1.3B / 0.8B</strong><span>总参数 / LLM 参数</span></div>
-            <div class="case-fact"><strong>本地运行</strong><span>无需云端 API</span></div>
-            <div class="case-fact"><strong>2.64–3.26×</strong><span>OCR GPU 较 CPU 加速</span></div>
-            <div class="case-fact"><strong>SQLite</strong><span>对话与长期记忆可恢复</span></div>
+            <div class="case-fact"><strong>PID / HWND</strong><span>锁定同一物理窗口</span></div>
+            <div class="case-fact"><strong>ScreenMap</strong><span>确定性屏幕结构</span></div>
+            <div class="case-fact"><strong>Evidence Graph</strong><span>跨帧追踪可见内容</span></div>
+            <div class="case-fact"><strong>SQLite WAL</strong><span>观察与对话双账本</span></div>
           </div>
         </div>
         <div class="case-visual" aria-label="Local Window Copilot 吉祥物"><img src="local-window-copilot/img/mascot_idle.png" width="628" height="462" alt="Local Window Copilot 吉祥物"></div>
@@ -127,45 +127,45 @@
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>小模型需要一套可靠 Harness，单靠多写一个 Prompt 还不够。</h2><p class="case-section-copy">桌面助手要同时回答三个问题：眼前窗口到底写了什么、当前行为意味着什么、之前对话和长期偏好里哪些内容值得带入。把这些职责全推给 0.8B LLM，只会浪费上下文并放大误读。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Problem</p><div><h2>焦点、滚动与异步返回会让桌面 Agent 读错对象。</h2><p class="case-section-copy">用户点击悬浮窗后，活动窗口已经改变；页面滚动后，刚才读到的内容离开视口；较慢的观察任务还可能在下一轮完成。Harness 需要明确“观察的是哪个物理窗口、证据来自哪一帧、结果属于哪一轮”。</p></div></div>
         <div class="case-grid">
-          <article class="case-card"><span class="case-card-index">01 / READ</span><h3>文字与位置必须准确</h3><p>数字、字段和区域位置由 OCR 提供，不要求 VLM 猜测屏幕上可直接读取的几何事实。</p></article>
-          <article class="case-card"><span class="case-card-index">02 / UNDERSTAND</span><h3>页面和行为需要语义</h3><p>VLM 聚焦页面布局、视觉关系与用户正在做什么，把有限推理预算用在 OCR 不擅长的部分。</p></article>
-          <article class="case-card"><span class="case-card-index">03 / REMEMBER</span><h3>上下文不能每轮重来</h3><p>窗口观察、完整对话和确认后的长期记忆需要持久化；程序重启后应从已有状态继续。</p></article>
+          <article class="case-card"><span class="case-card-index">01 / TARGET</span><h3>焦点不等于目标窗口</h3><p>在悬浮窗抢焦点前记录 PID / HWND，后续刷新同一物理窗口，避免把聊天窗本身当作观察对象。</p></article>
+          <article class="case-card"><span class="case-card-index">02 / EVIDENCE</span><h3>截图需要变成可追踪证据</h3><p>OCR 保留文本、置信度与 Bounding Box，ScreenMap 固化结构，Evidence Graph 把跨帧出现记录连接起来。</p></article>
+          <article class="case-card"><span class="case-card-index">03 / OWNERSHIP</span><h3>异步结果必须属于当前轮次</h3><p>PinnedScene 配合 ownership / epoch fencing，阻止过期观察覆盖当前画面或写入错误的对话代次。</p></article>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Harness</p><div><h2>先整理感知与记忆，再把紧凑上下文交给模型。</h2><p class="case-section-copy">每轮固定当前截图，按当前窗口补充真正相关的历史，压缩更早对话，并保留用户确认过的稳定信息。模型不必自己在杂乱历史里找重点。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Harness</p><div><h2>先锁定对象，再分层观测并写入证据账本。</h2><p class="case-section-copy">OCR 处理可直接读取的文字与几何事实，VLM 补充布局、图像和页面状态。对话生成只消费已归属当前物理窗口与当前轮次的观察。</p></div></div>
         <div class="flow-line" aria-label="Local Window Copilot 处理流程">
-          <div class="flow-node"><span>01</span><strong>选择当前窗口</strong></div><div class="flow-node"><span>02</span><strong>固定窗口截图</strong></div><div class="flow-node"><span>03</span><strong>OCR 文字 / 位置</strong></div><div class="flow-node"><span>04</span><strong>VLM 布局 / 行为</strong></div><div class="flow-node"><span>05</span><strong>装配对话 / 记忆</strong></div><div class="flow-node"><span>06</span><strong>流式回答 / 可取消</strong></div>
+          <div class="flow-node"><span>01</span><strong>锁定 PID / HWND</strong></div><div class="flow-node"><span>02</span><strong>固定 PinnedScene</strong></div><div class="flow-node"><span>03</span><strong>全帧 PP-OCRv6</strong></div><div class="flow-node"><span>04</span><strong>生成 ScreenMap</strong></div><div class="flow-node"><span>05</span><strong>补充 VLM 语义</strong></div><div class="flow-node"><span>06</span><strong>写入双账本</strong></div>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Context</p><div><h2>三层上下文，各自承担一种确定性。</h2><p class="case-section-copy">当前场景保证回答针对眼前窗口，对话上下文保证交流连续，长期记忆只沉淀经用户确认的稳定事实。三者都由 SQLite 保存并可在重启后恢复。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">State</p><div><h2>观察、对话与长期记忆保留各自来源。</h2><p class="case-section-copy">SQLite WAL 保存原始记录；版本化 Capsule 只负责装配长对话，不删除 Thread / Generation；Notebook 只接收来自用户原话且经接受或编辑的长期记忆候选。</p></div></div>
         <div class="data-board">
-          <article class="data-column"><h3>01 · Current scene</h3><ul><li>固定的当前窗口截图</li><li>OCR 文字、数字与位置</li><li>VLM 对布局和行为的解释</li></ul></article>
-          <article class="data-column"><h3>02 · Dialogue context</h3><ul><li>完整对话持久化</li><li>按窗口补充相关历史观察</li><li>自动压缩更早对话，控制上下文长度</li></ul></article>
-          <article class="data-column"><h3>03 · Long-term memory</h3><ul><li>用户确认后才保存稳定信息</li><li>与窗口观察和对话一并存入 SQLite</li><li>应用重启后恢复，不依赖云端账户</li></ul></article>
+          <article class="data-column"><h3>01 · Observation ledger</h3><ul><li>Observation / OcrLayout / Occurrence</li><li>文本、置信度、Bounding Box 与帧归属</li><li>跨帧 Evidence Graph 保留出现关系</li></ul></article>
+          <article class="data-column"><h3>02 · Dialogue ledger</h3><ul><li>完整 Thread / Generation 持久化</li><li>Capsule 带版本压缩长对话</li><li>原始记录保留，服务重启后恢复</li></ul></article>
+          <article class="data-column"><h3>03 · Bounded Notebook</h3><ul><li>候选仅来源于用户原话</li><li>接受或编辑后写入</li><li>支持替换、软删除与恢复</li></ul></article>
         </div>
       </div>
     </section>
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Decisions</p><div><h2>六个决定，让 0.8B LLM 把算力花在回答上。</h2><p class="case-section-copy">Harness 主动承担识别、筛选、压缩、持久化与交互控制；模型只处理已经被组织好的页面语义、必要历史与用户问题。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Decisions</p><div><h2>六个决定，把窗口事实、推断与记忆分开管理。</h2><p class="case-section-copy">Harness 负责对象归属、确定性识别、跨帧匹配、持久化与记忆确认；模型处理已标明来源的页面语义和用户问题。</p></div></div>
         <div class="case-grid">
-          <article class="case-card"><span class="case-card-index">OCR / VLM</span><h3>感知职责拆分</h3><p>RapidOCR 负责可读文本与坐标，MiniCPM-V 负责布局、视觉关系和行为理解，避免重复消耗模型上下文。</p></article>
-          <article class="case-card"><span class="case-card-index">PIN</span><h3>当前截图固定</h3><p>回答期间使用同一份当前场景，防止窗口切换后“提问时看到的内容”和“生成时使用的内容”不一致。</p></article>
-          <article class="case-card"><span class="case-card-index">WINDOW</span><h3>历史按窗口补充</h3><p>不把所有观察无差别塞进 Prompt，只选择当前物理窗口真正相关的历史信息。</p></article>
-          <article class="case-card"><span class="case-card-index">COMPRESS</span><h3>早期对话自动压缩</h3><p>完整记录保留在 SQLite；送给模型的早期内容压成摘要，把窗口留给当前任务。</p></article>
-          <article class="case-card"><span class="case-card-index">CONFIRM</span><h3>稳定信息先确认</h3><p>长期记忆不静默猜测；只有用户明确确认后才保存，降低错误偏好在后续对话中反复传播的风险。</p></article>
-          <article class="case-card"><span class="case-card-index">CLI / UI</span><h3>命令进入悬浮窗</h3><p>通过 <code>/</code> 管理对话、窗口、上下文与记忆，同时保留流式回答、思考状态和取消控制。</p></article>
+          <article class="case-card"><span class="case-card-index">TARGET</span><h3>窗口身份先于截图</h3><p>PID / HWND 标识物理对象；悬浮窗抢焦点后仍刷新原目标窗口。</p></article>
+          <article class="case-card"><span class="case-card-index">FENCE</span><h3>场景与轮次都有所有权</h3><p>PinnedScene 与 epoch fencing 拒绝不属于当前轮次的异步结果。</p></article>
+          <article class="case-card"><span class="case-card-index">SCREENMAP</span><h3>OCR 结果确定性成图</h3><p>PP-OCRv6 的文字、置信度与坐标先形成 ScreenMap，再交给 VLM 补充语义。</p></article>
+          <article class="case-card"><span class="case-card-index">GRAPH</span><h3>跨帧出现记录匹配</h3><p>Unicode、几何特征与 Hungarian 匹配连接 Occurrence，支撑滚动后的证据追问。</p></article>
+          <article class="case-card"><span class="case-card-index">CAPSULE</span><h3>压缩不删除原记录</h3><p>版本化 Capsule 控制送模长度，完整 Thread / Generation 仍可审查。</p></article>
+          <article class="case-card"><span class="case-card-index">NOTEBOOK</span><h3>长期记忆由用户确认</h3><p>候选只取自用户原话，经接受或编辑后写入，并支持替换与软删除。</p></article>
         </div>
       </div>
     </section>
@@ -177,11 +177,11 @@
           <tbody>
             <tr><th scope="row">平台</th><td>Windows 10/11 · Win32 · Windows Graphics Capture</td></tr>
             <tr><th scope="row">Harness</th><td>Python 3.13 · FastAPI · Pydantic v2 · asyncio</td></tr>
-            <tr><th scope="row">OCR</th><td>RapidOCR 3.9.2 · PP-OCRv6 Small · ONNX Runtime GPU 1.28</td></tr>
-            <tr><th scope="row">VLM / Chat</th><td>MiniCPM-V 4.6 Thinking GGUF（1.3B 总参数 / 0.8B LLM）· llama.cpp server</td></tr>
-            <tr><th scope="row">状态与记忆</th><td>SQLite · 窗口观察 · 完整对话 · 长期记忆 · 重启恢复</td></tr>
-            <tr><th scope="row">交互</th><td>CLI 命令 · 原生悬浮聊天窗 · 流式回答 · 思考状态 · 取消</td></tr>
-            <tr><th scope="row">验证</th><td>pytest · 真实窗口实测 · OCR CPU / GPU 对照</td></tr>
+            <tr><th scope="row">窗口归属</th><td>PID / HWND · PinnedScene · ownership / epoch fencing</td></tr>
+            <tr><th scope="row">OCR</th><td>PP-OCRv6 · 文本 / 置信度 / Bounding Box · 确定性 ScreenMap</td></tr>
+            <tr><th scope="row">VLM / Chat</th><td>MiniCPM-V 4.6 Thinking · llama.cpp</td></tr>
+            <tr><th scope="row">跨帧证据</th><td>Unicode / 几何特征 · Hungarian 匹配 · Evidence Graph</td></tr>
+            <tr><th scope="row">状态与记忆</th><td>SQLite WAL · Observation / OcrLayout / Occurrence · Thread / Generation · Capsule · Notebook</td></tr>
           </tbody>
         </table>
       </div>
@@ -189,18 +189,18 @@
 
     <section class="case-section">
       <div class="case-shell">
-        <div class="case-section-head"><p class="case-kicker">Evidence & boundaries</p><div><h2>速度经过实测，能力边界保持明确。</h2><p class="case-section-copy">项目验证的是“小模型 + 完整 Harness”在本地桌面场景的可用路径，不把参数规模、自动操作或云端服务包装成不存在的能力。</p></div></div>
+        <div class="case-section-head"><p class="case-kicker">Evidence & boundaries</p><div><h2>证据来自可追踪的窗口观察，边界保持明确。</h2><p class="case-section-copy">项目聚焦 Windows 本地视觉上下文与连续记忆。每条窗口事实保留物理窗口、帧与出现记录；VLM 语义和用户确认的长期记忆分别管理。</p></div></div>
         <div class="boundary-panel">
           <div class="boundary-list">
             <div class="boundary-item"><span>01</span><p>当前目标平台是 Windows 10/11；窗口捕获和原生悬浮交互依赖 Win32 能力。</p></div>
-            <div class="boundary-item"><span>02</span><p>OCR 负责准确读取文字与位置，VLM 负责视觉语义；任一层不确定时，不把猜测伪装成屏幕事实。</p></div>
-            <div class="boundary-item"><span>03</span><p>长期记忆只保存用户确认后的稳定信息，完整历史仍可审查和管理。</p></div>
+            <div class="boundary-item"><span>02</span><p>PP-OCRv6 提供文字、置信度与 Bounding Box，VLM 补充布局、图像和页面状态；两类信息保留各自来源。</p></div>
+            <div class="boundary-item"><span>03</span><p>长期记忆候选只来自用户原话，接受或编辑后进入有界 Notebook；完整对话记录保持可审查。</p></div>
             <div class="boundary-item"><span>04</span><p>当前定位是本地 Copilot 与 Agent Harness，不承诺未经确认的自动桌面操作。</p></div>
           </div>
-          <aside class="metric-panel" aria-label="OCR 性能实测">
-            <strong>0.347–0.487 s</strong><span>GPU OCR 单图实测</span><hr>
-            <strong>2.64–3.26×</strong><span>相较 CPU 加速</span><hr>
-            <strong>0</strong><span>必需的云端 API</span>
+          <aside class="metric-panel" aria-label="Agent Harness 关键机制">
+            <strong>PID / HWND</strong><span>目标物理窗口身份</span><hr>
+            <strong>Evidence Graph</strong><span>跨帧真实可见内容</span><hr>
+            <strong>2 个账本</strong><span>观察与对话分别持久化</span>
           </aside>
         </div>
       </div>
