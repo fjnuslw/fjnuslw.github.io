@@ -13,6 +13,7 @@ export const publicFiles = [
   'css/article-kv-cache.css', 'css/project-research-to-spec.css', 'js/main.js',
   'assets/og-evidence-ledger.png',
   'assets/xingtu-knowledge-platform-hero.webp',
+  'assets/fonts/garden-serif.woff2', 'assets/fonts/OFL-NotoSerifSC.txt',
   'awards/lanqiao-17-national-agent-dev.pdf', 'awards/lanqiao-17-fujian-agent-dev.pdf'
 ];
 export const publicDirectories = [

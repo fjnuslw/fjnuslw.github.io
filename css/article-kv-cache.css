@@ -1,11 +1,11 @@
 .kv-article {
-  --kv-ink: #15171c;
-  --kv-muted: #535b6b;
-  --kv-line: #d5dbe5;
-  --kv-paper: #ffffff;
-  --kv-panel: #f2f4f8;
-  --kv-dark: #15171c;
-  --kv-signal: #b9ccff;
+  --kv-ink: var(--ink);
+  --kv-muted: var(--muted);
+  --kv-line: var(--line);
+  --kv-paper: var(--paper);
+  --kv-panel: var(--wash);
+  --kv-dark: var(--ink-bg);
+  --kv-signal: #e9b4c0;
 }
 
 .kv-article .post-header {
@@ -14,7 +14,7 @@
   margin-bottom: 0;
   padding-bottom: clamp(2.5rem, 6vw, 5rem);
   background:
-    radial-gradient(circle at 82% 18%, rgba(46, 93, 75, .10), transparent 24rem),
+    radial-gradient(circle at 82% 18%, rgba(49, 89, 81, .06), transparent 24rem),
     linear-gradient(rgba(29, 26, 21, .05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(29, 26, 21, .05) 1px, transparent 1px),
     var(--paper);
@@ -46,7 +46,7 @@
 
 .kv-article .post-header h1 em {
   color: var(--vermilion);
-  font-family: Georgia, "Noto Serif SC", serif;
+  font-family: var(--font-display);
   font-weight: 500;
 }
 

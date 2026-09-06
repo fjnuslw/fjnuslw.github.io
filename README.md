@@ -2,15 +2,15 @@
 
 原生 HTML、CSS、JavaScript 作品集，正式域名为 `https://fjnuslw.github.io/`。
 
-2026-09 改版已完成本地验收，并发布 [仅本人可见的预览](https://linwei-song-portfolio-2026.soonswartzmankxg.chatgpt.site)（需要登录）。既有 GitHub Pages 正式域名尚未更新。具体测试与发布结果见 [验收记录](specs/2026-09-portfolio-renewal/verification.md)。
+当前为「数字花园」改版：参考画册与展廊的空间感，重排首页、项目、手记、关于及全部详情页，保持原生 HTML/CSS/JS、原有内容与 URL。具体测试与线上发布状态见 [本轮验收记录](specs/2026-09-06-digital-garden/verification.md)。
 
 ## 开始维护
 
-先阅读 [AGENTS.md](AGENTS.md) 与 [specs/README.md](specs/README.md)。当前重构的规格、任务和验收集中在 [specs/2026-09-portfolio-renewal](specs/2026-09-portfolio-renewal/spec.md)。
+先阅读 [AGENTS.md](AGENTS.md) 与 [specs/README.md](specs/README.md)。当前规格、设计依据、任务和验收集中在 [specs/2026-09-06-digital-garden](specs/2026-09-06-digital-garden/spec.md)。历史改版记录保持原样。
 
 ## 本地查看与构建
 
-Node.js 18+ 用于校验与构建；可用任意静态服务器预览，例如 `python -m http.server 4173 --bind 127.0.0.1`。浏览器访问 `http://127.0.0.1:4173/`。
+Node.js 18+ 用于校验与构建。先构建白名单产物，再运行 `node tools/preview-site.mjs`，浏览器访问 `http://127.0.0.1:4174/`。
 
 ```text
 node tools/stamp-assets.mjs

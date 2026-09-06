@@ -1,32 +1,12 @@
-/* ============================================================
-   个人网站 · 共享交互（纸墨系统，契约：specs/2026-09-ink）
-   导航 / 信号地形 / 文字解码 / 项目展台 / 导览 / 筛选 / 进度
-   所有动态效果均为渐进增强：无 JS 或减少动态时内容完整可用。
-   ============================================================ */
-
+/* 数字花园共享交互 · specs/2026-09-06-digital-garden */
 const siteBase = new URL('../', document.currentScript.src);
 document.documentElement.classList.add('js');
-
 const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 function prefersReducedMotion() { return reduceMotionQuery.matches; }
-
 document.addEventListener('DOMContentLoaded', () => {
-  initNavbar();
-  initScrollReveal();
-  initTerrainField();
-  initHeroDecode();
-  initLinkScramble();
-  initDynamicLab();
-  initMagneticButtons();
-  initCursorPreview();
-  initCounters();
-  initLocalClock();
-  initSiteGuide();
-  initBlogFilter();
-  initActiveNavLink();
+  initNavbar(); initMotionControl(); initFolio(); initExhibition(); initDynamicLab();
+  initLocalClock(); initSiteGuide(); initBlogFilter(); initActiveNavLink();
 });
-
-/* ===== 导航栏（键盘与焦点管理沿用已验证实现） ===== */
 function initNavbar() {
   const navbar = document.querySelector('.navbar');
   const toggle = document.querySelector('.nav-toggle');
@@ -87,7 +67,7 @@ function initNavbar() {
     requestAnimationFrame(() => overlay.classList.add('active'));
     document.body.classList.add('menu-open');
     updateMenuA11y(true);
-    requestAnimationFrame(() => closeButton.focus());
+    requestAnimationFrame(() => { if (isOpen()) closeButton.focus({preventScroll:true}); });
   }
 
   function closeMenu(returnFocus = true) {
@@ -162,237 +142,166 @@ function initNavbar() {
   syncMenuMode();
 }
 
-/* ===== 滚动渐显：无 JS 时内容默认可见 ===== */
-function initScrollReveal(root = document) {
-  const reveals = root.querySelectorAll('.reveal:not([data-reveal-ready])');
-  if (!reveals.length) return;
-
-  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
-    reveals.forEach(element => {
-      element.dataset.revealReady = 'true';
-      element.classList.add('visible');
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
-
-  reveals.forEach(element => {
-    element.dataset.revealReady = 'true';
-    observer.observe(element);
-  });
+/* 数字花园 / progressive enhancement, no runtime dependencies. */
+function canAnimate() {
+  return !prefersReducedMotion() && !document.hidden && !document.body.classList.contains('motion-paused');
 }
-
-/* ===== 信号地形：首页 hero 的装饰点阵，指针扰动 + 点击涟漪 =====
-   纯装饰画布。离屏、后台、减少动态或全局暂停时停帧。 */
-function initTerrainField() {
-  const canvas = document.querySelector('.terrain-field');
-  if (!canvas) return;
-  if (prefersReducedMotion()) return;
-  const context = canvas.getContext('2d');
-  if (!context) return;
-
-  const region = canvas.parentElement;
-  const glyphs = '{};<>/*·+='.split('');
-  const motes = Array.from({ length: 20 }, (_, i) => ({
-    x: Math.random(), y: Math.random(),
-    vx: (Math.random() - .5) * 9e-6, vy: (Math.random() - .5) * 9e-6,
-    r: 1 + Math.random() * 1.3,
-    glyph: Math.random() < .3 ? glyphs[i % glyphs.length] : null
-  }));
-
-  let width = 1, height = 1, frame = 0, lastTime = 0, elapsed = 0, visible = true;
-  let pointer = null;
-  let lattice = [];
-  let ripples = [];
-
-  function resize() {
-    const rect = region.getBoundingClientRect();
-    width = rect.width; height = rect.height;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    lattice = [];
-    const spacing = 26;
-    for (let y = spacing; y < height; y += spacing) {
-      for (let x = spacing; x < width; x += spacing) lattice.push({ x, y });
-    }
-    draw(0);
-  }
-
-  function nearest(point, count, maxDistance) {
-    const scored = [];
-    for (const dot of lattice) {
-      const distance = Math.hypot(dot.x - point.x, dot.y - point.y);
-      if (distance < maxDistance) scored.push({ dot, distance });
-    }
-    scored.sort((a, b) => a.distance - b.distance);
-    return scored.slice(0, count);
-  }
-
-  function draw(delta) {
-    elapsed += delta;
-    context.clearRect(0, 0, width, height);
-
-    /* 点阵：靠近指针处位移并转为朱砂色 */
-    for (const dot of lattice) {
-      let x = dot.x, y = dot.y, alpha = .1, hot = false;
-      if (pointer) {
-        const dx = x - pointer.x, dy = y - pointer.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance < 150) {
-          const force = 1 - distance / 150;
-          x += (distance ? dx / distance : 0) * force * 11;
-          y += (distance ? dy / distance : 0) * force * 11;
-          alpha = .1 + force * .45;
-          hot = force > .3;
-        }
-      }
-      context.fillStyle = hot ? `rgba(168,53,23,${alpha})` : `rgba(29,26,21,${alpha + .03})`;
-      context.fillRect(x - 1, y - 1, 2, 2);
-    }
-
-    /* 指针到最近点阵的细线 */
-    if (pointer) {
-      context.lineWidth = 1;
-      context.strokeStyle = 'rgba(168,53,23,.3)';
-      for (const { dot } of nearest(pointer, 3, 110)) {
-        context.beginPath();
-        context.moveTo(pointer.x, pointer.y);
-        context.lineTo(dot.x, dot.y);
-        context.stroke();
-      }
-    }
-
-    /* 漂浮墨点与码点 */
-    for (const mote of motes) {
-      mote.x = (mote.x + mote.vx * delta + 1) % 1;
-      mote.y = (mote.y + mote.vy * delta + 1) % 1;
-      const x = mote.x * width, y = mote.y * height;
-      if (mote.glyph) {
-        context.fillStyle = 'rgba(29,26,21,.16)';
-        context.font = '11px Consolas, monospace';
-        context.fillText(mote.glyph, x, y);
-      } else {
-        context.fillStyle = 'rgba(29,26,21,.22)';
-        context.beginPath();
-        context.arc(x, y, mote.r, 0, Math.PI * 2);
-        context.fill();
-      }
-    }
-
-    /* 点击涟漪 */
-    ripples = ripples.filter(ripple => ripple.age < 700);
-    for (const ripple of ripples) {
-      ripple.age += delta;
-      const progress = ripple.age / 700;
-      context.strokeStyle = `rgba(168,53,23,${(1 - progress) * .5})`;
-      context.lineWidth = 1;
-      context.beginPath();
-      context.arc(ripple.x, ripple.y, 14 + progress * 150, 0, Math.PI * 2);
-      context.stroke();
-    }
-  }
-
-  function canRun() {
-    return visible && !document.hidden && !prefersReducedMotion() && !document.body.classList.contains('motion-paused');
-  }
-  function tick(time) {
-    frame = 0;
-    if (!canRun()) return;
-    if (time - lastTime >= 32) {
-      draw(Math.min(time - lastTime, 64));
-      lastTime = time;
-    }
-    frame = requestAnimationFrame(tick);
-  }
+function setSiteMotion(paused) {
+  document.body.classList.toggle('motion-paused', paused);
+  document.dispatchEvent(new Event('site-motion-change'));
+}
+function initMotionControl() {
+  const button = document.createElement('button');
+  button.type = 'button'; button.className = 'garden-motion';
   function sync() {
-    cancelAnimationFrame(frame);
-    frame = 0;
-    lastTime = performance.now();
-    if (canRun()) frame = requestAnimationFrame(tick);
+    const paused = document.body.classList.contains('motion-paused');
+    button.setAttribute('aria-pressed', String(paused));
+    button.textContent = prefersReducedMotion() ? '减少动态已开启' : paused ? '继续花园动态' : '暂停花园动态';
+    button.disabled = prefersReducedMotion();
   }
-
-  region.addEventListener('pointermove', event => {
-    const rect = region.getBoundingClientRect();
-    pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-  }, { passive: true });
-  region.addEventListener('pointerleave', () => { pointer = null; });
-  region.addEventListener('pointerdown', event => {
-    if (!canRun()) return;
-    const rect = region.getBoundingClientRect();
-    ripples.push({ x: event.clientX - rect.left, y: event.clientY - rect.top, age: 0 });
-  }, { passive: true });
-
-  new ResizeObserver(resize).observe(region);
-  new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
-    sync();
-  }, { threshold: .01 }).observe(region);
+  button.addEventListener('click', () => setSiteMotion(!document.body.classList.contains('motion-paused')));
   document.addEventListener('site-motion-change', sync);
-  document.addEventListener('visibilitychange', sync);
-  if (typeof reduceMotionQuery.addEventListener === 'function') reduceMotionQuery.addEventListener('change', sync);
-  resize();
-  sync();
+  reduceMotionQuery.addEventListener('change', sync);
+  document.addEventListener('visibilitychange', () => document.body.classList.toggle('page-inactive', document.hidden));
+  document.body.append(button); sync();
 }
 
-/* ===== 文字解码：hero 标题一次性解码，链接 hover 轻扰 =====
-   aria-label 固定原文，屏幕阅读器不受扰动影响。 */
-const SCRAMBLE_CHARS = '▘▝▖▗▚▞▓░·{/}<>*';
+// Horizontal gestures never cancel vertical scrolling. A completed swipe suppresses only its trailing click.
+function initSwipe(region, onSwipe) {
+  let start = null, suppressUntil = 0;
+  region.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'touch') return;
+    start = {x:event.clientX, y:event.clientY, id:event.pointerId};
+  }, {passive:true});
+  region.addEventListener('pointerup', event => {
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX-start.x, dy = event.clientY-start.y; start = null;
+    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy)*1.5) {
+      suppressUntil = performance.now()+450; onSwipe(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+  region.addEventListener('pointercancel', () => { start = null; }, {passive:true});
+  region.addEventListener('click', event => {
+    if (performance.now() < suppressUntil) { event.preventDefault(); event.stopPropagation(); }
+  }, true);
+}
 
-function decodeElement(element, duration) {
-  const original = element.dataset.decodeOriginal || element.textContent;
-  element.dataset.decodeOriginal = original;
-  if (!element.getAttribute('aria-label')) element.setAttribute('aria-label', original);
-  const chars = [...original];
-  const start = performance.now();
-
-  function step(now) {
-    const progress = Math.min(1, (now - start) / duration);
-    element.textContent = chars.map((character, index) => {
-      if (/\s/.test(character)) return character;
-      if (progress >= (index + 1) / chars.length + .1) return character;
-      return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-    }).join('');
-    if (progress < 1) requestAnimationFrame(step);
-    else element.textContent = original;
+function initFolio() {
+  const folio = document.querySelector('.folio');
+  if (!folio) return;
+  const works = [...document.querySelectorAll('.work-piece')];
+  if (works.length !== 3) return;
+  const projects = [works[1],works[0],works[2]].map(work => ({
+    title:work.querySelector('.work-caption h3').textContent.trim(),
+    href:work.querySelector('.work-frame').href,
+    poster:work.querySelector('.poster'),
+  }));
+  const cover = folio.querySelector('.folio-cover');
+  const controls = folio.querySelector('.folio-controls');
+  const label = folio.querySelector('.folio-name');
+  label.setAttribute('aria-live', 'polite'); label.setAttribute('aria-atomic', 'true');
+  let selected = 0;
+  controls.hidden = false;
+  function select(index) {
+    selected = (index+projects.length)%projects.length;
+    const item = projects[selected], poster = item.poster.cloneNode(true);
+    const oldHeading = poster.querySelector('h3'), heading = document.createElement('h2');
+    heading.innerHTML = oldHeading.innerHTML; oldHeading.replaceWith(heading);
+    cover.querySelector('.poster').replaceWith(poster);
+    cover.href = item.href; cover.setAttribute('aria-label', `查看 ${item.title} 项目`);
+    label.textContent = item.title;
+    folio.querySelector('.folio-count').textContent = `0${selected+1} / 03`;
+    if (canAnimate()) poster.animate([{opacity:.45,transform:'translateX(12px)'},{opacity:1,transform:'none'}],{duration:400,easing:'ease-out'});
   }
-  requestAnimationFrame(step);
-}
-
-function initHeroDecode() {
-  const lines = document.querySelectorAll('[data-decode]');
-  if (!lines.length || prefersReducedMotion()) return;
-  lines.forEach((line, index) => {
-    line.dataset.decodeOriginal = line.textContent;
-    line.setAttribute('aria-label', line.textContent);
-    window.setTimeout(() => decodeElement(line, 820), 120 + index * 130);
+  folio.querySelector('[data-folio-prev]').addEventListener('click', () => select(selected-1));
+  folio.querySelector('[data-folio-next]').addEventListener('click', () => select(selected+1));
+  folio.addEventListener('keydown', event => {
+    if (event.altKey || event.ctrlKey || event.metaKey || !['ArrowLeft','ArrowRight'].includes(event.key)) return;
+    event.preventDefault(); select(selected+(event.key==='ArrowRight'?1:-1));
   });
-}
-
-function initLinkScramble() {
-  if (!window.matchMedia('(pointer: fine)').matches || prefersReducedMotion()) return;
-  document.querySelectorAll('.nav-link').forEach(link => {
-    const original = link.textContent;
-    let timer = 0;
-    link.addEventListener('pointerenter', () => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => decodeElement(link, 240), 0);
+  initSwipe(folio.querySelector('.folio-stack'), direction => select(selected+direction));
+  const fine = window.matchMedia('(pointer:fine)');
+  let frame = 0;
+  folio.querySelector('.folio-stack').addEventListener('pointermove', event => {
+    if (!fine.matches || !canAnimate()) return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const r = folio.getBoundingClientRect();
+      const x = Math.max(-.5,Math.min(.5,(event.clientX-r.left)/r.width-.5));
+      const y = Math.max(-.5,Math.min(.5,(event.clientY-r.top)/r.height-.5));
+      cover.style.transform = `rotateY(${-11+x*9}deg) rotateX(${-y*6}deg) rotateZ(2deg)`;
     });
-    link.addEventListener('focus', () => { link.textContent = original; });
-    link.addEventListener('pointerleave', () => { window.clearTimeout(timer); });
-  });
+  },{passive:true});
+  const reset = () => { cancelAnimationFrame(frame); cover.style.removeProperty('transform'); };
+  folio.addEventListener('pointerleave', reset);
+  document.addEventListener('site-motion-change', reset);
+  reduceMotionQuery.addEventListener('change', reset);
 }
 
-/* ===== 项目展台：预设三步流程演示（沿用已验证交互契约）
-   模拟边界：不读取桌面，不连接模型。 ===== */
+function initExhibition() {
+  const gallery = document.querySelector('.exhibition');
+  if (!gallery) return;
+  const stage = gallery.querySelector('.exhibit-stage');
+  const frames = [...stage.querySelectorAll('.exhibit-frame')];
+  const descriptions = ['经过确认和审核，让散落的经验成为团队知识。','窗口滚走以后，仍然可以接着追问。','从历史材料到作业草稿，为人的确认留下位置。'];
+  const modes = gallery.querySelector('.gallery-modes');
+  const narrow = window.matchMedia('(max-width:768px)');
+  let selected = 1, mode = narrow.matches ? 'flat' : 'space', userMode = null;
+  modes.hidden = false; gallery.querySelector('.gallery-controls').hidden = false;
+  function select(index, scroll = false) {
+    selected = (index+frames.length)%frames.length;
+    frames.forEach((item, i) => {
+      let offset = i-selected;
+      if (offset > 1) offset -= frames.length;
+      if (offset < -1) offset += frames.length;
+      item.style.setProperty('--offset', String(offset));
+      item.dataset.selected = String(i===selected);
+    });
+    const text = gallery.querySelector('.gallery-description');
+    text.replaceChildren();
+    const title = document.createElement('b'); title.textContent = frames[selected].dataset.title;
+    text.append(title,document.createTextNode(descriptions[selected]));
+    gallery.querySelector('.gallery-count').textContent = `0${selected+1} / 03`;
+    if (scroll && mode==='flat' && narrow.matches) {
+      // Only move the local shelf, never the page itself.
+      stage.scrollTo({left:frames[selected].offsetLeft-(stage.clientWidth-frames[selected].clientWidth)/2,behavior:canAnimate()?'smooth':'instant'});
+    }
+  }
+  function setMode(next) {
+    mode = narrow.matches ? 'flat' : next;
+    gallery.dataset.mode = mode;
+    modes.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.mode===mode)));
+    select(selected);
+  }
+  modes.querySelectorAll('button').forEach(button => button.addEventListener('click', () => {
+    userMode = button.dataset.mode; setMode(userMode);
+  }));
+  gallery.querySelector('[data-gallery-prev]').addEventListener('click', () => select(selected-1,true));
+  gallery.querySelector('[data-gallery-next]').addEventListener('click', () => select(selected+1,true));
+  stage.addEventListener('keydown', event => {
+    if (event.altKey || event.ctrlKey || event.metaKey || !['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key==='Home'?0:event.key==='End'?frames.length-1:selected+(event.key==='ArrowRight'?1:-1);
+    select(next,true);
+  });
+  // Tabbed links select their frame so the focused work never sits behind another frame.
+  frames.forEach((item, index) => item.addEventListener('focus', () => select(index,true)));
+  initSwipe(stage, direction => { if (!narrow.matches) select(selected+direction); });
+  let scrollFrame = 0;
+  stage.addEventListener('scroll', () => {
+    if (!narrow.matches) return;
+    clearTimeout(scrollFrame);
+    scrollFrame = setTimeout(() => {
+      const center = stage.getBoundingClientRect().left+stage.clientWidth/2;
+      const distances = frames.map(item => {const r=item.getBoundingClientRect();return Math.abs(r.left+r.width/2-center);});
+      const nearest = distances.indexOf(Math.min(...distances));
+      if (nearest!==selected) select(nearest);
+    }, 100);
+  },{passive:true});
+  narrow.addEventListener('change', () => setMode(userMode || (narrow.matches?'flat':'space')));
+  setMode(mode);
+  if (narrow.matches) select(0);
+}
 function initDynamicLab() {
   const lab = document.querySelector('.live-lab');
   if (!lab) return;
@@ -448,15 +357,18 @@ function initDynamicLab() {
     clear();step=-1;running=true;lab.classList.add('is-running');run.textContent = prefersReducedMotion()?'下一步 →':'流程运行中…';advance();
   });
   controls.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>renderProject(Number(button.dataset.project))));
-  motionButton.addEventListener('click',()=>{
-    paused=!paused;document.body.classList.toggle('motion-paused',paused);motionButton.setAttribute('aria-pressed',String(paused));motionButton.textContent=paused?'继续动态':'暂停动态';run.disabled=paused;
-    clear();if(!paused && running && !prefersReducedMotion())timer=setTimeout(advance,1200);
-    document.dispatchEvent(new Event('site-motion-change'));
-  });
+  motionButton.addEventListener('click',()=>setSiteMotion(!document.body.classList.contains('motion-paused')));
+  function syncMotion() {
+    paused=document.body.classList.contains('motion-paused');
+    motionButton.setAttribute('aria-pressed',String(paused));motionButton.textContent=paused?'继续动态':'暂停动态';run.disabled=paused;
+    clear();if(!paused && running && !document.hidden && !prefersReducedMotion())timer=setTimeout(advance,1200);
+  }
+  document.addEventListener('site-motion-change',syncMotion);
+  syncMotion();
   document.addEventListener('visibilitychange',()=>{
     clear();if(!document.hidden && running && !paused && !prefersReducedMotion())timer=setTimeout(advance,1200);
   });
-  new IntersectionObserver(entries=>{
+  if ('IntersectionObserver' in window) new IntersectionObserver(entries=>{
     clear();if(entries[0].isIntersecting && running && !paused && !document.hidden && !prefersReducedMotion())timer=setTimeout(advance,1200);
   },{threshold:.05}).observe(lab);
   if (typeof reduceMotionQuery.addEventListener === 'function') {
@@ -464,100 +376,6 @@ function initDynamicLab() {
   }
 }
 
-/* ===== 磁性按钮：精确指针下的微位移，减少动态时关闭 ===== */
-function initMagneticButtons() {
-  if (!window.matchMedia('(pointer: fine)').matches || prefersReducedMotion()) return;
-  document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('pointermove', event => {
-      const rect = button.getBoundingClientRect();
-      const dx = (event.clientX - rect.left - rect.width / 2) / rect.width;
-      const dy = (event.clientY - rect.top - rect.height / 2) / rect.height;
-      button.style.transform = `translate(${(dx * 7).toFixed(1)}px, ${(dy * 5).toFixed(1)}px)`;
-    });
-    button.addEventListener('pointerleave', () => { button.style.transform = ''; });
-  });
-}
-
-/* ===== 索引行指针预览：装饰性浮动卡，仅精确指针 ===== */
-function initCursorPreview() {
-  const rows = document.querySelectorAll('.index-row[data-preview-img]');
-  if (!rows.length || !window.matchMedia('(pointer: fine)').matches) return;
-  document.documentElement.classList.add('fine-pointer');
-
-  const card = document.createElement('figure');
-  card.className = 'cursor-card';
-  card.setAttribute('aria-hidden', 'true');
-  const image = new Image();
-  image.alt = '';
-  const caption = document.createElement('figcaption');
-  card.append(image, caption);
-  document.body.appendChild(card);
-
-  const reduced = prefersReducedMotion();
-  let active = false, targetX = 0, targetY = 0, currentX = 0, currentY = 0, raf = 0;
-
-  function loop() {
-    if (reduced) { currentX = targetX; currentY = targetY; }
-    else {
-      currentX += (targetX - currentX) * .2;
-      currentY += (targetY - currentY) * .2;
-    }
-    card.style.transform = `translate(${Math.min(currentX, window.innerWidth - 262)}px, ${currentY}px) translate(20px, -60%)`;
-    if (active || Math.abs(targetX - currentX) > .5) raf = requestAnimationFrame(loop);
-    else raf = 0;
-  }
-  rows.forEach(row => {
-    row.addEventListener('pointerenter', () => {
-      image.src = new URL(row.dataset.previewImg, siteBase).href;
-      caption.textContent = row.dataset.previewLabel || '';
-      card.classList.add('show');
-      active = true;
-      if (!raf) raf = requestAnimationFrame(loop);
-    });
-    row.addEventListener('pointermove', event => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-      if (!raf) raf = requestAnimationFrame(loop);
-    });
-    row.addEventListener('pointerleave', () => {
-      card.classList.remove('show');
-      active = false;
-    });
-  });
-}
-
-/* ===== 数字计数：一次性，进入视口触发 ===== */
-function initCounters() {
-  const counters = document.querySelectorAll('[data-count]');
-  if (!counters.length) return;
-  function finish(element) {
-    element.textContent = element.dataset.count;
-  }
-  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
-    counters.forEach(finish);
-    return;
-  }
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const element = entry.target;
-      observer.unobserve(element);
-      const total = Number(element.dataset.count) || 0;
-      const start = performance.now();
-      function step(now) {
-        const progress = Math.min(1, (now - start) / 700);
-        element.textContent = String(Math.round(total * (1 - Math.pow(1 - progress, 3))));
-        if (progress < 1) requestAnimationFrame(step);
-        else finish(element);
-      }
-      element.textContent = '0';
-      requestAnimationFrame(step);
-    });
-  }, { threshold: .4 });
-  counters.forEach(element => observer.observe(element));
-}
-
-/* ===== 页脚本地时钟：纯本地计算，无网络请求 ===== */
 function initLocalClock() {
   const clocks = document.querySelectorAll('[data-clock]');
   if (!clocks.length) return;

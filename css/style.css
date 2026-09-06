@@ -1,24 +1,31 @@
-/* 纸墨系统 · 共享令牌、重置与文章基元。视觉契约：specs/2026-09-ink */
+/* 数字花园 · 唯一共享令牌、字体与文章基元。specs/2026-09-06-digital-garden */
+@font-face {
+  font-family: "Garden Serif";
+  src: url("../assets/fonts/garden-serif.woff2?v=c9cba5911e") format("woff2");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
 @view-transition { navigation: auto; }
 
 :root {
-  /* 纸与墨 */
-  --paper: #f6f2e9;
-  --paper-2: #efe9db;
-  --paper-3: #e6ddc9;
-  --ink: #1d1a15;
-  --ink-2: #423d32;
-  --muted: #635b49;
-  --vermilion: #a83517;
-  --vermilion-bright: #d9552b;
-  --pine: #2e5d4b;
-  --line: #d8d0be;
-  --line-strong: #b9ae96;
-  --wash: #f0ebdf;
-  --ink-bg: #191611;
-  --ink-bg-2: #221e17;
-  --dark-muted: #c6bda8;
-  --dark-line: #3a352b;
+  /* 数字花园：唯一共享设计令牌 */
+  --paper: #f8f5ef;
+  --paper-2: #f0eae5;
+  --paper-3: #e6dcd4;
+  --ink: #2d2634;
+  --ink-2: #514653;
+  --muted: #675d68;
+  --vermilion: #a04e67;
+  --vermilion-bright: #e7b4be;
+  --pine: #315951;
+  --line: #dbd1c8;
+  --line-strong: #bdb0a7;
+  --wash: #f0e9e1;
+  --ink-bg: #203f3b;
+  --ink-bg-2: #315951;
+  --dark-muted: #d5dfd5;
+  --dark-line: #537167;
 
   /* 通用别名（兼容既有选择器与文章样式） */
   --bg: var(--paper);
@@ -30,11 +37,11 @@
   --border: var(--line);
   --border-hover: var(--line-strong);
   --accent: var(--vermilion);
-  --accent-hover: #8c2b12;
+  --accent-hover: #763e52;
   --accent-light: var(--wash);
 
   /* 三声部字体：衬线显示 / 无衬线正文 / 等宽元信息，无远程请求 */
-  --font-display: Georgia, "Times New Roman", "Songti SC", "STSong", "SimSun", serif;
+  --font-display: "Garden Serif", Georgia, "Songti SC", "STSong", "SimSun", serif;
   --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
   --font-ui: var(--font-sans);
   --font-mono: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
@@ -52,20 +59,20 @@
   --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-5: 1.25rem;
   --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
   --space-20: 5rem; --space-24: 6rem;
-  --radius: 2px;
-  --nav-height: 76px;
+  --radius: 12px;
+  --nav-height: 96px;
   --max-width: 760px;
   --max-width-wide: 1160px;
   --transition: 200ms cubic-bezier(.25,.7,.3,1);
 
-  /* 文章图表的语义色（内容图形，随纸墨微调饱和度） */
+  /* 文章图表的语义色（内容图形，保留既有图表语义） */
   --c-blue: #2f5d8a; --c-violet: #6a4ac2; --c-emerald: #2e7355; --c-amber: #8a6200; --c-rose: #b23758; --c-cyan: #0d6a80; --c-slate: #4c5e7c;
   --c-blue-50: #edf2f8; --c-blue-100: #d8e4f0; --c-blue-500: #2f5d8a; --c-blue-600: #24496c;
   --c-violet-50: #f2eefb; --c-violet-100: #e2daf6; --c-violet-500: #6a4ac2; --c-violet-600: #573aa6;
   --c-emerald-50: #ebf6f0; --c-emerald-100: #d3eadd; --c-emerald-500: #2e7355; --c-emerald-600: #216046;
   --c-amber-50: #f9f3e4; --c-amber-100: #f0e5c8; --c-amber-500: #8a6200; --c-amber-600: #6f4f00;
 
-  /* 兼容层：旧文章样式沿用 --ledger-* / --rts-* 命名，指向纸墨 */
+  /* 兼容层：旧文章样式沿用 --ledger-* / --rts-* 命名，指向花园令牌 */
   --ledger-ink: var(--ink);
   --ledger-ink-soft: var(--ink-2);
   --ledger-paper: var(--paper);
@@ -109,7 +116,7 @@ body {
 }
 
 h1, h2, h3, h4, p, figure { margin: 0; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.22; letter-spacing: -.02em; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.35; letter-spacing: -.025em; }
 h2 { font-size: clamp(28px, 3.4vw, 44px); }
 h3 { font-size: 1.375rem; }
 
@@ -148,14 +155,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 /* 按钮：方角、细边、悬停墨块反转 */
 .btn, .ledger-button {
   display: inline-flex; gap: 14px; align-items: center; justify-content: center;
-  min-height: 48px; padding: 12px 22px;
-  border: 1px solid var(--ink); border-radius: var(--radius);
+  min-height: 48px; padding: 12px 23px;
+  border: 1px solid var(--line); border-radius: 999px;
   font-size: .9375rem; font-weight: 600; letter-spacing: .02em;
   text-align: center; line-height: 1.5;
   transition: background var(--transition), color var(--transition), transform var(--transition), border-color var(--transition);
 }
 .btn:hover, .ledger-button:hover { background: var(--ink); color: var(--paper); }
-.btn-primary, .ledger-button-primary, .ledger-button-signal { background: var(--ink); color: var(--paper); }
+.btn-primary, .ledger-button-primary, .ledger-button-signal { background: var(--vermilion); color: #fffaf7; border-color: var(--vermilion); box-shadow: 0 6px 18px #96536720; }
 .btn-primary:hover, .ledger-button-primary:hover, .ledger-button-signal:hover { background: var(--vermilion); border-color: var(--vermilion); }
 .btn-secondary, .ledger-button-secondary, .ledger-button-ghost { background: transparent; color: var(--ink); }
 .btn-white { background: var(--paper); color: var(--ink); border-color: var(--paper); }

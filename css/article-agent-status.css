@@ -1,12 +1,12 @@
 .status-article {
-  --status-ink: #15171c;
-  --status-muted: #535b6b;
-  --status-line: #d5dbe5;
-  --status-paper: #ffffff;
-  --status-panel: #f2f4f8;
-  --status-dark: #15171c;
-  --status-dark-2: #1a201b;
-  --status-signal: #b9ccff;
+  --status-ink: var(--ink);
+  --status-muted: var(--muted);
+  --status-line: var(--line);
+  --status-paper: var(--paper);
+  --status-panel: var(--wash);
+  --status-dark: var(--ink-bg);
+  --status-dark-2: var(--ink-bg-2);
+  --status-signal: #e9b4c0;
   --status-green: #b9ef45;
   --status-soft-green: #e4edce;
   --status-soft-orange: #f8dfd5;
@@ -19,7 +19,7 @@
   padding-bottom: clamp(2.7rem, 7vw, 5.4rem);
   color: var(--ink);
   background:
-    radial-gradient(circle at 84% 22%, rgba(168, 53, 23, .08), transparent 25rem),
+    radial-gradient(circle at 84% 22%, rgba(150, 83, 103, .06), transparent 25rem),
     linear-gradient(rgba(29, 26, 21, .05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(29, 26, 21, .05) 1px, transparent 1px),
     var(--paper);
@@ -61,7 +61,7 @@
 
 .status-article .post-header h1 em {
   color: var(--vermilion);
-  font-family: Georgia, "Noto Serif SC", serif;
+  font-family: var(--font-display);
   font-weight: 500;
 }
 

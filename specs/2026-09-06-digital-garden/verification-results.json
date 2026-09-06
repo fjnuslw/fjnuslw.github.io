@@ -1,0 +1,597 @@
+{
+  "date": "2026-09-06",
+  "browser": "Edge 152.0.4191.53",
+  "viewport_checks": [
+    {
+      "route": "index.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/agent-status-spine.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/kv-cache-reuse.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/semantic-terrain-context-engineering.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/claude-code-visuals.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/small-vlm-function-calling-instability.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/desktop-agent-context-pitfalls.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects/local-window-copilot.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects/research-to-spec.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "demos/local-window-copilot/",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "index.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/agent-status-spine.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/kv-cache-reuse.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/semantic-terrain-context-engineering.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/claude-code-visuals.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/small-vlm-function-calling-instability.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog/desktop-agent-context-pitfalls.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects/local-window-copilot.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects/research-to-spec.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "demos/local-window-copilot/",
+      "width": 320,
+      "scrollWidth": 320,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "index.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "index.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "projects.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "blog.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "runtime_errors": [],
+      "broken_images": []
+    },
+    {
+      "route": "about.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "runtime_errors": [],
+      "broken_images": []
+    }
+  ],
+  "behavior_checks": [
+    {
+      "name": "self-hosted display font loads",
+      "pass": true
+    },
+    {
+      "name": "folio next updates title and link",
+      "pass": true,
+      "detail": "http://127.0.0.1:4175/projects.html#enterprise-agent"
+    },
+    {
+      "name": "folio wraps to first",
+      "pass": true
+    },
+    {
+      "name": "folio keyboard previous",
+      "pass": true
+    },
+    {
+      "name": "global motion pause",
+      "pass": true
+    },
+    {
+      "name": "demo begins",
+      "pass": true
+    },
+    {
+      "name": "demo pause syncs global",
+      "pass": true
+    },
+    {
+      "name": "demo project switch resets state",
+      "pass": true
+    },
+    {
+      "name": "guide loads matching article",
+      "pass": true
+    },
+    {
+      "name": "guide Escape closes",
+      "pass": true
+    },
+    {
+      "name": "desktop space mode",
+      "pass": true
+    },
+    {
+      "name": "gallery next updates current",
+      "pass": true
+    },
+    {
+      "name": "gallery Home selects first",
+      "pass": true
+    },
+    {
+      "name": "gallery flat switch",
+      "pass": true
+    },
+    {
+      "name": "blog topic filter",
+      "pass": true,
+      "detail": "显示 2 / 6 篇文章"
+    },
+    {
+      "name": "blog reset filter",
+      "pass": true
+    },
+    {
+      "name": "failed search keeps static fallback",
+      "pass": true
+    },
+    {
+      "name": "article reading progress",
+      "pass": true
+    },
+    {
+      "name": "print hides navigation and keeps body",
+      "pass": true
+    },
+    {
+      "name": "reduced motion stops folio animation",
+      "pass": true
+    },
+    {
+      "name": "reduced motion manual demo completes",
+      "pass": true
+    },
+    {
+      "name": "mobile menu opens and focuses close",
+      "pass": true
+    },
+    {
+      "name": "mobile menu Escape returns focus",
+      "pass": true
+    },
+    {
+      "name": "touch folio swipe changes work",
+      "pass": true
+    },
+    {
+      "name": "mobile gallery defaults flat",
+      "pass": true
+    },
+    {
+      "name": "mobile gallery button updates selection",
+      "pass": true
+    },
+    {
+      "name": "mobile shelf scrolls locally",
+      "pass": true
+    },
+    {
+      "name": "nojs index.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs about.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/agent-status-spine.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/kv-cache-reuse.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/semantic-terrain-context-engineering.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/claude-code-visuals.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/small-vlm-function-calling-instability.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/desktop-agent-context-pitfalls.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects/local-window-copilot.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects/research-to-spec.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs demos/local-window-copilot/",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "200% text index.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text projects.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text blog.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text about.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "font failure keeps readable content",
+      "pass": true
+    }
+  ],
+  "article_integrity": [
+    {
+      "route": "blog/agent-status-spine.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    },
+    {
+      "route": "blog/claude-code-visuals.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    },
+    {
+      "route": "blog/desktop-agent-context-pitfalls.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    },
+    {
+      "route": "blog/kv-cache-reuse.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    },
+    {
+      "route": "blog/semantic-terrain-context-engineering.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    },
+    {
+      "route": "blog/small-vlm-function-calling-instability.html",
+      "body_unchanged": true,
+      "date_unchanged": true
+    }
+  ],
+  "contrast": [
+    {
+      "name": "正文 / 纸白",
+      "foreground": "#2d2634",
+      "background": "#f8f5ef",
+      "ratio": 13.42
+    },
+    {
+      "name": "次要文字 / 纸白",
+      "foreground": "#675d68",
+      "background": "#f8f5ef",
+      "ratio": 5.77
+    },
+    {
+      "name": "玫瑰链接 / 纸白",
+      "foreground": "#a04e67",
+      "background": "#f8f5ef",
+      "ratio": 5.11
+    },
+    {
+      "name": "按钮文字 / 玫瑰",
+      "foreground": "#fffaf7",
+      "background": "#a04e67",
+      "ratio": 5.36
+    },
+    {
+      "name": "展区文字 / 深青绿",
+      "foreground": "#f8f5ef",
+      "background": "#203f3b",
+      "ratio": 10.51
+    },
+    {
+      "name": "展区次要文字",
+      "foreground": "#d5dfd5",
+      "background": "#203f3b",
+      "ratio": 8.36
+    },
+    {
+      "name": "展区玫瑰链接",
+      "foreground": "#e8bbc3",
+      "background": "#203f3b",
+      "ratio": 6.72
+    },
+    {
+      "name": "封面紫字",
+      "foreground": "#49334f",
+      "background": "#c1acc8",
+      "ratio": 5.35
+    },
+    {
+      "name": "SOP封面文字",
+      "foreground": "#654530",
+      "background": "#ead7c6",
+      "ratio": 6.14
+    }
+  ]
+}

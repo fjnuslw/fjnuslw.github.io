@@ -7,10 +7,12 @@
     <title>Local Window Copilot Demo</title>
     <meta name="description" content="Local Window Copilot 悬浮助手外观与状态交互模拟，可拖动并切换状态；不读取真实桌面或运行模型。" />
     <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./src/styles.css?v=66e80db0c7" />
-  </head>
+    <link rel="stylesheet" href="../../css/style.css?v=889e6bb0f8">
+    <link rel="stylesheet" href="./src/styles.css?v=99e3dcbb6f" />
+  <link rel="preload" href="../../assets/fonts/garden-serif.woff2?v=c9cba5911e" as="font" type="font/woff2" crossorigin>
+</head>
   <body>
-    <header class="demo-header"><a href="../../projects/local-window-copilot.html">← 返回项目</a><h1>一个可以摸索的小助手。</h1><p>拖动它，或点击下面的按钮切换表情。<br>这是交互模拟，不读取真实桌面，也不运行模型。</p><p class="demo-keyboard">键盘：聚焦助手后可用方向键移动，Enter 切换状态。</p></header>
+    <header class="demo-header"><a href="../../projects/local-window-copilot.html">← 作品展廊 / Local Window Copilot</a><h1>花园里的小助手。</h1><p>拖动它，或点击下面的按钮切换表情。<br>这是交互模拟，不读取真实桌面，也不运行模型。</p><p class="demo-keyboard">键盘：聚焦助手后可用方向键移动，Enter 切换状态。</p></header>
     <main class="desktop-stage" aria-label="Floating assistant prototype">
       <section class="floating-agent" id="floatingAgent" data-state="idle">
         <div class="agent-drag-surface" id="dragSurface" aria-label="拖动悬浮助手">
