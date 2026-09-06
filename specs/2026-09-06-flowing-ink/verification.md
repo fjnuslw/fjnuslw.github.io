@@ -49,8 +49,11 @@
 
 ## 发布
 
-- 2026-09-06：提交后以 fjnuslw 推送 main（`<hash>`）；GitHub Actions `<run>` 状态与线上核对结果记录于下节。
+- 2026-09-06：提交 `8e3c285` 已以 fjnuslw 推送 main（`39f54a1..8e3c285`）。本机直连 github.com 超时，经由本机 7897 本地代理推送；未改动全局 git 配置。
+- GitHub Actions run `34025935433`（head `8e3c285`）：**completed / success**。
 
-### 线上核对（推送后补记）
+### 线上核对（2026-09-06）
 
-- 待推送后填写：Actions run 结论、正式域名抽查（渐变/画布/资源哈希）。
+- `https://fjnuslw.github.io/` 引用 `css/portfolio.css?v=e11231f279`、`js/main.js?v=89d7248230`，与本地文件 SHA-256 前缀逐字一致（stamp-assets 哈希）。
+- 线上 `portfolio.css` 含 `garden-canvas` / `background-clip:text` 规则（8 处命中）；线上 `main.js` 含 `initGardenCanvas`（2 处命中）。
+- 结合本地 dist 预览的浏览器验收（34 视口 + 45 行为 + 9 专项 + 截图判读），本轮发布闭环完成。
