@@ -1,11 +1,11 @@
 .rts-page {
-  --rts-paper: #f3f0e8;
-  --rts-paper-deep: #e8e3d7;
-  --rts-ink: #0b0d0c;
-  --rts-text: #171a18;
-  --rts-muted: #5e665f;
-  --rts-line: #c8c4b8;
-  --rts-signal: #c9ff5a;
+  --rts-paper: #ffffff;
+  --rts-paper-deep: #f2f4f8;
+  --rts-ink: #15171c;
+  --rts-text: #15171c;
+  --rts-muted: #535b6b;
+  --rts-line: #d5dbe5;
+  --rts-signal: #b9ccff;
   --rts-coral: #b23e2b;
   color: var(--rts-text);
   background: var(--rts-paper);
@@ -943,3 +943,5 @@
     width: 120px;
   }
 }
+
+.rts-hero { background:#15171c; }

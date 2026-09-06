@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>语义地形工程：把上下文设计成可控系统 - 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
+  <link rel="stylesheet" href="../css/style.css?v=ad0080615b">
   <style>
     .lead-panel {
       border: 1px solid var(--border);
@@ -221,26 +221,10 @@
       .figure-scroll .article-svg { min-width: 0; }
     }
   </style>
-  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260811">
+  <link rel="stylesheet" href="../css/portfolio.css?v=dc65dd365f">
 </head>
 <body class="ledger-page article-page">
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-
-  <nav class="navbar ledger-nav" aria-label="主导航">
-    <div class="nav-container ledger-container">
-      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
-      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
-        <li><a href="../index.html" class="nav-link">首页</a></li>
-        <li><a href="../projects.html" class="nav-link">项目</a></li>
-        <li><a href="../resume.html" class="nav-link">履历</a></li>
-        <li><a href="../blog.html" class="nav-link active" aria-current="page">文章</a></li>
-        <li><a href="../about.html" class="nav-link">关于</a></li>
-      </ul>
-    </div>
-  </nav>
+  <a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-container"><a class="nav-logo" href="../index.html" aria-label="宋林蔚，返回首页"><span class="brand-symbol" aria-hidden="true">s.</span><span>宋林蔚<small>LINWEI SONG</small></span></a><button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="../index.html">首页</a></li><li><a class="nav-link" href="../projects.html">作品</a></li><li><a class="nav-link" href="../blog.html">笔记</a></li><li><a class="nav-link" href="../about.html">关于</a></li></ul><a class="nav-github" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav>
 
   <header class="post-header">
     <div class="container">
@@ -275,6 +259,8 @@
     </div>
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="语义地形工程总览图">
+<title>语义地形工程总览图</title>
+<desc>示意 Prompt、上下文和外部证据对生成路径的不同作用：设置局部坡度、改变轨迹、提供事实锚点。</desc>
       <defs>
         <linearGradient id="terrainGrad" x1="0" x2="1" y1="0" y2="1">
           <stop offset="0" stop-color="#e0f2fe"/>
@@ -315,6 +301,8 @@
     </p>
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上下文改变候选答案概率分布">
+<title>上下文改变候选答案概率分布</title>
+<desc>示意候选答案的相对概率随上下文结构改变；对比离散知识点与组织成因果链后的候选分布，不代表实测数据。</desc>
       <rect x="18" y="18" width="724" height="264" rx="18" fill="#ffffff"/>
       <text x="56" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">上下文改变候选答案的相对概率</text>
       <text x="56" y="82" class="svg-label" font-size="13" fill="#64748b">同一个模型，在不同上下文结构下会把概率质量推向不同候选。</text>
@@ -363,6 +351,8 @@
     <h2>二、六种常见地形问题</h2>
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="六种语义地形问题示意图">
+<title>六种语义地形问题示意图</title>
+<desc>列出语义漂移、注意力稀释、上下文污染、推理断层和幻觉等问题的图形提示，用路径、深浅和障碍表示偏移。</desc>
       <rect x="18" y="18" width="724" height="294" rx="18" fill="#f8fafc"/>
       <text x="52" y="58" class="svg-label" font-size="17" fill="#0f172a" font-weight="800">常见地形问题的可视化提示</text>
       <g class="svg-label" font-size="12" fill="#334155">
@@ -487,6 +477,8 @@ C. 复盘一次工具调用失败。
 
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="prompt 分层系统图">
+<title>prompt 分层系统图</title>
+<desc>从稳定到动态排列协议层、任务层、证据层和输出层，分别组织身份与工具边界、目标与成功标准、材料来源以及格式与校验。</desc>
       <defs>
         <marker id="arrowLayer" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
@@ -563,6 +555,8 @@ C. 复盘一次工具调用失败。
 
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="长任务上下文工作流">
+<title>长任务上下文工作流</title>
+<desc>研究收集、发散、压缩 spec、执行任务与回归校验依次连接；校验失败回到 spec，而不是无限追加上下文。</desc>
       <defs>
         <marker id="arrowFlow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
@@ -686,6 +680,8 @@ ss -lntp | grep :80</code></pre>
 
     <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
     <svg class="article-svg" viewBox="0 0 760 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent 上下文边界与证据隔离">
+<title>Agent 上下文边界与证据隔离</title>
+<desc>用户意图、执行痕迹、证据池和不可信外部内容先分开组织，再携带来源进入模型调用与带权限的工具。</desc>
       <defs>
         <marker id="arrowAgent" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/>
@@ -786,23 +782,7 @@ blog/semantic-terrain-context-engineering.html 当前内容。
     </div>
   </main>
 
-  <footer class="footer">
-    <div class="container-wide">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <p class="footer-left">&copy; 2026 宋林蔚</p>
-          <p class="footer-tagline">大模型应用与 Agent 工程</p>
-        </div>
-        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
-        <nav class="footer-links" aria-label="站外链接">
-          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-          <a href="mailto:1147214246@qq.com">邮箱</a>
-        </nav>
-      </div>
-    </div>
-  </footer>
-
-  <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="../js/main.js?v=20260809"></script>
+  <footer class="footer"><div class="shell"><div class="footer-top"><p>有意思的问题，<br>可以接着聊。</p><a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a></div><div class="footer-content"><div class="footer-brand"><p>© 2026 宋林蔚</p><p>做一点东西，留一点记录。</p></div><nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">作品</a><a href="../blog.html">笔记</a><a href="../about.html">关于</a></nav><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></footer>
+  <script src="../js/main.js?v=98324efef0"></script>
 </body>
 </html>

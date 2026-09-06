@@ -5,6 +5,14 @@
   background: transparent;
 }
 
+.demo-header { position:fixed; z-index:5; top:32px; left:40px; right:40px; max-width:560px; color:#15171c; pointer-events:none; }
+.demo-header a { display:inline-flex; align-items:center; min-height:44px; color:#244ce8; pointer-events:auto; font-size:15px; text-decoration:none; }
+.demo-header h1 { font-size:clamp(24px,4vw,42px); letter-spacing:-.04em; line-height:1.35; margin:14px 0; }
+.demo-header p { font-size:16px; color:#535b6b; line-height:1.8; margin:8px 0; }
+.demo-header .demo-keyboard { font-size:13px; }
+button:focus-visible,a:focus-visible { outline:3px solid #244ce8; outline-offset:5px; }
+@media(max-width:520px) { .demo-header { top:12px; left:20px; right:20px; } .demo-header h1 { margin:10px 0; } .demo-header p { font-size:14px; } }
+
 * {
   box-sizing: border-box;
 }
@@ -55,8 +63,8 @@ button {
 }
 
 .floating-agent {
-  --agent-x: calc(100vw - 350px);
-  --agent-y: calc(100vh - 360px);
+  --agent-x: max(12px, calc(100vw - 350px));
+  --agent-y: max(260px, calc(100vh - 360px));
   --accent: #15c7f3;
   --accent-soft: rgba(21, 199, 243, 0.28);
   --signal: #ff9f18;
@@ -460,13 +468,17 @@ button {
   }
 
   .agent-toolbar {
-    grid-template-columns: repeat(5, 38px);
+    grid-template-columns: repeat(5, 44px);
     gap: 6px;
   }
 
   .tool-button {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
   }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation:none !important; transition:none !important; }
 }

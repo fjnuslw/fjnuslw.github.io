@@ -1,12 +1,12 @@
 .status-article {
-  --status-ink: #171a18;
-  --status-muted: #5e655f;
-  --status-line: #c9c6ba;
-  --status-paper: #f4f0e7;
-  --status-panel: #e9e5da;
-  --status-dark: #111512;
+  --status-ink: #15171c;
+  --status-muted: #535b6b;
+  --status-line: #d5dbe5;
+  --status-paper: #ffffff;
+  --status-panel: #f2f4f8;
+  --status-dark: #15171c;
   --status-dark-2: #1a201b;
-  --status-signal: #ff7650;
+  --status-signal: #b9ccff;
   --status-green: #b9ef45;
   --status-soft-green: #e4edce;
   --status-soft-orange: #f8dfd5;
@@ -109,7 +109,7 @@
 .status-article .post-content > h2 .section-no {
   display: block;
   margin-bottom: .52rem;
-  color: #687068;
+  color: #535b6b;
   font-family: var(--font-mono);
   font-size: .71rem;
   font-weight: 800;
@@ -233,7 +233,7 @@
 }
 
 .layer-card.accent {
-  color: #f4f0e7;
+  color: #ffffff;
   background: var(--status-dark);
   border-color: #3c463e;
 }
@@ -305,7 +305,7 @@
   margin: 2rem auto 3rem;
   padding: clamp(1.3rem, 4vw, 2rem);
   overflow-x: auto;
-  color: #f4f0e7;
+  color: #ffffff;
   background: var(--status-dark);
   border: 1px solid #3b443d;
   border-radius: 16px;
@@ -496,7 +496,7 @@
   padding: clamp(1.35rem, 4vw, 2rem);
   gap: 1.2rem;
   align-items: center;
-  color: #f3f0e8;
+  color: #ffffff;
   background: var(--status-dark);
   border: 1px solid #3c453e;
   border-radius: 17px;
@@ -646,7 +646,7 @@
 }
 
 .strategy-grid .recommended {
-  color: #f4f0e7;
+  color: #ffffff;
   background: var(--status-dark);
   border-color: #3c453e;
 }
@@ -743,7 +743,7 @@
   width: min(100%, 820px);
   margin: 2.4rem auto 3.5rem;
   padding: clamp(1.35rem, 4vw, 2rem);
-  color: #f4f0e7;
+  color: #ffffff;
   background: var(--status-dark);
   border: 1px solid #3d463f;
   border-radius: 17px;

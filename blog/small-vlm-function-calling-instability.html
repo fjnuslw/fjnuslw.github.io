@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <title>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构 — 宋林蔚</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/style.css?v=20260812-1">
+  <link rel="stylesheet" href="../css/style.css?v=ad0080615b">
   <style>
     .article-svg {
       display: block;
@@ -198,26 +198,10 @@
       text-align: center;
     }
   </style>
-  <link rel="stylesheet" href="../css/evidence-ledger.css?v=20260811">
+  <link rel="stylesheet" href="../css/portfolio.css?v=dc65dd365f">
 </head>
 <body class="ledger-page article-page">
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-
-  <nav class="navbar ledger-nav" aria-label="主导航">
-    <div class="nav-container ledger-container">
-      <a href="../index.html" class="nav-logo ledger-nav-logo" aria-label="宋林蔚，返回首页"><span>SLW</span><small>Evidence Ledger</small></a>
-      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-menu ledger-nav-menu" id="primary-navigation">
-        <li><a href="../index.html" class="nav-link">首页</a></li>
-        <li><a href="../projects.html" class="nav-link">项目</a></li>
-        <li><a href="../resume.html" class="nav-link">履历</a></li>
-        <li><a href="../blog.html" class="nav-link active" aria-current="page">文章</a></li>
-        <li><a href="../about.html" class="nav-link">关于</a></li>
-      </ul>
-    </div>
-  </nav>
+  <a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-container"><a class="nav-logo" href="../index.html" aria-label="宋林蔚，返回首页"><span class="brand-symbol" aria-hidden="true">s.</span><span>宋林蔚<small>LINWEI SONG</small></span></a><button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="../index.html">首页</a></li><li><a class="nav-link" href="../projects.html">作品</a></li><li><a class="nav-link" href="../blog.html">笔记</a></li><li><a class="nav-link" href="../about.html">关于</a></li></ul><a class="nav-github" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav>
 
   <header class="post-header">
     <div class="container">
@@ -263,7 +247,7 @@
       </p>
 
       <div class="key-findings">
-        <h3>TL;DR — 五个核心发现</h3>
+        <h2>先看这次实验的五个发现</h2>
         <ul>
           <li>VLM 退化重复不是 max_tokens 不够，是 prompt 契约超过模型稳定输出范围</li>
           <li>排名器复用同一 VLM → 连锁失败，换成 FTS5 BM25 后零失败毫秒级</li>
@@ -358,6 +342,8 @@
 
       <div class="figure-scroll" role="group" aria-label="图表，可横向滚动">
       <svg class="article-svg" viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="连锁失败链路">
+<title>连锁失败链路</title>
+<desc>VLM JSON 不稳定导致排名器失败，进而使 memory.search 返回空结果，最终生成没有证据的回答。</desc>
         <defs>
           <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
             <path d="M0,0 L8,3 L0,6 Z" fill="#c62828"/>
@@ -626,23 +612,7 @@
     </div>
   </main>
 
-  <footer class="footer">
-    <div class="container-wide">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <p class="footer-left">&copy; 2026 宋林蔚</p>
-          <p class="footer-tagline">大模型应用与 Agent 工程</p>
-        </div>
-        <nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">项目</a><a href="../resume.html">履历</a><a href="../blog.html">文章</a><a href="../about.html">关于</a></nav>
-        <nav class="footer-links" aria-label="站外链接">
-          <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-          <a href="mailto:1147214246@qq.com">邮箱</a>
-        </nav>
-      </div>
-    </div>
-  </footer>
-
-  <button class="back-to-top" aria-label="返回顶部">↑</button>
-  <script src="../js/main.js?v=20260809"></script>
+  <footer class="footer"><div class="shell"><div class="footer-top"><p>有意思的问题，<br>可以接着聊。</p><a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a></div><div class="footer-content"><div class="footer-brand"><p>© 2026 宋林蔚</p><p>做一点东西，留一点记录。</p></div><nav class="footer-nav" aria-label="站点导航"><a href="../index.html">首页</a><a href="../projects.html">作品</a><a href="../blog.html">笔记</a><a href="../about.html">关于</a></nav><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></footer>
+  <script src="../js/main.js?v=98324efef0"></script>
 </body>
 </html>

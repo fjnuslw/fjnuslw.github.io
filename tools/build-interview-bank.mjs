@@ -1,7 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SOURCE_PATH = process.argv[2] || String.raw`D:\AI_Workspace\work\llm_interview_prep\06_面试题精准解答.md`;
+const SOURCE_PATH = process.argv[2];
+if (!SOURCE_PATH) {
+  console.error('用法：node tools/build-interview-bank.mjs <题库源 Markdown 路径> [输出 JSON 路径]。已有 JSON 可直接使用。');
+  process.exit(1);
+}
 const OUT_PATH = process.argv[3] || path.join('ai-prep', 'data', 'interview-question-bank.json');
 
 const CATEGORY_IDS = ['rag', 'agent', 'prompt', 'frameworks', 'finetune', 'engineering', 'scenarios'];

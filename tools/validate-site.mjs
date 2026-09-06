@@ -1,10 +1,12 @@
 import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publicPages } from './site-manifest.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = process.argv.includes('--dist') ? path.join(sourceRoot, 'dist') : sourceRoot;
 const origin = 'https://fjnuslw.github.io/';
-const excludedDirectories = new Set(['.git', '.workbuddy', 'node_modules', 'resume-redesign', 'tmp']);
+const excludedDirectories = new Set(['.private', 'ai-prep', '.git', '.workbuddy', '.openai', '.reports', 'dist', 'docs', 'specs', 'node_modules', 'resume-redesign', 'tmp']);
 const errors = [];
 let checkedLinks = 0;
 
@@ -51,6 +53,14 @@ async function validateHtml(file) {
   if (!/<html\b[^>]*\blang=["']zh-CN["']/i.test(html)) errors.push(`${relative(file)}: 缺少 lang="zh-CN"`);
   if (!/<meta\b[^>]*\bname=["']viewport["']/i.test(html)) errors.push(`${relative(file)}: 缺少 viewport`);
   if (!/<title>[^<]+<\/title>/i.test(html)) errors.push(`${relative(file)}: 缺少标题`);
+  if (publicPages.includes(filePath)) {
+    if (/(?:href|src)=["'][^"']*(?:resume\.html|resume-redesign\/|ai-prep\/)/i.test(html) || /连续实习|正在寻找[^<。]*实习|开放[^<。]*实习机会/.test(html)) errors.push(`${filePath}: 公开页面仍含已撤下的招聘入口或意向`);
+    if ((html.match(/<h1\b/gi) || []).length !== 1) errors.push(`${filePath}: 正式页面必须恰有一个 H1`);
+    if (!/<main\b/i.test(html)) errors.push(`${filePath}: 缺少 main`);
+    if (filePath !== 'demos/local-window-copilot/index.html' && !/class=["'][^"']*skip-link/.test(html)) errors.push(`${filePath}: 缺少跳转到正文的链接`);
+    const levels = [...html.matchAll(/<h([1-6])\b/gi)].map(match => Number(match[1]));
+    for (let i = 1; i < levels.length; i++) if (levels[i] > levels[i - 1] + 1) errors.push(`${filePath}: 标题从 H${levels[i-1]} 跳到 H${levels[i]}`);
+  }
 
   const requiresCanonical = filePath !== 'blog/template.html' && (
     /^[^/]+\.html$/.test(filePath)
@@ -84,6 +94,10 @@ async function validateHtml(file) {
   for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
     if (!/\balt=["'][^"']*["']/i.test(tag)) errors.push(`${filePath}: img 缺少 alt`);
   }
+  for (const svg of html.matchAll(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/gi)) {
+    if (/aria-hidden=["']true/.test(svg[1])) continue;
+    if (!/<title\b[^>]*>[^<]+<\/title>/.test(svg[2]) || !/<desc\b[^>]*>[^<]+<\/desc>/.test(svg[2])) errors.push(`${filePath}: 内容 SVG 缺少 title/desc`);
+  }
 
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/gi)].map(match => match[1]);
   const duplicates = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
@@ -91,6 +105,19 @@ async function validateHtml(file) {
 
   const urls = [...html.matchAll(/\b(?:href|src)=["']([^"']+)["']/gi)].map(match => match[1]);
   for (const url of urls) {
+    if (publicPages.includes(filePath) && url.includes('#') && !/^(?:https?:|mailto:|javascript:|data:|\/\/)/i.test(url)) {
+      const [urlPath, rawHash] = url.split('#');
+      if (rawHash) {
+        const anchorFile = urlPath ? localTarget(file, urlPath) : file;
+        let candidate = anchorFile;
+        if (candidate && path.extname(candidate) === '') candidate = path.join(candidate, 'index.html');
+        try {
+          const targetHtml = await readFile(candidate, 'utf8');
+          const hash = decodeURIComponent(rawHash);
+          if (![...targetHtml.matchAll(/\bid=["']([^"']+)["']/g)].some(match => match[1] === hash)) errors.push(`${filePath}: 锚点不存在：${url}`);
+        } catch { errors.push(`${filePath}: 锚点目标不可读：${url}`); }
+      }
+    }
     const target = localTarget(file, url);
     if (!target) continue;
     checkedLinks += 1;
@@ -107,6 +134,9 @@ async function validateHtml(file) {
 const files = await walk(root);
 const htmlFiles = files.filter(file => file.endsWith('.html'));
 await Promise.all(htmlFiles.map(validateHtml));
+for (const route of publicPages) {
+  if (!htmlFiles.some(file => relative(file) === route)) errors.push(`正式路由缺失：${route}`);
+}
 
 let posts = [];
 try {
@@ -136,6 +166,10 @@ try {
   const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1].trim());
   const duplicateSitemapUrls = [...new Set(sitemapUrls.filter((url, index) => sitemapUrls.indexOf(url) !== index))];
   if (duplicateSitemapUrls.length) errors.push(`sitemap.xml: 重复 URL：${duplicateSitemapUrls.join(', ')}`);
+  for (const route of publicPages) {
+    const publicPath = route === 'index.html' ? '' : route.replace(/index\.html$/, '');
+    if (!sitemapUrls.includes(new URL(publicPath, origin).href)) errors.push(`sitemap.xml: 缺少正式页面：${route}`);
+  }
 
   for (const post of posts) {
     const expected = new URL(post.url, origin).href;
@@ -195,4 +229,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`站点校验通过：${htmlFiles.length} 个 HTML 文件，${checkedLinks} 个本地资源链接。`);
+console.log(`站点校验通过：${htmlFiles.length} 个 HTML 文件，${checkedLinks} 个本地资源链接，${publicPages.length} 个正式路由；已核对 H1、标题层级和站内锚点。`);

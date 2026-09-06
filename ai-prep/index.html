@@ -30,7 +30,7 @@
       font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary, #646a73);
     }
     .prep-intro b { color: var(--text, #1f2329); }
-    .prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1.5rem; }
     .prep-card {
       display: flex; flex-direction: column;
       background: var(--card-bg, #fff); border: 1px solid var(--border, #dee0e3);
@@ -52,12 +52,12 @@
     .prep-card .arrow { margin-top: 1rem; color: #3370ff; font-size: 0.85rem; font-weight: 600; }
   </style>
 </head>
-<body>
+<body><aside class="archive-notice" style="position:relative;z-index:102;margin:76px 16px 16px;padding:16px;background:#fff7dc;border:1px solid #c4a74d;color:#493900;font:14px/1.7 system-ui">历史学习资料 · 归档于 2026-09-06。岗位信息保留 2026-07-04 快照，回答为准备示例；请核对当日官网信息。本区不随正式站点发布。<a href="../index.html" style="color:#244ce8;margin-left:8px">返回个人网站 →</a></aside>
 
   <nav class="navbar">
     <div class="nav-container">
       <a href="../index.html" class="nav-logo">宋林蔚</a>
-      <ul class="nav-menu">
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button><ul class="nav-menu">
         <li><a href="../index.html"    class="nav-link">首页</a></li>
         <li><a href="../blog.html"     class="nav-link">博客</a></li>
         <li><a href="../projects.html" class="nav-link">项目</a></li>
@@ -79,7 +79,7 @@
       <b>资料说明：</b>这是求职准备工作区，包含历史岗位快照与模板化回答示例，不作为公开履历事实；岗位状态请以公司官网为准。<br><br>
       针对<b>双非本硕 + 论文 + 国赛</b>背景整理的三份求职资料：
       一份是覆盖 14 家大厂 / AI 独角兽的<b>纯 AI 应用岗</b>调研（含 JD、技术栈、网申链接、按难度排序）；
-      一份是从知乎、小红书、牛客、CSDN、抖音搜集的 <b>46 道真实面试题</b>详解（含一面 / 二面 / 终面 / 算法题，每题附解决思路与具体答案）；
+      一份是从知乎、小红书、牛客、CSDN、抖音搜集的 <b>46 道面试准备题</b>详解（含一面 / 二面 / 终面 / 算法题，每题附解决思路与具体答案）；
       另一份是 <b>128 道大模型应用开发岗题库测试版面</b>，支持总览检索、随机抽题、自评与本地进度记录。
       <br><br>
       核心结论：大厂<b>日常实习全年滚动招聘，9 月后完全可以投递</b>；AI 应用 / 工程岗普遍比算法研究岗对学历更宽容，论文 + 国赛可有效弥补学历短板。
@@ -104,7 +104,7 @@
         <div class="icon icon-purple">📝</div>
         <h3>大模型应用岗面经</h3>
         <p>
-          从知乎 / 小红书 / 牛客 / CSDN / 抖音搜集的 <b>46 道真实面试题</b>，覆盖字节、阿里、腾讯、美团、快手、小红书、百度等 15+ 公司。
+          从知乎 / 小红书 / 牛客 / CSDN / 抖音搜集的 <b>46 道面试准备题</b>，覆盖字节、阿里、腾讯、美团、快手、小红书、百度等 15+ 公司。
           分为一面（基础八股 + 项目 + 算法题）、二面（Agent 深度 + 系统设计）、终面（综合 + HR 面），每题含具体问题、解决思路、具体答案、加分点与避坑提示。
           附大模型特色手撕题（Multi-Head Attention / KV Cache / SFT Loss）。
         </p>

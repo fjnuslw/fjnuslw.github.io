@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href="https://fjnuslw.github.io/demos/local-window-copilot/" />
     <title>Local Window Copilot Demo</title>
-    <link rel="stylesheet" href="./src/styles.css" />
+    <meta name="description" content="Local Window Copilot 悬浮助手外观与状态交互模拟，可拖动并切换状态；不读取真实桌面或运行模型。" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./src/styles.css?v=8de8ce10a7" />
   </head>
   <body>
+    <header class="demo-header"><a href="../../projects/local-window-copilot.html">← 返回项目</a><h1>一个可以摸索的小助手。</h1><p>拖动它，或点击下面的按钮切换表情。<br>这是交互模拟，不读取真实桌面，也不运行模型。</p><p class="demo-keyboard">键盘：聚焦助手后可用方向键移动，Enter 切换状态。</p></header>
     <main class="desktop-stage" aria-label="Floating assistant prototype">
-      <h1 class="sr-only">Local Window Copilot 悬浮助手交互演示</h1>
       <section class="floating-agent" id="floatingAgent" data-state="idle">
         <div class="agent-drag-surface" id="dragSurface" aria-label="拖动悬浮助手">
           <div class="agent-aura" aria-hidden="true"></div>
@@ -87,7 +89,7 @@
       </section>
     </main>
 
-    <script src="./src/main.js"></script>
+    <script src="./src/main.js?v=360adc70d2"></script>
   </body>
 </html>
 

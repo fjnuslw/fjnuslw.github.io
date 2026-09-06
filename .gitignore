@@ -12,3 +12,18 @@ desktop.ini
 # 临时文件
 *.tmp
 *.log
+
+# Generated/local workspaces (tracked historical files remain under version control)
+/dist/
+/node_modules/
+/.workbuddy/
+/tmp/
+/resume-redesign/tmp/
+/resume-redesign/output/
+/.reports/
+/.private/
+/ai-prep/
+/resume-redesign/
+/docs/archive/
+/search/
+/.openai/

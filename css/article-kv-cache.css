@@ -1,11 +1,11 @@
 .kv-article {
-  --kv-ink: #151b16;
-  --kv-muted: #687068;
-  --kv-line: #cbc9bf;
-  --kv-paper: #f5f1e8;
-  --kv-panel: #ebe8de;
-  --kv-dark: #0c120d;
-  --kv-signal: #a8ef2f;
+  --kv-ink: #15171c;
+  --kv-muted: #535b6b;
+  --kv-line: #d5dbe5;
+  --kv-paper: #ffffff;
+  --kv-panel: #f2f4f8;
+  --kv-dark: #15171c;
+  --kv-signal: #b9ccff;
 }
 
 .kv-article .post-header {
@@ -302,7 +302,7 @@
 
 .kv-calculator h3 {
   margin: 0 0 1.2rem;
-  color: #f5f1e8;
+  color: #ffffff;
   font-size: 1.05rem;
 }
 
@@ -324,7 +324,7 @@
   width: 100%;
   min-height: 42px;
   padding: .6rem .72rem;
-  color: #f5f1e8;
+  color: #ffffff;
   background: #1b241c;
   border: 1px solid #4c584e;
   border-radius: 8px;
