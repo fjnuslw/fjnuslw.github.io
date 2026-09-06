@@ -1,6 +1,6 @@
 # 验收记录
 
-状态：本地验收通过，发布进行中。日期：2026-09-06（Asia/Shanghai）。
+状态：本地验收与正式发布均通过。日期：2026-09-06（Asia/Shanghai）。
 
 ## 起点
 
@@ -66,4 +66,9 @@
 - `git fetch origin main` 后 `git rev-list --left-right --count HEAD...origin/main` 为 **0 0**，不存在待整合的远端更新。
 - 发现 Pages `build_type=legacy` 与显式 dist 工作流同时存在。按 DG09 切换为 **workflow**，GitHub API 返回 **204**，随后 GET 确認 **workflow**。`source.branch=main` 为配置残留字段，不代表再次用根目录发布。
 - 正式发布遵循用户明确指定的 GitHub Pages 目标；保留已有 `.openai/hosting.json`，本轮没有额外创建另一份托管站点。
-- 提交、推送与 Actions 结果待部署完成补记。
+- 发布提交：[`32432259de910dfe8b811d66693b1b8489943c82`](https://github.com/fjnuslw/fjnuslw.github.io/commit/32432259de910dfe8b811d66693b1b8489943c82)，作者与提交者均为 fjnuslw；`git push origin main` 成功，未强制推送。
+- [Deploy site / 34023772372](https://github.com/fjnuslw/fjnuslw.github.io/actions/runs/34023772372)：**completed / success**。源码校验、白名单构建、dist 校验、artifact 上传和 Pages 发布步骤全部成功。
+- 2026-09-06 17:09 CST：读取 [正式站点](https://fjnuslw.github.io/) 的 13 个 HTML 路由、两份共享 CSS、共享 JS、字体及字体许可，共 **18 个公开文件 HTTP 200**。文本统一 CRLF/LF 后与本地 dist 相同；WOFF2 二进制哈希完全相同，响应 MIME 为 `font/woff2`。
+- `specs/README.md`、`AGENTS.md`、`tools/site-manifest.mjs`、`tmp/video-redesign/verify-live.py` 共 **4 个非发布路径均 HTTP 404**。22 项线上文件检查全部通过，记录在本地 `tmp/video-redesign/live-verification.json`。
+- 2026-09-06 17:12 CST：隔离 Edge 打开正式首页，HTTP 200，1440px 页面无横向溢出、无脚本错误；`Garden Serif` 实际加载，纸白/墨紫计算颜色正确，点击下一件作品成功切换为“星途知汇”。截图 `tmp/video-redesign/qa/live-home.png`，结果 `tmp/video-redesign/live-browser.json`。
+- 上述发布证据对应实现提交；后续提交只补齐本次 spec 的完成状态与验收记录。
