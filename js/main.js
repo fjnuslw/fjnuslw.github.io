@@ -4,7 +4,7 @@ document.documentElement.classList.add('js');
 const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 function prefersReducedMotion() { return reduceMotionQuery.matches; }
 document.addEventListener('DOMContentLoaded', () => {
-  initNavbar(); initMotionControl(); initFolio(); initExhibition(); initDynamicLab();
+  initNavbar(); initMotionControl(); initGardenCanvas(); initFolio(); initExhibition(); initDynamicLab();
   initLocalClock(); initSiteGuide(); initBlogFilter(); initActiveNavLink();
 });
 function initNavbar() {
@@ -164,6 +164,103 @@ function initMotionControl() {
   reduceMotionQuery.addEventListener('change', sync);
   document.addEventListener('visibilitychange', () => document.body.classList.toggle('page-inactive', document.hidden));
   document.body.append(button); sync();
+}
+
+/* 流光粒子场 / specs/2026-09-06-flowing-ink
+   装饰层：fixed 画布、不拦截事件；密度按视口限流；
+   停止条件与全局暂停、减少动态、页签隐藏一致，暂停时保留最后一帧。 */
+function initGardenCanvas() {
+  if (document.getElementById('garden-canvas')) return;
+  const canvas = document.createElement('canvas');
+  canvas.id = 'garden-canvas'; canvas.className = 'garden-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { canvas.remove(); return; }
+  const palette = ['#a04e67', '#315951', '#a8603a', '#6d4a80'];
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const pointer = { x: -1e4, y: -1e4, active: false };
+  let particles = [], width = 0, height = 0, raf = 0, running = false, staticDrawn = false;
+
+  function build() {
+    width = window.innerWidth; height = window.innerHeight;
+    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const narrow = width < 700;
+    const count = Math.min(narrow ? 40 : 90, Math.round(width * height / (narrow ? 24000 : 16000)));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * width, y: Math.random() * height,
+      vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3,
+      r: 1.2 + Math.random() * 2.2,
+      base: .10 + Math.random() * .22,
+      phase: Math.random() * Math.PI * 2,
+      color: palette[Math.floor(Math.random() * palette.length)]
+    }));
+    staticDrawn = false;
+  }
+  function drawParticle(p, alpha) {
+    ctx.globalAlpha = alpha; ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+  }
+  function render(now) {
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineWidth = 1;
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+        if (d2 < 12100) {
+          ctx.globalAlpha = .14 * (1 - Math.sqrt(d2) / 110);
+          ctx.strokeStyle = '#7a6a76';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      if (pointer.active) {
+        const dx = a.x - pointer.x, dy = a.y - pointer.y, d = Math.hypot(dx, dy);
+        if (d < 140) {
+          ctx.globalAlpha = .18 * (1 - d / 140);
+          ctx.strokeStyle = '#a04e67';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(pointer.x, pointer.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of particles) {
+      if (running) {
+        p.x += p.vx; p.y += p.vy; p.phase += .012;
+        if (p.x < -24) p.x = width + 24; else if (p.x > width + 24) p.x = -24;
+        if (p.y < -24) p.y = height + 24; else if (p.y > height + 24) p.y = -24;
+        if (pointer.active) {
+          const dx = p.x - pointer.x, dy = p.y - pointer.y, d = Math.hypot(dx, dy);
+          if (d < 140 && d > .5) { const f = (1 - d / 140) * 1.15; p.x += dx / d * f; p.y += dy / d * f; }
+        }
+      }
+      drawParticle(p, Math.max(.04, p.base + Math.sin(p.phase) * .06));
+    }
+    ctx.globalAlpha = 1;
+    if (running) raf = requestAnimationFrame(render);
+  }
+  function sync() {
+    if (canAnimate()) {
+      if (!running) { running = true; raf = requestAnimationFrame(render); }
+    } else if (running) {
+      running = false; cancelAnimationFrame(raf); // 保留最后一帧
+    } else if (!staticDrawn) {
+      staticDrawn = true; render(0); // 减少动态：只画一帧静态星点
+    }
+  }
+  window.addEventListener('pointermove', event => { pointer.x = event.clientX; pointer.y = event.clientY; pointer.active = true; }, { passive: true });
+  window.addEventListener('pointerleave', () => { pointer.active = false; pointer.x = pointer.y = -1e4; }, { passive: true });
+  window.addEventListener('blur', () => { pointer.active = false; pointer.x = pointer.y = -1e4; }, { passive: true });
+  document.addEventListener('site-motion-change', sync);
+  document.addEventListener('visibilitychange', sync);
+  reduceMotionQuery.addEventListener('change', sync);
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { build(); if (!running) { staticDrawn = true; render(0); } }, 180);
+  }, { passive: true });
+  build(); sync();
 }
 
 // Horizontal gestures never cancel vertical scrolling. A completed swipe suppresses only its trailing click.

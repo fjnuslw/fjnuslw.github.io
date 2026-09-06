@@ -1,6 +1,17 @@
-/* 数字花园 · 共享版式 / specs/2026-09-06-digital-garden
+/* 数字花园 · 共享版式 / specs/2026-09-06-digital-garden + 2026-09-06-flowing-ink
    静态内容为基础，空间与动态仅作增强。 */
-body { background-image: linear-gradient(90deg, transparent calc(50% - 621px), #dbd1c866 calc(50% - 620px), transparent calc(50% - 619px), transparent calc(50% + 619px), #dbd1c866 calc(50% + 620px), transparent calc(50% + 621px)); }
+/* FI03 纸面纹理：噪点 + 玫瑰/松绿/暖赭放射色洗 + 版心细线，全部本地绘制。 */
+body {
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+    radial-gradient(1150px 720px at 6% -8%, #d9c3d838, transparent 62%),
+    radial-gradient(950px 640px at 97% 10%, #cfe0d536, transparent 58%),
+    radial-gradient(1250px 820px at 52% 112%, #ecd9bf33, transparent 62%),
+    linear-gradient(90deg, transparent calc(50% - 621px), #dbd1c84d calc(50% - 620px), transparent calc(50% - 619px), transparent calc(50% + 619px), #dbd1c84d calc(50% + 620px), transparent calc(50% + 621px));
+}
+/* FI04 粒子画布：由 JS 注入，无 JS 时不存在；不拦截事件、不承载信息。 */
+.garden-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .brand-seal { display:grid;place-items:center;width:38px;height:40px;border-radius:10px;background:var(--vermilion);color:#fff8f2;font:500 24px/1 var(--font-display);box-shadow:inset 0 0 0 4px #ffffff20;flex:none; }
 .eyebrow,.ledger-kicker,.ledger-overline,.case-kicker,.rts-kicker { font: .75rem/1.8 var(--font-mono);letter-spacing:.13em;color:var(--vermilion); }
 .eyebrow { display:flex;align-items:center;gap:12px; }
@@ -24,14 +35,41 @@ body { background-image: linear-gradient(90deg, transparent calc(50% - 621px), #
 .garden-hero { position:relative;display:grid;grid-template-columns:1.05fr .95fr;column-gap:50px;align-items:center;padding-top:74px;border:1px solid var(--line);border-top:0;min-height:670px;isolation:isolate; }
 .garden-hero.shell { width:min(1204px,calc(100% - 64px));padding-inline:44px; }
 .garden-lines { position:absolute;inset:0;overflow:hidden;z-index:-1;pointer-events:none; }
-.garden-lines::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 84% 29%,#d9c3d82e,transparent 55%),linear-gradient(90deg,#d4c7c91c 1px,transparent 1px);background-size:auto,144px 100%; }
-.garden-lines span { width:900px;height:390px;position:absolute;border:1px solid #b9aaac30;border-radius:50%;transform:rotate(-34deg);left:280px;top:30px; }
-.garden-lines span:nth-child(2) { left:340px;top:60px;width:1050px;height:540px; }
-.garden-lines span:nth-child(3) { top:-240px;left:650px;width:260px;height:1040px;transform:rotate(28deg); }
+.garden-lines::before { content:'';position:absolute;inset:-8%;background: radial-gradient(640px 430px at 79% 16%, #d9c3d84f, transparent 62%),radial-gradient(560px 480px at 10% 80%, #cfe0d545, transparent 60%),radial-gradient(700px 400px at 56% 110%, #ecd9bf4d, transparent 66%),repeating-linear-gradient(97deg, transparent 0 54px, #b9aaac12 54px 55px); }
+.garden-lines span { width:900px;height:390px;position:absolute;border:1px solid #c3aeb16e;border-radius:50%;transform:rotate(-34deg);left:280px;top:30px;box-shadow:0 0 70px #d9c3d82e inset; }
+.garden-lines span:nth-child(2) { left:340px;top:60px;width:1050px;height:540px;border-color:#a9c2b46a;box-shadow:0 0 80px #cfe0d52e inset; }
+.garden-lines span:nth-child(3) { top:-240px;left:650px;width:260px;height:1040px;transform:rotate(28deg);border-color:#d9b99a73;box-shadow:0 0 90px #ecd9bf33 inset; }
 .garden-intro { padding-block:10px 55px;position:relative;z-index:2; }
 .author-line { font-size:.75rem;color:var(--muted);margin-top:25px;letter-spacing:.12em; }
 .garden-intro h1 { font-size:clamp(50px,5.1vw,74px);font-weight:700;line-height:1.15;letter-spacing:-.045em;margin:13px 0 20px; }
 .garden-intro h1 em { display:block;font-style:normal;font-size:.72em;font-weight:600;letter-spacing:-.035em;line-height:1.5;color:#68516b; }
+
+/* FI02 标题墨彩：展示级标题（≥24px）渐变；正文与小型标签保持纯色。
+   端点对比：纸面暖赭 4.39 / 玫瑰 5.11 / 梅紫 6.94 / 墨 8.21+，深底亮纸 10.51 / 玫瑰亮 6.72。 */
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .garden-intro h1 { background-image:linear-gradient(108deg,#a8603a 4%,#a04e67 46%,#63497d 96%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent; }
+  .garden-intro h1 .issue-label { background:#fffaf5e6;-webkit-text-fill-color:var(--vermilion); }
+  .garden-intro h1 em { background-image:linear-gradient(100deg,#a04e67,#6d4a80);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent; }
+  .page-hero h1, body .post-header h1,
+  .section-head h2, .section-heading h2, .garden-about h2, .about-copy h2,
+  .writing-feature h2, .footer-cta h2, .note-feature h3, .project-info h3 {
+    background-image:linear-gradient(112deg,#2d2634 8%,#514653 92%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .page-hero h1 em, body .post-header h1 em { background-image:linear-gradient(100deg,#a04e67,#6d4a80);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent; }
+  .garden-lab-copy h2, .case-hero h1, .rts-page .rts-hero h1, .exhibition-top h2 {
+    background-image:linear-gradient(102deg,#f8f5ef 6%,#e8bbc3 55%,#f8f5ef 97%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+}
+@media (forced-colors: active) {
+  .garden-intro h1, .garden-intro h1 em, .page-hero h1, body .post-header h1,
+  .section-head h2, .section-heading h2, .garden-about h2, .about-copy h2, .writing-feature h2,
+  .footer-cta h2, .note-feature h3, .project-info h3, .page-hero h1 em, body .post-header h1 em,
+  .garden-lab-copy h2, .case-hero h1, .rts-page .rts-hero h1, .exhibition-top h2 {
+    background-image:none;-webkit-text-fill-color:CanvasText;
+  }
+}
 .issue-label { display:block;width:fit-content;padding:6px 17px;margin:15px 0 12px 40px;border:1px solid #cab6b888;border-radius:50px;font: .8125rem/1.5 var(--font-mono);letter-spacing:.3em;color:var(--vermilion);background:#fffaf566; }
 .intro-rule { width:80%;height:1px;background:linear-gradient(90deg,var(--vermilion),var(--line),transparent);margin-bottom:23px; }
 .garden-lede { line-height:1.95;font-size:1rem;color:var(--ink); }
@@ -448,11 +486,15 @@ body .post-header, body .status-article .post-header { background: var(--paper);
 
 /* 动态只作用于装饰和操作反馈，主要内容默认可见。 */
 @keyframes garden-float { 0%,100% { translate:0 0; } 50% { translate:0 -9px; } }
+@keyframes silk-drift { from { translate:0 0; } to { translate:16px -11px; } }
 @keyframes scan { from { top:18%; } to { top:84%; } }
 @keyframes enter { from { transform:translateY(9px); } to { transform:none; } }
 @media (prefers-reduced-motion:no-preference) {
   .js .folio-stack { animation:garden-float 7s ease-in-out infinite; }
   .folio-stack:hover,.folio-stack:focus-within { animation-play-state:paused; }
+  .js .garden-lines span { animation:silk-drift 17s ease-in-out infinite alternate; }
+  .js .garden-lines span:nth-child(2) { animation-duration:22s; animation-direction:alternate-reverse; }
+  .js .garden-lines span:nth-child(3) { animation-duration:27s; }
 }
 .motion-paused *,.motion-paused *::before,.motion-paused *::after,.page-inactive * { animation-play-state:paused!important; }
 .motion-paused .folio-cover { transform:rotateY(-11deg) rotateZ(3deg)!important; }
@@ -550,8 +592,10 @@ html:not(.js) .nav-toggle { display:none; }
 }
 @media print {
   body { padding:0;background:white;color:#111;font-size:11pt; }
-  .navbar,.footer,.guide-launcher,.garden-motion,.reading-progress,.garden-lines,.folio-controls,.cover-open,.garden-colophon,.lab-actions,.lab-projects,.motion-toggle,.gallery-controls,.gallery-modes { display:none!important; }
+  .navbar,.footer,.guide-launcher,.garden-motion,.reading-progress,.garden-lines,.garden-canvas,.folio-controls,.cover-open,.garden-colophon,.lab-actions,.lab-projects,.motion-toggle,.gallery-controls,.gallery-modes { display:none!important; }
   *,*::before,*::after { animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important; }
+  .garden-intro h1,.garden-intro h1 em,.page-hero h1,body .post-header h1,.section-head h2,.section-heading h2,.garden-about h2,.about-copy h2,.writing-feature h2,.footer-cta h2,.note-feature h3,.project-info h3,.page-hero h1 em,body .post-header h1 em,.garden-lab-copy h2,.case-hero h1,.rts-page .rts-hero h1,.exhibition-top h2 { background-image:none!important;-webkit-text-fill-color:inherit!important; }
+  body { background:white!important;background-image:none!important; }
   .garden-hero,.garden-lab-grid,.notes-composition,.project-row,.writing-list,.about-grid,.case-hero-grid { display:block; }
   .folio { max-width:220px;margin:20px auto; }.folio-cover,.work-frame,.identity-card { transform:none!important; }.folio-back { display:none; }
   .dark-section,.garden-lab-section,.exhibition,.case-hero,.rts-page .rts-hero,.metric-panel,body .post-header { background:white!important;color:#111!important; }
