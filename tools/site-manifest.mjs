@@ -11,7 +11,7 @@ export const publicFiles = [
   ...publicPages, 'blog/posts.json', 'favicon.svg', 'robots.txt', 'sitemap.xml',
   'css/style.css', 'css/portfolio.css', 'css/article-agent-status.css',
   'css/article-kv-cache.css', 'css/project-research-to-spec.css', 'js/main.js',
-  'assets/song-linwei.jpg', 'assets/og-evidence-ledger.png',
+  'assets/og-evidence-ledger.png',
   'assets/xingtu-knowledge-platform-hero.webp',
   'awards/lanqiao-17-national-agent-dev.pdf', 'awards/lanqiao-17-fujian-agent-dev.pdf'
 ];

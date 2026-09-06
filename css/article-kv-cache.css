@@ -14,12 +14,12 @@
   margin-bottom: 0;
   padding-bottom: clamp(2.5rem, 6vw, 5rem);
   background:
-    radial-gradient(circle at 82% 18%, rgba(168, 239, 47, .16), transparent 24rem),
-    linear-gradient(rgba(110, 122, 111, .09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(110, 122, 111, .09) 1px, transparent 1px),
-    var(--kv-dark);
+    radial-gradient(circle at 82% 18%, rgba(46, 93, 75, .10), transparent 24rem),
+    linear-gradient(rgba(29, 26, 21, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 26, 21, .05) 1px, transparent 1px),
+    var(--paper);
   background-size: auto, 44px 44px, 44px 44px, auto;
-  border-color: rgba(245, 241, 232, .16);
+  border-color: var(--ink);
 }
 
 .kv-article .post-header .container {
@@ -32,21 +32,20 @@
 }
 
 .kv-article .post-header .tag {
-  color: rgba(245, 241, 232, .72);
-  background: rgba(245, 241, 232, .08);
-  border-color: rgba(245, 241, 232, .2);
+  color: var(--ink-2);
+  background: var(--paper);
+  border-color: var(--line-strong);
 }
 
 .kv-article .post-header h1 {
-  max-width: 16ch;
-  color: var(--kv-paper);
+  color: var(--ink);
   font-size: clamp(2.7rem, 7.4vw, 6.4rem);
   line-height: .98;
   letter-spacing: -.065em;
 }
 
 .kv-article .post-header h1 em {
-  color: var(--kv-signal);
+  color: var(--vermilion);
   font-family: Georgia, "Noto Serif SC", serif;
   font-weight: 500;
 }
@@ -54,13 +53,12 @@
 .kv-article .post-deck {
   max-width: 660px;
   margin: 1.6rem 0 1.8rem;
-  color: rgba(245, 241, 232, .7);
-  font-size: clamp(1rem, 1.8vw, 1.22rem);
+  color: var(--ink-2);
   line-height: 1.8;
 }
 
 .kv-article .post-meta {
-  color: rgba(245, 241, 232, .52);
+  color: var(--muted);
   flex-wrap: wrap;
 }
 

@@ -1,9 +1,224 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="宋林蔚的个人作品与工程笔记：探索 Agent、检索与桌面工具，记录具体问题和实现过程。"><meta name="theme-color" content="#1748ed"><link rel="canonical" href="https://fjnuslw.github.io/"><meta property="og:type" content="website"><meta property="og:title" content="宋林蔚 · 作品与笔记"><meta property="og:description" content="宋林蔚的个人作品与工程笔记：探索 Agent、检索与桌面工具，记录具体问题和实现过程。"><meta property="og:url" content="https://fjnuslw.github.io/"><meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png"><meta name="twitter:card" content="summary_large_image"><title>宋林蔚 · 作品与笔记</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/style.css?v=ad0080615b"><link rel="stylesheet" href="css/portfolio.css?v=dc65dd365f"></head><body class="home-page"><a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-container"><a class="nav-logo" href="index.html" aria-label="宋林蔚，返回首页"><span class="brand-symbol" aria-hidden="true">s.</span><span>宋林蔚<small>LINWEI SONG</small></span></a><button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="index.html">首页</a></li><li><a class="nav-link" href="projects.html">作品</a></li><li><a class="nav-link" href="blog.html">笔记</a></li><li><a class="nav-link" href="about.html">关于</a></li></ul><a class="nav-github" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav><main id="main-content"><section class="home-hero blue-section"><canvas class="signal-field" aria-hidden="true"></canvas><div class="shell hero-grid"><div class="hero-copy"><p class="eyebrow">HELLO, I'M LINWEI SONG</p><h1>让想法<br>在屏幕上<br><span>跑起来。</span></h1><p class="hero-lede">我是宋林蔚，折腾 Agent、检索和桌面工具。<br>这里收录做过的项目，和没跳过的弯路。</p><a class="btn btn-white" href="#selected-work">往下看作品 <span aria-hidden="true">↓</span></a></div><div class="live-lab" data-project="0" aria-label="项目交互展台"><div class="lab-toolbar"><span><i aria-hidden="true"></i> INTERACTION LAB</span><button class="motion-toggle" type="button" aria-pressed="false" hidden>暂停动态</button></div><div class="lab-view"><div class="lab-title"><span id="lab-category">01 / DESKTOP CONTEXT</span><h2 id="lab-title">Local Window Copilot</h2></div><div class="lab-scene"><div class="lab-orbit" aria-hidden="true"></div><img id="lab-image" src="projects/local-window-copilot/img/mascot_idle.png" width="512" height="512" alt="Local Window Copilot 的白色助手形象"><div class="lab-node node-a"><span>01</span><strong>锁定窗口</strong></div><div class="lab-node node-b"><span>02</span><strong>读取线索</strong></div><div class="lab-node node-c"><span>03</span><strong>留下记录</strong></div><span class="scan-line" aria-hidden="true"></span></div><div class="lab-readout" role="status"><span id="lab-step">READY</span><p id="lab-caption">窗口滚走了，也能接着追问刚才的内容。</p></div><div class="lab-actions"><button class="run-demo btn btn-primary" type="button" hidden>运行一次 <span aria-hidden="true">▷</span></button><a id="lab-link" class="text-link" href="projects/local-window-copilot.html">查看项目 ↗</a></div></div><div class="lab-projects" aria-label="切换展示项目" hidden><button type="button" data-project="0" aria-pressed="true">01 <span>桌面助手</span></button><button type="button" data-project="1" aria-pressed="false">02 <span>企业知识</span></button><button type="button" data-project="2" aria-pressed="false">03 <span>作业流程</span></button></div><p class="lab-disclaimer">预设流程演示 · 不读取桌面，不连接模型</p></div></div><div class="hero-bottom shell"><span>CODE / CONTEXT / CURIOSITY</span><a href="#selected-work">向下探索 <span aria-hidden="true">↓</span></a></div></section>
-<section class="section shell" id="selected-work"><header class="section-heading"><div><p class="eyebrow">01 / SELECTED WORK</p><h2>写进代码里的想法。</h2></div><a class="text-link" href="projects.html">全部作品 ↗</a></header><div class="featured-grid">
-<a class="featured-project" href="projects.html#enterprise-agent"><div class="featured-media"><img src="assets/xingtu-knowledge-platform-hero.webp" width="960" height="504" alt="星途知汇项目视觉封面，非产品界面截图" loading="lazy"><span>01 / KNOWLEDGE</span></div><div class="featured-copy"><h3>星途知汇 <span aria-hidden="true">↗</span></h3><p>把同事分享的经验，变成团队可以找到的知识。</p><span class="project-tags">Feishu · Agent · Hybrid RAG</span></div></a>
-<a class="featured-project" href="projects/local-window-copilot.html"><div class="featured-media mascot-media"><img src="projects/local-window-copilot/img/mascot_observing.png" width="512" height="512" alt="Local Window Copilot 助手的观察状态" loading="lazy"><span>02 / DESKTOP</span></div><div class="featured-copy"><h3>Local Window Copilot <span aria-hidden="true">↗</span></h3><p>追踪同一个窗口，接住跨越画面的连续问题。</p><span class="project-tags">Python · Local VLM · SQLite</span></div></a></div>
-<a class="project-ribbon" href="projects.html#workflow-agent"><span>03 / WORKFLOW</span><h3>OpenSOP Agent</h3><p>从历史资料到作业指导书，把人工审核留在流程里。</p><span aria-hidden="true">↗</span></a></section>
-<section class="blue-section thought-section"><div class="shell thought-grid"><p class="eyebrow">02 / WORKING NOTES</p><div><h2>界面背后，<br>总有几个<span>值得拆开的问题。</span></h2><p>模型读过的内容怎样复用？窗口滚动后，证据去了哪里？任务中断，下一次从哪一步接着做？</p><a class="btn btn-outline-white" href="blog.html">读读这些笔记 ↗</a></div><div class="thought-mark" aria-hidden="true">&#123; &#125;</div></div></section>
-<section class="section shell" id="notes"><header class="section-heading"><div><p class="eyebrow">03 / RECENT WRITING</p><h2>边做，边记。</h2></div><a class="text-link" href="blog.html">6 篇笔记 ↗</a></header><div class="note-lines">
-<a href="blog/agent-status-spine.html"><time>2026.08.13</time><h3>Agent 状态栏：让长任务知道自己走到哪里</h3><span aria-hidden="true">↗</span></a><a href="blog/kv-cache-reuse.html"><time>2026.08.12</time><h3>KV Cache 如何复用已经读过的内容</h3><span aria-hidden="true">↗</span></a><a href="blog/desktop-agent-context-pitfalls.html"><time>2026.07.04</time><h3>为什么「看见屏幕」还不够</h3><span aria-hidden="true">↗</span></a></div></section></main><footer class="footer"><div class="shell"><div class="footer-top"><p>有意思的问题，<br>可以接着聊。</p><a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a></div><div class="footer-content"><div class="footer-brand"><p>© 2026 宋林蔚</p><p>做一点东西，留一点记录。</p></div><nav class="footer-nav" aria-label="站点导航"><a href="index.html">首页</a><a href="projects.html">作品</a><a href="blog.html">笔记</a><a href="about.html">关于</a></nav><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></footer><script src="js/main.js?v=98324efef0"></script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="宋林蔚的个人作品与工程笔记：探索 Agent、检索与桌面工具，记录具体问题和实现过程。">
+  <meta name="theme-color" content="#f6f2e9">
+  <link rel="canonical" href="https://fjnuslw.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="宋林蔚 · 作品与笔记">
+  <meta property="og:description" content="宋林蔚的个人作品与工程笔记：探索 Agent、检索与桌面工具，记录具体问题和实现过程。">
+  <meta property="og:url" content="https://fjnuslw.github.io/">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>宋林蔚 · 作品与笔记</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=b8ea3b75ef">
+  <link rel="stylesheet" href="css/portfolio.css?v=ffe038dbde">
+</head>
+<body class="home-page">
+<a class="skip-link" href="#main-content">跳到主要内容</a>
+<nav class="navbar" aria-label="主导航">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="宋林蔚，返回首页">
+      <span class="brand-seal" aria-hidden="true">宋</span>
+      <span class="brand-name">宋林蔚<small>LINWEI SONG · FIELD NOTES</small></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
+    <ul class="nav-menu" id="primary-navigation">
+      <li><a class="nav-link" href="index.html">首页</a></li>
+      <li><a class="nav-link" href="projects.html">作品</a></li>
+      <li><a class="nav-link" href="blog.html">笔记</a></li>
+      <li><a class="nav-link" href="about.html">关于</a></li>
+    </ul>
+    <a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+  </div>
+</nav>
+<main id="main-content">
+  <section class="home-hero">
+    <canvas class="terrain-field" aria-hidden="true"></canvas>
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="hero-status"><span><i class="dot" aria-hidden="true"></i>福州 · 26.07°N 119.28°E</span><span>AGENT / 检索 / 桌面工具</span></p>
+        <h1 aria-label="研究 Agent，把它们放进真实的桌面。">
+          <span data-decode>研究 Agent，</span><br>
+          <span data-decode>把它们放进</span><br>
+          <span data-decode class="hero-accent">真实的桌面。</span>
+        </h1>
+        <p class="hero-lede">我是宋林蔚。做企业知识检索、能跟着窗口看的桌面助手，也把踩过的坑写成笔记。这里是可以点开试的工作台。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#selected-work">看代表作 <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="blog.html">读工程笔记 <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="live-lab" data-project="0" aria-label="项目交互展台">
+        <div class="lab-toolbar">
+          <span><i aria-hidden="true"></i>BENCH · 交互演示</span>
+          <button class="motion-toggle" type="button" aria-pressed="false" hidden>暂停动态</button>
+        </div>
+        <div class="lab-view">
+          <div class="lab-title"><span id="lab-category">01 / DESKTOP CONTEXT</span><h2 id="lab-title">Local Window Copilot</h2></div>
+          <div class="lab-scene">
+            <div class="lab-orbit" aria-hidden="true"></div>
+            <img id="lab-image" src="projects/local-window-copilot/img/mascot_idle.png" width="512" height="512" alt="Local Window Copilot 的白色助手形象">
+            <div class="lab-node node-a"><span>01</span><strong>锁定窗口</strong></div>
+            <div class="lab-node node-b"><span>02</span><strong>读取线索</strong></div>
+            <div class="lab-node node-c"><span>03</span><strong>留下记录</strong></div>
+            <span class="scan-line" aria-hidden="true"></span>
+          </div>
+          <div class="lab-readout" role="status"><span id="lab-step">READY</span><p id="lab-caption">窗口滚走了，也能接着追问刚才的内容。</p></div>
+          <div class="lab-actions">
+            <button class="run-demo btn btn-primary" type="button" hidden>运行一次 <span aria-hidden="true">▷</span></button>
+            <a id="lab-link" class="text-link" href="projects/local-window-copilot.html">查看项目 <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="lab-projects" aria-label="切换展示项目" hidden>
+          <button type="button" data-project="0" aria-pressed="true">01 <span>桌面助手</span></button>
+          <button type="button" data-project="1" aria-pressed="false">02 <span>企业知识</span></button>
+          <button type="button" data-project="2" aria-pressed="false">03 <span>作业流程</span></button>
+        </div>
+        <p class="lab-disclaimer">预设流程演示 · 不读取桌面，不连接模型</p>
+      </div>
+    </div>
+    <div class="shell hero-meta">
+      <span>SPEC 驱动 · 纯静态 · 无追踪 · 2026.09 刻度</span>
+      <a href="#selected-work">向下探索 <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+  <div class="ticker" aria-label="关键词一览">
+    <div class="ticker-track">
+      <span>AGENT SYSTEMS</span><i aria-hidden="true">✕</i><span>混合检索 / RAG</span><i aria-hidden="true">✕</i><span>KV CACHE</span><i aria-hidden="true">✕</i><span>上下文工程</span><i aria-hidden="true">✕</i><span>桌面助手</span><i aria-hidden="true">✕</i><span>VLM 观测链路</span><i aria-hidden="true">✕</i><span>SOP 生成</span><i aria-hidden="true">✕</i><span>SPEC 驱动</span><i aria-hidden="true">✕</i><span>PYTHON</span><i aria-hidden="true">✕</i><span>SQLITE</span><i aria-hidden="true">✕</i>
+      <span aria-hidden="true">AGENT SYSTEMS</span><i aria-hidden="true">✕</i><span aria-hidden="true">混合检索 / RAG</span><i aria-hidden="true">✕</i><span aria-hidden="true">KV CACHE</span><i aria-hidden="true">✕</i><span aria-hidden="true">上下文工程</span><i aria-hidden="true">✕</i><span aria-hidden="true">桌面助手</span><i aria-hidden="true">✕</i><span aria-hidden="true">VLM 观测链路</span><i aria-hidden="true">✕</i><span aria-hidden="true">SOP 生成</span><i aria-hidden="true">✕</i><span aria-hidden="true">SPEC 驱动</span><i aria-hidden="true">✕</i><span aria-hidden="true">PYTHON</span><i aria-hidden="true">✕</i><span aria-hidden="true">SQLITE</span><i aria-hidden="true">✕</i>
+    </div>
+  </div>
+  <section class="section shell" id="selected-work">
+    <header class="section-head reveal">
+      <div>
+        <p class="eyebrow">01 / SELECTED WORK</p>
+        <h2>写进代码里的想法。</h2>
+      </div>
+      <a class="head-link" href="projects.html">全部作品 ↗</a>
+    </header>
+    <div class="index-list">
+      <a class="index-row reveal" href="projects.html#enterprise-agent" data-preview-img="assets/xingtu-knowledge-platform-hero.webp" data-preview-label="星途知汇 / KNOWLEDGE">
+        <span class="row-no">01</span>
+        <span class="row-body">
+          <h3>星途知汇</h3>
+          <p>把同事口中的经验，变成经过确认、审核和权限控制的团队知识。</p>
+          <span class="row-tags">LangGraph.js · Hybrid RAG · Feishu</span>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="index-row reveal" href="projects/local-window-copilot.html" data-preview-img="projects/local-window-copilot/img/mascot_observing.png" data-preview-label="桌面上下文 / DESKTOP" style="--reveal-delay:70ms">
+        <span class="row-no">02</span>
+        <span class="row-body">
+          <h3>Local Window Copilot</h3>
+          <p>追踪同一个物理窗口，接住跨越画面与时间的连续追问。</p>
+          <span class="row-tags">Python · MiniCPM-V · SQLite</span>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="index-row reveal" href="projects.html#workflow-agent" data-preview-img="projects/local-window-copilot/img/mascot_analyzing.png" data-preview-label="作业流程 / WORKFLOW" style="--reveal-delay:140ms">
+        <span class="row-no">03</span>
+        <span class="row-body">
+          <h3>OpenSOP Agent</h3>
+          <p>从历史资料到作业指导书，把人工审核留在流程里。</p>
+          <span class="row-tags">FastAPI · LangGraph · Pydantic</span>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="stat-strip reveal">
+      <div class="stat"><b><span data-count="3">3</span><i> 个</i></b><span>代表系统</span></div>
+      <div class="stat"><b><span data-count="3">3</span><i> 个</i></b><span>小工具</span></div>
+      <div class="stat"><b><span data-count="6">6</span><i> 篇</i></b><span>工程笔记</span></div>
+      <div class="stat"><b><span data-count="2">2</span><i> 个</i></b><span>公开演示</span></div>
+    </div>
+  </section>
+  <section class="dark-section interlude">
+    <div class="shell interlude-grid">
+      <div>
+        <p class="eyebrow">02 / WORKING NOTES</p>
+        <h2 class="reveal">界面之下，<em>问题</em>仍在。</h2>
+        <p class="reveal">模型读过的内容怎样复用？窗口滚走后，证据去了哪里？长任务中断，下一次从哪一步接着做？这些笔记把推导过程和成立条件一起留下。</p>
+        <a class="btn btn-outline-white reveal" href="blog.html">读这些笔记 <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside class="interlude-side reveal" aria-label="笔记主题">
+        <p class="mark" aria-hidden="true">{ }</p>
+        <p><b>缓存复用</b><br>KV Cache</p>
+        <p><b>证据保持</b><br>Evidence Graph</p>
+        <p><b>状态恢复</b><br>State Spine</p>
+      </aside>
+    </div>
+  </section>
+  <section class="section shell" id="notes">
+    <header class="section-head reveal">
+      <div>
+        <p class="eyebrow">03 / RECENT WRITING</p>
+        <h2>边做，边记。</h2>
+      </div>
+      <a class="head-link" href="blog.html">6 篇笔记 ↗</a>
+    </header>
+    <div class="index-list">
+      <a class="index-row reveal" href="blog/agent-status-spine.html">
+        <span class="row-no">2026.08.13</span>
+        <span class="row-body">
+          <h3>Agent 状态栏：让长任务知道自己走到哪里</h3>
+          <p>任务契约、事件记录、检查点与状态投影，以及怎样安全恢复。</p>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="index-row reveal" href="blog/kv-cache-reuse.html" style="--reveal-delay:70ms">
+        <span class="row-no">2026.08.12</span>
+        <span class="row-body">
+          <h3>KV Cache 如何复用已经读过的内容</h3>
+          <p>缓存了什么、为什么只存 K/V、显存怎样增长，以及对 Agent 架构的影响。</p>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="index-row reveal" href="blog/desktop-agent-context-pitfalls.html" style="--reveal-delay:140ms">
+        <span class="row-no">2026.07.04</span>
+        <span class="row-body">
+          <h3>为什么「看见屏幕」还不够</h3>
+          <p>桌面 AI 伙伴的上下文管理踩坑：摘要陷阱、可见度与边界。</p>
+        </span>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-cta">
+      <div>
+        <p class="eyebrow">CONTACT</p>
+        <h2>有意思的问题，<br>可以接着聊。</h2>
+      </div>
+      <a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-seal" aria-hidden="true">宋</span>
+        <div>
+          <p>宋林蔚 · 作品与工程笔记</p>
+          <p>做一点东西，留一点记录。</p>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="站点导航">
+        <a href="index.html">首页</a>
+        <a href="projects.html">作品</a>
+        <a href="blog.html">笔记</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <div class="footer-meta">
+        <time data-clock>福州 · UTC+8</time>
+        <span>纯静态 · 无追踪 · 无远程字体</span>
+        <span>© 2026 宋林蔚</span>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="js/main.js?v=e0ffc29f86"></script>
+</body>
+</html>

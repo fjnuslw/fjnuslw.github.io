@@ -1,18 +1,174 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="关于 Agent、模型推理、上下文与软件实践的工程笔记。"><meta name="theme-color" content="#1748ed"><link rel="canonical" href="https://fjnuslw.github.io/blog.html"><meta property="og:type" content="website"><meta property="og:title" content="笔记 · 宋林蔚"><meta property="og:description" content="关于 Agent、模型推理、上下文与软件实践的工程笔记。"><meta property="og:url" content="https://fjnuslw.github.io/blog.html"><meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png"><meta name="twitter:card" content="summary_large_image"><title>笔记 · 宋林蔚</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="css/style.css?v=ad0080615b"><link rel="stylesheet" href="css/portfolio.css?v=dc65dd365f"></head><body class="writing-page"><a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-container"><a class="nav-logo" href="index.html" aria-label="宋林蔚，返回首页"><span class="brand-symbol" aria-hidden="true">s.</span><span>宋林蔚<small>LINWEI SONG</small></span></a><button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button><ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="index.html">首页</a></li><li><a class="nav-link" href="projects.html">作品</a></li><li><a class="nav-link" href="blog.html">笔记</a></li><li><a class="nav-link" href="about.html">关于</a></li></ul><a class="nav-github" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav><header class="page-hero blue-section"><div class="shell"><p class="eyebrow">FIELD NOTES / 2026</p><h1>做过的事，<br>慢慢写清楚。</h1><p class="page-lede">从一次失败、一个疑问或一段实现开始。记录推导，也保留结论成立的条件。</p></div><span class="hero-rule" aria-hidden="true"></span></header><main id="main-content" class="section shell writing-page"><section aria-labelledby="writing-index-title"><header class="section-heading"><h2 id="writing-index-title">工程笔记</h2><p>6 篇公开笔记，持续积累。</p></header><div aria-label="按主题筛选" class="blog-filter">
-<button class="filter-btn active" data-tag="all" type="button">全部</button>
-<button class="filter-btn" data-tag="Agent" type="button">Agent</button>
-<button class="filter-btn" data-tag="VLM" type="button">VLM</button>
-<button class="filter-btn" data-tag="LLM" type="button">LLM</button>
-<button class="filter-btn" data-tag="状态管理" type="button">状态管理</button>
-<button class="filter-btn" data-tag="推理" type="button">推理</button>
-<button class="filter-btn" data-tag="架构" type="button">架构</button>
-<button class="filter-btn" data-tag="思考" type="button">思考</button>
-</div><div class="writing-list" id="blog-posts">
-<a class="card-blog writing-entry" data-tags="agent,状态管理,skill" href="blog/agent-status-spine.html"><div class="entry-meta"><time datetime="2026-08-13">2026.08.13</time><span class="entry-time">17 min</span></div><div><h3>Agent 状态栏：让长任务知道自己走到哪里</h3><p>从一次中断的研究任务出发，拆开任务契约、事件记录、检查点与状态投影，并用 Research-to-Spec 演示怎样安全恢复。</p><div class="entry-tags"><span>Agent</span><span>状态管理</span><span>Skill</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-<a class="card-blog writing-entry" data-tags="llm,推理,agent" href="blog/kv-cache-reuse.html"><div class="entry-meta"><time datetime="2026-08-12">2026.08.12</time><span class="entry-time">16 min</span></div><div><h3>KV Cache 如何让大模型复用已经读过的内容</h3><p>从一次逐 token 生成出发，讲清缓存了什么、为什么只存 K/V、显存怎样增长，以及稳定前缀怎样影响 Agent 架构。</p><div class="entry-tags"><span>LLM</span><span>推理</span><span>Agent</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-<a class="card-blog writing-entry" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html"><div class="entry-meta"><time datetime="2026-07-08">2026.07.08</time><span class="entry-time">18 min</span></div><div><h3>语义地形工程：把上下文设计成可控系统</h3><p>把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套上下文设计框架，并补 18 个可迁移工作例子。</p><div class="entry-tags"><span>LLM</span><span>Agent</span><span>思考</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-<a class="card-blog writing-entry" data-tags="agent,claude code,可视化" href="blog/claude-code-visuals.html"><div class="entry-meta"><time datetime="2026-07-06">2026.07.06</time><span class="entry-time">4 min</span></div><div><h3>推荐阅读：Claude Code 工作原理可视化合集</h3><p>把一个 Claude Code 内部机制可视化合集放进博客栏：请求结构、缓存、工具调用、权限、Skills、压缩等主题都有交互演示。本站以内嵌预览和出处链接形式展示，不重新托管原始文件。</p><div class="entry-tags"><span>Agent</span><span>Claude Code</span><span>可视化</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-<a class="card-blog writing-entry" data-tags="agent,vlm,架构" href="blog/small-vlm-function-calling-instability.html"><div class="entry-meta"><time datetime="2026-07-05">2026.07.05</time><span class="entry-time">15 min</span></div><div><h3>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构</h3><p>Local Window Copilot 早期迭代复盘：小 VLM function calling、probe content、对话惰性与 prefix cache。文首已补充 2026-08-24 的锁窗、分层观测与双账本当前主线。</p><div class="entry-tags"><span>Agent</span><span>VLM</span><span>架构</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-<a class="card-blog writing-entry" data-tags="agent,vlm,思考" href="blog/desktop-agent-context-pitfalls.html"><div class="entry-meta"><time datetime="2026-07-04">2026.07.04</time><span class="entry-time">12 min</span></div><div><h3>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑</h3><p>桌面 Agent 原型期失败复盘：摘要陷阱、VLM 可见度、对话断线与上下文边界。当前实现已转向物理窗口锁定、跨帧 Evidence Graph 与 SQLite WAL 双账本。</p><div class="entry-tags"><span>Agent</span><span>VLM</span><span>思考</span></div></div><span aria-hidden="true" class="entry-arrow">↗</span></a>
-</div></section></main><footer class="footer"><div class="shell"><div class="footer-top"><p>有意思的问题，<br>可以接着聊。</p><a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a></div><div class="footer-content"><div class="footer-brand"><p>© 2026 宋林蔚</p><p>做一点东西，留一点记录。</p></div><nav class="footer-nav" aria-label="站点导航"><a href="index.html">首页</a><a href="projects.html">作品</a><a href="blog.html">笔记</a><a href="about.html">关于</a></nav><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div></footer><script src="js/main.js?v=98324efef0"></script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="关于 Agent、模型推理、上下文与软件实践的工程笔记。">
+  <meta name="theme-color" content="#f6f2e9">
+  <link rel="canonical" href="https://fjnuslw.github.io/blog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="笔记 · 宋林蔚">
+  <meta property="og:description" content="关于 Agent、模型推理、上下文与软件实践的工程笔记。">
+  <meta property="og:url" content="https://fjnuslw.github.io/blog.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>笔记 · 宋林蔚</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=b8ea3b75ef">
+  <link rel="stylesheet" href="css/portfolio.css?v=ffe038dbde">
+</head>
+<body class="writing-page">
+<a class="skip-link" href="#main-content">跳到主要内容</a>
+<nav class="navbar" aria-label="主导航">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="宋林蔚，返回首页">
+      <span class="brand-seal" aria-hidden="true">宋</span>
+      <span class="brand-name">宋林蔚<small>LINWEI SONG · FIELD NOTES</small></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
+    <ul class="nav-menu" id="primary-navigation">
+      <li><a class="nav-link" href="index.html">首页</a></li>
+      <li><a class="nav-link" href="projects.html">作品</a></li>
+      <li><a class="nav-link" href="blog.html">笔记</a></li>
+      <li><a class="nav-link" href="about.html">关于</a></li>
+    </ul>
+    <a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+  </div>
+</nav>
+<header class="page-hero">
+  <div class="shell">
+    <p class="eyebrow">FIELD NOTES / 2026</p>
+    <h1>做过的事，<br>慢慢<em>写清楚。</em></h1>
+    <p class="page-lede">从一次失败、一个疑问或一段实现开始。记录推导，也保留结论成立的条件。</p>
+    <p class="page-hero-meta"><span>6 篇公开笔记，持续积累。</span><span>最近更新 2026.08.13</span></p>
+  </div>
+  <span class="page-hero-side" aria-hidden="true">WORKING NOTES</span>
+</header>
+<main id="main-content" class="section shell">
+  <section aria-labelledby="writing-index-title">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">INDEX / 索引</p>
+        <h2 id="writing-index-title">工程笔记。</h2>
+      </div>
+    </header>
+    <div aria-label="按主题筛选" class="blog-filter">
+      <button class="filter-btn active" data-tag="all" type="button">全部</button>
+      <button class="filter-btn" data-tag="Agent" type="button">Agent</button>
+      <button class="filter-btn" data-tag="VLM" type="button">VLM</button>
+      <button class="filter-btn" data-tag="LLM" type="button">LLM</button>
+      <button class="filter-btn" data-tag="状态管理" type="button">状态管理</button>
+      <button class="filter-btn" data-tag="推理" type="button">推理</button>
+      <button class="filter-btn" data-tag="架构" type="button">架构</button>
+      <button class="filter-btn" data-tag="思考" type="button">思考</button>
+    </div>
+    <div class="writing-list" id="blog-posts">
+      <a class="card-blog writing-entry" data-tags="agent,状态管理,skill" href="blog/agent-status-spine.html">
+        <div class="entry-meta">
+          <time datetime="2026-08-13">2026.08.13</time>
+          <span class="entry-time">17 min</span>
+        </div>
+        <div>
+          <h3>Agent 状态栏：让长任务知道自己走到哪里</h3>
+          <p>从一次中断的研究任务出发，拆开任务契约、事件记录、检查点与状态投影，并用 Research-to-Spec 演示怎样安全恢复。</p>
+          <div class="entry-tags"><span>Agent</span><span>状态管理</span><span>Skill</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+      <a class="card-blog writing-entry" data-tags="llm,推理,agent" href="blog/kv-cache-reuse.html">
+        <div class="entry-meta">
+          <time datetime="2026-08-12">2026.08.12</time>
+          <span class="entry-time">16 min</span>
+        </div>
+        <div>
+          <h3>KV Cache 如何让大模型复用已经读过的内容</h3>
+          <p>从一次逐 token 生成出发，讲清缓存了什么、为什么只存 K/V、显存怎样增长，以及稳定前缀怎样影响 Agent 架构。</p>
+          <div class="entry-tags"><span>LLM</span><span>推理</span><span>Agent</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+      <a class="card-blog writing-entry" data-tags="llm,agent,思考" href="blog/semantic-terrain-context-engineering.html">
+        <div class="entry-meta">
+          <time datetime="2026-07-08">2026.07.08</time>
+          <span class="entry-time">18 min</span>
+        </div>
+        <div>
+          <h3>语义地形工程：把上下文设计成可控系统</h3>
+          <p>把语义地形、采样分布、长上下文、CoT、解码策略和 Agent 实践串成一套上下文设计框架，并补 18 个可迁移工作例子。</p>
+          <div class="entry-tags"><span>LLM</span><span>Agent</span><span>思考</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+      <a class="card-blog writing-entry" data-tags="agent,claude code,可视化" href="blog/claude-code-visuals.html">
+        <div class="entry-meta">
+          <time datetime="2026-07-06">2026.07.06</time>
+          <span class="entry-time">4 min</span>
+        </div>
+        <div>
+          <h3>推荐阅读：Claude Code 工作原理可视化合集</h3>
+          <p>把一个 Claude Code 内部机制可视化合集放进博客栏：请求结构、缓存、工具调用、权限、Skills、压缩等主题都有交互演示。本站以内嵌预览和出处链接形式展示，不重新托管原始文件。</p>
+          <div class="entry-tags"><span>Agent</span><span>Claude Code</span><span>可视化</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+      <a class="card-blog writing-entry" data-tags="agent,vlm,架构" href="blog/small-vlm-function-calling-instability.html">
+        <div class="entry-meta">
+          <time datetime="2026-07-05">2026.07.05</time>
+          <span class="entry-time">15 min</span>
+        </div>
+        <div>
+          <h3>小 VLM 的 function calling 有多不稳定：一次 probe→stream 架构重构</h3>
+          <p>Local Window Copilot 早期迭代复盘：小 VLM function calling、probe content、对话惰性与 prefix cache。文首已补充 2026-08-24 的锁窗、分层观测与双账本当前主线。</p>
+          <div class="entry-tags"><span>Agent</span><span>VLM</span><span>架构</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+      <a class="card-blog writing-entry" data-tags="agent,vlm,思考" href="blog/desktop-agent-context-pitfalls.html">
+        <div class="entry-meta">
+          <time datetime="2026-07-04">2026.07.04</time>
+          <span class="entry-time">12 min</span>
+        </div>
+        <div>
+          <h3>为什么「看见屏幕」还不够：桌面 AI 伙伴的上下文管理踩坑</h3>
+          <p>桌面 Agent 原型期失败复盘：摘要陷阱、VLM 可见度、对话断线与上下文边界。当前实现已转向物理窗口锁定、跨帧 Evidence Graph 与 SQLite WAL 双账本。</p>
+          <div class="entry-tags"><span>Agent</span><span>VLM</span><span>思考</span></div>
+        </div>
+        <span aria-hidden="true" class="entry-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-cta">
+      <div>
+        <p class="eyebrow">CONTACT</p>
+        <h2>有意思的问题，<br>可以接着聊。</h2>
+      </div>
+      <a class="footer-mail" href="mailto:1147214246@qq.com">写封邮件 <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-seal" aria-hidden="true">宋</span>
+        <div>
+          <p>宋林蔚 · 作品与工程笔记</p>
+          <p>做一点东西，留一点记录。</p>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="站点导航">
+        <a href="index.html">首页</a>
+        <a href="projects.html">作品</a>
+        <a href="blog.html">笔记</a>
+        <a href="about.html">关于</a>
+      </nav>
+      <div class="footer-meta">
+        <time data-clock>福州 · UTC+8</time>
+        <span>纯静态 · 无追踪 · 无远程字体</span>
+        <span>© 2026 宋林蔚</span>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="js/main.js?v=e0ffc29f86"></script>
+</body>
+</html>

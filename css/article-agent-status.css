@@ -17,14 +17,14 @@
   overflow: hidden;
   margin-bottom: 0;
   padding-bottom: clamp(2.7rem, 7vw, 5.4rem);
-  color: var(--status-paper);
+  color: var(--ink);
   background:
-    radial-gradient(circle at 84% 22%, rgba(255, 118, 80, .2), transparent 25rem),
-    linear-gradient(rgba(244, 240, 231, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 240, 231, .07) 1px, transparent 1px),
-    var(--status-dark);
+    radial-gradient(circle at 84% 22%, rgba(168, 53, 23, .08), transparent 25rem),
+    linear-gradient(rgba(29, 26, 21, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 26, 21, .05) 1px, transparent 1px),
+    var(--paper);
   background-size: auto, 42px 42px, 42px 42px, auto;
-  border-color: rgba(244, 240, 231, .16);
+  border-color: var(--ink);
 }
 
 .status-article .post-header::after {
@@ -32,8 +32,7 @@
   position: absolute;
   right: clamp(1rem, 5vw, 4rem);
   bottom: 1.2rem;
-  color: rgba(244, 240, 231, .32);
-  font-family: var(--font-mono);
+  color: var(--muted);
   font-size: .64rem;
   letter-spacing: .16em;
 }
@@ -48,21 +47,20 @@
 }
 
 .status-article .post-header .tag {
-  color: rgba(244, 240, 231, .78);
-  background: rgba(244, 240, 231, .08);
-  border-color: rgba(244, 240, 231, .22);
+  color: var(--ink-2);
+  background: var(--paper);
+  border-color: var(--line-strong);
 }
 
 .status-article .post-header h1 {
-  max-width: 15ch;
-  color: var(--status-paper);
+  color: var(--ink);
   font-size: clamp(2.65rem, 7.2vw, 6.25rem);
   line-height: .98;
   letter-spacing: -.065em;
 }
 
 .status-article .post-header h1 em {
-  color: var(--status-signal);
+  color: var(--vermilion);
   font-family: Georgia, "Noto Serif SC", serif;
   font-weight: 500;
 }
@@ -70,13 +68,12 @@
 .status-article .post-deck {
   max-width: 690px;
   margin: 1.7rem 0 1.9rem;
-  color: rgba(244, 240, 231, .76);
-  font-size: clamp(1rem, 1.8vw, 1.22rem);
+  color: var(--ink-2);
   line-height: 1.8;
 }
 
 .status-article .post-meta {
-  color: rgba(244, 240, 231, .58);
+  color: var(--muted);
   flex-wrap: wrap;
 }
 
