@@ -287,8 +287,8 @@ function initFolio() {
   const folio = document.querySelector('.folio');
   if (!folio) return;
   const works = [...document.querySelectorAll('.work-piece')];
-  if (works.length !== 3) return;
-  const projects = [works[1],works[0],works[2]].map(work => ({
+  if (works.length < 2) return;
+  const projects = works.map(work => ({
     title:work.querySelector('.work-caption h3').textContent.trim(),
     href:work.querySelector('.work-frame').href,
     poster:work.querySelector('.poster'),
@@ -307,7 +307,7 @@ function initFolio() {
     cover.querySelector('.poster').replaceWith(poster);
     cover.href = item.href; cover.setAttribute('aria-label', `查看 ${item.title} 项目`);
     label.textContent = item.title;
-    folio.querySelector('.folio-count').textContent = `0${selected+1} / 03`;
+    folio.querySelector('.folio-count').textContent = `${String(selected+1).padStart(2,'0')} / ${String(projects.length).padStart(2,'0')}`;
     if (canAnimate()) poster.animate([{opacity:.45,transform:'translateX(12px)'},{opacity:1,transform:'none'}],{duration:400,easing:'ease-out'});
   }
   folio.querySelector('[data-folio-prev]').addEventListener('click', () => select(selected-1));
@@ -340,10 +340,9 @@ function initExhibition() {
   if (!gallery) return;
   const stage = gallery.querySelector('.exhibit-stage');
   const frames = [...stage.querySelectorAll('.exhibit-frame')];
-  const descriptions = ['经过确认和审核，让散落的经验成为团队知识。','窗口滚走以后，仍然可以接着追问。','从历史材料到作业草稿，为人的确认留下位置。'];
   const modes = gallery.querySelector('.gallery-modes');
   const narrow = window.matchMedia('(max-width:768px)');
-  let selected = 1, mode = narrow.matches ? 'flat' : 'space', userMode = null;
+  let selected = 0, mode = narrow.matches ? 'flat' : 'space', userMode = null;
   modes.hidden = false; gallery.querySelector('.gallery-controls').hidden = false;
   function select(index, scroll = false) {
     selected = (index+frames.length)%frames.length;
@@ -357,8 +356,8 @@ function initExhibition() {
     const text = gallery.querySelector('.gallery-description');
     text.replaceChildren();
     const title = document.createElement('b'); title.textContent = frames[selected].dataset.title;
-    text.append(title,document.createTextNode(descriptions[selected]));
-    gallery.querySelector('.gallery-count').textContent = `0${selected+1} / 03`;
+    text.append(title,document.createTextNode(frames[selected].dataset.description || ''));
+    gallery.querySelector('.gallery-count').textContent = `${String(selected+1).padStart(2,'0')} / ${String(frames.length).padStart(2,'0')}`;
     if (scroll && mode==='flat' && narrow.matches) {
       // Only move the local shelf, never the page itself.
       stage.scrollTo({left:frames[selected].offsetLeft-(stage.clientWidth-frames[selected].clientWidth)/2,behavior:canAnimate()?'smooth':'instant'});
@@ -404,7 +403,7 @@ function initDynamicLab() {
   if (!lab) return;
   const projects = [
     {title:'Local Window Copilot',category:'01 / DESKTOP CONTEXT',image:'projects/local-window-copilot/img/mascot_idle.png',alt:'Local Window Copilot 的白色助手形象',url:'projects/local-window-copilot.html',caption:'窗口滚走了，也能接着追问刚才的内容。',nodes:['锁定窗口','读取线索','留下记录'],steps:['先固定这次观察的窗口，让焦点变化不打断目标。','把屏幕文字与位置组织起来，再补充画面中的线索。','将来源与跨帧记录关联，下一次追问可以继续。']},
-    {title:'星途知汇',category:'02 / ENTERPRISE KNOWLEDGE',image:'assets/xingtu-knowledge-platform-hero.webp',alt:'星途知汇项目视觉封面，非产品界面截图',url:'projects.html#enterprise-agent',caption:'从一次经验分享，到团队能够找到的知识。',nodes:['整理分享','员工确认','权限检索'],steps:['从飞书分享出发，整理文字、文件和业务背景。','由员工确认内容，经过主管审核后形成发布版本。','检索先限定可见范围，再从发布知识中寻找依据。']},
+    {title:'星途知汇',category:'02 / FEISHU SALES AGENT',image:'assets/xingtu-knowledge-platform-hero.webp',alt:'星途知汇项目视觉封面，非产品界面截图',url:'projects.html#enterprise-agent',caption:'在飞书里澄清问题，让建议接上依据与反馈。',nodes:['澄清问题','检索取证','关联反馈'],steps:['从销售咨询出发，通过交互卡补齐客户背景与已知材料。','检索相关知识，核对原文，将取得的证据保留到本轮会话。','把员工评价与采用反馈关联到回答、知识依据和工具轨迹。']},
     {title:'OpenSOP Agent',category:'03 / HUMAN IN THE LOOP',image:'projects/local-window-copilot/img/mascot_analyzing.png',alt:'流程演示中的助手分析状态，用作交互提示',url:'projects.html#workflow-agent',caption:'生成草稿，也为人的判断留好位置。',nodes:['检索材料','生成草稿','人工审核'],steps:['先查找历史路线、参数与媒体证据。','按结构化约束生成作业草稿，保留每一步的来源。','在人工审核点暂停，确认之后再继续发布和导出。']}
   ];
   const controls = lab.querySelector('.lab-projects');
@@ -557,7 +556,11 @@ function initSiteGuide() {
   });
   const pages = [
     { title:'首页', url:'index.html', kind:'页面', terms:'宋林蔚 home' },
-    { title:'项目现场', url:'projects.html', kind:'页面', terms:'作品 星途知汇 OpenSOP Local Window Copilot' },
+    { title:'作品展廊', url:'projects.html', kind:'页面', terms:'项目 WenQu RepoSocratic 星途知汇 OpenSOP Local Window Copilot' },
+    { title:'WenQu / RepoSocratic · 源码取证与模型后训练', url:'projects/reposocratic.html', kind:'项目', terms:'问渠 LoRA SFT KD 蒸馏 GRPO 强化学习 训练 评测' },
+    { title:'IN-Retriever · 多跳证据检索', url:'about.html#in-retriever', kind:'研究', terms:'论文 EMNLP 注意力 非生成式 BFS' },
+    { title:'ESRA · 显式证据状态', url:'about.html#esra', kind:'研究', terms:'论文 NAACL 在审 RAG Agent 任务规划 状态' },
+    { title:'星途知汇 · 飞书销售 Agent', url:'projects.html#enterprise-agent', kind:'项目', terms:'PydanticAI 知识检索 交互卡 BM25 销售 反馈' },
     { title:'工程笔记', url:'blog.html', kind:'页面', terms:'文章 博客 writing' },
     { title:'关于我', url:'about.html', kind:'页面', terms:'作者 宋林蔚 联系 邮件' },
     { title:'Local Window Copilot 交互演示', url:'demos/local-window-copilot/', kind:'演示', terms:'demo 助手 桌宠' }

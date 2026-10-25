@@ -5,7 +5,7 @@
 - Upstream: https://github.com/google/fonts/tree/main/ofl/notoserifsc
 - Source file: `NotoSerifSC[wght].ttf`, Git blob `eab063faf229160a52d3760f5555150e4eb9e5bf`.
 - Upstream source project: https://github.com/notofonts/noto-cjk
-- Subset on 2026-09-06: 721 input characters, 762 glyphs, 230,124 bytes (224.73 KiB).
+- Subset rebuilt on 2026-10-25 for the project and research update: 744 input characters, 785 glyphs, 239,308 bytes (233.70 KiB).
 - Scope: headings and display labels in the explicitly listed public HTML routes and article template; Latin ASCII and navigation symbols are included. Missing glyphs fall back to the system serif font.
 - No browser requests to Google Fonts or a third-party font CDN. `font-display: swap` preserves immediate readability if the font fails to load.
 

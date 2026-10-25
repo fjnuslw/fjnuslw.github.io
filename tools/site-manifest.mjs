@@ -4,7 +4,7 @@ export const publicPages = [
   'blog/agent-status-spine.html', 'blog/kv-cache-reuse.html',
   'blog/semantic-terrain-context-engineering.html', 'blog/claude-code-visuals.html',
   'blog/small-vlm-function-calling-instability.html', 'blog/desktop-agent-context-pitfalls.html',
-  'projects/local-window-copilot.html', 'projects/research-to-spec.html',
+  'projects/local-window-copilot.html', 'projects/research-to-spec.html', 'projects/reposocratic.html',
   'demos/local-window-copilot/index.html'
 ];
 export const publicFiles = [

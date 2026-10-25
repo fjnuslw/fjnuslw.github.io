@@ -1,7 +1,7 @@
 /* 数字花园 · 唯一共享令牌、字体与文章基元。specs/2026-09-06-digital-garden */
 @font-face {
   font-family: "Garden Serif";
-  src: url("../assets/fonts/garden-serif.woff2?v=c9cba5911e") format("woff2");
+  src: url("../assets/fonts/garden-serif.woff2?v=1760705f05") format("woff2");
   font-style: normal;
   font-weight: 200 900;
   font-display: swap;

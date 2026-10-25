@@ -1,0 +1,704 @@
+{
+  "viewports": [
+    {
+      "route": "index.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/agent-status-spine.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/kv-cache-reuse.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/semantic-terrain-context-engineering.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/claude-code-visuals.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/small-vlm-function-calling-instability.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/desktop-agent-context-pitfalls.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/local-window-copilot.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/research-to-spec.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/reposocratic.html",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "demos/local-window-copilot/",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "index.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/agent-status-spine.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/kv-cache-reuse.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/semantic-terrain-context-engineering.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/claude-code-visuals.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/small-vlm-function-calling-instability.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog/desktop-agent-context-pitfalls.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/local-window-copilot.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/research-to-spec.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects/reposocratic.html",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "demos/local-window-copilot/",
+      "width": 320,
+      "scrollWidth": 320,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "index.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "scrollWidth": 390,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "index.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "projects.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "blog.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "errors": [],
+      "brokenImages": []
+    },
+    {
+      "route": "about.html",
+      "width": 768,
+      "scrollWidth": 768,
+      "errors": [],
+      "brokenImages": []
+    }
+  ],
+  "behaviors": [
+    {
+      "name": "self-hosted display font loads",
+      "pass": true
+    },
+    {
+      "name": "folio next updates title and link",
+      "pass": true,
+      "detail": "http://127.0.0.1:4175/projects.html#enterprise-agent"
+    },
+    {
+      "name": "folio wraps to first",
+      "pass": true
+    },
+    {
+      "name": "folio keyboard previous",
+      "pass": true
+    },
+    {
+      "name": "global motion pause",
+      "pass": true
+    },
+    {
+      "name": "demo begins",
+      "pass": true
+    },
+    {
+      "name": "demo pause syncs global",
+      "pass": true
+    },
+    {
+      "name": "demo project switch resets state",
+      "pass": true
+    },
+    {
+      "name": "guide loads matching article",
+      "pass": true
+    },
+    {
+      "name": "guide Escape closes",
+      "pass": true
+    },
+    {
+      "name": "desktop space mode",
+      "pass": true
+    },
+    {
+      "name": "gallery next updates current",
+      "pass": true
+    },
+    {
+      "name": "gallery Home selects first",
+      "pass": true
+    },
+    {
+      "name": "gallery flat switch",
+      "pass": true
+    },
+    {
+      "name": "blog topic filter",
+      "pass": true,
+      "detail": "显示 2 / 6 篇文章"
+    },
+    {
+      "name": "blog reset filter",
+      "pass": true
+    },
+    {
+      "name": "failed search keeps static fallback",
+      "pass": true
+    },
+    {
+      "name": "article reading progress",
+      "pass": true
+    },
+    {
+      "name": "print hides navigation and keeps body",
+      "pass": true
+    },
+    {
+      "name": "reduced motion stops folio animation",
+      "pass": true
+    },
+    {
+      "name": "reduced motion manual demo completes",
+      "pass": true
+    },
+    {
+      "name": "new project is searchable",
+      "pass": true
+    },
+    {
+      "name": "research is searchable",
+      "pass": true
+    },
+    {
+      "name": "evaluation retains three counted policies",
+      "pass": true
+    },
+    {
+      "name": "integration limitation stays visible",
+      "pass": true
+    },
+    {
+      "name": "new case prints evaluation",
+      "pass": true
+    },
+    {
+      "name": "mobile menu opens and focuses close",
+      "pass": true
+    },
+    {
+      "name": "mobile menu Escape returns focus",
+      "pass": true
+    },
+    {
+      "name": "touch folio swipe changes work",
+      "pass": true
+    },
+    {
+      "name": "mobile gallery defaults flat",
+      "pass": true
+    },
+    {
+      "name": "mobile gallery button updates selection",
+      "pass": true
+    },
+    {
+      "name": "mobile shelf scrolls locally",
+      "pass": true
+    },
+    {
+      "name": "evaluation scroll is local",
+      "pass": true
+    },
+    {
+      "name": "nojs index.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs about.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/agent-status-spine.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/kv-cache-reuse.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/semantic-terrain-context-engineering.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/claude-code-visuals.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/small-vlm-function-calling-instability.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs blog/desktop-agent-context-pitfalls.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects/local-window-copilot.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects/research-to-spec.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs projects/reposocratic.html",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "nojs demos/local-window-copilot/",
+      "pass": true,
+      "detail": {
+        "overflow": false,
+        "h1": true,
+        "nav": true
+      }
+    },
+    {
+      "name": "200% text index.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text projects.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text blog.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "200% text about.html",
+      "pass": true,
+      "detail": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "name": "font failure keeps readable content",
+      "pass": true
+    }
+  ],
+  "finalColorChecks": [
+    {
+      "route": "about.html",
+      "width": 1440,
+      "mode": "screen",
+      "pass": true,
+      "background": "linear-gradient(102deg, rgb(248, 245, 239) 6%, rgb(232, 187, 195) 55%, rgb(248, 245, 239) 97%)",
+      "overflow": false
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "mode": "forced-colors",
+      "pass": true,
+      "bg": "none",
+      "fill": "rgb(0, 0, 0)"
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "mode": "print",
+      "pass": true,
+      "bg": "none",
+      "color": "rgb(17, 17, 17)",
+      "fill": "rgb(17, 17, 17)"
+    },
+    {
+      "route": "projects.html",
+      "width": 1440,
+      "mode": "screen",
+      "pass": true,
+      "background": "linear-gradient(102deg, rgb(248, 245, 239) 6%, rgb(232, 187, 195) 55%, rgb(248, 245, 239) 97%)",
+      "overflow": false
+    },
+    {
+      "route": "projects.html",
+      "width": 1440,
+      "mode": "forced-colors",
+      "pass": true,
+      "bg": "none",
+      "fill": "rgb(0, 0, 0)"
+    },
+    {
+      "route": "projects.html",
+      "width": 1440,
+      "mode": "print",
+      "pass": true,
+      "bg": "none",
+      "color": "rgb(17, 17, 17)",
+      "fill": "rgb(17, 17, 17)"
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "mode": "screen",
+      "pass": true,
+      "background": "linear-gradient(102deg, rgb(248, 245, 239) 6%, rgb(232, 187, 195) 55%, rgb(248, 245, 239) 97%)",
+      "overflow": false
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "mode": "forced-colors",
+      "pass": true,
+      "bg": "none",
+      "fill": "rgb(0, 0, 0)"
+    },
+    {
+      "route": "about.html",
+      "width": 320,
+      "mode": "print",
+      "pass": true,
+      "bg": "none",
+      "color": "rgb(17, 17, 17)",
+      "fill": "rgb(17, 17, 17)"
+    },
+    {
+      "route": "projects.html",
+      "width": 320,
+      "mode": "screen",
+      "pass": true,
+      "background": "linear-gradient(102deg, rgb(248, 245, 239) 6%, rgb(232, 187, 195) 55%, rgb(248, 245, 239) 97%)",
+      "overflow": false
+    },
+    {
+      "route": "projects.html",
+      "width": 320,
+      "mode": "forced-colors",
+      "pass": true,
+      "bg": "none",
+      "fill": "rgb(0, 0, 0)"
+    },
+    {
+      "route": "projects.html",
+      "width": 320,
+      "mode": "print",
+      "pass": true,
+      "bg": "none",
+      "color": "rgb(17, 17, 17)",
+      "fill": "rgb(17, 17, 17)"
+    }
+  ],
+  "fontAndContrast": {
+    "displayChineseMissing": [],
+    "fontBytes": 239308,
+    "contrast": {
+      "rosePoster": 6.22,
+      "acceptedBadge": 7.75,
+      "reviewBadge": 6.08,
+      "darkHeadingMinimum": 6.72
+    }
+  },
+  "contentProtection": {
+    "protectedFiles": {
+      "resume-redesign/README.md": true,
+      "resume-redesign/resume-ats.md": true,
+      "resume-redesign/resume-cli.html": true
+    },
+    "articles": {
+      "blog/agent-status-spine.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      },
+      "blog/kv-cache-reuse.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      },
+      "blog/semantic-terrain-context-engineering.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      },
+      "blog/claude-code-visuals.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      },
+      "blog/small-vlm-function-calling-instability.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      },
+      "blog/desktop-agent-context-pitfalls.html": {
+        "bodyUnchanged": true,
+        "dateUnchanged": true
+      }
+    },
+    "publicBoundary": {
+      "resumePhoneAbsent": true,
+      "noResumeCopy": true,
+      "noPrivateDirectories": true
+    }
+  }
+}
