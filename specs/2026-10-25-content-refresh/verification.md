@@ -1,6 +1,6 @@
 # 验收记录
 
-状态：本地验收通过，待正式发布。任务开始于 2026-10-25；验收于 2026-10-26（Asia/Shanghai）。
+状态：本地验收与正式发布均通过。任务开始于 2026-10-25；验收于 2026-10-26（Asia/Shanghai）。
 
 ## 起点与保护
 
@@ -40,4 +40,9 @@
 
 ## 正式发布
 
-待提交、推送、Actions 与线上一致性检查。
+- 实现提交：[`018eb24f005d42f65497c5e9b5e32cd192be0093`](https://github.com/fjnuslw/fjnuslw.github.io/commit/018eb24f005d42f65497c5e9b5e32cd192be0093)，作者和提交者均为 fjnuslw。`git push origin main` 成功，无强制推送。
+- [Deploy site / 40209934541](https://github.com/fjnuslw/fjnuslw.github.io/actions/runs/40209934541)：**completed / success**。Validate source、Build whitelisted dist、Validate dist、artifact 上传、Pages 发布均成功。
+- 2026-10-26：`python tmp/resume-refresh/verify-live.py` 检查 [正式网站](https://fjnuslw.github.io/) 共 **23 项，全部通过**。14 个 HTML、两份共享 CSS、JS、WOFF2 和许可证共 19 文件返回 HTTP 200；文本规范化换行后与 dist 一致，字体二进制哈希一致，MIME 为 `font/woff2`。
+- `specs/README.md`、`AGENTS.md`、`tools/site-manifest.mjs`、`tmp/resume-refresh/verify-live.py` 均 HTTP 404；公开站点未暴露内部源目录。
+- 本轮发布只包含显式暂存的网站和 spec 文件，三个原有简历制作修改仍留在工作区。线上机器证据同时保存于 `verification-results.json` 的 release 字段；完整本地记录为 `tmp/resume-refresh/live-verification.json`。
+- 上述实现已发布；后续提交只记录完成状态与验收证据，不再变更网页产物。

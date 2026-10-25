@@ -700,5 +700,185 @@
       "noResumeCopy": true,
       "noPrivateDirectories": true
     }
+  },
+  "release": {
+    "verifiedAt": "2026-10-25T16:05:32.789730+00:00",
+    "sourceRevision": "018eb24f005d42f65497c5e9b5e32cd192be0093",
+    "site": "https://fjnuslw.github.io/",
+    "checks": [
+      {
+        "path": "about.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "f33059bdb211df0577334a408009aca55a8d6ce0d6613ed12f3ee634160c6a33",
+        "passed": true
+      },
+      {
+        "path": "blog.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "ad3c3b071e760e9dbd5192a8191afd5b60d8c95560f7b72ef17e47991cbd0a0b",
+        "passed": true
+      },
+      {
+        "path": "index.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "02dbc863700a9b3b5a64c3137283626cf074862f97f356d320e6544758c7ed40",
+        "passed": true
+      },
+      {
+        "path": "projects.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "3410f722796603eff73ffba86df392f86e7fad20eec3464c73efb437a994d2b9",
+        "passed": true
+      },
+      {
+        "path": "blog/agent-status-spine.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "8cf4e14df4e7e50b48b4cbde70a72431f92ab6abe8c82c5d5ba5da0a323f861a",
+        "passed": true
+      },
+      {
+        "path": "blog/claude-code-visuals.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "7391e2cdc2336f6a75b5ca9319c750bf68ca6315be20be4b6687794479360e6c",
+        "passed": true
+      },
+      {
+        "path": "blog/desktop-agent-context-pitfalls.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "cf6d6115156756ac312e826727016b94b03d80dce1fc9297a185266fc782f1ec",
+        "passed": true
+      },
+      {
+        "path": "blog/kv-cache-reuse.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "8be0890846117f38de8ba0923467a4b0e683a43cab9446b7f9842c72e4405d72",
+        "passed": true
+      },
+      {
+        "path": "blog/semantic-terrain-context-engineering.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "6df95d566dcb35d988376d8c66bef33305e846ef9e931f1c817eba4475169a3b",
+        "passed": true
+      },
+      {
+        "path": "blog/small-vlm-function-calling-instability.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "95808c1ea60cdc9879923962769d55418558e44846a2341ce37c93fffa2a0fd6",
+        "passed": true
+      },
+      {
+        "path": "projects/local-window-copilot.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "54dec6cc95bd8923b6456eaa673bdd5b32cf946db310390564f67907d236c5a0",
+        "passed": true
+      },
+      {
+        "path": "projects/reposocratic.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "b83ea55095faa986c087c4775b208dd5a6ee0c49cd3a00b06ffbd24a6cd6d643",
+        "passed": true
+      },
+      {
+        "path": "projects/research-to-spec.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "ded7e1a06f9114df12246eb78c325e53ef24274b05d8ae2b3ae9a78e64e22e78",
+        "passed": true
+      },
+      {
+        "path": "demos/local-window-copilot/index.html",
+        "status": 200,
+        "mime": "text/html",
+        "sameContent": true,
+        "sha256": "b09dbfc2a33544a253a26952ccb77604fa5f650d1e521a7abb5a4bff9731cf59",
+        "passed": true
+      },
+      {
+        "path": "css/style.css",
+        "status": 200,
+        "mime": "text/css",
+        "sameContent": true,
+        "sha256": "c8bfb285d12d44857b6dec71e3f97437b2a075a84bdc31300fa665d81800cf29",
+        "passed": true
+      },
+      {
+        "path": "css/portfolio.css",
+        "status": 200,
+        "mime": "text/css",
+        "sameContent": true,
+        "sha256": "428a09d1d5b60b2bb7f4f76412f7625b93a4e4deb8a57b75c031b86b06e32398",
+        "passed": true
+      },
+      {
+        "path": "js/main.js",
+        "status": 200,
+        "mime": "application/javascript",
+        "sameContent": true,
+        "sha256": "130762a686ce9710a0c478d17392dde5a076880768f18afbb3fab9adbf9602e7",
+        "passed": true
+      },
+      {
+        "path": "assets/fonts/garden-serif.woff2",
+        "status": 200,
+        "mime": "font/woff2",
+        "sameContent": true,
+        "sha256": "1760705f05bd5571dc90d061acda552787f6679486b47a375eac4b6dd1b61278",
+        "passed": true
+      },
+      {
+        "path": "assets/fonts/OFL-NotoSerifSC.txt",
+        "status": 200,
+        "mime": "text/plain",
+        "sameContent": true,
+        "sha256": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6",
+        "passed": true
+      },
+      {
+        "path": "specs/README.md",
+        "status": 404,
+        "passed": true
+      },
+      {
+        "path": "AGENTS.md",
+        "status": 404,
+        "passed": true
+      },
+      {
+        "path": "tools/site-manifest.mjs",
+        "status": 404,
+        "passed": true
+      },
+      {
+        "path": "tmp/resume-refresh/verify-live.py",
+        "status": 404,
+        "passed": true
+      }
+    ],
+    "passed": true
   }
 }
