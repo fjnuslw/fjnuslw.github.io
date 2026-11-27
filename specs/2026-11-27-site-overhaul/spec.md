@@ -1,6 +1,6 @@
 # 个人网站全面重塑与实证内容更新
 
-日期：2026-11-27 · 状态：已验证（本地，未推送线上）
+日期：2026-11-27 · 状态：已验证（线上已发布）
 
 ## 问题与证据
 
@@ -42,4 +42,4 @@
 
 - 2026-11-27：用户确认三项核心产品决策——（1）技术研究者与工程师主页，不含招聘/手机号/证件照；（2）彻底去“数字花园”外壳与首页 Playground，主线对齐 2026.11 简历，旧项目降级归档且保留原 URL，6 篇历史笔记完整保留；（3）采用 `comp-first` 路径先定标首屏视觉效果图。
 - 2026-11-27：用户通过浏览器审阅批准 `digital-design-canon-pc98-sixteen-color-field` 方向、`pc98-comp-1.png` 构图与 3 张 PC-98 像素底板，并明确提出 Agent 主题插画、`PROFILE.DAT`、`COMPETITIONS & EVAL` 与首页不写 `8×A800` 四项调整。
-- 2026-11-27：仅在本地完成改动、独立 Finish Reviewer 审校（含 Verdict Pass）、`DESIGN.md` 文档化与 `dist/` 构建验证；未执行远程推送。
+- 2026-11-27：完成本地改动、独立 Finish Reviewer 审校（含 Verdict Pass）、`DESIGN.md` 文档化与 `dist/` 构建验证，并按用户指令推送至 `origin/main`（提交 `3123f85`）；GitHub Actions `Deploy site`（Run `45966694530`）构建并发布成功，线上 `https://fjnuslw.github.io/` 校验匹配。

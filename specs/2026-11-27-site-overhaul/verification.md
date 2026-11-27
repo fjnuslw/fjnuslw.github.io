@@ -2,7 +2,7 @@
 
 对应规格：[spec.md](spec.md) · 任务清单：[tasks.md](tasks.md)
 
-> **部署状态说明**：全部验证均在本地源码与本地 `dist/` 目录完成，**尚未推送至 GitHub Pages 线上仓库**。
+> **部署状态说明**：本地验证与线上发布均已完成。提交 `3123f85` 已推送至 `https://github.com/fjnuslw/fjnuslw.github.io.git`（`main`），GitHub Actions `Deploy site` Run `45966694530` 通过并成功发布至 `https://fjnuslw.github.io/`。
 
 ## 1. 静态构建、资源指纹与边界检查
 
@@ -38,7 +38,16 @@
 - **复审（Verdict Pass）**：上述 6 项视觉、保真、字体、移动端、真实性与 Craft Floor 修复项**全部评为 `resolved`**（视觉矩阵零 `contradicted` / `missing` / `added without approval` 项）；复审指出的 2 处微小回归（1376px 视口 `PROFILE.DAT` 换行拆字与 `initActiveNavLink()` 锚点守卫）随后已一并修复并重新构建验证。
 - **复审结论原文与说明**：复审维持 `disposition: fix`，唯一未闭环项为 Check 1 持久化门禁——本机卡巴斯基杀毒软件会向本地 `http://127.0.0.1` 响应注入第三方脚本（`gc.kis.v2.scr.kaspersky-labs.com`），导致 `impeccable component-review capture` 冻结字节校验中断；因遵循安全约束不关闭或绕过本机杀毒软件、亦不手工伪造 `.impeccable/build/state.json`，该文件如实保留于 `hero` 打开状态（且 `DESIGN.md` 与 `.impeccable/design.json` 已在复审后完成编写）。
 
-## 4. 本地预览方式
+## 4. 线上部署与活站复核（2026-11-27）
+
+- **Git 提交与推送**：`3123f858e654d695752e4859d6e8bd5fc7915090`（`main` → `origin/main`，作者 `fjnuslw`，排除 `resume-redesign/` 与 `.impeccable/` 临时缓存）。
+- **GitHub Actions 工作流**：`Deploy site` Run [45966694530](https://github.com/fjnuslw/fjnuslw.github.io/actions/runs/45966694530) 状态 `completed`，结论 `success`。
+- **线上资源一致性核验**：
+  - `GET https://fjnuslw.github.io/`：`HTTP 200`，`<title>` 为 `宋林蔚 · Agent 后训练与多跳检索`，包含 `pc98-stage` 与 `PROFILE.DAT`，`css/portfolio.css?v=4db8bdcd4a` 与本地 `dist/index.html` 哈希完全一致。
+  - `HEAD https://fjnuslw.github.io/assets/fonts/fusion-pixel-12px-sc.woff2`：`HTTP 200`（`223,612` bytes）。
+  - `HEAD https://fjnuslw.github.io/assets/plates/hero-skyline.png`：`HTTP 200`（`36,084` bytes）。
+
+## 5. 本地预览方式
 
 ```powershell
 node tools/preview-site.mjs
