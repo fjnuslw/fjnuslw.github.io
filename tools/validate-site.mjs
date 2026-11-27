@@ -6,7 +6,7 @@ import { publicPages } from './site-manifest.mjs';
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = process.argv.includes('--dist') ? path.join(sourceRoot, 'dist') : sourceRoot;
 const origin = 'https://fjnuslw.github.io/';
-const excludedDirectories = new Set(['.private', 'ai-prep', '.git', '.workbuddy', '.openai', '.reports', 'dist', 'docs', 'specs', 'node_modules', 'resume-redesign', 'tmp']);
+const excludedDirectories = new Set(['.private', 'ai-prep', '.git', '.workbuddy', '.openai', '.reports', '.impeccable', 'dist', 'docs', 'specs', 'node_modules', 'resume-redesign', 'tmp']);
 const errors = [];
 let checkedLinks = 0;
 

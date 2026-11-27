@@ -1,17 +1,163 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#f8f5ef"><title>WenQu / RepoSocratic · 源码取证与模型后训练</title><meta name="description" content="WenQu 应用与 RepoSocratic 9B 模型：只读源码取证、LoRA 轨迹蒸馏、在线 GRPO 和固定协议评测。"><link rel="canonical" href="https://fjnuslw.github.io/projects/reposocratic.html"><meta property="og:type" content="article"><meta property="og:title" content="WenQu / RepoSocratic · 源码取证与模型后训练"><meta property="og:description" content="从读懂一个项目，到有依据的提问：应用、模型训练与评测的完整记录。"><meta property="og:url" content="https://fjnuslw.github.io/projects/reposocratic.html"><meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../css/style.css?v=3da5a69cd7"><link rel="stylesheet" href="../css/portfolio.css?v=9c8f3b653c"><link rel="preload" href="../assets/fonts/garden-serif.woff2?v=1760705f05" as="font" type="font/woff2" crossorigin></head><body class="case-page reposocratic-page">
-<a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-inner">
-<a class="brand" href="../index.html" aria-label="宋林蔚，返回首页"><span class="brand-seal" aria-hidden="true">蔚</span><span class="brand-name">林蔚手记<small>LINWEI SONG / DIGITAL GARDEN</small></span></a>
-<button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
-<ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="../index.html">花园入口</a></li><li><a class="nav-link" href="../projects.html">作品展廊</a></li><li><a class="nav-link" href="../blog.html">沿途手记</a></li><li><a class="nav-link" href="../about.html">关于园主</a></li></ul>
-<a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-</div></nav><main id="main-content"><div class="case-shell"><a class="back-link" href="../projects.html">← 返回作品</a></div>
-<header class="case-hero"><div class="case-shell case-hero-grid"><div><p class="case-kicker">SOURCE → QUESTION → LEARNING / 2026.08 起</p><h1>WenQu /<br>RepoSocratic</h1><p class="case-lede">先读懂一个项目，再提出值得讨论的问题。WenQu 组织多轮技术面试与复盘；RepoSocratic 把源码取证与提问过程做成可训练、可评测的模型任务。</p><div class="case-actions"><a class="btn btn-primary" href="https://github.com/fjnuslw/WenQu" target="_blank" rel="noopener noreferrer">WenQu 应用源码 ↗</a><a class="btn btn-secondary" href="https://github.com/fjnuslw/RepoSocratic" target="_blank" rel="noopener noreferrer">训练源码 ↗</a><a class="btn btn-secondary" href="https://huggingface.co/xiongsir1/reposocratic-interviewer" target="_blank" rel="noopener noreferrer">LoRA 权重 ↗</a></div><div class="case-facts"><div class="case-fact"><strong>只读取证</strong><span>问题连回项目材料与源码</span></div><div class="case-fact"><strong>9B 后训练</strong><span>轨迹学习、概率蒸馏与在线 GRPO</span></div></div></div><div class="training-cover"><div class="poster poster-research"><div class="poster-top"><span>SOURCE / QUESTION / LEARNING</span><span>01</span></div><div class="poster-heading"><h2>先读懂，<br>再追问。</h2><p>WenQu / RepoSocratic</p></div><ol class="poster-flow" aria-label="模型训练流程示意"><li><span>01</span>从源码中寻找依据</li><li><span>02</span>从示范中学习提问</li><li><span>03</span>在任务中检验策略</li></ol><div class="poster-bottom"><span>READ. ASK.<br>LEARN.</span><span>循证提问</span></div></div></div></div></header>
-<section class="case-section"><div class="case-shell"><div class="case-section-head"><p class="case-kicker">APPLICATION & MODEL</p><div><h2>应用负责对话，训练系统学习如何取证与提问。</h2><p class="case-section-copy">项目介绍和真实实现之间常有距离。先让模型通过只读工具查看材料，把背景事实、源码事实与假设分清，再围绕设计选择、个人参与和验证方式展开提问。</p></div></div><div class="case-grid"><article class="case-card"><span class="case-card-index">01 / WENQU</span><h3>多轮技术对话</h3><p>按材料组织问题与追问，基于 Pi 运行多轮 Agent。Harness 是对话的运行约束层，检查题目来源、阶段、顺序与追问深度。</p></article><article class="case-card"><span class="case-card-index">02 / REPOSOCRATIC</span><h3>取证与提问模型</h3><p>用一致的工具环境生成教师轨迹、训练学生模型，并对模型的任务完成情况进行比较。仓库公开数据管线、训练器与评测入口。</p></article><article class="case-card"><span class="case-card-index">03 / RELEASE</span><h3>两版 LoRA 权重</h3><p>发布 K2 蒸馏版和 RL-73 强化学习版。LoRA 只保存需要叠加到基座模型的适配参数，运行时仍需对应的基座与环境。</p></article></div><p class="content-note">接入状态：源码与模型已建立关联，WenQu 的在线会话尚未调用此 9B 服务。本站提供项目说明与公开入口，不在浏览器内运行训练或模型。<a href="https://github.com/fjnuslw/RepoSocratic/blob/main/docs/WENQU.md" target="_blank" rel="noopener noreferrer">查看接线设计 ↗</a></p></div></section>
-<section class="case-section"><div class="case-shell"><div class="case-section-head"><p class="case-kicker">TRAINING</p><div><h2>从教师示范，到在任务里更新策略。</h2><p class="case-section-copy">教师与学生共享只读工具和项目快照，让工具观察保留真实出处。训练既学习最终问题，也学习选择材料、取证和组织提问的过程。</p></div></div><div class="flow-line" aria-label="训练流程"><div class="flow-node"><span>01 / DATA</span><strong>20 个项目 · 100 个场景</strong></div><div class="flow-node"><span>02 / TARGET</span><strong>审核 820 个监督目标</strong></div><div class="flow-node"><span>03 / TEACHER</span><strong>27B 教师轨迹与概率</strong></div><div class="flow-node"><span>04 / DISTILL</span><strong>9B LoRA SFT + KD</strong></div><div class="flow-node"><span>05 / UPDATE</span><strong>在线 GRPO 策略更新</strong></div><div class="flow-node"><span>06 / EVALUATE</span><strong>训练外项目统一评测</strong></div></div><div class="training-notes"><article><h3>轨迹学习与概率蒸馏</h3><p>在 ms-swift 上扩展训练器，用交叉熵（CE）学习目标输出，并通过 KL 损失让学生分布接近教师；保留 Top-32 与尾部概率信息。LoRA、SP2/FSDP2、激活检查点和分块损失共同控制训练资源开销。</p></article><article><h3>在线强化学习</h3><p>用事实依据、提问价值和任务完成情况组织奖励；保留完整上下文，以 action mask 只优化模型动作。固定蒸馏模型为参考策略，完成 73 组采样、67 次有效更新，并支持优化器状态和检查点恢复。</p></article></div><p class="content-note">训练计数与实现来源：<a href="https://github.com/fjnuslw/RepoSocratic#实验规模与结果" target="_blank" rel="noopener noreferrer">公开实验记录 ↗</a>。这些是本项目实验规模，不代表其他硬件或任务上的吞吐与效果。</p></div></section>
-<section class="case-section" id="evaluation"><div class="case-shell"><div class="case-section-head"><p class="case-kicker">FIXED EVALUATION</p><div><h2>把完成数量与评测条件放在一起。</h2><p class="case-section-copy">2026-09-25 汇总的固定比较：24 个训练外项目家族 × 2 个场景 × 2 个随机种子，每策略 96 个任务，三策略共 288 条轨迹。RL-73 在这轮比较前由开发集锁定。</p></div></div><div class="evaluation-scroll" role="region" aria-label="三种策略的任务完成情况，可横向滚动" tabindex="0"><table class="evaluation-table"><caption>同一评测协议下的任务完成情况</caption><thead><tr><th scope="col">策略</th><th scope="col">完成任务 / 总任务</th><th scope="col">完成率</th></tr></thead><tbody><tr><th scope="row">Qwen3.5-9B 基座</th><td>73 / 96</td><td>76.0%</td></tr><tr><th scope="row">SFT + KD · K2</th><td>82 / 96</td><td>85.4%</td></tr><tr><th scope="row">SFT + GRPO · RL-73</th><td>83 / 96</td><td>86.5%</td></tr></tbody></table></div><p class="content-note">RL-73 比基座多完成 10 个任务，约 10.4 个百分点；相对 K2 多完成 1 个任务，不能据此推出普遍显著的强化学习收益。任务完成率也不等于所有题目都可直接使用。</p><p class="content-note">题目质量采用 AI 评审，区分可直接采用、需修订和不保留；没有把“保留修订”计作原样可用，也不描述为人工专家逐题认证。<a href="https://github.com/fjnuslw/RepoSocratic/blob/main/docs/RESULTS.md" target="_blank" rel="noopener noreferrer">完整评测说明 ↗</a> · <a href="https://github.com/fjnuslw/RepoSocratic/blob/main/results/metrics.json" target="_blank" rel="noopener noreferrer">机器可读计数 ↗</a></p></div></section>
-<section class="case-section"><div class="case-shell case-cta"><div><h2>沿着证据，继续读实现。</h2><p>源码、运行条件、训练配置与模型发布记录分别保留在公开仓库和模型卡中。页面更新：2026.10.25。</p></div><a class="btn btn-primary" href="https://github.com/fjnuslw/RepoSocratic" target="_blank" rel="noopener noreferrer">打开 RepoSocratic ↗</a></div></section>
-</main><footer class="footer"><div class="shell">
-<div class="footer-cta"><div><p class="eyebrow">THE CONVERSATION CONTINUES</p><h2>有意思的问题，<br>留一封信给我。</h2></div><a class="footer-mail" href="mailto:1147214246@qq.com">1147214246@qq.com <span aria-hidden="true">↗</span></a></div>
-<div class="footer-grid"><div class="footer-brand"><span class="brand-seal" aria-hidden="true">蔚</span><div><p>宋林蔚 · 数字花园</p><p>作品，笔记，以及生长中的想法。</p></div></div><nav class="footer-nav" aria-label="站点导航"><a href="../projects.html">作品</a><a href="../blog.html">笔记</a><a href="../about.html">关于</a><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav><div class="footer-meta"><time data-clock>福州 · UTC+8</time><span>© 2026 宋林蔚</span></div></div>
-</div></footer><script src="../js/main.js?v=1f24e57c47"></script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b28">
+  <title>WenQu / RepoSocratic · 源码取证与模型后训练</title>
+  <meta name="description" content="WenQu 应用与 RepoSocratic 9B 模型：只读源码取证、Qwen3.8-27B 到 Qwen3.5-9B 轨迹蒸馏、在线 Agentic GRPO 和固定协议评测。">
+  <link rel="canonical" href="https://fjnuslw.github.io/projects/reposocratic.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="WenQu / RepoSocratic · 源码取证与模型后训练">
+  <meta property="og:description" content="从读懂项目源码到可检验的提问策略：应用、轨迹蒸馏、在线 GRPO 与固定协议评测。">
+  <meta property="og:url" content="https://fjnuslw.github.io/projects/reposocratic.html">
+  <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css?v=780a2da447">
+  <link rel="stylesheet" href="../css/portfolio.css?v=4db8bdcd4a">
+</head>
+<body class="pc98-page pc98-inner case-page reposocratic-page">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <nav class="navbar" aria-label="主导航">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html" aria-label="宋林蔚，返回首页">
+        <img class="brand-mark" src="../assets/plates/brand-emblem.png" width="34" height="34" alt="">
+        <span class="brand-name">宋林蔚<small>LINWEI SONG</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a class="nav-link" href="../index.html"><span class="nav-idx">01</span>实证总览</a></li>
+        <li><a class="nav-link active" href="../projects.html" aria-current="page"><span class="nav-idx">02</span>竞赛与开源</a></li>
+        <li><a class="nav-link" href="../blog.html"><span class="nav-idx">03</span>技术笔记</a></li>
+        <li><a class="nav-link" href="../about.html"><span class="nav-idx">04</span>关于</a></li>
+      </ul>
+      <a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="pc98-shell">
+      <a class="back-link" href="../projects.html">← 返回竞赛与开源</a>
+      <img class="page-hero-dither" src="../assets/plates/hero-dither-bar.png" width="1284" height="156" alt="">
+      <h1>WenQu / RepoSocratic</h1>
+      <p class="page-lede">先读懂项目实现，再提出有依据的问题。WenQu 负责基于题库、面经与项目材料的多轮组卷和追问；RepoSocratic 将只读源码取证与提问策略做成可蒸馏、可在线 GRPO 迭代的 9B 后训练闭环。</p>
+      <div class="pc98-action-row">
+        <a class="pc98-link-btn is-primary" href="https://github.com/fjnuslw/WenQu" target="_blank" rel="noopener noreferrer">WenQu 应用源码 ↗</a>
+        <a class="pc98-link-btn" href="https://github.com/fjnuslw/RepoSocratic" target="_blank" rel="noopener noreferrer">RepoSocratic 训练源码 ↗</a>
+        <a class="pc98-link-btn" href="https://huggingface.co/xiongsir1/reposocratic-interviewer" target="_blank" rel="noopener noreferrer">Hugging Face 两版 LoRA 权重 ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-section" aria-labelledby="arch-heading">
+      <div class="case-shell">
+        <header class="pc98-section-head">
+          <h2 id="arch-heading"><span class="pc98-section-code">01 /</span> 系统分工与只读取证</h2>
+        </header>
+        <div class="pc98-grid-3">
+          <article class="pc98-window">
+            <header class="pc98-window-bar"><h3>WENQU · 面试 AGENT</h3></header>
+            <div class="pc98-window-body">
+              <p class="pc98-body-copy">融合题库、面经与项目材料由 LLM 组卷，基于 Pi 运行多轮 Agent；由 Harness 校验层约束题目来源、阶段推进、顺序与只读仓库工具取证。</p>
+            </div>
+          </article>
+          <article class="pc98-window">
+            <header class="pc98-window-bar"><h3>REPOSOCRATIC · 后训练系统</h3></header>
+            <div class="pc98-window-body">
+              <p class="pc98-body-copy">统一教师与学生的只读取证工具和代码快照，公开完整数据管线、ms-swift 蒸馏扩展训练器、HF Transformers 在线 GRPO 循环与固定协议评测脚本。</p>
+            </div>
+          </article>
+          <article class="pc98-window">
+            <header class="pc98-window-bar"><h3>RELEASE · 两版 LORA 权重</h3></header>
+            <div class="pc98-window-body">
+              <p class="pc98-body-copy">在 Hugging Face 公开 K2 概率蒸馏版与 RL-73 在线 GRPO 版 LoRA 权重（适配 Qwen3.5-9B 基座）；运行时需叠加对应基座模型与推理环境。</p>
+            </div>
+          </article>
+        </div>
+        <p class="content-note" style="margin-top:16px;">接入边界：源码与模型卡已建立清晰接口，但 WenQu 在线会话尚未调用该 9B 服务；本站为纯静态记录，不在浏览器内运行训练或模型。<a href="https://github.com/fjnuslw/RepoSocratic/blob/main/docs/WENQU.md" target="_blank" rel="noopener noreferrer">查看接线设计 ↗</a></p>
+      </div>
+    </section>
+
+    <section class="case-section" aria-labelledby="training-heading">
+      <div class="case-shell">
+        <header class="pc98-section-head">
+          <h2 id="training-heading"><span class="pc98-section-code">02 /</span> 轨迹蒸馏与在线 GRPO</h2>
+        </header>
+        <div class="flow-line" aria-label="训练阶段流程">
+          <div class="flow-node"><span>01 / DATA</span><strong>20 项目 · 100 场景</strong></div>
+          <div class="flow-node"><span>02 / TARGET</span><strong>820 个监督目标</strong></div>
+          <div class="flow-node"><span>03 / TEACHER</span><strong>27B 轨迹与 Top-32 概率</strong></div>
+          <div class="flow-node"><span>04 / DISTILL</span><strong>9B LoRA CE + 分组 KL</strong></div>
+          <div class="flow-node"><span>05 / ONLINE RL</span><strong>73 组采样 · 67 次更新</strong></div>
+          <div class="flow-node"><span>06 / EVAL</span><strong>24 家族 288 轨迹对照</strong></div>
+        </div>
+        <div class="pc98-grid-2">
+          <article class="pc98-window">
+            <header class="pc98-window-bar"><h3>轨迹蒸馏（MS-SWIFT / LORA SFT）</h3></header>
+            <div class="pc98-window-body">
+              <p class="pc98-body-copy">使用 vLLM 补算教师（Qwen3.8-27B）Top-32 token 概率分布，在 ms-swift 上以交叉熵（CE）+ 分组 KL 损失完成向 Qwen3.5-9B 的轨迹蒸馏。结合 SP2 / FSDP2、激活检查点与分块损失，在双卡环境下支持最长 11.7 万 token 的长程轨迹训练。</p>
+            </div>
+          </article>
+          <article class="pc98-window">
+            <header class="pc98-window-bar"><h3>在线 AGENTIC GRPO</h3></header>
+            <div class="pc98-window-body">
+              <p class="pc98-body-copy">校准事实依据、提问质量与任务完成奖励，基于 HF Transformers 采集多轮工具交互轨迹；自定义 GRPO 配合 action mask 保留完整工具观察上下文、仅优化模型生成动作。固定 K2 蒸馏策略为参考模型，完成 73 组采样、67 次有效更新与检查点恢复闭环。</p>
+            </div>
+          </article>
+        </div>
+        <p class="content-note" style="margin-top:16px;">训练规模来源：<a href="https://github.com/fjnuslw/RepoSocratic#实验规模与结果" target="_blank" rel="noopener noreferrer">RepoSocratic 公开实验记录 ↗</a>。上述长度与计数仅反映本项目实验条件，不作为通用硬件吞吐基准。</p>
+      </div>
+    </section>
+
+    <section class="case-section" id="evaluation" aria-labelledby="eval-heading">
+      <div class="case-shell">
+        <header class="pc98-section-head">
+          <h2 id="eval-heading"><span class="pc98-section-code">03 /</span> 同条件固定协议评测</h2>
+        </header>
+        <p class="pc98-body-copy" style="margin-bottom:12px;">2026-09-25 固定协议汇总：24 个训练外项目家族 × 2 个场景 × 2 个随机种子，基座、蒸馏与 RL 三种模型各 96 条、共 288 条轨迹。RL-73 检查点在开发集上预先锁定后再运行最终对照。</p>
+        <p class="pc98-scroll-hint">← 窄屏可左右滑动查看四列完整评测 →</p>
+        <div class="evaluation-scroll" role="region" aria-label="三种策略任务完成情况，支持横向滚动" tabindex="0">
+          <table class="pc98-stat-table">
+            <thead>
+              <tr><th scope="col">策略</th><th scope="col">完成任务 / 总任务</th><th scope="col">完成率</th><th scope="col">相对基座变化</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Qwen3.5-9B 基座</th><td>73 / 96</td><td>76.0%</td><td>—</td></tr>
+              <tr><th scope="row">SFT + KD · K2</th><td>82 / 96</td><td>85.4%</td><td>+9.4 pp（+9 条）</td></tr>
+              <tr class="is-highlight"><th scope="row">SFT + GRPO · RL-73</th><td>83 / 96</td><td>86.5%</td><td>+10.4 pp（+10 条）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="content-note" style="margin-top:16px;">统计与评审边界：RL-73 较基座多完成 10 个任务（+10.4 个百分点），相对 K2 多 1 个任务，不据此断言强化学习在所有场景均有显著超额收益。题目质量由 AI 评审区分可直接采用、需修订与不保留，并非人工逐题认证。<a href="https://github.com/fjnuslw/RepoSocratic/blob/main/docs/RESULTS.md" target="_blank" rel="noopener noreferrer">完整评测说明 ↗</a> · <a href="https://github.com/fjnuslw/RepoSocratic/blob/main/results/metrics.json" target="_blank" rel="noopener noreferrer">机器可读指标 ↗</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="../assets/plates/brand-emblem.png" width="38" height="38" alt="">
+        <div>
+          <p>宋林蔚 · Linwei Song</p>
+          <p>Agent 后训练、多跳检索与可核查系统记录</p>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="页脚导航">
+        <a href="../index.html">总览</a>
+        <a href="../projects.html">竞赛与开源</a>
+        <a href="../blog.html">技术笔记</a>
+        <a href="../about.html">关于</a>
+        <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="https://openreview.net/profile?id=%7ELinwei_Song1" target="_blank" rel="noopener noreferrer">OpenReview ↗</a>
+      </nav>
+      <div class="footer-meta">
+        <a href="mailto:1147214246@qq.com">1147214246@qq.com</a>
+        <span>福州 · <time data-clock>UTC+8</time> · © 2026 宋林蔚</span>
+      </div>
+    </div>
+  </footer>
+  <script src="../js/main.js?v=85f3dd3bc6"></script>
+</body>
+</html>

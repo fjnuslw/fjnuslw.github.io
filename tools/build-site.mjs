@@ -25,5 +25,5 @@ async function list(directory) {
   return result;
 }
 const files = (await list(output)).sort();
-if (files.some(file => /^(?:\.private|tmp|docs|specs|search|paper_search|resume-redesign|ai-prep)\//.test(file) || file === 'resume.html')) throw new Error('Non-public workspace in build');
+if (files.some(file => /^(?:\.private|\.impeccable|tmp|docs|specs|search|paper_search|resume-redesign|ai-prep)\//.test(file) || file === 'resume.html')) throw new Error('Non-public workspace in build');
 console.log(`正式站点构建完成：${files.length} 个文件 → dist/；内部文档与制作资料已排除。`);

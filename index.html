@@ -3,71 +3,476 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="宋林蔚的个人作品与研究笔记：Agent 模型后训练、多跳检索、飞书应用与桌面上下文。">
-  <meta name="theme-color" content="#f8f5ef">
+  <meta name="description" content="宋林蔚的个人技术主页：Agent 后训练（SFT / 轨迹蒸馏 / GRPO）、多跳检索与 Agentic RAG 研究（EMNLP 2026 一作）、工业实践与 Kaggle 竞赛。">
+  <meta name="theme-color" content="#090b28">
   <link rel="canonical" href="https://fjnuslw.github.io/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="宋林蔚 · 数字花园">
-  <meta property="og:description" content="宋林蔚的个人作品与研究笔记：Agent 模型后训练、多跳检索、飞书应用与桌面上下文。">
+  <meta property="og:title" content="宋林蔚 · Agent 后训练与多跳检索">
+  <meta property="og:description" content="EMNLP 2026 多跳检索一作、Agent 轨迹蒸馏与 GRPO 后训练、工业实践与 Kaggle 银牌区方案。">
   <meta property="og:url" content="https://fjnuslw.github.io/">
   <meta property="og:image" content="https://fjnuslw.github.io/assets/og-evidence-ledger.png">
   <meta name="twitter:card" content="summary_large_image">
-  <title>宋林蔚 · 数字花园</title>
+  <title>宋林蔚 · Agent 后训练与多跳检索</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=3da5a69cd7">
-  <link rel="stylesheet" href="css/portfolio.css?v=9c8f3b653c">
-<link rel="preload" href="assets/fonts/garden-serif.woff2?v=1760705f05" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=780a2da447">
+  <link rel="stylesheet" href="css/portfolio.css?v=4db8bdcd4a">
 </head>
-<body class="home-page"><a class="skip-link" href="#main-content">跳到主要内容</a><nav class="navbar" aria-label="主导航"><div class="nav-inner">
-<a class="brand" href="index.html" aria-label="宋林蔚，返回首页"><span class="brand-seal" aria-hidden="true">蔚</span><span class="brand-name">林蔚手记<small>LINWEI SONG / DIGITAL GARDEN</small></span></a>
-<button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
-<ul class="nav-menu" id="primary-navigation"><li><a class="nav-link" href="index.html">花园入口</a></li><li><a class="nav-link" href="projects.html">作品展廊</a></li><li><a class="nav-link" href="blog.html">沿途手记</a></li><li><a class="nav-link" href="about.html">关于园主</a></li></ul>
-<a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-</div></nav>
-<main id="main-content">
-<section class="garden-hero shell" aria-labelledby="garden-title">
-<div class="garden-lines" aria-hidden="true"><span></span><span></span><span></span></div>
-<div class="garden-intro"><p class="eyebrow">一个持续生长的数字花园 / VOL. 01</p><p class="author-line">宋林蔚 · 开发者与记录者 · 2026</p><h1 id="garden-title">林蔚手记<span class="issue-label">WORKS & NOTES</span><em>代码与好奇心</em></h1><div class="intro-rule" aria-hidden="true"></div><p class="garden-lede">我研究 Agent 后训练与多跳检索，<br>也把它们做成有依据、能接续的工具。</p><p class="garden-aside">一些已经成形的作品，一些还在生长的想法。<br>欢迎来这里，慢慢逛一会儿。</p><div class="garden-tags"><span>模型后训练</span><span>多跳检索</span><span>上下文工程</span></div><div class="hero-actions"><a class="btn btn-primary" href="projects.html">进入作品展廊 <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="#selected-work">沿着画册往下看 <span aria-hidden="true">↓</span></a></div></div>
-<div class="folio" aria-label="精选项目画册" aria-roledescription="轮播"><span class="folio-margin" aria-hidden="true">让每一次追问，都有来处。</span><div class="folio-stack"><span class="folio-back" aria-hidden="true"></span><a class="folio-cover" href="projects/reposocratic.html" aria-label="查看 WenQu / RepoSocratic 项目"><div class="poster poster-research"><div class="poster-top"><span>SOURCE / QUESTION / LEARNING</span><span>01</span></div><div class="poster-heading"><h2>先读懂，<br>再追问。</h2><p>WenQu / RepoSocratic</p></div><ol class="poster-flow" aria-label="模型训练流程示意"><li><span>01</span>从源码中寻找依据</li><li><span>02</span>从示范中学习提问</li><li><span>03</span>在任务中检验策略</li></ol><div class="poster-bottom"><span>READ. ASK.<br>LEARN.</span><span>循证提问</span></div></div><span class="cover-open" aria-hidden="true">↗</span></a></div><div class="folio-caption"><span class="folio-name">WenQu / RepoSocratic</span><div class="folio-controls" hidden><button type="button" data-folio-prev aria-label="上一件作品">←</button><span class="folio-count" role="status" aria-live="polite">01 / 03</span><button type="button" data-folio-next aria-label="下一件作品">→</button></div></div></div>
-<div class="garden-colophon"><span><i class="status-dot" aria-hidden="true"></i>福建 · 福州 <time data-clock>UTC+8</time></span><a href="#selected-work">向下展开 · 作品与手记 <span aria-hidden="true">↓</span></a><span>慢慢构建，认真记录。</span></div>
-</section>
-<section class="section shell selected-section" id="selected-work"><header class="section-head"><div><p class="eyebrow">CHAPTER 01 / SELECTED WORK</p><h2>想法，长成了作品。</h2></div><a class="head-link" href="projects.html">完整作品档案 ↗</a></header>
-<div class="work-gallery"><article class="work-piece"><a class="work-frame" href="projects/reposocratic.html"><div class="poster poster-research"><div class="poster-top"><span>SOURCE / QUESTION / LEARNING</span><span>01</span></div><div class="poster-heading"><h3>先读懂，<br>再追问。</h3><p>WenQu / RepoSocratic</p></div><ol class="poster-flow" aria-label="模型训练流程示意"><li><span>01</span>从源码中寻找依据</li><li><span>02</span>从示范中学习提问</li><li><span>03</span>在任务中检验策略</li></ol><div class="poster-bottom"><span>READ. ASK.<br>LEARN.</span><span>循证提问</span></div></div></a><div class="work-caption"><span>01 / 模型后训练</span><h3><a href="projects/reposocratic.html">WenQu / RepoSocratic</a></h3><p>从源码取证到轨迹蒸馏与在线强化学习，把提问过程变成可检验的任务。</p></div></article>
-<article class="work-piece"><a class="work-frame" href="projects.html#enterprise-agent"><div class="poster poster-knowledge"><div class="poster-top"><span>KNOWLEDGE / CONNECTION</span><span>02</span></div><div class="poster-heading"><h3>让每次沟通<br/>都有依据。</h3><p>星途知汇 / XINGTU</p></div><img alt="星途知汇项目视觉封面，非产品界面截图" height="504" src="assets/xingtu-knowledge-platform-hero.webp" width="960"/><div class="poster-bottom"><span>KNOWLEDGE<br/>IN THE MAKING</span><span>澄清 · 取证 · 反馈</span></div></div></a><div class="work-caption"><span>02 / 飞书销售 AGENT</span><h3><a href="projects.html#enterprise-agent">星途知汇</a></h3><p>让客户诊断、异议分析和沟通建议，接上会话材料、知识依据与员工反馈。</p></div></article>
-<article class="work-piece"><a class="work-frame" href="projects/local-window-copilot.html"><div class="poster poster-window"><div class="poster-top"><span>CONTEXT / MEMORY</span><span>03</span></div><div class="poster-heading"><h3>窗口之间</h3><p>A LITTLE COMPANION<br/>WITH A LONG MEMORY.</p></div><div aria-hidden="true" class="poster-rings"></div><img alt="Local Window Copilot 的白色桌面助手，观察状态" height="512" src="projects/local-window-copilot/img/mascot_observing.png" width="512"/><div class="poster-bottom"><span>LOCAL WINDOW<br/>COPILOT</span><span>本地视觉 · 连续记忆</span></div></div></a><div class="work-caption"><span>03 / 桌面上下文</span><h3><a href="projects/local-window-copilot.html">Local Window Copilot</a></h3><p>把当前画面、历史证据和确认后的记忆，放进同一段可恢复的对话。</p></div></article></div><p class="collection-note">还有制造业作业指导书原型 <a href="projects.html#workflow-agent">OpenSOP Agent ↗</a>，以及持续积累的开源小工具。<span>内容更新于 <time datetime="2026-10-25">2026.10.25</time></span></p></section>
-<section class="garden-lab-section" id="playground"><div class="shell garden-lab-grid"><div class="garden-lab-copy"><p class="eyebrow">A SMALL PLAYGROUND / 交互一角</p><h2>不妨，<br>让想法动起来。</h2><p>一个桌面助手怎样留下记忆？一次销售咨询怎样接上知识与反馈？在这里走一遍项目的预设流程。</p><a class="text-link" href="demos/local-window-copilot/">与小助手见个面 ↗</a><span class="vertical-note" aria-hidden="true">观察 · 理解 · 留下线索</span></div>      <div class="live-lab" data-project="0" aria-label="项目交互展台">
-        <div class="lab-toolbar">
-          <span><i aria-hidden="true"></i>BENCH · 交互演示</span>
-          <button class="motion-toggle" type="button" aria-pressed="false" hidden>暂停动态</button>
-        </div>
-        <div class="lab-view">
-          <div class="lab-title"><span id="lab-category">01 / DESKTOP CONTEXT</span><h2 id="lab-title">Local Window Copilot</h2></div>
-          <div class="lab-scene">
-            <div class="lab-orbit" aria-hidden="true"></div>
-            <img id="lab-image" src="projects/local-window-copilot/img/mascot_idle.png" width="512" height="512" alt="Local Window Copilot 的白色助手形象">
-            <div class="lab-node node-a"><span>01</span><strong>锁定窗口</strong></div>
-            <div class="lab-node node-b"><span>02</span><strong>读取线索</strong></div>
-            <div class="lab-node node-c"><span>03</span><strong>留下记录</strong></div>
-            <span class="scan-line" aria-hidden="true"></span>
+<body class="home-page pc98-page">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <!-- 移动端与窄屏顶部指令栏（桌面端由首屏左轨承接） -->
+  <nav class="navbar" aria-label="主导航">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="宋林蔚，返回首页">
+        <img class="brand-mark" src="assets/plates/brand-emblem.png" width="34" height="34" alt="">
+        <span class="brand-name">宋林蔚<small>LINWEI SONG</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-navigation"><span></span><span></span></button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a class="nav-link active" href="#overview" data-rail-link="overview" aria-current="page"><span class="nav-idx">01</span>实证总览</a></li>
+        <li><a class="nav-link" href="#research" data-rail-link="research"><span class="nav-idx">02</span>论文研究</a></li>
+        <li><a class="nav-link" href="#experience" data-rail-link="experience"><span class="nav-idx">03</span>实习实践</a></li>
+        <li><a class="nav-link" href="projects.html"><span class="nav-idx">04</span>竞赛与开源</a></li>
+        <li><a class="nav-link" href="blog.html"><span class="nav-idx">05</span>技术笔记</a></li>
+        <li><a class="nav-link" href="about.html"><span class="nav-idx">06</span>关于</a></li>
+      </ul>
+      <a class="nav-gh" href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- 首屏：PC-98 十六色固定区格工作台 -->
+    <section class="pc98-stage" id="overview" aria-labelledby="hero-title">
+      <aside class="pc98-rail" aria-label="首页坐标导航与档案">
+        <a class="pc98-brand-lockup" href="index.html" aria-label="宋林蔚，返回首页">
+          <img src="assets/plates/brand-emblem.png" width="256" height="256" alt="宋林蔚多跳节点像素徽章">
+          <span>
+            <span class="pc98-brand-zh">宋林蔚</span>
+            <span class="pc98-brand-en">LINWEI SONG</span>
+          </span>
+        </a>
+
+        <nav aria-label="快捷目录">
+          <ul class="pc98-rail-nav">
+            <li><a class="pc98-rail-item is-active" href="#overview" data-rail-link="overview" aria-current="page"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">01</span>实证总览</a></li>
+            <li><a class="pc98-rail-item" href="#research" data-rail-link="research"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">02</span>论文研究</a></li>
+            <li><a class="pc98-rail-item" href="#experience" data-rail-link="experience"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">03</span>实习实践</a></li>
+            <li><a class="pc98-rail-item" href="projects.html"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">04</span>竞赛开源</a></li>
+            <li><a class="pc98-rail-item" href="blog.html"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">05</span>技术笔记</a></li>
+            <li><a class="pc98-rail-item" href="about.html"><svg class="pc98-caret px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg><span class="pc98-num">06</span>关于</a></li>
+          </ul>
+        </nav>
+
+        <div class="pc98-profile-box" role="region" aria-label="作者坐标档案">
+          <div class="pc98-profile-head">
+            <span>PROFILE.DAT</span>
+            <span class="pc98-profile-dot" aria-hidden="true"></span>
           </div>
-          <div class="lab-readout" role="status"><span id="lab-step">READY</span><p id="lab-caption">窗口滚走了，也能接着追问刚才的内容。</p></div>
-          <div class="lab-actions">
-            <button class="run-demo btn btn-primary" type="button" hidden>运行一次 <span aria-hidden="true">▷</span></button>
-            <a id="lab-link" class="text-link" href="projects/local-window-copilot.html">查看项目 <span aria-hidden="true">↗</span></a>
+          <dl class="pc98-profile-dl">
+            <div>
+              <dt>FOCUS</dt>
+              <dd>Agent 后训练 · 多跳检索 · Harness</dd>
+            </div>
+            <div>
+              <dt>EDU</dt>
+              <dd>福建师范大学<br>软件工程硕士</dd>
+            </div>
+            <div>
+              <dt>HONORS</dt>
+              <dd>一等学业奖学金 ×2<br>2026 三好学生</dd>
+            </div>
+            <div>
+              <dt>BASE</dt>
+              <dd>福建 · 福州 <time data-clock>UTC+8</time></dd>
+            </div>
+          </dl>
+          <div class="pc98-profile-foot">
+            <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            <a href="mailto:1147214246@qq.com">Email ↗</a>
           </div>
         </div>
-        <div class="lab-projects" aria-label="切换展示项目" hidden>
-          <button type="button" data-project="0" aria-pressed="true">01 <span>桌面助手</span></button>
-          <button type="button" data-project="1" aria-pressed="false">02 <span>销售咨询</span></button>
-          <button type="button" data-project="2" aria-pressed="false">03 <span>作业流程</span></button>
+      </aside>
+
+      <!-- 主视觉区：Agent 主题像素底板 + 核心陈述与入口 -->
+      <div class="pc98-hero-canvas">
+        <img class="pc98-hero-bg" src="assets/plates/hero-skyline.png" width="2352" height="952" alt="PC-98 十六色等距 Agent 架构、多跳取证分片与 GRPO 轨迹搜索图">
+        <div class="pc98-hero-scrim" aria-hidden="true"></div>
+        <div class="pc98-hero-copy">
+          <img class="pc98-hero-dither" src="assets/plates/hero-dither-bar.png" width="1284" height="156" alt="">
+          <h1 class="pc98-hero-headline" id="hero-title">宋林蔚·Agent 后训练与多跳检索</h1>
+          <p class="pc98-hero-summary">EMNLP 2026 一作 · 轨迹蒸馏与多分支 GRPO<br>Kaggle 银牌区 Top 3.9% · 开源源码与 LoRA 权重</p>
+          <div class="pc98-hero-actions">
+            <a class="pc98-cta is-primary" href="https://aclanthology.org/2026.findings-emnlp.1449/" target="_blank" rel="noopener noreferrer">阅读 EMNLP 论文 <svg class="px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg></a>
+            <a class="pc98-cta is-secondary" href="projects/reposocratic.html">源码与模型权重 <svg class="px-icon" width="8" height="8" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg></a>
+          </div>
         </div>
-        <p class="lab-disclaimer">预设流程演示 · 不读取桌面，不连接模型</p>
       </div>
-</div></section>
-<section class="section shell recent-notes" id="notes"><header class="section-head"><div><p class="eyebrow">CHAPTER 02 / NOTES ALONG THE WAY</p><h2>沿途，记下一些问题。</h2></div><a class="head-link" href="blog.html">翻阅 6 篇笔记 ↗</a></header><div class="notes-composition"><a class="note-feature" href="blog/agent-status-spine.html"><div class="note-feature-top"><span>最新手记 / 2026.08.13</span><span>01</span></div><span class="note-glyph" aria-hidden="true">续</span><div><span class="eyebrow">AGENT / STATE & MEMORY</span><h3>让长任务知道，<br>自己走到了哪里。</h3><p>从一次中断出发，拆开任务契约、事件记录、检查点与状态投影。</p><span class="text-link">阅读 Agent 状态栏 <span aria-hidden="true">↗</span></span></div></a><div class="note-side"><a class="note-mini" href="blog/kv-cache-reuse.html"><span class="eyebrow">2026.08.12 / 推理</span><h3>已经读过的内容，<br>可以留下什么？</h3><p>关于 KV Cache、显存与稳定前缀。</p><span aria-hidden="true">↗</span></a><a class="note-mini" href="blog/desktop-agent-context-pitfalls.html"><span class="eyebrow">2026.07.04 / 桌面 AGENT</span><h3>为什么「看见屏幕」<br>还不够。</h3><p>摘要、可见度与上下文边界的踩坑记录。</p><span aria-hidden="true">↗</span></a><a class="all-notes" href="blog.html">还有一些未讲完的问题，收在手记里。 →</a></div></div></section>
-<section class="section shell research-preview" aria-labelledby="research-heading"><header class="section-head"><div><p class="eyebrow">RESEARCH / 追问问题本身</p><h2 id="research-heading">让证据，接得上下一步。</h2></div><a class="head-link" href="about.html#research">研究记录 ↗</a></header><div class="research-preview-grid"><a href="about.html#in-retriever"><span class="eyebrow">01 / IN-RETRIEVER</span><h3>下一份证据，藏在哪里？</h3><p>从嵌入模型的注意力中寻找桥接线索，探索无需生成中间推理文本的多跳检索。</p></a><a href="about.html#esra"><span class="eyebrow">02 / ESRA</span><h3>找到之后，怎样继续？</h3><p>把临时候选、已确认结果和任务依赖写入显式状态，让检索与执行能够接续。</p></a></div></section>
-<section class="garden-about shell"><span class="garden-about-mark" aria-hidden="true">蔚</span><div><p class="eyebrow">BEHIND THE GARDEN</p><h2>你好，我是宋林蔚。</h2><p>福建师范大学软件工程硕士在读。<br>从多跳证据检索到模型后训练，我关心模型如何找到依据、留下状态，并在真实任务里继续。</p><a class="text-link" href="about.html">再认识我一点 ↗</a></div><span class="vertical-note" aria-hidden="true">保持好奇，慢慢生长。</span></section>
-</main><footer class="footer"><div class="shell">
-<div class="footer-cta"><div><p class="eyebrow">THE CONVERSATION CONTINUES</p><h2>有意思的问题，<br>留一封信给我。</h2></div><a class="footer-mail" href="mailto:1147214246@qq.com">1147214246@qq.com <span aria-hidden="true">↗</span></a></div>
-<div class="footer-grid"><div class="footer-brand"><span class="brand-seal" aria-hidden="true">蔚</span><div><p>宋林蔚 · 数字花园</p><p>作品，笔记，以及生长中的想法。</p></div></div><nav class="footer-nav" aria-label="站点导航"><a href="projects.html">作品</a><a href="blog.html">笔记</a><a href="about.html">关于</a><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav><div class="footer-meta"><time data-clock>福州 · UTC+8</time><span>© 2026 宋林蔚</span></div></div>
-</div></footer><script src="js/main.js?v=1f24e57c47"></script></body></html>
+
+      <!-- 底部三联停靠实证窗 -->
+      <div class="pc98-dock-row">
+        <section class="pc98-window" aria-labelledby="dock-research-title">
+          <header class="pc98-window-bar">
+            <h2 id="dock-research-title">RESEARCH &amp; INDUSTRY</h2>
+            <span class="pc98-window-meta">2026.11</span>
+          </header>
+          <div class="pc98-window-body">
+            <a class="pc98-entry-row" href="#research">
+              <span>
+                <span class="pc98-entry-title">IN-Retriever · Findings of EMNLP 2026</span>
+                <span class="pc98-entry-sub">已发表 · 第一作者 · 免训练注意力桥接多跳检索，4B 召回超 7B / 8B 基线</span>
+              </span>
+              <span class="pc98-tag is-cyan">EMNLP 2026</span>
+            </a>
+            <a class="pc98-entry-row" href="#experience">
+              <span>
+                <span class="pc98-entry-title">明源云 · 橙果算法组（Agent 算法实习）</span>
+                <span class="pc98-entry-sub">2026.10–至今 · CarTourAgent 三维走播数据 · Harness Skill 热替换 · 多分支 GRPO</span>
+              </span>
+              <span class="pc98-tag is-amber">INTERN</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="pc98-window" aria-labelledby="dock-eval-title">
+          <header class="pc98-window-bar">
+            <h2 id="dock-eval-title">COMPETITIONS &amp; EVAL</h2>
+            <span class="pc98-window-meta">VERIFIED</span>
+          </header>
+          <div class="pc98-window-body">
+            <div class="pc98-eval-list">
+              <a class="pc98-eval-row" href="https://www.kaggle.com/code/fjnulinweisong/name-that-llm-g07-technical-report" target="_blank" rel="noopener noreferrer">
+                <span>
+                  <span class="pc98-eval-name">Name That LLM · Kaggle ↗</span>
+                  <span class="pc98-eval-cond">公榜银牌区 255 / 6,514 · Top 3.9%</span>
+                </span>
+                <span class="pc98-eval-val is-cyan">0.703<small>Public BA</small></span>
+              </a>
+              <a class="pc98-eval-row" href="projects/reposocratic.html#evaluation">
+                <span>
+                  <span class="pc98-eval-name">RepoSocratic · 固定协议评测</span>
+                  <span class="pc98-eval-cond">24 训练外家族 · 83 / 96 完成</span>
+                </span>
+                <span class="pc98-eval-val is-lime">86.5%<small>较基座 +10.4pp</small></span>
+              </a>
+              <a class="pc98-eval-row" href="https://www.kaggle.com/code/fjnulinweisong/gemma-agent-trajectory-sft" target="_blank" rel="noopener noreferrer">
+                <span>
+                  <span class="pc98-eval-name">Gemma 4 Developer Agent ↗</span>
+                  <span class="pc98-eval-cond">ADK 990 回合 · 31B FSDP2 LoRA</span>
+                </span>
+                <span class="pc98-eval-val is-amber">Top 23%<small>Public 0.18</small></span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="pc98-window pc98-dock-links" aria-labelledby="dock-links-title">
+          <header class="pc98-window-bar">
+            <h2 id="dock-links-title">LINKS.LOG</h2>
+            <svg class="px-win-ctrl" width="38" height="10" viewBox="0 0 38 10" shape-rendering="crispEdges" aria-hidden="true">
+              <rect x="0" y="7" width="8" height="2" fill="currentColor"/>
+              <path fill="currentColor" d="M14 1h9v8h-9V1zm2 2v4h5V3h-5z"/>
+              <path fill="currentColor" d="M29 1h2v2h-2V1zm6 0h2v2h-2V1zm-4 2h4v4h-4V3zm-2 4h2v2h-2V7zm6 0h2v2h-2V7z"/>
+            </svg>
+          </header>
+          <div class="pc98-window-body">
+            <ul class="pc98-links-list">
+              <li><a href="https://aclanthology.org/2026.findings-emnlp.1449/" target="_blank" rel="noopener noreferrer"><svg class="px-link-caret" width="7" height="7" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg>ACL Anthology ↗</a></li>
+              <li><a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer"><svg class="px-link-caret" width="7" height="7" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg>GitHub ↗</a></li>
+              <li><a href="https://huggingface.co/xiongsir1/reposocratic-interviewer" target="_blank" rel="noopener noreferrer"><svg class="px-link-caret" width="7" height="7" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg>Hugging Face ↗</a></li>
+              <li><a href="https://openreview.net/profile?id=%7ELinwei_Song1" target="_blank" rel="noopener noreferrer"><svg class="px-link-caret" width="7" height="7" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg>OpenReview ↗</a></li>
+              <li><a href="awards/lanqiao-17-national-agent-dev.pdf" target="_blank" rel="noopener noreferrer"><svg class="px-link-caret" width="7" height="7" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="M1 1h2v1h2v1h2v2H5v1H3v1H1z"/></svg>蓝桥杯全国第 5 名 ↗</a></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 02 / 论文研究 -->
+    <section class="pc98-section" id="research" aria-labelledby="research-heading">
+      <div class="pc98-shell">
+        <header class="pc98-section-head">
+          <h2 id="research-heading"><span class="pc98-section-code">02 /</span> 论文研究</h2>
+          <a class="pc98-section-link" href="https://openreview.net/profile?id=%7ELinwei_Song1" target="_blank" rel="noopener noreferrer">OpenReview 作者页 ↗</a>
+        </header>
+        <div class="pc98-grid-2">
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <h3>IN-RETRIEVER · FIRST AUTHOR</h3>
+              <span class="pc98-tag is-cyan">EMNLP 2026 已发表</span>
+            </header>
+            <div class="pc98-window-body">
+              <p class="pc98-paper-title">Intrinsic Attention as Navigator: A Non-Generative Retrieval Method for Multi-Hop Queries</p>
+              <p class="pc98-paper-meta"><span>Findings of EMNLP 2026</span><span>·</span><span>第一作者</span></p>
+              <p class="pc98-body-copy">以 BFS 筛选嵌入模型内部注意力头并提取跨文档桥接线索，结合 Beam Search 与正交投影残差重排扩展证据链，全程无需训练或生成中间推理文本。</p>
+              <p class="pc98-kv-note">实证结果：Qwen3-Embedding-4B 在 MuSiQue 与 2Wiki 的证据召回超过两种 7B / 8B 嵌入基线。</p>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn is-primary" href="https://aclanthology.org/2026.findings-emnlp.1449/" target="_blank" rel="noopener noreferrer">论文原文（ACL Anthology）↗</a>
+                <a class="pc98-link-btn" href="about.html#in-retriever">方法说明 →</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <h3>ESRA · CO-FIRST AUTHOR</h3>
+              <span class="pc98-tag is-amber">NAACL 在审</span>
+            </header>
+            <div class="pc98-window-body">
+              <p class="pc98-paper-title">ESRA: Training-Free Multi-Hop Agentic RAG with Explicit Evidence-State Transitions</p>
+              <p class="pc98-paper-meta"><span>NAACL 顶会 · 在审</span><span>·</span><span>与导师共同第一作者</span></p>
+              <p class="pc98-body-copy">以分支与步骤依赖组织多跳检索任务，通过显式 <code>taskState</code> 维护执行状态；由 Search / Probe 与 LLM 核验候选并写回确认结果，拒绝后切换候选、耗尽时改写查询。</p>
+              <p class="pc98-kv-note">设计目标：将临时候选与按步确认的证据隔离留存，让多跳检索与最终作答稳定接续。</p>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn" href="https://openreview.net/profile?id=%7ELinwei_Song1" target="_blank" rel="noopener noreferrer">OpenReview 主页 ↗</a>
+                <a class="pc98-link-btn" href="about.html#esra">状态迁移细节 →</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 / 工程实习 -->
+    <section class="pc98-section" id="experience" aria-labelledby="experience-heading">
+      <div class="pc98-shell">
+        <header class="pc98-section-head">
+          <h2 id="experience-heading"><span class="pc98-section-code">03 /</span> 工程实习</h2>
+          <a class="pc98-section-link" href="about.html#practice">教育与经历详情 →</a>
+        </header>
+
+        <div class="pc98-dossier-stack">
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <span class="pc98-bar-title">MINGYUAN CLOUD · AGENT POST-TRAINING</span>
+              <span class="pc98-window-meta">2026.10 – 至今</span>
+            </header>
+            <div class="pc98-exp-grid">
+              <div class="pc98-exp-org">
+                <h3>明源云 · 橙果算法组</h3>
+                <p class="pc98-exp-role">Agent 算法实习</p>
+                <p class="pc98-exp-period">2026.10 – 至今</p>
+              </div>
+              <ul class="pc98-bullet-list">
+                <li><strong>CarTourAgent 三维走播数据集：</strong>围绕直播机器人实体走播场景，联合建模多轮弹幕互动与 Agent 驱动的点位调度，覆盖主动营销、被动问答、插话打断恢复与冷场咬客，对齐状态观察、移动动作与观众反馈。</li>
+                <li><strong>Harness 迭代训练框架：</strong>解耦执行运行时、独立用户模拟 Agent 及 Tool / 可替换 Skill，借 Skill 热替换跨品牌与汽车 / 房产领域迁移；融合线上反馈与模拟分支每轮取 1,000 条轨迹，API 辅助专家校准 thinking 与工具调用并在隔离环境重放，经增量 LoRA SFT 与闭环评测迭代。</li>
+                <li><strong>GRPO 策略训练与奖励设计：</strong>落地 SFT 冷启动与多分支 GRPO 后训练，采用同起点组内采样与动作掩码策略梯度；设计结果与过程混合奖励，协同评估留资终局、有效推进与邀约时机，并设硬约束违规否决防过度打扰。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <span class="pc98-bar-title">AUO · MULTIMODAL AGENT &amp; GUARDRAILS</span>
+              <span class="pc98-window-meta">2026.07 – 2026.08</span>
+            </header>
+            <div class="pc98-exp-grid">
+              <div class="pc98-exp-org">
+                <h3>友达光电 · 卓越工程师计划</h3>
+                <p class="pc98-exp-role">AI 专案实习生</p>
+                <p class="pc98-exp-period">2026.07 – 2026.08</p>
+                <div class="pc98-action-row" style="margin-top:12px;">
+                  <a class="pc98-link-btn" href="https://github.com/fjnuslw/OpenSOP-Agent" target="_blank" rel="noopener noreferrer">OpenSOP 源码 ↗</a>
+                </div>
+              </div>
+              <ul class="pc98-bullet-list">
+                <li><strong>工业多模态 Agent 接入：</strong>参与 FIDM 新产品 SOP 智撰，基于 LangGraph 与 MCP 接入友达原生 sAgent 平台，围绕企业爆炸图与 BOM 结构化解析实现工站物料与作业步骤自动匹配填制。</li>
+                <li><strong>神经符号护栏与自修复闭环：</strong>以公开 / 合成数据独立构建 OpenSOP-Agent，借受限语义与主数据真值解耦及引用白名单根除参数幻觉，串联 Critic–Repair 有界自修复、VLM 候选评分与工艺 / 质量双级中断恢复，沉淀 40 份 OI / 324 Step 验证集。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <span class="pc98-bar-title">XINYI TECH · PRIVATE INFERENCE &amp; RAG</span>
+              <span class="pc98-window-meta">2025.07 – 2026.02</span>
+            </header>
+            <div class="pc98-exp-grid">
+              <div class="pc98-exp-org">
+                <h3>福建新意科技有限公司</h3>
+                <p class="pc98-exp-role">大模型应用开发</p>
+                <p class="pc98-exp-period">2025.07 – 2026.02</p>
+              </div>
+              <ul class="pc98-bullet-list">
+                <li><strong>企业私有化推理架构：</strong>在自有服务器部署开源 Dify 平台并解耦异构算力，以 CPU 侧 Xinference 承载多路嵌入与重排、GPU 侧 vLLM 专责 Qwen-32B 推理，兼顾显存利用率与端到端稳定性。</li>
+                <li><strong>结构化层级树索引与归因：</strong>按章节构建目录树与父子多粒度索引并绑定层级 Metadata，解耦子块高精召回与父块上下文重构；设计 Golden Cases 对照消融索引拓扑与模型组合，分层归因检索漏召回与生成幻觉。</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 / 旗舰开源与竞赛 -->
+    <section class="pc98-section" id="flagship" aria-labelledby="flagship-heading">
+      <div class="pc98-shell">
+        <header class="pc98-section-head">
+          <h2 id="flagship-heading"><span class="pc98-section-code">04 /</span> 旗舰开源与竞赛</h2>
+          <a class="pc98-section-link" href="projects.html">完整项目与归档 →</a>
+        </header>
+
+        <article class="pc98-window" style="margin-bottom:18px;">
+          <header class="pc98-window-bar">
+            <h3>WENQU / REPOSOCRATIC · 独立开源项目</h3>
+            <span class="pc98-tag is-lime">2026.08 – 至今</span>
+          </header>
+          <div class="pc98-flagship-grid">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <p class="pc98-body-copy">围绕真实代码仓库的个性化面试 Agent 与 9B 模型后训练系统：融合题库、面经与项目材料由 LLM 组卷，基于 Pi、Harness 校验与只读仓库工具完成多轮源码取证，再通过轨迹蒸馏与在线 Agentic GRPO 提升取证与提问完成率。</p>
+              <ul class="pc98-bullet-list">
+                <li><strong>轨迹蒸馏（ms-swift / LoRA SFT）：</strong>构建 20 项目、100 场景、820 监督目标，vLLM 补算 Top-32 概率，以 CE + 分组 KL 完成 Qwen3.8-27B → Qwen3.5-9B 蒸馏；结合 SP2/FSDP2、激活检查点与分块损失，双卡训练最长 11.7 万 token。</li>
+                <li><strong>在线 Agentic GRPO：</strong>校准事实、提问与完成奖励，基于 HF Transformers 采集多轮轨迹，自定义 GRPO 与 action mask 保留上下文、仅优化模型动作；固定蒸馏参考策略，完成 73 组采样、67 次更新与检查点恢复闭环。</li>
+              </ul>
+              <ul class="pc98-tech-tags" aria-label="WenQu / RepoSocratic 技术栈">
+                <li>Pi / Harness</li>
+                <li>ms-swift / LoRA</li>
+                <li>Top-32 概率蒸馏</li>
+                <li>Online GRPO</li>
+                <li>Qwen3.5-9B</li>
+              </ul>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn is-primary" href="projects/reposocratic.html">阅读完整训练与评测 →</a>
+                <a class="pc98-link-btn" href="https://github.com/fjnuslw/WenQu" target="_blank" rel="noopener noreferrer">应用源码 ↗</a>
+                <a class="pc98-link-btn" href="https://github.com/fjnuslw/RepoSocratic" target="_blank" rel="noopener noreferrer">训练源码 ↗</a>
+                <a class="pc98-link-btn" href="https://huggingface.co/xiongsir1/reposocratic-interviewer" target="_blank" rel="noopener noreferrer">模型权重 ↗</a>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="table-scroll" role="region" aria-label="RepoSocratic 固定协议评测表" tabindex="0">
+                <table class="pc98-stat-table">
+                  <thead>
+                    <tr><th scope="col">模型策略</th><th scope="col">通过 / 总计</th><th scope="col">完成率</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Qwen3.5-9B 基座</td><td>73 / 96</td><td>76.0%</td></tr>
+                    <tr><td>SFT + KD · K2</td><td>82 / 96</td><td>85.4%</td></tr>
+                    <tr class="is-highlight"><td>SFT + GRPO · RL-73</td><td>83 / 96</td><td>86.5%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="content-note">口径边界：2026-09-25 固定协议汇总，24 个训练外项目家族、每模型 96 条共 288 条轨迹；RL-73 较基座 +10.4 个百分点（较 K2 多 1 条）。WenQu 在线会话尚未调用该 9B 服务。</p>
+            </div>
+          </div>
+        </article>
+
+        <div class="pc98-grid-3">
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <h3>KAGGLE · NAME THAT LLM</h3>
+              <span class="pc98-tag is-cyan">Top 3.9%</span>
+            </header>
+            <div class="pc98-window-body">
+              <div>
+                <div class="pc98-comp-metric">BA 0.703</div>
+                <p class="pc98-paper-meta" style="margin-top:4px;"><span>公榜银牌区 · 255 / 6,514</span><span>·</span><span>2026.11</span></p>
+              </div>
+              <p class="pc98-body-copy">大模型来源归因：Prompt 分组五折完成 Qwen3.8-27B / Qwen3.5-9B 多层读出与两阶段 LoRA 校准（开发 OOF BA 0.688 / 0.671），融合自有分支与高分基线，双 T4 长度组批降前向耗时 34.4% / 30.4%。</p>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn" href="https://www.kaggle.com/code/fjnulinweisong/name-that-llm-g07-technical-report" target="_blank" rel="noopener noreferrer">Kaggle 报告 ↗</a>
+                <a class="pc98-link-btn" href="https://github.com/fjnuslw/name-that-llm" target="_blank" rel="noopener noreferrer">源码 ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <h3>KAGGLE · GEMMA 4 AGENT</h3>
+              <span class="pc98-tag is-amber">Top 23%</span>
+            </header>
+            <div class="pc98-window-body">
+              <div>
+                <div class="pc98-comp-metric is-amber">Public 0.18</div>
+                <p class="pc98-paper-meta" style="margin-top:4px;"><span>编码 Agent 轨迹 SFT</span><span>·</span><span>2026.10–11</span></p>
+              </div>
+              <p class="pc98-body-copy">基于 ADK 审计冻结 990 回合高质量编码 Agent 轨迹，在四卡 FSDP2 上完成 Gemma-31B 2.7 万 token 长上下文 LoRA 微调与 vLLM 导出。</p>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn" href="https://www.kaggle.com/code/fjnulinweisong/gemma-agent-trajectory-sft" target="_blank" rel="noopener noreferrer">Kaggle 报告 ↗</a>
+                <a class="pc98-link-btn" href="https://github.com/fjnuslw/gemma-agent-trajectory-sft" target="_blank" rel="noopener noreferrer">源码 ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="pc98-window">
+            <header class="pc98-window-bar">
+              <h3>第十七届蓝桥杯 · 人工智能赛</h3>
+              <span class="pc98-tag is-lime">全国第 5 名</span>
+            </header>
+            <div class="pc98-window-body">
+              <div>
+                <div class="pc98-comp-metric is-lime">全国一等奖</div>
+                <p class="pc98-paper-meta" style="margin-top:4px;"><span>福建一等奖 · 省第 1 名</span><span>·</span><span>2026</span></p>
+              </div>
+              <p class="pc98-body-copy">智能体开发大学组：围绕 FastGPT 工作流与飞书企业应用完成结构化抽取与计算流程。</p>
+              <div class="pc98-action-row">
+                <a class="pc98-link-btn" href="awards/lanqiao-17-national-agent-dev.pdf" target="_blank" rel="noopener noreferrer">全国赛证书 ↗</a>
+                <a class="pc98-link-btn" href="awards/lanqiao-17-fujian-agent-dev.pdf" target="_blank" rel="noopener noreferrer">省赛证书 ↗</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 / 近期技术笔记 -->
+    <section class="pc98-section" id="notes" aria-labelledby="notes-heading">
+      <div class="pc98-shell">
+        <header class="pc98-section-head">
+          <h2 id="notes-heading"><span class="pc98-section-code">05 /</span> 技术笔记</h2>
+          <a class="pc98-section-link" href="blog.html">全部 6 篇公开笔记 →</a>
+        </header>
+        <div class="pc98-note-list">
+          <a class="pc98-note-row" href="blog/agent-status-spine.html">
+            <div class="entry-meta"><time datetime="2026-08-13">2026.08.13</time><span class="entry-time">17 min</span></div>
+            <div>
+              <h3>Agent 状态栏：让长任务知道自己走到哪里</h3>
+              <p>从一次中断的研究任务出发，拆开任务契约、事件记录、检查点与状态投影，演示长任务如何从磁盘安全恢复。</p>
+            </div>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="pc98-note-row" href="blog/kv-cache-reuse.html">
+            <div class="entry-meta"><time datetime="2026-08-12">2026.08.12</time><span class="entry-time">16 min</span></div>
+            <div>
+              <h3>KV Cache 如何让大模型复用已经读过的内容</h3>
+              <p>从逐 token 生成讲清缓存内容、显存增长以及稳定前缀怎样约束 Agent 上下文架构。</p>
+            </div>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="pc98-note-row" href="blog/semantic-terrain-context-engineering.html">
+            <div class="entry-meta"><time datetime="2026-07-08">2026.07.08</time><span class="entry-time">18 min</span></div>
+            <div>
+              <h3>语义地形工程：把上下文设计成可控系统</h3>
+              <p>把采样分布、长上下文、CoT、解码策略与 Agent 实践组织为可迁移的上下文设计框架。</p>
+            </div>
+            <span class="entry-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/plates/brand-emblem.png" width="38" height="38" alt="">
+        <div>
+          <p>宋林蔚 · Linwei Song</p>
+          <p>Agent 后训练、多跳检索与可核查系统记录</p>
+        </div>
+      </div>
+      <nav class="footer-nav" aria-label="页脚导航">
+        <a href="index.html">总览</a>
+        <a href="projects.html">竞赛与开源</a>
+        <a href="blog.html">技术笔记</a>
+        <a href="about.html">关于</a>
+        <a href="https://github.com/fjnuslw" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="https://openreview.net/profile?id=%7ELinwei_Song1" target="_blank" rel="noopener noreferrer">OpenReview ↗</a>
+      </nav>
+      <div class="footer-meta">
+        <a href="mailto:1147214246@qq.com">1147214246@qq.com</a>
+        <span>福州 · <time data-clock>UTC+8</time> · © 2026 宋林蔚</span>
+      </div>
+    </div>
+  </footer>
+  <script src="js/main.js?v=85f3dd3bc6"></script>
+</body>
+</html>

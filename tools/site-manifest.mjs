@@ -12,8 +12,18 @@ export const publicFiles = [
   'css/style.css', 'css/portfolio.css', 'css/article-agent-status.css',
   'css/article-kv-cache.css', 'css/project-research-to-spec.css', 'js/main.js',
   'assets/og-evidence-ledger.png',
-  'assets/xingtu-knowledge-platform-hero.webp',
-  'assets/fonts/garden-serif.woff2', 'assets/fonts/OFL-NotoSerifSC.txt',
+  'assets/plates/brand-emblem.png',
+  'assets/plates/hero-skyline.png',
+  'assets/plates/hero-dither-bar.png',
+  'assets/fonts/fusion-pixel-12px-sc.woff2',
+  'assets/fonts/FUSION-PIXEL-OFL.txt',
+  'assets/fonts/saira-condensed-400-latin.woff2',
+  'assets/fonts/saira-condensed-400-latin-ext.woff2',
+  'assets/fonts/saira-condensed-600-latin.woff2',
+  'assets/fonts/saira-condensed-600-latin-ext.woff2',
+  'assets/fonts/saira-condensed-700-latin.woff2',
+  'assets/fonts/saira-condensed-700-latin-ext.woff2',
+  'assets/fonts/share-tech-mono-400-latin.woff2',
   'awards/lanqiao-17-national-agent-dev.pdf', 'awards/lanqiao-17-fujian-agent-dev.pdf'
 ];
 export const publicDirectories = [

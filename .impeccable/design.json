@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-27T08:25:00Z",
+  "title": "Design System: Linwei Song — PC-98 Sixteen-Color Research Workstation",
+  "seededFrom": {
+    "world": "digital-design-canon-pc98-sixteen-color-field",
+    "seed": "seed:a5144041fc5fa5e9",
+    "approvedComp": ".impeccable/mocks/pc98-comp-1.png"
+  },
+  "extensions": {
+    "colorMeta": {
+      "space-navy": {
+        "role": "neutral",
+        "displayName": "Space Navy",
+        "canonical": "#090b28",
+        "tonalRamp": ["#050618", "#090b28", "#101435", "#19204d", "#263069", "#44528d", "#8593bf", "#d2d9ec"]
+      },
+      "ink-panel": {
+        "role": "neutral",
+        "displayName": "Ink Panel",
+        "canonical": "#101435",
+        "tonalRamp": ["#07091c", "#101435", "#171d48", "#222b63", "#323f82", "#5564a3", "#94a1ce", "#dce1f2"]
+      },
+      "steel-chrome": {
+        "role": "primary",
+        "displayName": "Steel Chrome",
+        "canonical": "#2e4882",
+        "tonalRamp": ["#111c36", "#1c2d54", "#2e4882", "#3f60a8", "#5b7cc2", "#839fd6", "#b5c7e8", "#e2eaf7"]
+      },
+      "vermilion-magenta": {
+        "role": "primary",
+        "displayName": "Vermilion Magenta",
+        "canonical": "#a33a5d",
+        "tonalRamp": ["#3d1221", "#662038", "#8c2c4d", "#a33a5d", "#c44a72", "#d97595", "#ebabc0", "#f8dce5"]
+      },
+      "signal-cyan": {
+        "role": "secondary",
+        "displayName": "Signal Cyan",
+        "canonical": "#5cc2c8",
+        "tonalRamp": ["#113638", "#1d575b", "#2d7c82", "#3fa3aa", "#5cc2c8", "#88d5da", "#bae8eb", "#e3f6f7"]
+      },
+      "signal-lime": {
+        "role": "secondary",
+        "displayName": "Signal Lime",
+        "canonical": "#9bc552",
+        "tonalRamp": ["#25360d", "#405c17", "#628925", "#7ea838", "#9bc552", "#b9d87f", "#d7ebb2", "#eef7dc"]
+      },
+      "signal-amber": {
+        "role": "secondary",
+        "displayName": "Signal Amber",
+        "canonical": "#f0b34c",
+        "tonalRamp": ["#473008", "#755011", "#a8741c", "#d49630", "#f0b34c", "#f5ca7d", "#fae1b3", "#fdf3df"]
+      },
+      "warm-paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#f0e0ba",
+        "tonalRamp": ["#38301e", "#615437", "#8f7d55", "#bda87a", "#dfc99b", "#f0e0ba", "#f7ebd0", "#fcf7ea"]
+      },
+      "silver-muted": {
+        "role": "neutral",
+        "displayName": "Silver Muted",
+        "canonical": "#b3c0d8",
+        "tonalRamp": ["#232936", "#3b4559", "#596680", "#7c8ba8", "#9aa9c4", "#b3c0d8", "#d2dbeb", "#edf1f8"]
+      },
+      "archival-paper": {
+        "role": "neutral",
+        "displayName": "Archival Reading Paper",
+        "canonical": "#f5efe0",
+        "tonalRamp": ["#3b372c", "#635d4c", "#918973", "#bdb49b", "#ded4bc", "#ebe3cf", "#f5efe0", "#fbf9f3"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Homepage hero H1 and inner page H1 titles in self-hosted Fusion Pixel 12px at native 400 weight."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Numbered section headers (02 /–05 /) and left-rail brand lockup."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Window bar titles, rail navigation items, paper titles, and primary/secondary console CTAs."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Engineering dossiers, technical descriptions, and long-form essay reading copy."
+      },
+      "label": {
+        "displayName": "Label / Mono",
+        "purpose": "Dates, status badges, PROFILE.DAT keys, evaluation conditions, and tabular numeric metrics (>= 12px)."
+      }
+    },
+    "shadows": [
+      {
+        "name": "window-bevel",
+        "value": "inset 0 0 0 2px #090b28, inset 0 0 0 3px #2e4882",
+        "purpose": "Crisp stepped double-bevel interior frame for PC-98 windows and left rail."
+      },
+      {
+        "name": "cta-primary-bevel",
+        "value": "inset 0 0 0 2px #090b28, inset 0 0 0 3px #c68fa2",
+        "purpose": "Stepped pixel highlight inside Vermilion Magenta primary console buttons."
+      },
+      {
+        "name": "cta-secondary-bevel",
+        "value": "inset 0 0 0 2px #090b28, inset 0 0 0 3px #7a94c8",
+        "purpose": "Stepped pixel highlight inside Steel Chrome secondary console buttons."
+      },
+      {
+        "name": "hero-text-relief",
+        "value": "3px 3px 0 #090b28, -1px -1px 0 #090b28",
+        "purpose": "Hard integer-offset text shadow keeping hero pixel headlines legible over artwork."
+      }
+    ],
+    "motion": [
+      {
+        "name": "stepped-console",
+        "value": "140ms steps(4, end)",
+        "purpose": "Stepped 4-frame hardware-like hover and border transitions; collapses to 0.01ms under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "420px" },
+      { "name": "table-hint", "value": "480px" },
+      { "name": "mobile-drawer", "value": "768px" },
+      { "name": "tablet-stack", "value": "960px" },
+      { "name": "dock-wrap", "value": "1120px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Console CTA",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Double-beveled 0px Vermilion Magenta primary action button with crisp SVG pixel arrow.",
+      "html": "<a class=\"ds-cta-primary\" href=\"#\">阅读 EMNLP 论文 <svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M1 1h2v1h2v1h2v2H5v1H3v1H1z\"/></svg></a>",
+      "css": ".ds-cta-primary { display: inline-flex; align-items: center; gap: 9px; min-height: 48px; padding: 10px 22px; background: var(--pc-magenta, #a33a5d); color: var(--pc-paper-bright, #f7ebd0); border: 2px solid var(--pc-paper, #f0e0ba); border-radius: 0; box-shadow: inset 0 0 0 2px var(--pc-space, #090b28), inset 0 0 0 3px #c68fa2; font: 400 17px/1 var(--font-display, sans-serif); text-decoration: none; transition: background 140ms steps(4, end), border-color 140ms steps(4, end); } .ds-cta-primary:hover { background: var(--pc-magenta-hi, #c44a72); border-color: var(--pc-yellow, #f3d97d); } .ds-cta-primary:focus-visible { outline: 2px solid var(--pc-cyan, #5cc2c8); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Console CTA",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Double-beveled 0px Steel Chrome secondary action button for repository and model links.",
+      "html": "<a class=\"ds-cta-secondary\" href=\"#\">源码与模型权重 <svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M1 1h2v1h2v1h2v2H5v1H3v1H1z\"/></svg></a>",
+      "css": ".ds-cta-secondary { display: inline-flex; align-items: center; gap: 9px; min-height: 48px; padding: 10px 22px; background: var(--pc-steel, #2e4882); color: var(--pc-paper-bright, #f7ebd0); border: 2px solid var(--pc-paper, #f0e0ba); border-radius: 0; box-shadow: inset 0 0 0 2px var(--pc-space, #090b28), inset 0 0 0 3px #7a94c8; font: 400 17px/1 var(--font-display, sans-serif); text-decoration: none; transition: background 140ms steps(4, end), border-color 140ms steps(4, end); } .ds-cta-secondary:hover { background: var(--pc-steel-hi, #3f60a8); border-color: var(--pc-cyan, #5cc2c8); } .ds-cta-secondary:focus-visible { outline: 2px solid var(--pc-cyan, #5cc2c8); outline-offset: 2px; }"
+    },
+    {
+      "name": "PC-98 Evidence Window",
+      "kind": "card",
+      "refersTo": "window-card",
+      "description": "Sharp 0px double-beveled container with a 4x4 Bayer-dithered Steel Chrome titlebar and crisp pixel window controls.",
+      "html": "<section class=\"ds-window\"><header class=\"ds-window-bar\"><span>LINKS.LOG</span><svg width=\"38\" height=\"10\" viewBox=\"0 0 38 10\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><rect x=\"0\" y=\"7\" width=\"8\" height=\"2\" fill=\"currentColor\"/><path fill=\"currentColor\" d=\"M14 1h9v8h-9V1zm2 2v4h5V3h-5z\"/><path fill=\"currentColor\" d=\"M29 1h2v2h-2V1zm6 0h2v2h-2V1zm-4 2h4v4h-4V3zm-2 4h2v2h-2V7zm6 0h2v2h-2V7z\"/></svg></header><div class=\"ds-window-body\"><p>IN-Retriever · Findings of EMNLP 2026</p></div></section>",
+      "css": ".ds-window { background: var(--pc-space, #090b28); color: var(--pc-paper, #f0e0ba); border: 2px solid var(--pc-paper, #f0e0ba); border-radius: 0; box-shadow: inset 0 0 0 2px var(--pc-space, #090b28), inset 0 0 0 3px var(--pc-steel, #2e4882); overflow: hidden; } .ds-window-bar { display: flex; align-items: center; justify-content: space-between; min-height: 34px; padding: 6px 12px; background: var(--pc-steel, #2e4882); background-image: repeating-conic-gradient(rgba(9, 11, 40, 0.2) 0% 25%, transparent 0% 50%); background-size: 4px 4px; border-bottom: 2px solid var(--pc-paper, #f0e0ba); color: var(--pc-paper-bright, #f7ebd0); font: 400 16px/1.15 var(--font-display, sans-serif); } .ds-window-body { padding: 12px 14px; font: 400 15px/1.6 var(--font-sans, sans-serif); }"
+    },
+    {
+      "name": "Left-Rail Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Numbered PC-98 rail link with dithered steel active fill and crisp yellow SVG caret.",
+      "html": "<nav class=\"ds-rail-list\"><a class=\"ds-rail-item is-active\" href=\"#\"><svg width=\"8\" height=\"8\" viewBox=\"0 0 8 8\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#f3d97d\" d=\"M1 1h2v1h2v1h2v2H5v1H3v1H1z\"/></svg><span class=\"ds-num\">01</span>实证总览</a><a class=\"ds-rail-item\" href=\"#\"><span class=\"ds-num\">02</span>论文研究</a></nav>",
+      "css": ".ds-rail-list { display: flex; flex-direction: column; gap: 6px; background: var(--pc-space, #090b28); padding: 10px; } .ds-rail-item { display: flex; align-items: center; gap: 7px; min-height: 46px; padding: 8px 9px; border: 2px solid transparent; border-radius: 0; color: var(--pc-paper, #f0e0ba); font: 400 18px/1.12 var(--font-display, sans-serif); text-decoration: none; transition: background 140ms steps(4, end), border-color 140ms steps(4, end); } .ds-rail-item .ds-num { font: 400 15px/1 var(--font-mono, monospace); color: var(--pc-silver, #b3c0d8); } .ds-rail-item.is-active { background: var(--pc-steel, #2e4882); background-image: repeating-conic-gradient(rgba(9, 11, 40, 0.18) 0% 25%, transparent 0% 50%); background-size: 4px 4px; border-color: var(--pc-paper, #f0e0ba); box-shadow: inset 0 0 0 1px var(--pc-space, #090b28); color: var(--pc-paper-bright, #f7ebd0); } .ds-rail-item.is-active .ds-num { color: var(--pc-paper-bright, #f7ebd0); } .ds-rail-item:not(.is-active):hover { background: var(--pc-indigo, #1e2356); border-color: var(--pc-cyan, #5cc2c8); color: var(--pc-paper-bright, #f7ebd0); } .ds-rail-item:focus-visible { outline: 2px solid var(--pc-cyan, #5cc2c8); outline-offset: 2px; }"
+    },
+    {
+      "name": "Status & Venue Tag",
+      "kind": "chip",
+      "refersTo": "tag-cyan",
+      "description": "High-contrast 0px monospace verification chips for venues, awards, and benchmark outcomes.",
+      "html": "<div class=\"ds-tags\"><span class=\"ds-tag ds-tag-cyan\">EMNLP 2026</span><span class=\"ds-tag ds-tag-lime\">86.5% · 83/96</span><span class=\"ds-tag ds-tag-amber\">NAACL 在审</span></div>",
+      "css": ".ds-tags { display: flex; flex-wrap: wrap; gap: 8px; } .ds-tag { padding: 3px 8px; border-radius: 0; font: 700 12px/1.15 var(--font-mono, monospace); color: var(--pc-space, #090b28); } .ds-tag-cyan { background: var(--pc-cyan, #5cc2c8); } .ds-tag-lime { background: var(--pc-lime, #9bc552); } .ds-tag-amber { background: var(--pc-amber, #f0b34c); }"
+    },
+    {
+      "name": "Evaluation Ledger Row",
+      "kind": "custom",
+      "refersTo": "window-card",
+      "description": "Flat hairline-dashed clickable benchmark row pairing scope context with tabular pixel display scores.",
+      "html": "<a class=\"ds-eval-row\" href=\"#\"><span><strong class=\"ds-eval-name\">Name That LLM · Kaggle ↗</strong><span class=\"ds-eval-cond\">公榜银牌区 255 / 6,514 · Top 3.9%</span></span><span class=\"ds-eval-val\">0.703<small>Public BA</small></span></a>",
+      "css": ".ds-eval-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 6px; background: var(--pc-space, #090b28); border-bottom: 1px dashed var(--pc-line, #344a84); text-decoration: none; transition: background 140ms steps(4, end); } .ds-eval-row:hover { background: var(--pc-indigo, #1e2356); } .ds-eval-row:focus-visible { outline: 2px solid var(--pc-cyan, #5cc2c8); outline-offset: 2px; } .ds-eval-name { display: block; font: 600 14.4px/1.25 var(--font-sans, sans-serif); color: var(--pc-paper-bright, #f7ebd0); } .ds-eval-cond { display: block; margin-top: 2px; font: 400 12px/1.3 var(--font-mono, monospace); color: var(--pc-silver, #b3c0d8); } .ds-eval-val { text-align: right; font: 400 22px/1 var(--font-display, sans-serif); font-variant-numeric: tabular-nums; color: var(--pc-cyan, #5cc2c8); } .ds-eval-val small { display: block; margin-top: 3px; font: 400 12px/1 var(--font-mono, monospace); color: var(--pc-silver, #b3c0d8); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Midnight PC-98 Research Console",
+    "overview": "This system reimagines a researcher's technical homepage as a locked 16-color NEC PC-98 fixed-region workstation. Rather than floating translucent SaaS cards over blurred neon gradients or adopting an overly ornamental literary broadsheet, every surface sits inside crisp, sharp-cornered double-beveled panes rendered on deep midnight space navy. Evidence—published papers, internship engineering logs, benchmark tables, and open-source checkpoints—occupies structured window partitions with immediate tabular legibility from the first pixel.\n\nThe aesthetic balances nostalgic Japanese 16-color bitmap craft against modern engineering rigor. Ordered 4×4 Bayer dithering and stepped steps(4, end) transitions evoke hardware VRAM discipline, while self-hosted pixel CJK+Latin display typography (Fusion Pixel 12px) unifies Chinese and English headings without falling back to smooth system sans. Historical long-form technical articles preserve their archival warm-paper reading room so legacy diagrams remain faithful, framed cleanly by the shared dark-navy PC-98 navbar and footer.",
+    "keyCharacteristics": [
+      "Locked 16-color midnight PC-98 palette anchored by deep space navy, steel chrome titlebars, warm cream outlines, and magenta/cyan/lime/amber evidence accents.",
+      "Strict 0px pixel-sharp corners paired with 2px warm-paper outer borders and 1px steel inner bevels (inset box-shadows), never blurred drop shadows or soft pill radii.",
+      "Self-hosted subsetted Fusion Pixel 12px display face (SIL OFL 1.1) covering both CJK and Latin at native 400 weight, paired with system sans body copy and Share Tech Mono tabular metadata.",
+      "4×4 ordered Bayer-dithered raster plates carrying embedded provenance (assets/plates/) plus CSS 4×4 checkerboard dither fills on chrome titlebars and inner page heroes.",
+      "Zero external font requests, zero ambient particle loops, and full progressive enhancement so every page remains readable without JavaScript."
+    ],
+    "rules": [
+      {
+        "name": "The Midnight Ground Rule",
+        "body": "Every new primary surface starts on space-navy (#090b28) with recessed containers on ink-panel (#101435); never substitute neutral charcoal grays or translucent frosted glass.",
+        "section": "colors"
+      },
+      {
+        "name": "The Chromatic Signal Rule",
+        "body": "Magenta is reserved for primary action buttons and active filters; cyan, lime, and amber act exclusively as crisp data/status signals—never as full-bleed decorative gradients behind body copy.",
+        "section": "colors"
+      },
+      {
+        "name": "The Native Pixel Weight Rule",
+        "body": "Never apply font-weight: 700 to Fusion Pixel 12px; render all pixel display headings at native 400 weight so browsers do not smear pixel edges with synthetic faux-bold.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bilingual Unity Rule",
+        "body": "Every heading mixing Chinese and English uses the self-hosted Fusion Pixel 12px subset rather than letting CJK fall back to smooth platform sans, and omits extra ASCII spaces around full-width middle dots (·) in display headlines.",
+        "section": "typography"
+      },
+      {
+        "name": "The Zero-Blur Rule",
+        "body": "Never apply blurred box-shadow, backdrop-filter, or soft outer glows to PC-98 surfaces; every depth cue must resolve to crisp integer pixel offsets or 2×2 / 4×4 ordered dither patterns.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Stepped Motion Rule",
+        "body": "Interactive hover and focus transitions run on 140ms steps(4, end) rather than smooth elastic curves, collapsing to 0.01ms under prefers-reduced-motion: reduce.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do frame primary sections and dossiers inside sharp 0px double-beveled PC-98 windows with dithered steel titlebars and at most one <h3> per <article>.",
+      "Do keep all display typography in self-hosted Fusion Pixel 12px at native font-weight: 400, and keep all UI text at or above 0.75rem (12px).",
+      "Do stage raster pixel plates cleanly on mobile as an unwashed top band (aspect-ratio: 2.15 / 1) above solid #090b28 copy instead of burying them under heavy dark overlays.",
+      "Do use shape-rendering=\"crispEdges\" inline SVGs for carets and window controls, and CSS 5×5px squares for bullet markers.",
+      "Do keep 3-column data tables natively readable at 320px and attach explicit scroll cues when wider 4-column tables require horizontal scrolling."
+    ],
+    "donts": [
+      "Don't introduce smooth border-radius (3px–16px), blurred drop shadows, frosted glass (backdrop-filter), or decorative gradient text on PC-98 surfaces.",
+      "Don't nest bordered sub-cards inside already bordered PC-98 windows or the left rail—use hairline dashed dividers or flush compartments instead.",
+      "Don't fall back to smooth OS system fonts (Microsoft YaHei / PingFang SC) for PC-98 display headlines, or load external Google Fonts/CDNs at runtime.",
+      "Don't use raw Unicode symbols (▶, ▪, ─ □ ×) as structural UI icons or add job-seeking banners, resume downloads, or unverified hardware noise to public pages.",
+      "Don't alter the archival warm-paper reading theme (#f5efe0) on historical blog/*.html essays where legacy light-ground SVG diagrams live."
+    ]
+  }
+}
